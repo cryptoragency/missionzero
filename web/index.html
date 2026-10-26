@@ -3,13 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Mission Zero · Help it learn</title>
+<title>Mission Zero</title>
 <style>
 :root{--bg:#0b0f1a;--card:#121a2e;--line:#2c3a5c;--tx:#f2f5fb;--mut:#9fb0d3;--gold:#e0b84f;--ok:#7fe3a5}
 @media (prefers-color-scheme:light){:root{--bg:#f6f7fb;--card:#fff;--line:#d5dbea;--tx:#121a2e;--mut:#4b5a7d;--gold:#8a6a10;--ok:#127a44}}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:17px/1.5 Segoe UI,Arial,sans-serif}
 main{max-width:720px;margin:0 auto;padding:28px 16px 60px}header{text-align:center}header img{width:88px}
 h1{margin:8px 0 4px;font-size:30px}.tag{color:var(--mut);margin:0 0 22px}
+.lang{text-align:right;font-size:14px}.lang button{background:none;border:1px solid var(--line);color:var(--mut);border-radius:8px;padding:4px 10px;cursor:pointer;font:inherit}.lang button[aria-pressed=true]{color:var(--gold);border-color:var(--gold)}
 section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin:16px 0}
 h2{margin:0 0 6px;font-size:21px;color:var(--gold)}p.s{color:var(--mut);margin:0 0 12px;font-size:15px}
 button.o{display:block;width:100%;text-align:left;margin:8px 0;padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--tx);font:inherit;cursor:pointer;position:relative;overflow:hidden}
@@ -22,50 +23,79 @@ input,textarea{width:100%;padding:11px;border-radius:10px;border:1px solid var(-
 </head>
 <body>
 <main>
-<header><img src="logo.png" alt="CRYPTOR.AGENCY"><h1>Mission Zero</h1><p class="tag">Give it a goal. Let it discover the path. Demand proof.<br>Your answers help it learn. No account, no personal data.</p></header>
+<div class="lang"><button id="en" aria-pressed="true">EN</button> <button id="fr" aria-pressed="false">FR</button></div>
+<header><img src="logo.png" alt="CRYPTOR.AGENCY"><h1>Mission Zero</h1><p class="tag" id="tag"></p></header>
 
-<section aria-labelledby="q1">
-<h2 id="q1">What blocks AI the most inside companies?</h2>
-<p class="s">One click. Mission Zero compares your vote with what public studies say.</p>
-<div id="opts"></div><p class="msg" id="m1"></p>
-</section>
+<section aria-labelledby="q1"><h2 id="q1"></h2><p class="s" id="s1"></p><div id="opts"></div><p class="msg" id="m1"></p></section>
 
-<section aria-labelledby="q2">
-<h2 id="q2">Was its last answer useful?</h2>
-<p class="s">Tell it when a source looks doubtful. It turns this into a lesson that a human approves before it is used.</p>
-<textarea id="note" rows="2" maxlength="300" placeholder="Optional: which source looks doubtful, and why?"></textarea>
-<div class="r" style="margin-top:10px"><button id="up">Useful</button><button id="down">Not useful</button></div><p class="msg" id="m2"></p>
-</section>
+<section aria-labelledby="q2"><h2 id="q2"></h2><p class="s" id="s2"></p>
+<textarea id="note" rows="2" maxlength="300"></textarea>
+<div class="r" style="margin-top:10px"><button id="up"></button><button id="down"></button></div><p class="msg" id="m2"></p></section>
 
-<section aria-labelledby="q3">
-<h2 id="q3">Give it a goal it has never seen</h2>
-<p class="s">Describe something to find out, in one sentence. Public sources only.</p>
-<input id="goal" maxlength="240" placeholder="Find out why ... and prove it with three public sources">
-<div class="r" style="margin-top:10px"><button class="go" id="send">Send my goal</button></div><p class="msg" id="m3"></p>
-</section>
+<section aria-labelledby="q3"><h2 id="q3"></h2><p class="s" id="s3"></p>
+<input id="goal" maxlength="240">
+<div class="r" style="margin-top:10px"><button class="go" id="send"></button></div><p class="msg" id="m3"></p></section>
 
-<footer>Built during the Meta Global AI Developer Hackathon by <a href="https://cryptor.agency">CRYPTOR.AGENCY</a> · See also <a href="https://mythozor.com">mythozor.com</a><br>Votes are anonymous and stored without any name, email or IP address.</footer>
+<footer id="foot"></footer>
 </main>
 <script>
+const T = {
+  en: {
+    tag: 'Give it a goal. Let it discover the path. Demand proof.<br>Your answers help it learn. No account, no personal data.',
+    q1: 'What blocks AI the most inside companies?', s1: 'One click. Mission Zero compares your vote with what public studies say.',
+    thanks: 'Thanks, your vote is counted.',
+    q2: 'Was its last answer useful?', s2: 'Tell it when a source looks doubtful. It turns this into a lesson that a human approves before it is used.',
+    note: 'Optional: which source looks doubtful, and why?', up: 'Useful', down: 'Not useful', ok2: 'Thanks. It will learn from this.', ko: 'Please try again.',
+    q3: 'Give it a goal it has never seen', s3: 'Describe something to find out, in one sentence. Public sources only.',
+    goal: 'Find out why ... and prove it with three public sources', send: 'Send my goal', ok3: 'Received. It may be chosen for a future run.', short: 'Please write a full sentence.',
+    foot: 'Built during the Meta Global AI Developer Hackathon by <a href="https://cryptor.agency">CRYPTOR.AGENCY</a> · See also <a href="https://mythozor.com">mythozor.com</a><br>Votes are anonymous and stored without any name, email or IP address.',
+    opt: { 'data-leak': 'Fear of data leaks', 'no-results': 'Fear of no measurable result', 'data-ready': 'Data not ready (siloed, low quality)', governance: 'Governance, compliance, regulation', skills: 'Lack of skills in the team', cost: 'Cost and unclear return on investment' },
+  },
+  fr: {
+    tag: 'Donnez-lui un objectif. Laissez-la découvrir le chemin. Exigez des preuves.<br>Vos réponses l’aident à apprendre. Sans compte, sans donnée personnelle.',
+    q1: 'Qu’est-ce qui bloque le plus l’IA en entreprise ?', s1: 'Un clic. Mission Zero compare votre vote avec ce que disent les études publiques.',
+    thanks: 'Merci, votre vote est compté.',
+    q2: 'Sa dernière réponse était-elle utile ?', s2: 'Dites-lui quand une source vous semble douteuse. Il en fait une leçon qu’un humain valide avant de s’en servir.',
+    note: 'Facultatif : quelle source est douteuse, et pourquoi ?', up: 'Utile', down: 'Pas utile', ok2: 'Merci. Il en tirera une leçon.', ko: 'Réessayez, s’il vous plaît.',
+    q3: 'Donnez-lui un objectif qu’il n’a jamais vu', s3: 'Décrivez en une phrase quelque chose à découvrir. Sources publiques uniquement.',
+    goal: 'Découvrir pourquoi ... et le prouver avec trois sources publiques', send: 'Envoyer mon objectif', ok3: 'Reçu. Il pourra être choisi pour un prochain essai.', short: 'Écrivez une phrase complète, s’il vous plaît.',
+    foot: 'Construit pendant le hackathon mondial d’IA de Meta par <a href="https://cryptor.agency">CRYPTOR.AGENCY</a> · Voir aussi <a href="https://mythozor.com">mythozor.com</a><br>Les votes sont anonymes et conservés sans nom, sans e-mail et sans adresse IP.',
+    opt: { 'data-leak': 'Peur des fuites de données', 'no-results': 'Peur de ne pas avoir de résultat mesurable', 'data-ready': 'Données pas prêtes (cloisonnées, mauvaise qualité)', governance: 'Gouvernance, conformité, réglementation', skills: 'Manque de compétences dans l’équipe', cost: 'Coût et retour sur investissement flou' },
+  },
+};
+let lang = (navigator.language || 'en').toLowerCase().startsWith('fr') ? 'fr' : 'en';
+try { lang = localStorage.getItem('mz-lang') || lang; } catch (e) { /* storage may be blocked */ }
 let token = null;
 try { token = localStorage.getItem('mz-token'); if (!token) { token = (crypto.randomUUID ? crypto.randomUUID() : String(Math.random()).slice(2) + Date.now()) + '-mz'; localStorage.setItem('mz-token', token); } } catch (e) { token = 'anon-' + Math.random().toString(36).slice(2) + Date.now(); }
 const $ = (id) => document.getElementById(id);
 const post = (p, b) => fetch(p, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ token, ...b }) }).then((r) => r.json());
-let mine = null;
+let mine = null, poll = null;
+function text() {
+  const t = T[lang]; document.documentElement.lang = lang;
+  $('tag').innerHTML = t.tag; $('q1').textContent = t.q1; $('s1').textContent = t.s1; $('q2').textContent = t.q2; $('s2').textContent = t.s2;
+  $('note').placeholder = t.note; $('up').textContent = t.up; $('down').textContent = t.down; $('q3').textContent = t.q3; $('s3').textContent = t.s3;
+  $('goal').placeholder = t.goal; $('send').textContent = t.send; $('foot').innerHTML = t.foot;
+  $('en').setAttribute('aria-pressed', lang === 'en'); $('fr').setAttribute('aria-pressed', lang === 'fr');
+  if (poll) draw(poll);
+}
 function draw(d) {
+  poll = d; const t = T[lang];
   const total = Object.values(d.counts).reduce((a, b) => a + b, 0) || 1;
   $('opts').innerHTML = '';
   d.options.forEach((o) => {
     const b = document.createElement('button'); b.className = 'o' + (mine === o.id ? ' mine' : ''); b.type = 'button';
-    b.innerHTML = '<i style="width:' + Math.round(100 * d.counts[o.id] / total) + '%"></i><span>' + o.label + ' · ' + d.counts[o.id] + '</span>';
-    b.onclick = async () => { const r = await post('/api/vote', { option: o.id }); if (r.ok) { mine = o.id; $('m1').textContent = 'Thanks, your vote is counted.'; draw({ ...d, counts: r.counts }); } };
+    b.innerHTML = '<i style="width:' + Math.round(100 * d.counts[o.id] / total) + '%"></i><span>' + (t.opt[o.id] || o.label) + ' · ' + d.counts[o.id] + '</span>';
+    b.onclick = async () => { const r = await post('/api/vote', { option: o.id }); if (r.ok) { mine = o.id; $('m1').textContent = T[lang].thanks; draw({ ...d, counts: r.counts }); } };
     $('opts').appendChild(b);
   });
 }
-fetch('/api/poll').then((r) => r.json()).then(draw);
-const fb = (helpful) => async () => { const r = await post('/api/feedback', { target: 'latest-answer', helpful, note: $('note').value }); $('m2').textContent = r.ok ? 'Thanks. It will learn from this.' : 'Please try again.'; };
+function setLang(l) { lang = l; try { localStorage.setItem('mz-lang', l); } catch (e) { /* ignore */ } text(); }
+$('en').onclick = () => setLang('en'); $('fr').onclick = () => setLang('fr');
+const fb = (helpful) => async () => { const r = await post('/api/feedback', { target: 'latest-answer', helpful, note: $('note').value }); $('m2').textContent = r.ok ? T[lang].ok2 : T[lang].ko; };
 $('up').onclick = fb(true); $('down').onclick = fb(false);
-$('send').onclick = async () => { const r = await post('/api/goal', { text: $('goal').value }); $('m3').textContent = r.ok ? 'Received. It may be chosen for a future run.' : 'Please write a full sentence.'; if (r.ok) $('goal').value = ''; };
+$('send').onclick = async () => { const r = await post('/api/goal', { text: $('goal').value }); $('m3').textContent = r.ok ? T[lang].ok3 : T[lang].short; if (r.ok) $('goal').value = ''; };
+text();
+fetch('/api/poll').then((r) => r.json()).then(draw);
 </script>
 </body>
 </html>
