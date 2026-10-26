@@ -19,7 +19,7 @@ npm test
 ```
 
 ## Status
-Work in progress. See `PLAN.md`.
+Work in progress.
 
 ## License
 MIT
