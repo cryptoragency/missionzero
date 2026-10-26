@@ -29,3 +29,12 @@ test('une action payante sans validation n\'est jamais exécutée', async () => 
   assert.equal(execute, 0);
   assert.equal(r.atteint, false);
 });
+
+test('la synthèse rejette une source inventée', async () => {
+  const { synthetiser } = await import('./synthese.js');
+  const preuves = [{ etape: 'observation', obs: { resultats: [{ url: 'https://vrai.fr/a', titre: 'A', extrait: 'x' }] } }];
+  const demander = async () => ({ texte: '{"reponse":"ok","sources":[{"url":"https://vrai.fr/a","apport":"1"},{"url":"https://invente.fr/z","apport":"2"}],"confiance":7,"incertitudes":[]}' });
+  const r = await synthetiser({ objectif: 'o', preuves, demander });
+  assert.equal(r.sources.length, 1);
+  assert.equal(r.sourcesRejetees, 1);
+});
