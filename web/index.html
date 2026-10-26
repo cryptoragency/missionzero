@@ -7,60 +7,41 @@
 <style>
 :root{--bg:#0b0f1a;--card:#121a2e;--line:#2c3a5c;--tx:#f2f5fb;--mut:#9fb0d3;--gold:#e0b84f;--ok:#7fe3a5}
 @media (prefers-color-scheme:light){:root{--bg:#f6f7fb;--card:#fff;--line:#d5dbea;--tx:#121a2e;--mut:#4b5a7d;--gold:#8a6a10;--ok:#127a44}}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:17px/1.5 Segoe UI,Arial,sans-serif}
-main{max-width:720px;margin:0 auto;padding:28px 16px 60px}header{text-align:center}header img{width:88px}
-h1{margin:8px 0 4px;font-size:30px}.tag{color:var(--mut);margin:0 0 22px}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:18px/1.5 Segoe UI,Arial,sans-serif}
+main{max-width:640px;margin:0 auto;padding:24px 16px 50px}header{text-align:center}header img{width:84px}
+h1{margin:8px 0 2px;font-size:30px}.tag{color:var(--mut);margin:0 0 20px;font-size:16px}
 .lang{text-align:right;font-size:14px}.lang button{background:none;border:1px solid var(--line);color:var(--mut);border-radius:8px;padding:4px 10px;cursor:pointer;font:inherit}.lang button[aria-pressed=true]{color:var(--gold);border-color:var(--gold)}
-section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin:16px 0}
-h2{margin:0 0 6px;font-size:21px;color:var(--gold)}p.s{color:var(--mut);margin:0 0 12px;font-size:15px}
-button.o{display:block;width:100%;text-align:left;margin:8px 0;padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--tx);font:inherit;cursor:pointer;position:relative;overflow:hidden}
+section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+h2{margin:0 0 14px;font-size:24px;color:var(--gold);line-height:1.3}
+button.o{display:block;width:100%;text-align:left;margin:9px 0;padding:14px 16px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--tx);font:inherit;cursor:pointer;position:relative;overflow:hidden}
 button.o:hover,button.o:focus-visible{border-color:var(--gold);outline:none}button.o.mine{border-color:var(--ok)}
 button.o i{position:absolute;inset:0 auto 0 0;background:rgba(224,184,79,.18);width:0;transition:width .4s}button.o span{position:relative}
-.r{display:flex;gap:10px}.r button,.go{padding:10px 16px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--tx);font:inherit;cursor:pointer}
-input,textarea{width:100%;padding:11px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--tx);font:inherit}
-.msg{color:var(--ok);min-height:1.4em;margin:8px 0 0;font-size:15px}footer{text-align:center;color:var(--mut);font-size:14px;margin-top:26px}footer a{color:var(--gold)}
+.res{margin:14px 0 0;padding:12px 14px;border-radius:10px;border:1px solid var(--ok);color:var(--ok);display:none}
+footer{text-align:center;color:var(--mut);font-size:14px;margin-top:24px}footer a{color:var(--gold)}
 </style>
 </head>
 <body>
 <main>
 <div class="lang"><button id="en" aria-pressed="true">EN</button> <button id="fr" aria-pressed="false">FR</button></div>
 <header><img src="logo.png" alt="CRYPTOR.AGENCY"><h1>Mission Zero</h1><p class="tag" id="tag"></p></header>
-
-<section aria-labelledby="q1"><h2 id="q1"></h2><p class="s" id="s1"></p><div id="opts"></div><p class="msg" id="m1"></p></section>
-
-<section aria-labelledby="q2"><h2 id="q2"></h2><p class="s" id="s2"></p>
-<textarea id="note" rows="2" maxlength="300"></textarea>
-<div class="r" style="margin-top:10px"><button id="up"></button><button id="down"></button></div><p class="msg" id="m2"></p></section>
-
-<section aria-labelledby="q3"><h2 id="q3"></h2><p class="s" id="s3"></p>
-<input id="goal" maxlength="240">
-<div class="r" style="margin-top:10px"><button class="go" id="send"></button></div><p class="msg" id="m3"></p></section>
-
+<section aria-labelledby="q1"><h2 id="q1"></h2><div id="opts"></div><p class="res" id="res" role="status"></p></section>
 <footer id="foot"></footer>
 </main>
 <script>
 const T = {
   en: {
-    tag: 'Give it a goal. Let it discover the path. Demand proof.<br>Your answers help it learn. No account, no personal data.',
-    q1: 'What blocks AI the most inside companies?', s1: 'One click. Mission Zero compares your vote with what public studies say.',
-    thanks: 'Thanks, your vote is counted.',
-    q2: 'Was its last answer useful?', s2: 'Tell it when a source looks doubtful. It turns this into a lesson that a human approves before it is used.',
-    note: 'Optional: which source looks doubtful, and why?', up: 'Useful', down: 'Not useful', ok2: 'Thanks. It will learn from this.', ko: 'Please try again.',
-    q3: 'Give it a goal it has never seen', s3: 'Describe something to find out, in one sentence. Public sources only.',
-    goal: 'Find out why ... and prove it with three public sources', send: 'Send my goal', ok3: 'Received. It may be chosen for a future run.', short: 'Please write a full sentence.',
-    foot: 'Built during the Meta Global AI Developer Hackathon by <a href="https://cryptor.agency">CRYPTOR.AGENCY</a> · See also <a href="https://mythozor.com">mythozor.com</a><br>Votes are anonymous and stored without any name, email or IP address.',
-    opt: { 'data-leak': 'Fear of data leaks', 'no-results': 'Fear of no measurable result', 'data-ready': 'Data not ready (siloed, low quality)', governance: 'Governance, compliance, regulation', skills: 'Lack of skills in the team', cost: 'Cost and unclear return on investment' },
+    tag: 'An AI that finds its own path and shows proof.',
+    q1: 'What blocks AI the most in your company?',
+    same: (studies) => 'Same as the studies: ' + studies + '.', diff: (studies) => 'Different from the studies, which point to: ' + studies + '.',
+    foot: 'Built for the Meta Global AI Developer Hackathon by <a href="https://cryptor.agency">CRYPTOR.AGENCY</a> · <a href="https://mythozor.com">mythozor.com</a><br>Anonymous: no name, no email, no IP address stored.',
+    opt: { 'data-leak': 'Fear of data leaks', 'no-results': 'Fear of no result', 'data-ready': 'Data not ready', governance: 'Rules and compliance', skills: 'Lack of skills', cost: 'Cost' },
   },
   fr: {
-    tag: 'Donnez-lui un objectif. Laissez-la découvrir le chemin. Exigez des preuves.<br>Vos réponses l’aident à apprendre. Sans compte, sans donnée personnelle.',
-    q1: 'Qu’est-ce qui bloque le plus l’IA en entreprise ?', s1: 'Un clic. Mission Zero compare votre vote avec ce que disent les études publiques.',
-    thanks: 'Merci, votre vote est compté.',
-    q2: 'Sa dernière réponse était-elle utile ?', s2: 'Dites-lui quand une source vous semble douteuse. Il en fait une leçon qu’un humain valide avant de s’en servir.',
-    note: 'Facultatif : quelle source est douteuse, et pourquoi ?', up: 'Utile', down: 'Pas utile', ok2: 'Merci. Il en tirera une leçon.', ko: 'Réessayez, s’il vous plaît.',
-    q3: 'Donnez-lui un objectif qu’il n’a jamais vu', s3: 'Décrivez en une phrase quelque chose à découvrir. Sources publiques uniquement.',
-    goal: 'Découvrir pourquoi ... et le prouver avec trois sources publiques', send: 'Envoyer mon objectif', ok3: 'Reçu. Il pourra être choisi pour un prochain essai.', short: 'Écrivez une phrase complète, s’il vous plaît.',
-    foot: 'Construit pendant le hackathon mondial d’IA de Meta par <a href="https://cryptor.agency">CRYPTOR.AGENCY</a> · Voir aussi <a href="https://mythozor.com">mythozor.com</a><br>Les votes sont anonymes et conservés sans nom, sans e-mail et sans adresse IP.',
-    opt: { 'data-leak': 'Peur des fuites de données', 'no-results': 'Peur de ne pas avoir de résultat mesurable', 'data-ready': 'Données pas prêtes (cloisonnées, mauvaise qualité)', governance: 'Gouvernance, conformité, réglementation', skills: 'Manque de compétences dans l’équipe', cost: 'Coût et retour sur investissement flou' },
+    tag: 'Une IA qui trouve son chemin et montre ses preuves.',
+    q1: 'Qu’est-ce qui bloque le plus l’IA dans votre entreprise ?',
+    same: (studies) => 'Comme les études : ' + studies + '.', diff: (studies) => 'Différent des études, qui désignent : ' + studies + '.',
+    foot: 'Construit pour le hackathon mondial d’IA de Meta par <a href="https://cryptor.agency">CRYPTOR.AGENCY</a> · <a href="https://mythozor.com">mythozor.com</a><br>Anonyme : ni nom, ni e-mail, ni adresse IP conservés.',
+    opt: { 'data-leak': 'Peur des fuites de données', 'no-results': 'Peur de ne pas avoir de résultat', 'data-ready': 'Données pas prêtes', governance: 'Règles et conformité', skills: 'Manque de compétences', cost: 'Coût' },
   },
 };
 let lang = (navigator.language || 'en').toLowerCase().startsWith('fr') ? 'fr' : 'en';
@@ -70,11 +51,14 @@ try { token = localStorage.getItem('mz-token'); if (!token) { token = (crypto.ra
 const $ = (id) => document.getElementById(id);
 const post = (p, b) => fetch(p, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ token, ...b }) }).then((r) => r.json());
 let mine = null, poll = null;
+function result() {
+  if (!mine || !poll) { $('res').style.display = 'none'; return; }
+  const t = T[lang]; const studies = poll.research.map((id) => t.opt[id]).join(' · ');
+  $('res').textContent = poll.research.includes(mine) ? t.same(studies) : t.diff(studies); $('res').style.display = 'block';
+}
 function text() {
   const t = T[lang]; document.documentElement.lang = lang;
-  $('tag').innerHTML = t.tag; $('q1').textContent = t.q1; $('s1').textContent = t.s1; $('q2').textContent = t.q2; $('s2').textContent = t.s2;
-  $('note').placeholder = t.note; $('up').textContent = t.up; $('down').textContent = t.down; $('q3').textContent = t.q3; $('s3').textContent = t.s3;
-  $('goal').placeholder = t.goal; $('send').textContent = t.send; $('foot').innerHTML = t.foot;
+  $('tag').textContent = t.tag; $('q1').textContent = t.q1; $('foot').innerHTML = t.foot;
   $('en').setAttribute('aria-pressed', lang === 'en'); $('fr').setAttribute('aria-pressed', lang === 'fr');
   if (poll) draw(poll);
 }
@@ -84,16 +68,15 @@ function draw(d) {
   $('opts').innerHTML = '';
   d.options.forEach((o) => {
     const b = document.createElement('button'); b.className = 'o' + (mine === o.id ? ' mine' : ''); b.type = 'button';
-    b.innerHTML = '<i style="width:' + Math.round(100 * d.counts[o.id] / total) + '%"></i><span>' + (t.opt[o.id] || o.label) + ' · ' + d.counts[o.id] + '</span>';
-    b.onclick = async () => { const r = await post('/api/vote', { option: o.id }); if (r.ok) { mine = o.id; $('m1').textContent = T[lang].thanks; draw({ ...d, counts: r.counts }); } };
+    const shown = mine ? ' · ' + d.counts[o.id] : '';
+    b.innerHTML = '<i style="width:' + (mine ? Math.round(100 * d.counts[o.id] / total) : 0) + '%"></i><span>' + (t.opt[o.id] || o.label) + shown + '</span>';
+    b.onclick = async () => { const r = await post('/api/vote', { option: o.id }); if (r.ok) { mine = o.id; draw({ ...d, counts: r.counts }); } };
     $('opts').appendChild(b);
   });
+  result();
 }
 function setLang(l) { lang = l; try { localStorage.setItem('mz-lang', l); } catch (e) { /* ignore */ } text(); }
 $('en').onclick = () => setLang('en'); $('fr').onclick = () => setLang('fr');
-const fb = (helpful) => async () => { const r = await post('/api/feedback', { target: 'latest-answer', helpful, note: $('note').value }); $('m2').textContent = r.ok ? T[lang].ok2 : T[lang].ko; };
-$('up').onclick = fb(true); $('down').onclick = fb(false);
-$('send').onclick = async () => { const r = await post('/api/goal', { text: $('goal').value }); $('m3').textContent = r.ok ? T[lang].ok3 : T[lang].short; if (r.ok) $('goal').value = ''; };
 text();
 fetch('/api/poll').then((r) => r.json()).then(draw);
 </script>

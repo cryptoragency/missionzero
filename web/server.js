@@ -10,6 +10,9 @@ const here = dirname(fileURLToPath(import.meta.url));
 const dataDir = process.env.MZ_WEB_DATA || join(here, 'data');
 mkdirSync(dataDir, { recursive: true });
 
+// What the public studies point to, from Mission Zero's research (update after each run).
+export const RESEARCH = ['data-ready', 'governance'];
+
 export const OPTIONS = [
   { id: 'data-leak', label: 'Fear of data leaks' },
   { id: 'no-results', label: 'Fear of no measurable result' },
@@ -42,7 +45,7 @@ export function counts() {
 
 export function handle(method, path, body, caller) {
   if (limited(hash(caller))) return [429, { error: 'slow down' }];
-  if (method === 'GET' && path === '/api/poll') return [200, { question: 'What blocks AI the most inside companies?', options: OPTIONS, counts: counts() }];
+  if (method === 'GET' && path === '/api/poll') return [200, { question: 'What blocks AI the most in your company?', options: OPTIONS, research: RESEARCH, counts: counts() }];
   if (method !== 'POST') return [404, { error: 'not found' }];
   const token = clean(body.token, 80);
   if (token.length < 16) return [400, { error: 'token' }];
