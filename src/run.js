@@ -1,4 +1,4 @@
-// Run Mission Zero Zero on a goal: node --env-file=.env src/run.js "goal" [maxTurns]
+// Run Mission Zero on a goal: node --env-file=.env src/run.js "goal" [maxTurns]
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { createClient } from './meta.js';
 import { run } from './loop.js';

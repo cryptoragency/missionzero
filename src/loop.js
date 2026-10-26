@@ -14,7 +14,7 @@ export function loadMemory(path) {
   try { return JSON.parse(readFileSync(path, 'utf8')); } catch { return []; }
 }
 
-const PLAN_PROMPT = 'You are Mission Zero Zero. You reach a goal through successive experiments. Allowed actions, and only these: '
+const PLAN_PROMPT = 'You are Mission Zero. You reach a goal through successive experiments. Allowed actions, and only these: '
   + '{"type":"web_search","query":"3 to 8 keywords, not a sentence"} or {"type":"create_page","name":"","content":"complete HTML"}. '
   + 'No cost and no real-world action (costUsd 0, real false) unless indispensable. After an empty search, change the keywords. '
   + 'Answer ONLY in JSON: {"hypotheses":[""],"action":{"type":"","query":"","name":"","content":"","costUsd":0,"real":false},"expected":""}.';

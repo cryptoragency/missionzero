@@ -1,4 +1,4 @@
-// Final answer: the model writes it, but every cited source is CHECKED against what Mission Zero Zero actually saw.
+// Final answer: the model writes it, but every cited source is CHECKED against what Mission Zero actually saw.
 import { readJson } from './loop.js';
 
 export function seenUrls(evidence) {

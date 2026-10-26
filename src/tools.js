@@ -1,4 +1,4 @@
-// Actions Mission Zero Zero can run by itself. None has a real-world effect:
+// Actions Mission Zero can run by itself. None has a real-world effect:
 // reading public pages and creating files in the evidence folder. Anything else needs a human approval.
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
@@ -6,7 +6,7 @@ import { join } from 'node:path';
 const clean = (s) => s.replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/&#x27;|&#39;/g, "'").replace(/&quot;/g, '"').replace(/\s+/g, ' ').trim();
 
 export async function webSearch(query, { fetchFn = fetch, max = 8 } = {}) {
-  const r = await fetchFn('https://html.duckduckgo.com/html/?q=' + encodeURIComponent(query), { headers: { 'user-agent': 'Mozilla/5.0 (compatible; MissionZeroZero/0.1)' } });
+  const r = await fetchFn('https://html.duckduckgo.com/html/?q=' + encodeURIComponent(query), { headers: { 'user-agent': 'Mozilla/5.0 (compatible; MissionZero/0.1)' } });
   if (!r.ok) return { ok: false, error: 'search ' + r.status };
   const html = await r.text();
   const blocks = html.split('class="result results_links').slice(1, max + 1);
