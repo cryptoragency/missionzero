@@ -1,4 +1,4 @@
-// Réponse finale : le modèle rédige, mais chaque source citée est VÉRIFIÉE contre ce que Mission Zero a réellement vu.
+// Réponse finale : le modèle rédige, mais chaque source citée est VÉRIFIÉE contre ce que Mission Zero Zero a réellement vu.
 import { lireJson } from './boucle.js';
 
 export function adressesVues(preuves) {

@@ -1,4 +1,4 @@
-// Actions que Mission Zero peut exécuter lui-même. Aucune n'a d'effet dans le monde réel :
+// Actions que Mission Zero Zero peut exécuter lui-même. Aucune n'a d'effet dans le monde réel :
 // lecture de pages publiques et création de fichiers dans preuves/. Le reste demande une validation humaine.
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
@@ -6,7 +6,7 @@ import { join } from 'node:path';
 const decoder = (s) => s.replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/&#x27;|&#39;/g, "'").replace(/&quot;/g, '"').replace(/\s+/g, ' ').trim();
 
 export async function rechercheWeb(requete, { fetchFn = fetch, max = 8 } = {}) {
-  const r = await fetchFn('https://html.duckduckgo.com/html/?q=' + encodeURIComponent(requete), { headers: { 'user-agent': 'Mozilla/5.0 (compatible; MissionZero/0.1)' } });
+  const r = await fetchFn('https://html.duckduckgo.com/html/?q=' + encodeURIComponent(requete), { headers: { 'user-agent': 'Mozilla/5.0 (compatible; MissionZeroZero/0.1)' } });
   if (!r.ok) return { ok: false, erreur: 'recherche ' + r.status };
   const html = await r.text();
   const blocs = html.split('class="result results_links').slice(1, max + 1);

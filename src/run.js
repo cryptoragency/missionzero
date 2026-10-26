@@ -1,4 +1,4 @@
-// Lance Mission Zero sur un objectif : node --env-file=.env src/run.js "objectif" [maxTours]
+// Lance Mission Zero Zero sur un objectif : node --env-file=.env src/run.js "objectif" [maxTours]
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { creerClient } from './meta.js';
 import { lancer } from './boucle.js';
