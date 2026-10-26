@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mission Zero · Help it learn</title>
+<style>
+:root{--bg:#0b0f1a;--card:#121a2e;--line:#2c3a5c;--tx:#f2f5fb;--mut:#9fb0d3;--gold:#e0b84f;--ok:#7fe3a5}
+@media (prefers-color-scheme:light){:root{--bg:#f6f7fb;--card:#fff;--line:#d5dbea;--tx:#121a2e;--mut:#4b5a7d;--gold:#8a6a10;--ok:#127a44}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:17px/1.5 Segoe UI,Arial,sans-serif}
+main{max-width:720px;margin:0 auto;padding:28px 16px 60px}header{text-align:center}header img{width:88px}
+h1{margin:8px 0 4px;font-size:30px}.tag{color:var(--mut);margin:0 0 22px}
+section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin:16px 0}
+h2{margin:0 0 6px;font-size:21px;color:var(--gold)}p.s{color:var(--mut);margin:0 0 12px;font-size:15px}
+button.o{display:block;width:100%;text-align:left;margin:8px 0;padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--tx);font:inherit;cursor:pointer;position:relative;overflow:hidden}
+button.o:hover,button.o:focus-visible{border-color:var(--gold);outline:none}button.o.mine{border-color:var(--ok)}
+button.o i{position:absolute;inset:0 auto 0 0;background:rgba(224,184,79,.18);width:0;transition:width .4s}button.o span{position:relative}
+.r{display:flex;gap:10px}.r button,.go{padding:10px 16px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--tx);font:inherit;cursor:pointer}
+input,textarea{width:100%;padding:11px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--tx);font:inherit}
+.msg{color:var(--ok);min-height:1.4em;margin:8px 0 0;font-size:15px}footer{text-align:center;color:var(--mut);font-size:14px;margin-top:26px}footer a{color:var(--gold)}
+</style>
+</head>
+<body>
+<main>
+<header><img src="logo.png" alt="CRYPTOR.AGENCY"><h1>Mission Zero</h1><p class="tag">Give it a goal. Let it discover the path. Demand proof.<br>Your answers help it learn. No account, no personal data.</p></header>
+
+<section aria-labelledby="q1">
+<h2 id="q1">What blocks AI the most inside companies?</h2>
+<p class="s">One click. Mission Zero compares your vote with what public studies say.</p>
+<div id="opts"></div><p class="msg" id="m1"></p>
+</section>
+
+<section aria-labelledby="q2">
+<h2 id="q2">Was its last answer useful?</h2>
+<p class="s">Tell it when a source looks doubtful. It turns this into a lesson that a human approves before it is used.</p>
+<textarea id="note" rows="2" maxlength="300" placeholder="Optional: which source looks doubtful, and why?"></textarea>
+<div class="r" style="margin-top:10px"><button id="up">Useful</button><button id="down">Not useful</button></div><p class="msg" id="m2"></p>
+</section>
+
+<section aria-labelledby="q3">
+<h2 id="q3">Give it a goal it has never seen</h2>
+<p class="s">Describe something to find out, in one sentence. Public sources only.</p>
+<input id="goal" maxlength="240" placeholder="Find out why ... and prove it with three public sources">
+<div class="r" style="margin-top:10px"><button class="go" id="send">Send my goal</button></div><p class="msg" id="m3"></p>
+</section>
+
+<footer>Built during the Meta Global AI Developer Hackathon by <a href="https://cryptor.agency">CRYPTOR.AGENCY</a> · See also <a href="https://mythozor.com">mythozor.com</a><br>Votes are anonymous and stored without any name, email or IP address.</footer>
+</main>
+<script>
+let token = null;
+try { token = localStorage.getItem('mz-token'); if (!token) { token = (crypto.randomUUID ? crypto.randomUUID() : String(Math.random()).slice(2) + Date.now()) + '-mz'; localStorage.setItem('mz-token', token); } } catch (e) { token = 'anon-' + Math.random().toString(36).slice(2) + Date.now(); }
+const $ = (id) => document.getElementById(id);
+const post = (p, b) => fetch(p, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ token, ...b }) }).then((r) => r.json());
+let mine = null;
+function draw(d) {
+  const total = Object.values(d.counts).reduce((a, b) => a + b, 0) || 1;
+  $('opts').innerHTML = '';
+  d.options.forEach((o) => {
+    const b = document.createElement('button'); b.className = 'o' + (mine === o.id ? ' mine' : ''); b.type = 'button';
+    b.innerHTML = '<i style="width:' + Math.round(100 * d.counts[o.id] / total) + '%"></i><span>' + o.label + ' · ' + d.counts[o.id] + '</span>';
+    b.onclick = async () => { const r = await post('/api/vote', { option: o.id }); if (r.ok) { mine = o.id; $('m1').textContent = 'Thanks, your vote is counted.'; draw({ ...d, counts: r.counts }); } };
+    $('opts').appendChild(b);
+  });
+}
+fetch('/api/poll').then((r) => r.json()).then(draw);
+const fb = (helpful) => async () => { const r = await post('/api/feedback', { target: 'latest-answer', helpful, note: $('note').value }); $('m2').textContent = r.ok ? 'Thanks. It will learn from this.' : 'Please try again.'; };
+$('up').onclick = fb(true); $('down').onclick = fb(false);
+$('send').onclick = async () => { const r = await post('/api/goal', { text: $('goal').value }); $('m3').textContent = r.ok ? 'Received. It may be chosen for a future run.' : 'Please write a full sentence.'; if (r.ok) $('goal').value = ''; };
+</script>
+</body>
+</html>

@@ -20,7 +20,7 @@ const PLAN_PROMPT = 'You are Mission Zero. You reach a goal through successive e
   + 'Answer ONLY in JSON: {"hypotheses":[""],"action":{"type":"","query":"","name":"","content":"","costUsd":0,"real":false},"expected":""}.';
 const EVAL_PROMPT = 'Evaluate honestly. JSON: {"score":0-10,"reached":false,"lesson":"","uncertainties":[""],"pivot":""}.';
 
-export async function run({ goal, constraints = [], budgetUsd = 100, maxTurns = 6, ask, execute, approve, help = null, memoryPath = null, journalPath = null }) {
+export async function run({ goal, constraints = [], lessons = [], budgetUsd = 100, maxTurns = 6, ask, execute, approve, help = null, memoryPath = null, journalPath = null }) {
   const memory = loadMemory(memoryPath);
   const evidence = [];
   const note = (e) => { const line = { t: new Date().toISOString(), ...e }; evidence.push(line); if (journalPath) appendFileSync(journalPath, JSON.stringify(line) + '\n'); };
@@ -32,7 +32,7 @@ export async function run({ goal, constraints = [], budgetUsd = 100, maxTurns = 
     try {
       const r = await ask([
         { role: 'system', content: PLAN_PROMPT },
-        { role: 'user', content: JSON.stringify({ goal, constraints, budgetUsd, failures: memory.filter((m) => !m.ok).slice(-8), recentEvidence: evidence.slice(-4) }) },
+        { role: 'user', content: JSON.stringify({ goal, constraints, budgetUsd, lessonsFromPastRuns: lessons, failures: memory.filter((m) => !m.ok).slice(-8), recentEvidence: evidence.slice(-4) }) },
       ], { max_tokens: 2500 });
       plan = readJson(r.text);
     } catch (e) { note({ turn, step: 'model-error', message: e.message }); break; }
