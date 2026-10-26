@@ -25,7 +25,7 @@ export async function lancer({ objectif, contraintes = [], budgetUsd = 100, maxT
     let plan;
     try {
       const r = await demander([
-        { role: 'system', content: 'Tu es Mission Zero. Réponds UNIQUEMENT en JSON : {"hypotheses":[""],"action":{"type":"","detail":"","coutUsd":0,"reel":false},"attendu":""}.' },
+        { role: 'system', content: 'Tu es Mission Zero. Tu atteins un objectif par essais successifs. Actions possibles, et seulement elles : {"type":"recherche_web","requete":"3 à 8 mots-clés, pas une phrase"} ou {"type":"creer_page","nom":"","contenu":"HTML complet"}. Pas de coût, aucune action réelle (coutUsd 0, reel false) sauf si indispensable. Après une recherche vide, change les mots-clés. Réponds UNIQUEMENT en JSON : {"hypotheses":[""],"action":{"type":"","requete":"","nom":"","contenu":"","coutUsd":0,"reel":false},"attendu":""}.' },
         { role: 'user', content: JSON.stringify({ objectif, contraintes, budgetUsd, echecs: memoire.filter((m) => !m.ok).slice(-8), preuvesRecentes: preuves.slice(-4) }) },
       ], { max_tokens: 2500 });
       plan = lireJson(r.texte);
