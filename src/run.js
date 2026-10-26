@@ -1,32 +1,32 @@
-// Lance Mission Zero Zero sur un objectif : node --env-file=.env src/run.js "objectif" [maxTours]
+// Run Mission Zero Zero on a goal: node --env-file=.env src/run.js "goal" [maxTurns]
 import { mkdirSync, writeFileSync } from 'node:fs';
-import { creerClient } from './meta.js';
-import { lancer } from './boucle.js';
-import { creerExecuteur } from './outils.js';
-import { synthetiser } from './synthese.js';
+import { createClient } from './meta.js';
+import { run } from './loop.js';
+import { makeExecutor } from './tools.js';
+import { synthesize } from './synthesis.js';
 
-const objectif = process.argv[2];
-if (!objectif) { console.error('Usage : node --env-file=.env src/run.js "objectif" [maxTours]'); process.exit(1); }
-const maxTours = Number(process.argv[3]) || 3;
-const dossier = 'preuves/' + new Date().toISOString().slice(0, 16).replace(/[:T]/g, '-');
-mkdirSync(dossier, { recursive: true });
+const goal = process.argv[2];
+if (!goal) { console.error('Usage: node --env-file=.env src/run.js "goal" [maxTurns]'); process.exit(1); }
+const maxTurns = Number(process.argv[3]) || 3;
+const folder = 'evidence/' + new Date().toISOString().slice(0, 16).replace(/[:T]/g, '-');
+mkdirSync(folder, { recursive: true });
 
-const client = creerClient();
-const demander = (messages, opts) => client.demander(messages, { ...opts, max_tokens: 6000 });
-const resultat = await lancer({
-  objectif,
-  contraintes: ['sources publiques uniquement', 'aucune dépense', 'aucun contact avec des tiers'],
+const client = createClient();
+const ask = (messages, opts) => client.ask(messages, { ...opts, max_tokens: 6000 });
+const result = await run({
+  goal,
+  constraints: ['public sources only', 'no spending', 'no contact with third parties'],
   budgetUsd: 1,
-  maxTours,
-  demander,
-  executer: creerExecuteur({ dossier }),
-  valider: async () => false, // aucune action réelle ni payante sans humain
-  memoireChemin: dossier + '/memoire.json',
-  journalChemin: dossier + '/journal.jsonl',
+  maxTurns,
+  ask,
+  execute: makeExecutor({ folder }),
+  approve: async () => false, // no real or paid action without a human
+  memoryPath: folder + '/memory.json',
+  journalPath: folder + '/journal.jsonl',
 });
-const finale = await synthetiser({ objectif, preuves: resultat.preuves, demander });
-writeFileSync(dossier + '/reponse-finale.json', JSON.stringify(finale, null, 2));
-const bilan = { objectif, atteint: resultat.atteint, tours: resultat.tours, meilleur: resultat.meilleur, confiance: finale.confiance, sourcesVerifiees: finale.sources.length, sourcesRejetees: finale.sourcesRejetees, cout: client.compteur };
-writeFileSync(dossier + '/bilan.json', JSON.stringify(bilan, null, 2));
-console.log(JSON.stringify(bilan, null, 2));
-console.log('Dossier de preuves :', dossier);
+const final = await synthesize({ goal, evidence: result.evidence, ask });
+writeFileSync(folder + '/final-answer.json', JSON.stringify(final, null, 2));
+const summary = { goal, reached: result.reached, turns: result.turns, best: result.best, confidence: final.confidence, verifiedSources: final.sources.length, rejectedSources: final.rejectedSources, cost: client.counter };
+writeFileSync(folder + '/summary.json', JSON.stringify(summary, null, 2));
+console.log(JSON.stringify(summary, null, 2));
+console.log('Evidence folder:', folder);

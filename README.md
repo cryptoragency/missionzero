@@ -14,7 +14,7 @@ Everything in this repository was written during the hackathon (from 26 October 
 ## Run
 ```
 cp .env.example .env   # add your MODEL_API_KEY
-npm run test-cle
+npm run check-key
 npm test
 ```
 

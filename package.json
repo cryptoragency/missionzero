@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Donnez-lui un objectif. Laissez-la découvrir le chemin. Exigez des preuves.",
   "scripts": {
-    "test-cle": "node --env-file=.env src/test-cle.js",
-    "test": "node --test src/boucle.test.js"
+    "check-key": "node --env-file=.env src/check-key.js",
+    "test": "node --test src/loop.test.js"
   }
 }
