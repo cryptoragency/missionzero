@@ -8,9 +8,9 @@ process.env.MZ_WEB_DATA = mkdtempSync(join(tmpdir(), 'mzweb-'));
 const { handle, counts, QUESTIONS } = await import('./server.js');
 const T = (n) => 'token-number-' + n + '-xxxxxxxx';
 
-test('one question with at most four answers', () => {
+test('one question with six answers', () => {
   assert.equal(QUESTIONS.length, 1);
-  assert.ok(QUESTIONS[0].options.length <= 4);
+  assert.equal(QUESTIONS[0].options.length, 6);
 });
 
 test('one browser, one answer per question: answering again replaces it', () => {
