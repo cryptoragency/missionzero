@@ -1,5 +1,5 @@
 // Community page backend: no dependencies, no accounts, no personal data.
-// One vote per browser token (stored hashed), light rate limit kept in memory only (never on disk).
+// One answer per question and per browser token (stored hashed). Light rate limit kept in memory only.
 import http from 'node:http';
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
 import { createHash } from 'node:crypto';
@@ -10,16 +10,15 @@ const here = dirname(fileURLToPath(import.meta.url));
 const dataDir = process.env.MZ_WEB_DATA || join(here, 'data');
 mkdirSync(dataDir, { recursive: true });
 
-// What the public studies point to, from Mission Zero's research (update after each run).
+// What the public studies point to for question 1, from Mission Zero's research (update after each run).
 export const RESEARCH = ['data-ready', 'governance'];
 
-export const OPTIONS = [
-  { id: 'data-leak', label: 'Fear of data leaks' },
-  { id: 'no-results', label: 'Fear of no measurable result' },
-  { id: 'data-ready', label: 'Data not ready (siloed, low quality)' },
-  { id: 'governance', label: 'Governance, compliance, regulation' },
-  { id: 'skills', label: 'Lack of skills in the team' },
-  { id: 'cost', label: 'Cost and unclear return on investment' },
+// Four short questions, one per screen. The labels live in the page (EN/FR); the server only knows ids.
+export const QUESTIONS = [
+  { id: 'blocker', options: ['data-leak', 'no-results', 'data-ready', 'governance', 'skills', 'cost'] },
+  { id: 'stage', options: ['not-started', 'testing', 'one-team', 'in-production'] },
+  { id: 'size', options: ['tiny', 'small', 'medium', 'large'] },
+  { id: 'proof', options: ['yes', 'maybe', 'no'] },
 ];
 
 const file = (name) => join(dataDir, name + '.json');
@@ -33,44 +32,30 @@ function limited(caller) {
   const now = Date.now();
   const list = (hits.get(caller) || []).filter((t) => now - t < 60000);
   list.push(now); hits.set(caller, list);
-  return list.length > 20;
+  return list.length > 30;
 }
 
 export function counts() {
-  const votes = read('votes', {});
-  const c = Object.fromEntries(OPTIONS.map((o) => [o.id, 0]));
-  for (const v of Object.values(votes)) if (c[v] !== undefined) c[v] += 1;
+  const answers = read('answers', {});
+  const c = {};
+  for (const q of QUESTIONS) c[q.id] = Object.fromEntries(q.options.map((o) => [o, 0]));
+  for (const mine of Object.values(answers)) for (const [q, o] of Object.entries(mine)) if (c[q] && c[q][o] !== undefined) c[q][o] += 1;
   return c;
 }
 
 export function handle(method, path, body, caller) {
   if (limited(hash(caller))) return [429, { error: 'slow down' }];
-  if (method === 'GET' && path === '/api/poll') return [200, { question: 'What blocks AI the most in your company?', options: OPTIONS, research: RESEARCH, counts: counts() }];
-  if (method !== 'POST') return [404, { error: 'not found' }];
-  const token = clean(body.token, 80);
-  if (token.length < 16) return [400, { error: 'token' }];
-  const who = hash(token);
-  if (path === '/api/vote') {
-    if (!OPTIONS.some((o) => o.id === body.option)) return [400, { error: 'option' }];
-    const votes = read('votes', {});
-    const first = votes[who] === undefined;
-    votes[who] = body.option; write('votes', votes);
-    return [200, { ok: true, changed: !first, counts: counts() }];
-  }
-  if (path === '/api/feedback') {
-    const list = read('feedback', []);
-    if (list.some((f) => f.who === who && f.target === clean(body.target, 60))) return [200, { ok: true, duplicate: true }];
-    list.push({ who, target: clean(body.target, 60), helpful: !!body.helpful, note: clean(body.note, 300), at: new Date().toISOString() });
-    write('feedback', list.slice(-2000));
-    return [200, { ok: true }];
-  }
-  if (path === '/api/goal') {
-    const text = clean(body.text, 240);
-    if (text.length < 15) return [400, { error: 'too short' }];
-    const list = read('goals', []);
-    list.push({ who, text, status: 'proposed', at: new Date().toISOString() });
-    write('goals', list.slice(-500));
-    return [200, { ok: true }];
+  if (method === 'GET' && path === '/api/poll') return [200, { questions: QUESTIONS, research: RESEARCH, counts: counts() }];
+  if (method === 'POST' && path === '/api/answer') {
+    const token = clean(body.token, 80);
+    if (token.length < 16) return [400, { error: 'token' }];
+    const q = QUESTIONS.find((x) => x.id === body.q);
+    if (!q || !q.options.includes(body.option)) return [400, { error: 'option' }];
+    const answers = read('answers', {});
+    const who = hash(token);
+    answers[who] = { ...(answers[who] || {}), [q.id]: body.option };
+    write('answers', answers);
+    return [200, { ok: true, counts: counts() }];
   }
   return [404, { error: 'not found' }];
 }
