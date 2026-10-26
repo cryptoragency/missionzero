@@ -13,12 +13,9 @@ mkdirSync(dataDir, { recursive: true });
 // What the public studies point to for question 1, from Mission Zero's research (update after each run).
 export const RESEARCH = ['data-ready', 'governance'];
 
-// Four short questions, one per screen. The labels live in the page (EN/FR); the server only knows ids.
+// One question, four answers. The labels live in the page (EN/FR); the server only knows ids.
 export const QUESTIONS = [
-  { id: 'blocker', options: ['data-leak', 'no-results', 'data-ready', 'governance', 'skills', 'cost'] },
-  { id: 'stage', options: ['not-started', 'testing', 'one-team', 'in-production'] },
-  { id: 'size', options: ['tiny', 'small', 'medium', 'large'] },
-  { id: 'proof', options: ['yes', 'maybe', 'no'] },
+  { id: 'blocker', options: ['data-leak', 'no-results', 'data-ready', 'governance'] },
 ];
 
 const file = (name) => join(dataDir, name + '.json');
