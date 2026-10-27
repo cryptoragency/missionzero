@@ -20,7 +20,9 @@ export async function verifyClaim({ claim, url, ask, fetchPage = (u) => readPage
   // A "supported" verdict must come with a quote that really appears in the passages, otherwise it is not trusted.
   const quoted = j.quote && passages.some((p) => p.toLowerCase().includes(String(j.quote).toLowerCase().slice(0, 60)));
   const final = verdict === 'supported' && !quoted ? 'unsupported' : verdict;
-  return { claim, url, verdict: final, color: final === 'supported' ? 'green' : 'red', detail: quoted ? j.quote : '' };
+  // On a red verdict, the closest passage goes back to the writer: the fix is usually to say what the page says (SHOULD, not SHALL).
+  const detail = final === 'supported' ? j.quote : 'nearest passage: ' + passages[0].slice(0, 300);
+  return { claim, url, verdict: final, color: final === 'supported' ? 'green' : 'red', detail };
 }
 
 // `cache` (a Map, one per run): the same claim against the same page gives the same verdict, so it is checked once.

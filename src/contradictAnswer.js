@@ -9,6 +9,7 @@ const CONTRADICT_PROMPT = 'You are the contradictor. Attack this final answer ag
   + 'a missing figure, a secondary source where a primary one was seen, a number without edition year or definition. If you find no real flaw, say so. '
   + 'At most 4 objections of one sentence each, no prose outside the JSON. JSON: {"objections":["concrete flaw"],"flawless":false}.';
 const REVISE_PROMPT = 'Rewrite the final answer so it answers every objection. Cite ONLY URLs from seenSources, copied exactly; drop any claim you cannot back with one of them. '
+  + 'A RED verdict comes with the nearest passage of the page: first try to restate the claim in the page\'s own words (SHOULD is not SHALL, a listing date is not a version) before dropping the source; prefer the latest primary edition over drafts. '
   + 'Answer in at most 120 words. Each "contribution" is the FACT that page supports, with its figures, close to the page\'s own words, never a description of the source. No prose outside the JSON. '
   + 'JSON: {"answer":"","sources":[{"url":"","contribution":""}],"confidence":0-10,"uncertainties":[""]}.';
 const JUDGE_PROMPT = 'You are the judge. Score this final answer from 0 to 10 against the goal, using the verification: a GREEN claim is confirmed by its page, a RED one is not. '
@@ -35,7 +36,8 @@ async function grade({ goal, answer, ask, verify }) {
   } catch { score = 0; }
   if (check.red > 0) score = Math.min(score, RED_CAP);
   if (!(answer.sources || []).length) score = Math.min(score, NO_SOURCE_CAP);
-  return { score, green: check.green, red: check.red, reason };
+  const verification = (check.results || []).map(({ url, claim, verdict, detail }) => ({ url, claim, verdict, detail }));
+  return { score, green: check.green, red: check.red, reason, verification };
 }
 
 // Returns the best version of the answer, its grade and the trace of every version.
@@ -50,7 +52,8 @@ export async function refineAnswer({ goal, answer, seen, ask, verify, research =
   const g0 = await grade({ goal, answer: current, ask, verify });
   const versions = [{ round: 0, ...g0, objections: [], answer: current }];
   let best = versions[0];
-  const done = () => ({ answer: best.answer, score: best.score, green: best.green, red: best.red, rounds: versions.length - 1, versions: versions.map(({ answer: _a, ...r }) => r) });
+  let last = versions[0]; // the version just graded: its verification (verdicts and nearest passages) guides the next round
+  const done = () => ({ answer: best.answer, score: best.score, green: best.green, red: best.red, rounds: versions.length - 1, versions: versions.map(({ answer: _a, verification: _v, ...r }) => r) });
   if (base === 0) return done();
 
   let flat = 0; // rounds in a row without a better note
@@ -61,7 +64,7 @@ export async function refineAnswer({ goal, answer, seen, ask, verify, research =
     try {
       const r = await ask([
         { role: 'system', content: CONTRADICT_PROMPT },
-        { role: 'user', content: JSON.stringify({ goal, answer: current, verification: { green: best.green, red: best.red } }) },
+        { role: 'user', content: JSON.stringify({ goal, answer: current, verification: last.verification, judgeReason: last.reason }) },
       ], { max_tokens: 1500, tag: 'contradict' });
       found = readJson(r.text);
     } catch { break; }
@@ -86,7 +89,7 @@ export async function refineAnswer({ goal, answer, seen, ask, verify, research =
     try {
       const r = await ask([
         { role: 'system', content: REVISE_PROMPT },
-        { role: 'user', content: JSON.stringify({ goal, answer: current, objections, seenSources: seen }) },
+        { role: 'user', content: JSON.stringify({ goal, answer: current, objections, verification: last.verification, seenSources: seen }) },
       ], { max_tokens: 3500, tag: 'rewrite' });
       revised = readJson(r.text);
     } catch { break; }
@@ -94,6 +97,7 @@ export async function refineAnswer({ goal, answer, seen, ask, verify, research =
     current = keepSeen(revised);
     const v = { round, ...(await grade({ goal, answer: current, ask, verify })), objections, fetched, answer: current };
     versions.push(v);
+    last = v;
     if (v.score > best.score) { best = v; flat = 0; } else flat += 1; // strictly better only: an earlier version wins ties
   }
   return done();

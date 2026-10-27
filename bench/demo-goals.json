@@ -27,6 +27,6 @@
     "id": 5,
     "goal": "How many measures does the ANSSI 'Guide d'hygiène informatique' list, and what is the version and publication date of its current edition? Cite the ANSSI document.",
     "why": "French public source, PDF, the agency's own domain: shows the loop working outside English pages.",
-    "expected": "42 measures; version 2.0, January 2017 (first version January 2013). The official PDF is on cyber.gouv.fr, not Scribd."
+    "expected": "42 measures; the PDF itself says 'Version 2.0 - Septembre 2017' (first version January 2013). Trap: the portal lists it as published 23 January 2017. The official PDF is on cyber.gouv.fr, not Scribd."
   }
 ]
