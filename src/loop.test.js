@@ -114,3 +114,25 @@ test('a revised answer citing an unseen URL loses that source', async () => {
   assert.equal(r.versions[1].score, NO_SOURCE_CAP);
   assert.deepEqual(r.answer.sources, []);
 });
+
+test('an objection about a missing figure triggers one research action and the rewrite may cite what it fetched', async () => {
+  const { refineAnswer } = await import('./contradictAnswer.js');
+  const { makeResearch, needsResearch } = await import('./research.js');
+  assert.equal(needsResearch(['answer lists zero figures']), true);
+  assert.equal(needsResearch(['tone is too long']), false);
+  const ask = script([
+    '{"score":2}',                                                                   // judge v0
+    '{"objections":["missing figure; primary report seen but not read"]}',           // contradict 1
+    '{"action":{"type":"read_page","url":"https://primary.example/report","costUsd":0,"real":false}}', // research
+    '{"answer":"53% (Hiscox 2023)","sources":[{"url":"https://primary.example/report","contribution":"53%"}],"confidence":8}', // rewrite
+    '{"score":9}',                                                                   // judge v1
+  ]);
+  let executed = null;
+  const execute = async (a) => { executed = a; return { ok: true, url: a.url, text: 'x'.repeat(300) }; };
+  const research = makeResearch({ ask, execute });
+  const r = await refineAnswer({ goal: 'g', answer: { answer: 'no figure', sources: [] }, seen: [], ask, verify: async () => ({ results: [], green: 1, red: 0 }), research, rounds: 1, escalate: false });
+  assert.equal(executed.type, 'read_page');
+  assert.equal(r.answer.sources[0].url, 'https://primary.example/report'); // newly seen: kept, not rejected
+  assert.equal(r.versions[1].fetched, 1);
+  assert.equal(r.score, 9);
+});

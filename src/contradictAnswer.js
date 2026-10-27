@@ -34,10 +34,12 @@ async function grade({ goal, answer, ask, verify }) {
 }
 
 // Returns the best version of the answer, its grade and the trace of every version.
-export async function refineAnswer({ goal, answer, seen, ask, verify, rounds = 0, escalate = true }) {
+// `research` (optional) is called with the objections and may return newly seen sources: they become citable.
+export async function refineAnswer({ goal, answer, seen, ask, verify, research = null, rounds = 0, escalate = true }) {
   const base = clampRounds(rounds);
   const max = escalate && base > 0 ? MAX_ROUNDS : base;
-  const seenUrls = new Set((seen || []).map((s) => s.url));
+  seen = [...(seen || [])];
+  const seenUrls = new Set(seen.map((s) => s.url));
   const keepSeen = (a) => ({ ...a, sources: (Array.isArray(a.sources) ? a.sources : []).filter((s) => seenUrls.has(s.url)) });
   let current = keepSeen(answer);
   const g0 = await grade({ goal, answer: current, ask, verify });
@@ -59,6 +61,16 @@ export async function refineAnswer({ goal, answer, seen, ask, verify, rounds = 0
     const objections = Array.isArray(found?.objections) ? found.objections.filter(Boolean) : [];
     if (found?.flawless || !objections.length) break; // nothing left to contradict
 
+    // The objection says what is missing: go and get it before rewriting.
+    let fetched = 0;
+    if (research) {
+      try {
+        for (const s of (await research({ goal, answer: current, objections, seen })) || []) {
+          if (s?.url && !seenUrls.has(s.url)) { seen.push(s); seenUrls.add(s.url); fetched += 1; }
+        }
+      } catch { /* the rewrite goes on with what was seen */ }
+    }
+
     let revised = null;
     try {
       const r = await ask([
@@ -69,7 +81,7 @@ export async function refineAnswer({ goal, answer, seen, ask, verify, rounds = 0
     } catch { break; }
     if (!revised?.answer) continue;
     current = keepSeen(revised);
-    const v = { round, ...(await grade({ goal, answer: current, ask, verify })), objections, answer: current };
+    const v = { round, ...(await grade({ goal, answer: current, ask, verify })), objections, fetched, answer: current };
     versions.push(v);
     if (v.score > best.score) best = v; // strictly better only: an earlier version wins ties
   }

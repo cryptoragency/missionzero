@@ -1,11 +1,12 @@
 // Run Mission Zero on a goal: node --env-file=.env src/run.js "goal" [maxTurns]
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync, appendFileSync } from 'node:fs';
 import { createClient } from './meta.js';
 import { run } from './loop.js';
 import { makeExecutor } from './tools.js';
 import { synthesize, seenUrls } from './synthesis.js';
 import { refineAnswer } from './contradictAnswer.js';
 import { verifyReport } from './verify.js';
+import { makeResearch } from './research.js';
 import { loadLessons, saveLessons, mergeLessons, distill, approvedTexts } from './memory.js';
 
 const goal = process.argv[2];
@@ -22,6 +23,7 @@ const lessonsPath = 'memory/lessons.json';
 const past = loadLessons(lessonsPath);
 const client = createClient();
 const ask = (messages, opts) => client.ask(messages, { ...opts, max_tokens: 6000 });
+const execute = makeExecutor({ folder });
 const result = await run({
   goal,
   constraints: ['public sources only', 'no spending', 'no contact with third parties'],
@@ -30,14 +32,15 @@ const result = await run({
   maxTurns,
   contradictions: planContradictions,
   ask,
-  execute: makeExecutor({ folder }),
+  execute,
   approve: async () => false, // no real or paid action without a human
   memoryPath: folder + '/memory.json',
   journalPath: folder + '/journal.jsonl',
 });
 const draft = await synthesize({ goal, evidence: result.evidence, ask });
 const verify = (sources) => verifyReport({ items: sources.map((s) => ({ claim: s.contribution, url: s.url })), ask });
-const refined = await refineAnswer({ goal, answer: draft, seen: [...seenUrls(result.evidence).values()], ask, verify, rounds: contradictions });
+const research = makeResearch({ ask, execute, evidence: result.evidence, note: (e) => appendFileSync(folder + '/journal.jsonl', JSON.stringify({ t: new Date().toISOString(), ...e }) + '\n') });
+const refined = await refineAnswer({ goal, answer: draft, seen: [...seenUrls(result.evidence).values()], ask, verify, research, rounds: contradictions });
 const final = { ...refined.answer, rejectedSources: draft.rejectedSources, judge: { score: refined.score, green: refined.green, red: refined.red, rounds: refined.rounds, versions: refined.versions } };
 const learned = mergeLessons(past, await distill({ goal, evidence: result.evidence, ask }));
 saveLessons(lessonsPath, learned.lessons);
