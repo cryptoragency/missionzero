@@ -1,0 +1,17 @@
+{
+  "voice": "Microsoft Zira Desktop",
+  "rate": 0,
+  "intro": "Mission Zero. Give it a goal. Let it discover the path. Demand proof.",
+  "goal": "The goal: in the Verizon 2025 Data Breach Investigations Report, how many confirmed breaches were analyzed, and what share involved the human element? Cite the report itself. Mission Zero has no plan and no answer. Public sources only, no spending.",
+  "turns": [
+    "Turn one. It forms a hypothesis and searches the web. It finds the report: a 117-page PDF. The evaluator is strict: three out of ten. The numbers are not proven yet. It pivots.",
+    "Turn two. It reads the whole PDF, 263 thousand characters, and keeps only the passages that match what it is looking for. Still not enough: score two. Lesson stored, new pivot.",
+    "Turn three. A new search confirms twelve thousand one hundred ninety-five breaches, but not the human element. Five out of ten. Every turn ends with a lesson, reused on the next mission.",
+    "Turn four. Back to the PDF with a sharper question: the human element. Now both figures have been seen in the report itself."
+  ],
+  "draft": "The writer drafts an answer from what was seen. A page that was never read cannot be cited.",
+  "verify": "The verifier re-reads each cited page and demands an exact quote. Green means the page really says it. A red claim caps the score at five. Here: two green proofs, with the quotes.",
+  "contradict": "A contradictor attacks the answer, a judge scores it, and only the best version is kept. This time the contradictor finds no flaw: nothing to rewrite, nothing to pay for.",
+  "result": "Twelve thousand one hundred ninety-five confirmed breaches. Sixty percent human element. Judge: ten out of ten. Two green proofs. Total cost: six cents.",
+  "outro": "Built during the hackathon on Meta's Muse Spark model, with reasoning effort tuned per role: a full mission costs four to seventeen cents. Everything is in the public repository. Mission Zero: proof, not promises."
+}
