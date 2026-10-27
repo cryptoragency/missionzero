@@ -15,10 +15,13 @@ export function relevantPassages(text, query, k = 6) {
   const want = new Set(tokens(query));
   const boostNumbers = WANTS_NUMBER.test(String(query));
   const sentences = String(text).split(/(?<=[.!?])\s+|\n+/).filter((s) => s.length > 30);
+  // Scored on what is returned (the first 400 characters) and on DISTINCT words: a run-on table row that repeats
+  // "secret" twenty times must not outrank the one normative sentence that carries the figure.
   return sentences
     .map((s) => {
-      const hits = tokens(s).filter((w) => want.has(w)).length;
-      return { s, score: hits ? hits + (boostNumbers && HAS_NUMBER.test(s) ? 1 : 0) : 0 };
+      const cut = s.slice(0, 400);
+      const hits = new Set(tokens(cut).filter((w) => want.has(w))).size;
+      return { s: cut, score: hits ? hits + (boostNumbers && HAS_NUMBER.test(cut) ? 1 : 0) : 0 };
     })
-    .sort((a, b) => b.score - a.score).slice(0, k).filter((x) => x.score > 0).map((x) => x.s.slice(0, 400));
+    .sort((a, b) => b.score - a.score).slice(0, k).filter((x) => x.score > 0).map((x) => x.s);
 }

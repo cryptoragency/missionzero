@@ -55,6 +55,14 @@ test('a long report comes back as the passages matching what the planner wants t
   assert.match(first, /12,195/);
 });
 
+test('a run-on table row that repeats the words does not outrank the one normative sentence with the figure', async () => {
+  const { relevantPassages } = await import('./passages.js');
+  const row = 'Summary of secrets Type of Secret Purpose Password A subscriber-chosen secret used as an authentication factor secret secret verifier verifier ' + 'memorized secret length characters '.repeat(40);
+  const norm = 'Verifiers and CSPs SHALL require passwords that are used as a single-factor authentication mechanism to be a minimum of 15 characters in length.';
+  const [first] = relevantPassages(row + '\n' + norm, 'Verifiers SHALL require user-chosen memorized secrets to be at least 15 characters in length when used as a single-factor authenticator', 2);
+  assert.match(first, /minimum of 15 characters/);
+});
+
 test('an EUR-Lex address is read from the Publications Office, and a bot challenge is reported, not swallowed', async () => {
   const { officialMirror, readPage } = await import('./tools.js');
   assert.equal(officialMirror('https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng'), 'http://publications.europa.eu/resource/celex/32016R0679');
