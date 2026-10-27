@@ -1,0 +1,47 @@
+{
+  "answer": "The most recent major version is CVSS v4.0, released in 2023 on November 1, 2023. The Critical rating is 9.0-10.0.",
+  "sources": [
+    {
+      "url": "https://www.first.org/cvss/specification-document",
+      "contribution": "It is currently CVSS version 4.0, released on November 1, 2023."
+    },
+    {
+      "url": "https://www.first.org/cvss/specification-document",
+      "contribution": "Critical is rated 9.0-10.0."
+    }
+  ],
+  "confidence": 9,
+  "uncertainties": [],
+  "rejectedSources": 0,
+  "seenSources": 8,
+  "judge": {
+    "score": 10,
+    "green": 2,
+    "red": 0,
+    "rounds": 0,
+    "versions": [
+      {
+        "round": 0,
+        "score": 10,
+        "green": 2,
+        "red": 0,
+        "reason": "All claims verified on first.org: v4.0, 2023-11-01, Critical 9.0-10.0.",
+        "verification": [
+          {
+            "url": "https://www.first.org/cvss/specification-document",
+            "claim": "It is currently CVSS version 4.0, released on November 1, 2023.",
+            "verdict": "supported",
+            "detail": "It is currently CVSS version 4.0, released on November 1, 2023."
+          },
+          {
+            "url": "https://www.first.org/cvss/specification-document",
+            "claim": "Critical is rated 9.0-10.0.",
+            "verdict": "supported",
+            "detail": "Critical 9.0 - 10.0"
+          }
+        ],
+        "objections": []
+      }
+    ]
+  }
+}

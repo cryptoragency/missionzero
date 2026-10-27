@@ -64,6 +64,8 @@ npm run demo                    # the 5 goals above, table + evidence
 node bench/make-replay.js evidence/<folder>         # animated replay of a mission (one HTML file)
 ```
 
+Two real runs are committed in `examples/` (DBIR 2025, CVSS v4): open `replay.html` in a browser to watch the mission replayed from its own evidence, or read the raw `journal.jsonl`.
+
 The evidence folder (`evidence/<date>/`) holds `journal.jsonl` (every plan, observation, evaluation), `memory.json`, `final-answer.json` (answer, sources, every version with its verdicts and quotes) and `summary.json` (score, proofs, cost by role).
 
 ## Layout

@@ -1,0 +1,87 @@
+{
+  "goal": "In the Verizon 2025 Data Breach Investigations Report, how many confirmed breaches were analyzed and what share of breaches involved the human element? Cite the report itself.",
+  "reached": false,
+  "turns": 4,
+  "best": {
+    "score": 5,
+    "turn": 3,
+    "action": {
+      "type": "web_search",
+      "query": "Verizon 2025 DBIR incidents breaches statistics",
+      "url": "",
+      "find": "",
+      "name": "",
+      "content": "",
+      "costUsd": 0,
+      "real": false
+    }
+  },
+  "confidence": 9,
+  "judgeScore": 10,
+  "verifiedGreen": 2,
+  "verifiedRed": 0,
+  "contradictionRounds": 0,
+  "verifiedSources": 2,
+  "rejectedSources": 0,
+  "cost": {
+    "calls": 14,
+    "input": 18502,
+    "output": 8426,
+    "usd": 0.058938,
+    "totalMs": 43655,
+    "byTag": {
+      "plan": {
+        "calls": 4,
+        "input": 9244,
+        "output": 1475,
+        "reasoning": 995,
+        "truncated": 0
+      },
+      "evaluate": {
+        "calls": 4,
+        "input": 5212,
+        "output": 2132,
+        "reasoning": 1810,
+        "truncated": 0
+      },
+      "synthesize": {
+        "calls": 1,
+        "input": 1685,
+        "output": 1605,
+        "reasoning": 1437,
+        "truncated": 0
+      },
+      "verify": {
+        "calls": 2,
+        "input": 1189,
+        "output": 440,
+        "reasoning": 322,
+        "truncated": 0
+      },
+      "judge": {
+        "calls": 1,
+        "input": 409,
+        "output": 777,
+        "reasoning": 746,
+        "truncated": 0
+      },
+      "contradict": {
+        "calls": 1,
+        "input": 515,
+        "output": 1500,
+        "reasoning": 1470,
+        "truncated": 1
+      },
+      "distill": {
+        "calls": 1,
+        "input": 248,
+        "output": 497,
+        "reasoning": 406,
+        "truncated": 0
+      }
+    }
+  },
+  "verificationsCached": 2,
+  "lessonsUsed": 30,
+  "lessonsLearned": 3
+}

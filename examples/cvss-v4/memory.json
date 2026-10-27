@@ -1,0 +1,32 @@
+[
+  {
+    "turn": 1,
+    "action": {
+      "type": "web_search",
+      "query": "CVSS specification FIRST latest version",
+      "url": "",
+      "find": "",
+      "name": "",
+      "content": "",
+      "costUsd": 0,
+      "real": false
+    },
+    "ok": false,
+    "lesson": "Initial search identified v4.0 as the latest version released in 2023 but did not retrieve the Critical score range from first.org."
+  },
+  {
+    "turn": 2,
+    "action": {
+      "type": "read_page",
+      "query": "",
+      "url": "https://www.first.org/cvss/specification-document",
+      "find": "CVSS v4.0 release date Critical score range 9.0 severity rating",
+      "name": "",
+      "content": "",
+      "costUsd": 0,
+      "real": false
+    },
+    "ok": true,
+    "lesson": "The authoritative FIRST spec page directly yielded version, release date, and Critical range in one fetch."
+  }
+]

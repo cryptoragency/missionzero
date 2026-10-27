@@ -1,0 +1,49 @@
+{
+  "answer": "The Verizon 2025 DBIR analyzed 22,052 security incidents, including 12,195 confirmed data breaches, and found that 60% of breaches involved the human element.",
+  "sources": [
+    {
+      "url": "https://www.verizon.com/business/resources/Tea/reports/2025-dbir-data-breach-investigations-report.pdf",
+      "contribution": "analyzed 22,052 real-world security incidents, of which 12,195 were confirmed data breaches"
+    },
+    {
+      "url": "https://www.verizon.com/business/resources/reports/2025-dbir-data-breach-investigations-report.pdf",
+      "contribution": "60% of breaches involved the human element"
+    }
+  ],
+  "confidence": 9,
+  "uncertainties": [
+    "Human-element percentage wording relies on full-report text rather than the short snippet shown in seenSources."
+  ],
+  "rejectedSources": 0,
+  "seenSources": 13,
+  "judge": {
+    "score": 10,
+    "green": 2,
+    "red": 0,
+    "rounds": 0,
+    "versions": [
+      {
+        "round": 0,
+        "score": 10,
+        "green": 2,
+        "red": 0,
+        "reason": "Both figures match report text and both citations are primary Verizon report PDFs.",
+        "verification": [
+          {
+            "url": "https://www.verizon.com/business/resources/Tea/reports/2025-dbir-data-breach-investigations-report.pdf",
+            "claim": "analyzed 22,052 real-world security incidents, of which 12,195 were confirmed data breaches",
+            "verdict": "supported",
+            "detail": "This year, the Verizon DBIR team analyzed 22,052 real-world security incidents, of which 12,195 were confirmed data breaches that occurred inside organizations of all sizes and types."
+          },
+          {
+            "url": "https://www.verizon.com/business/resources/reports/2025-dbir-data-breach-investigations-report.pdf",
+            "claim": "60% of breaches involved the human element",
+            "verdict": "supported",
+            "detail": "Although the involvement of the human element in breaches remained roughly the same as last year, hovering around 60%, the percentages of breaches where a third party was involved doubled, going from 15% to 30%."
+          }
+        ],
+        "objections": []
+      }
+    ]
+  }
+}
