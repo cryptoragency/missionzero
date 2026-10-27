@@ -78,3 +78,13 @@ test('a revision can never add a cost or a real-world action', async () => {
   assert.equal(r.plan.action.costUsd, 0);
   assert.equal(r.plan.action.real, false);
 });
+
+test('only the objections that raised the note feed the lessons', async () => {
+  const { winningObjections } = await import('./memory.js');
+  const evidence = [{ step: 'contradiction', versions: [
+    { round: 0, score: 5, objections: [] },
+    { round: 1, score: 8, objections: ['DBIR is not a prevalence survey'] },
+    { round: 2, score: 4, objections: ['noise'] },
+  ] }];
+  assert.deepEqual(winningObjections(evidence), ['DBIR is not a prevalence survey']);
+});

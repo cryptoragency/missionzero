@@ -28,13 +28,27 @@ export function mergeLessons(existing, incoming, source = 'self') {
   return { lessons: [...existing, ...added].slice(-30), added };
 }
 
+// Objections of the contradictor that made the judge's note go up: the useful ones.
+export function winningObjections(evidence) {
+  const out = [];
+  for (const p of evidence.filter((e) => e.step === 'contradiction')) {
+    let best = -1;
+    for (const v of p.versions || []) {
+      if (v.score > best && best >= 0) out.push(...(v.objections || []).map((o) => String(o).slice(0, 200)));
+      best = Math.max(best, v.score);
+    }
+  }
+  return out.slice(0, 8);
+}
+
 // Ask the model to distill what this run taught, as generic research lessons.
 export async function distill({ goal, evidence, ask }) {
   const steps = evidence.filter((p) => p.step === 'plan' || p.step === 'evaluation')
     .map((p) => (p.step === 'plan' ? { query: p.action?.query } : { score: p.score, lesson: p.lesson }));
+  const winning = winningObjections(evidence);
   const r = await ask([
-    { role: 'system', content: 'Distill at most 3 GENERIC lessons about how to research better on the web (query style, source types, what wasted turns). No company names, no personal data. JSON: {"lessons":["..."]}.' },
-    { role: 'user', content: JSON.stringify({ goal, steps }) },
+    { role: 'system', content: 'Distill at most 3 GENERIC lessons about how to research better on the web (query style, source types, what wasted turns). Include what the winning objections teach about how to plan better. No company names, no personal data. JSON: {"lessons":["..."]}.' },
+    { role: 'user', content: JSON.stringify({ goal, steps, objectionsThatRaisedTheNote: winning }) },
   ], { max_tokens: 3000 });
   return (readJson(r.text)?.lessons || []).filter((x) => typeof x === 'string');
 }
