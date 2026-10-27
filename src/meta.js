@@ -5,7 +5,7 @@ import { dirname } from 'node:path';
 const BASE = 'https://api.meta.ai/v1';
 const PRICE = { input: 1.25, output: 4.25 };
 // Reasoning effort by role: checks and scores need little, planning and writing a bit more.
-const EFFORT = { verify: 'minimal', judge: 'low', contradict: 'low', research: 'low', evaluate: 'low', distill: 'minimal', plan: 'medium', synthesize: 'medium', rewrite: 'medium', other: 'low' };
+const EFFORT = { verify: 'minimal', judge: 'low', contradict: 'low', research: 'low', evaluate: 'low', distill: 'minimal', plan: 'medium', synthesize: 'medium', rewrite: 'medium', fix: 'medium', other: 'low' };
 
 export function createClient({ key = process.env.MODEL_API_KEY, model = process.env.MZ_MODEL || 'muse-spark-1.3', capUsd = Number(process.env.MZ_CAP_USD) || 100, dailyCapUsd = Number(process.env.MZ_DAILY_CAP_USD) || 0, ledgerPath = 'memory/spend.json', fetchFn = fetch } = {}) {
   if (!key) throw new Error('MODEL_API_KEY is missing (.env file)');

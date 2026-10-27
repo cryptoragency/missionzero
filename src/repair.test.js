@@ -1,0 +1,55 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { applyEdits, copySite, runJourneys, repairOne, freePort, startSite } from './repair.js';
+import { scan } from './scanner.js';
+
+const SITE = 'demo-site';
+const F02 = { id: 'F02', severity: 'low', type: 'version-disclosure', url: 'http://x/', evidence: 'x-powered-by: PHP/7.2.24', description: 'versions announced' };
+const know = async () => ({ answer: 'Remove the X-Powered-By and Server version headers.', sources: [{ url: 'https://owasp.org/x', contribution: 'remove version headers' }], score: 9, green: 1, red: 0 });
+
+test('the scanner finds the 15 flaws of the demo shop, and the journeys are green on it', async () => {
+  const port = await freePort(); const site = await startSite(SITE, port);
+  try {
+    const r = await scan('http://127.0.0.1:' + port, { login: { user: 'admin', password: 'maisonverde2019' } });
+    assert.equal(r.findings.length, 15, r.findings.map((f) => f.id).join(','));
+  } finally { site.stop(); }
+  const j = runJourneys(SITE);
+  assert.ok(j.ok, j.output);
+  assert.equal(j.pass, 7);
+});
+
+test('an edit whose text is absent or ambiguous is refused, an exact one is applied', () => {
+  const copy = copySite(SITE);
+  const r = applyEdits(copy, [
+    { file: 'server.js', find: 'this text is not in the file', replace: 'x' },
+    { file: 'server.js', find: 'html(', replace: 'x' }, // many occurrences
+    { file: 'server.js', find: "'x-powered-by': 'PHP/7.2.24 WooCommerce/3.5.1', ", replace: '' },
+  ]);
+  assert.equal(r.refused.length, 2);
+  assert.equal(r.applied.length, 1);
+  assert.ok(!readFileSync(join(copy, 'server.js'), 'utf8').includes('WooCommerce/3.5.1'));
+});
+
+test('a fix that keeps the journeys green and removes the flaw is PROPOSED, never applied to the original', async () => {
+  const propose = async () => ({ edits: [{ file: 'server.js', find: "server: 'Apache/2.4.29 (Ubuntu) PHP/7.2.24', 'x-powered-by': 'PHP/7.2.24 WooCommerce/3.5.1', ", replace: '' }], summary: 'drop version headers', risk: 'none' });
+  const r = await repairOne({ finding: F02, siteDir: SITE, ask: null, know, propose });
+  assert.equal(r.status, 'proposed', r.why);
+  assert.ok(r.journeysAfter.ok);
+  assert.equal(r.rescan.findings.length, 0);
+  assert.ok(readFileSync(join(SITE, 'server.js'), 'utf8').includes('WooCommerce/3.5.1')); // the original is untouched
+});
+
+test('a fix that breaks a vital journey is REJECTED', async () => {
+  const propose = async () => ({ edits: [{ file: 'server.js', find: "if (path === '/') return html(", replace: "if (path === '/') return [500, {}, 'broken'] || html(" }], summary: 'oops', risk: 'everything' });
+  const r = await repairOne({ finding: F02, siteDir: SITE, ask: null, know, propose });
+  assert.equal(r.status, 'rejected');
+  assert.ok(r.journeysAfter.broken.includes('browse the catalogue'));
+});
+
+test('a fix that changes nothing useful is INEFFECTIVE', async () => {
+  const propose = async () => ({ edits: [{ file: 'server.js', find: '// Fictional orders', replace: '// Orders' }], summary: 'comment', risk: 'none' });
+  const r = await repairOne({ finding: F02, siteDir: SITE, ask: null, know, propose });
+  assert.equal(r.status, 'ineffective');
+});
