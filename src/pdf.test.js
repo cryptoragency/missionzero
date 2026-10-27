@@ -54,3 +54,16 @@ test('a long report comes back as the passages matching what the planner wants t
   const [first] = relevantPassages('Breaches analyzed by the team were many and varied in nature across sectors. The team analyzed 12,195 breaches.', 'how many breaches analyzed', 2);
   assert.match(first, /12,195/);
 });
+
+test('an EUR-Lex address is read from the Publications Office, and a bot challenge is reported, not swallowed', async () => {
+  const { officialMirror, readPage } = await import('./tools.js');
+  assert.equal(officialMirror('https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng'), 'http://publications.europa.eu/resource/celex/32016R0679');
+  assert.equal(officialMirror('https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022L2555'), 'http://publications.europa.eu/resource/celex/32022L2555');
+  assert.equal(officialMirror('https://www.verizon.com/dbir.pdf'), null);
+  const challenge = async () => new Response('<html><script>window.awsWafCookieDomainList = []; window.gokuProps = {}</script></html>', { status: 202, headers: { 'content-type': 'text/html' } });
+  const r = await readPage('https://blocked.example/page', { fetchFn: challenge });
+  assert.equal(r.ok, false);
+  assert.match(r.error, /bot challenge/);
+  const { normalizeNumbers } = await import('./passages.js');
+  assert.equal(normalizeNumbers('a minimum of eight characters, up to 20 000 000 EUR and 12,195 breaches'), 'a minimum of 8 characters, up to 20000000 eur and 12195 breaches');
+});

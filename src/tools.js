@@ -20,10 +20,31 @@ export async function webSearch(query, { fetchFn = fetch, max = 8 } = {}) {
   return { ok: results.length > 0, query, results };
 }
 
+// EUR-Lex sits behind a bot challenge. The same official text is served openly by the EU Publications Office (cellar),
+// so an EUR-Lex address is read there: the citation stays EUR-Lex, the reading says where it came from.
+const eliToCelex = (type, year, num) => `3${year}${{ reg: 'R', dir: 'L', dec: 'D' }[type] || 'R'}${String(num).padStart(4, '0')}`;
+export function officialMirror(url) {
+  const u = String(url || '');
+  if (!/^https?:\/\/eur-lex\.europa\.eu\//i.test(u)) return null;
+  const celex = (u.match(/CELEX(?::|%3A)(\w+)/i) || [])[1];
+  if (celex) return `http://publications.europa.eu/resource/celex/${celex}`;
+  const eli = u.match(/\/eli\/(reg|dir|dec)\/(\d{4})\/(\d+)/i);
+  if (eli) return `http://publications.europa.eu/resource/celex/${eliToCelex(eli[1].toLowerCase(), eli[2], eli[3])}`;
+  return null;
+}
+const BOT_CHALLENGE = /awsWafCookieDomainList|gokuProps|cf-challenge|_cf_chl_|Just a moment|Enable JavaScript and cookies to continue/i;
+
 export async function readPage(url, { fetchFn = fetch, maxChars = 6000 } = {}) {
   if (!/^https?:\/\//i.test(String(url || ''))) return { ok: false, error: 'invalid url' };
   try {
-    const r = await fetchFn(url, { headers: { 'user-agent': 'Mozilla/5.0 (compatible; MissionZero/0.1)' }, signal: AbortSignal.timeout(30000) });
+    const mirror = officialMirror(url);
+    // The Publications Office negotiates on Accept: anything broader than XHTML returns the metadata notice instead of the text.
+    const accept = mirror ? 'application/xhtml+xml,text/html' : 'text/html,application/xhtml+xml,application/pdf,*/*;q=0.8';
+    const r = await fetchFn(mirror || url, { headers: { 'user-agent': 'Mozilla/5.0 (compatible; MissionZero/0.1)', accept, 'accept-language': 'en' }, redirect: 'follow', signal: AbortSignal.timeout(30000) });
+    if (r.status === 202 || r.status === 403 || r.status === 429) {
+      const peek = await r.text().catch(() => '');
+      if (BOT_CHALLENGE.test(peek) || r.status !== 202) return { ok: false, url, error: `blocked: bot challenge (http ${r.status}), a browser would be needed` };
+    }
     if (!r.ok) return { ok: false, url, error: 'http ' + r.status };
     const type = r.headers.get('content-type') || '';
     if (/pdf/i.test(type) || /\.pdf(\?|$)/i.test(url)) {
@@ -33,10 +54,11 @@ export async function readPage(url, { fetchFn = fetch, maxChars = 6000 } = {}) {
       const { text, pages, pagesRead } = await pdfToText(buf, { maxChars });
       return { ok: text.length > 200, url, text: text.slice(0, maxChars), pdf: { pages, pagesRead } };
     }
-    if (!/text|html|json/i.test(type)) return { ok: false, url, error: 'not text: ' + type.slice(0, 40) };
-    const raw = (await r.text()).slice(0, 400000);
+    if (!/text|html|xml|json/i.test(type)) return { ok: false, url, error: 'not text: ' + type.slice(0, 40) };
+    const raw = (await r.text()).slice(0, 1500000);
+    if (BOT_CHALLENGE.test(raw.slice(0, 5000))) return { ok: false, url, error: 'blocked: bot challenge, a browser would be needed' };
     const text = clean(raw.replace(/<(script|style|nav|footer|header)[\s\S]*?<\/\1>/gi, ' ')).slice(0, maxChars);
-    return { ok: text.length > 200, url, text };
+    return { ok: text.length > 200, url, text, ...(mirror ? { readVia: mirror } : {}) };
   } catch (e) { return { ok: false, url, error: String(e.message || e).slice(0, 80) }; }
 }
 
