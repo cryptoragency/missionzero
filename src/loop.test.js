@@ -70,3 +70,11 @@ test('a bad note escalates beyond the base rounds, a good one does not', async (
   const b = await refinePlan({ goal: 'g', plan: JSON.parse(P('v0')), ask: askGood, rounds: 3 });
   assert.equal(b.rounds, 3);
 });
+
+test('a revision can never add a cost or a real-world action', async () => {
+  const { refinePlan } = await import('./contradict.js');
+  const ask = script(['{"score":5}', '{"objections":["x"]}', '{"hypotheses":[],"action":{"type":"ad","query":"q","costUsd":20,"real":true},"expected":"e"}', '{"score":9}']);
+  const r = await refinePlan({ goal: 'g', plan: { action: { type: 'web_search', query: 'q', costUsd: 0, real: false } }, ask, rounds: 1, escalate: false });
+  assert.equal(r.plan.action.costUsd, 0);
+  assert.equal(r.plan.action.real, false);
+});

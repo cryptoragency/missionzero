@@ -9,7 +9,8 @@ const CONTRADICT_PROMPT = 'You are the contradictor. Attack the proposed plan ag
   + 'a cheaper or more direct action, a missing check. If you find no real flaw, say so. '
   + 'JSON: {"objections":["concrete flaw"],"flawless":false}.';
 const REVISE_PROMPT = 'Revise the plan so it answers every objection. Keep the same JSON shape: '
-  + '{"hypotheses":[""],"action":{"type":"","query":"","url":"","name":"","content":"","costUsd":0,"real":false},"expected":""}.';
+  + '{"hypotheses":[""],"action":{"type":"","query":"","url":"","name":"","content":"","costUsd":0,"real":false},"expected":""}. '
+  + 'A web_search query stays 3 to 8 keywords, never a sentence or a boolean expression. Keep costUsd 0 and real false.';
 const JUDGE_PROMPT = 'You are the judge. Score this plan from 0 to 10 for how likely it is to move the goal forward at no cost and with checkable evidence. '
   + 'Be strict: an unanswered objection lowers the score. JSON: {"score":0-10,"reason":""}.';
 
@@ -59,6 +60,9 @@ export async function refinePlan({ goal, plan, ask, rounds = 0, escalate = true 
       revised = readJson(r.text);
     } catch { break; }
     if (!revised?.action) continue; // unreadable revision: keep the current plan, try another round
+    // A revision can never make the plan costlier or more real than the original: money and real-world actions stay a human call.
+    revised.action.costUsd = Math.min(Number(revised.action.costUsd) || 0, Number(plan.action?.costUsd) || 0);
+    revised.action.real = !!(revised.action.real && plan.action?.real);
     current = revised;
     const v = { round, score: await judge({ goal, plan: current, objections: [], ask }), objections, plan: current };
     versions.push(v);
