@@ -86,4 +86,4 @@ The evidence folder (`evidence/<date>/`) holds `journal.jsonl` (every plan, obse
 
 ## License
 
-MIT
+PolyForm Noncommercial 1.0.0: the code is readable and usable for research, study and evaluation (hackathon judging included). Any commercial use requires a license from CRYPTOR.AGENCY. Copyright (c) 2026 CRYPTOR.AGENCY.
