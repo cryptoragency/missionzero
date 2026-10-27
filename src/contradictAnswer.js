@@ -26,7 +26,7 @@ async function grade({ goal, answer, ask, verify }) {
     const r = await ask([
       { role: 'system', content: JUDGE_PROMPT },
       { role: 'user', content: JSON.stringify({ goal, answer: answer.answer, sources: answer.sources, verification: (check.results || []).map(({ url, verdict, detail }) => ({ url, verdict, detail })) }) },
-    ], { max_tokens: 700, tag: 'judge' });
+    ], { max_tokens: 1200, tag: 'judge' });
     const n = Number(readJson(r.text)?.score);
     score = Number.isFinite(n) ? Math.max(0, Math.min(10, n)) : 0;
   } catch { score = 0; }
@@ -59,7 +59,7 @@ export async function refineAnswer({ goal, answer, seen, ask, verify, research =
       const r = await ask([
         { role: 'system', content: CONTRADICT_PROMPT },
         { role: 'user', content: JSON.stringify({ goal, answer: current, verification: { green: best.green, red: best.red } }) },
-      ], { max_tokens: 900, tag: 'contradict' });
+      ], { max_tokens: 1500, tag: 'contradict' });
       found = readJson(r.text);
     } catch { break; }
     const objections = Array.isArray(found?.objections) ? found.objections.filter(Boolean) : [];
@@ -84,7 +84,7 @@ export async function refineAnswer({ goal, answer, seen, ask, verify, research =
       const r = await ask([
         { role: 'system', content: REVISE_PROMPT },
         { role: 'user', content: JSON.stringify({ goal, answer: current, objections, seenSources: seen }) },
-      ], { max_tokens: 2500, tag: 'rewrite' });
+      ], { max_tokens: 3500, tag: 'rewrite' });
       revised = readJson(r.text);
     } catch { break; }
     if (!revised?.answer) continue;

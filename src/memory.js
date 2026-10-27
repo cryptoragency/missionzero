@@ -49,7 +49,7 @@ export async function distill({ goal, evidence, ask }) {
   const r = await ask([
     { role: 'system', content: 'Distill at most 3 GENERIC lessons about how to research better on the web (query style, source types, what wasted turns). Include what the winning objections teach about how to plan better. No company names, no personal data. JSON: {"lessons":["..."]}.' },
     { role: 'user', content: JSON.stringify({ goal, steps, objectionsThatRaisedTheNote: winning }) },
-  ], { max_tokens: 800, tag: 'distill' });
+  ], { max_tokens: 1200, tag: 'distill' });
   return (readJson(r.text)?.lessons || []).filter((x) => typeof x === 'string');
 }
 

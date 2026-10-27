@@ -35,7 +35,7 @@ export async function run({ goal, constraints = [], lessons = [], budgetUsd = 10
       const r = await ask([
         { role: 'system', content: PLAN_PROMPT },
         { role: 'user', content: JSON.stringify({ goal, constraints, budgetUsd, lessonsFromPastRuns: lessons, failures: memory.filter((m) => !m.ok).slice(-8), recentEvidence: evidence.slice(-4) }) },
-      ], { max_tokens: 2500, tag: 'plan' });
+      ], { max_tokens: 3000, tag: 'plan' });
       plan = readJson(r.text);
     } catch (e) { note({ turn, step: 'model-error', message: e.message }); break; }
     if (!plan || !plan.action) { note({ turn, step: 'unreadable-plan' }); continue; }
@@ -66,7 +66,7 @@ export async function run({ goal, constraints = [], lessons = [], budgetUsd = 10
       const r = await ask([
         { role: 'system', content: EVAL_PROMPT },
         { role: 'user', content: JSON.stringify({ goal, action: plan.action, expected: plan.expected, observation: obs }) },
-      ], { max_tokens: 1200, tag: 'evaluate' });
+      ], { max_tokens: 1500, tag: 'evaluate' });
       ev = readJson(r.text);
     } catch (e) { note({ turn, step: 'evaluation-error', message: e.message }); }
     if (!ev) ev = { score: 0, reached: false, lesson: 'unreadable evaluation', uncertainties: [], pivot: '' };

@@ -22,7 +22,7 @@ mkdirSync(folder, { recursive: true });
 const lessonsPath = 'memory/lessons.json';
 const past = loadLessons(lessonsPath);
 const client = createClient();
-const ask = (messages, opts) => client.ask(messages, { max_tokens: 3000, ...opts });
+const ask = (messages, opts) => client.ask(messages, { max_tokens: 3500, ...opts });
 const execute = makeExecutor({ folder, goal });
 const result = await run({
   goal,

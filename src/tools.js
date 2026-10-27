@@ -51,7 +51,7 @@ export function createPage(name, html, folder = 'evidence') {
 export async function readForGoal(url, goal, { fetchFn = fetch, maxChars = 400000, keep = 6000 } = {}) {
   const r = await readPage(url, { fetchFn, maxChars });
   if (!r.ok || r.text.length <= keep) return r;
-  const passages = goal ? relevantPassages(r.text, goal, 14) : [];
+  const passages = goal ? relevantPassages(r.text, goal, 24) : [];
   const text = (r.text.slice(0, 2500) + '\n[...]\n' + passages.join('\n')).slice(0, keep);
   return { ...r, text, fullLength: r.text.length };
 }

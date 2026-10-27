@@ -13,7 +13,7 @@ export async function verifyClaim({ claim, url, ask, fetchPage = (u) => readPage
   const r = await ask([
     { role: 'system', content: 'You check one claim against passages of the page it cites. Be strict: numbers, names and dates must match the passages. JSON: {"verdict":"supported|unsupported|contradicted","quote":"exact words from a passage, or empty"}.' },
     { role: 'user', content: JSON.stringify({ claim, passages }) },
-  ], { max_tokens: 600, tag: 'verify' });
+  ], { max_tokens: 1000, tag: 'verify' });
   const j = readJson(r.text) || {};
   const verdict = ['supported', 'unsupported', 'contradicted'].includes(j.verdict) ? j.verdict : 'unsupported';
   // A "supported" verdict must come with a quote that really appears in the passages, otherwise it is not trusted.
