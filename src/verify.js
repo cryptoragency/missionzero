@@ -21,7 +21,7 @@ export async function verifyClaim({ claim, url, ask, fetchPage = (u) => readPage
   const quoted = j.quote && passages.some((p) => p.toLowerCase().includes(String(j.quote).toLowerCase().slice(0, 60)));
   const final = verdict === 'supported' && !quoted ? 'unsupported' : verdict;
   // On a red verdict, the closest passage goes back to the writer: the fix is usually to say what the page says (SHOULD, not SHALL).
-  const detail = final === 'supported' ? j.quote : 'nearest passage: ' + passages[0].slice(0, 300);
+  const detail = final === 'supported' ? j.quote : 'nearest passages: ' + passages.slice(0, 3).map((p) => '« ' + p.slice(0, 220) + ' »').join(' ');
   return { claim, url, verdict: final, color: final === 'supported' ? 'green' : 'red', detail };
 }
 

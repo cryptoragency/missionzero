@@ -9,8 +9,9 @@ const CONTRADICT_PROMPT = 'You are the contradictor. Attack this final answer ag
   + 'a missing figure, a secondary source where a primary one was seen, a number without edition year or definition. If you find no real flaw, say so. '
   + 'At most 4 objections of one sentence each, no prose outside the JSON. JSON: {"objections":["concrete flaw"],"flawless":false}.';
 const REVISE_PROMPT = 'Rewrite the final answer so it answers every objection. Cite ONLY URLs from seenSources, copied exactly; drop any claim you cannot back with one of them. '
-  + 'A RED verdict comes with the nearest passage of the page: first try to restate the claim in the page\'s own words (SHOULD is not SHALL, a listing date is not a version) before dropping the source; prefer the latest primary edition over drafts. '
-  + 'Answer in at most 120 words. Each "contribution" is the FACT that page supports, with its figures, close to the page\'s own words, never a description of the source. No prose outside the JSON. '
+  + 'A RED verdict comes with the nearest passages of the page: first try to restate the claim in the page\'s own words (SHOULD is not SHALL, a listing date is not a version) before dropping the source; prefer the latest primary edition over drafts. '
+  + 'ONE FIGURE PER CONTRIBUTION: a claim that bundles several figures is split into one entry per figure (same url), so a wrong figure never drags the right ones down. Keep every figure the nearest passages confirm. '
+  + 'Answer in at most 120 words. Each "contribution" is the FACT that page supports, with its figure, close to the page\'s own words, never a description of the source. No prose outside the JSON. '
   + 'JSON: {"answer":"","sources":[{"url":"","contribution":""}],"confidence":0-10,"uncertainties":[""]}.';
 const JUDGE_PROMPT = 'You are the judge. Score this final answer from 0 to 10 against the goal, using the verification: a GREEN claim is confirmed by its page, a RED one is not. '
   + 'Be strict: precision of figures, primary sources, every claim backed. Reason in at most 25 words, no prose outside the JSON. JSON: {"score":0-10,"reason":""}.';
