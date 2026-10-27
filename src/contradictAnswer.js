@@ -9,7 +9,7 @@ const CONTRADICT_PROMPT = 'You are the contradictor. Attack this final answer ag
   + 'a missing figure, a secondary source where a primary one was seen, a number without edition year or definition. If you find no real flaw, say so. '
   + 'At most 4 objections of one sentence each, no prose outside the JSON. JSON: {"objections":["concrete flaw"],"flawless":false}.';
 const REVISE_PROMPT = 'Rewrite the final answer so it answers every objection. Cite ONLY URLs from seenSources, copied exactly; drop any claim you cannot back with one of them. '
-  + 'Answer in at most 120 words, each contribution in one sentence, no prose outside the JSON. '
+  + 'Answer in at most 120 words. Each "contribution" is the FACT that page supports, with its figures, close to the page\'s own words, never a description of the source. No prose outside the JSON. '
   + 'JSON: {"answer":"","sources":[{"url":"","contribution":""}],"confidence":0-10,"uncertainties":[""]}.';
 const JUDGE_PROMPT = 'You are the judge. Score this final answer from 0 to 10 against the goal, using the verification: a GREEN claim is confirmed by its page, a RED one is not. '
   + 'Be strict: precision of figures, primary sources, every claim backed. Reason in at most 25 words, no prose outside the JSON. JSON: {"score":0-10,"reason":""}.';

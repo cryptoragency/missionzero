@@ -15,7 +15,9 @@ export async function synthesize({ goal, evidence, ask }) {
   const seen = seenUrls(evidence);
   const sources = [...seen.values()].map((r) => ({ url: r.url, title: r.title, snippet: r.snippet }));
   const r = await ask([
-    { role: 'system', content: 'Write the final answer in English. Cite ONLY URLs from the provided list, copied exactly. Answer in JSON: {"answer":"","sources":[{"url":"","contribution":""}],"confidence":0-10,"uncertainties":[""]}.' },
+    { role: 'system', content: 'Write the final answer in English. Cite ONLY URLs from the provided list, copied exactly. '
+      + 'For each source, "contribution" is the FACT that page supports, with its figures, close to the page\'s own words (e.g. "12,195 confirmed breaches were analyzed"), never a description of the source. '
+      + 'Answer in JSON: {"answer":"","sources":[{"url":"","contribution":""}],"confidence":0-10,"uncertainties":[""]}.' },
     { role: 'user', content: JSON.stringify({ goal, seenSources: sources, lessons: evidence.filter((p) => p.step === 'evaluation').map((p) => p.lesson) }) },
   ], { max_tokens: 3500, tag: 'synthesize' });
   const j = readJson(r.text) || { answer: '', sources: [], confidence: 0, uncertainties: ['unreadable synthesis'] };

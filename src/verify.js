@@ -5,7 +5,8 @@ import { readJson } from './loop.js';
 import { relevantPassages } from './passages.js';
 export { relevantPassages };
 
-export async function verifyClaim({ claim, url, ask, fetchPage = (u) => readPage(u, { maxChars: 60000 }) }) {
+// The whole page is read (a standard or a report runs to 250 000 characters); the passages do the narrowing.
+export async function verifyClaim({ claim, url, ask, fetchPage = (u) => readPage(u, { maxChars: 400000 }) }) {
   const page = await fetchPage(url);
   if (!page.ok) return { claim, url, verdict: 'source-unreachable', color: 'red', detail: page.error || 'page unreadable' };
   const passages = relevantPassages(page.text, claim);
