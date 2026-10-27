@@ -38,3 +38,35 @@ test('the synthesis rejects an invented source', async () => {
   assert.equal(r.sources.length, 1);
   assert.equal(r.rejectedSources, 1);
 });
+
+test('the contradictor attacks, the judge keeps the best-scored plan', async () => {
+  const P = (q) => `{"hypotheses":[],"action":{"type":"web_search","query":"${q}","costUsd":0,"real":false},"expected":"e"}`;
+  const ask = script([
+    P('first'),                                   // plan
+    '{"score":7}',                                // judge v0
+    '{"objections":["weak"],"flawless":false}',   // contradict 1
+    P('second'), '{"score":4}',                   // revise + judge v1 (worse)
+    '{"objections":["still weak"],"flawless":false}', // contradict 2
+    P('third'), '{"score":9}',                    // revise + judge v2 (best)
+    '{"objections":[],"flawless":true}',          // contradict 3: stop
+    '{"score":8,"reached":true,"lesson":"ok","uncertainties":[],"pivot":""}',
+  ]);
+  let executed;
+  const r = await run({ goal: 'g', contradictions: 5, maxTurns: 1, ask, execute: async (a) => { executed = a.query; return { ok: true }; } });
+  assert.equal(executed, 'third');
+  const c = r.evidence.find((p) => p.step === 'contradiction');
+  assert.equal(c.rounds, 2);
+  assert.equal(c.bestScore, 9);
+});
+
+test('a bad note escalates beyond the base rounds, a good one does not', async () => {
+  const P = (q) => `{"hypotheses":[],"action":{"type":"web_search","query":"${q}","costUsd":0,"real":false},"expected":"e"}`;
+  const bad = (n) => ['{"objections":["x"],"flawless":false}', P('v' + n), '{"score":3}'];
+  const askBad = script(['{"score":3}', ...bad(1), ...bad(2), ...bad(3), ...bad(4), ...bad(5)]);
+  const { refinePlan } = await import('./contradict.js');
+  const a = await refinePlan({ goal: 'g', plan: JSON.parse(P('v0')), ask: askBad, rounds: 3 });
+  assert.equal(a.rounds, 5);
+  const askGood = script(['{"score":8}', ...bad(1), ...bad(2), ...bad(3), ...bad(4)]);
+  const b = await refinePlan({ goal: 'g', plan: JSON.parse(P('v0')), ask: askGood, rounds: 3 });
+  assert.equal(b.rounds, 3);
+});

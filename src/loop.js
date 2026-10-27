@@ -1,5 +1,6 @@
 // The experiment loop: goal -> hypotheses -> action -> observation -> evaluation -> new strategy.
 // The model and the actions are injected, so the loop can be tested without a network.
+import { refinePlan } from './contradict.js';
 import { readFileSync, writeFileSync, existsSync, appendFileSync } from 'node:fs';
 
 const JSON_RE = /\{[\s\S]*\}/;
@@ -15,12 +16,13 @@ export function loadMemory(path) {
 }
 
 const PLAN_PROMPT = 'You are Mission Zero. You reach a goal through successive experiments. Allowed actions, and only these: '
-  + '{"type":"web_search","query":"3 to 8 keywords, not a sentence"} or {"type":"create_page","name":"","content":"complete HTML"}. '
+  + '{"type":"web_search","query":"3 to 8 keywords, not a sentence"}, {"type":"read_page","url":"a URL already seen in a search result"} to read a whole page, or {"type":"create_page","name":"","content":"complete HTML"}. '
+  + 'Prefer reading primary institutional or study pages over snippets, and count sources by independent institution. '
   + 'No cost and no real-world action (costUsd 0, real false) unless indispensable. After an empty search, change the keywords. '
-  + 'Answer ONLY in JSON: {"hypotheses":[""],"action":{"type":"","query":"","name":"","content":"","costUsd":0,"real":false},"expected":""}.';
+  + 'Answer ONLY in JSON: {"hypotheses":[""],"action":{"type":"","query":"","url":"","name":"","content":"","costUsd":0,"real":false},"expected":""}.';
 const EVAL_PROMPT = 'Evaluate honestly. JSON: {"score":0-10,"reached":false,"lesson":"","uncertainties":[""],"pivot":""}.';
 
-export async function run({ goal, constraints = [], lessons = [], budgetUsd = 100, maxTurns = 6, ask, execute, approve, help = null, memoryPath = null, journalPath = null }) {
+export async function run({ goal, constraints = [], lessons = [], budgetUsd = 100, maxTurns = 6, contradictions = 0, escalate = true, ask, execute, approve, help = null, memoryPath = null, journalPath = null }) {
   const memory = loadMemory(memoryPath);
   const evidence = [];
   const note = (e) => { const line = { t: new Date().toISOString(), ...e }; evidence.push(line); if (journalPath) appendFileSync(journalPath, JSON.stringify(line) + '\n'); };
@@ -38,6 +40,13 @@ export async function run({ goal, constraints = [], lessons = [], budgetUsd = 10
     } catch (e) { note({ turn, step: 'model-error', message: e.message }); break; }
     if (!plan || !plan.action) { note({ turn, step: 'unreadable-plan' }); continue; }
     note({ turn, step: 'plan', hypotheses: plan.hypotheses, action: plan.action });
+
+    // 1b. Contradictor (0 to 5 rounds) and judge: only the best-scored version of the plan goes on.
+    if (contradictions > 0) {
+      const refined = await refinePlan({ goal, plan, ask, rounds: contradictions, escalate });
+      plan = refined.plan;
+      note({ turn, step: 'contradiction', rounds: refined.rounds, bestScore: refined.score, versions: refined.versions, action: plan.action });
+    }
 
     // 2. Safeguard: a paid or real-world action needs a human yes.
     if (plan.action.real || Number(plan.action.costUsd) > 0) {

@@ -7,8 +7,9 @@ import { synthesize } from './synthesis.js';
 import { loadLessons, saveLessons, mergeLessons, distill, approvedTexts } from './memory.js';
 
 const goal = process.argv[2];
-if (!goal) { console.error('Usage: node --env-file=.env src/run.js "goal" [maxTurns]'); process.exit(1); }
+if (!goal) { console.error('Usage: node --env-file=.env src/run.js "goal" [maxTurns] [contradictions 0-5]'); process.exit(1); }
 const maxTurns = Number(process.argv[3]) || 3;
+const contradictions = Math.max(0, Math.min(5, Number(process.argv[4] ?? 3) || 0));
 const folder = 'evidence/' + new Date().toISOString().slice(0, 16).replace(/[:T]/g, '-');
 mkdirSync(folder, { recursive: true });
 
@@ -22,6 +23,7 @@ const result = await run({
   lessons: approvedTexts(past),
   budgetUsd: 1,
   maxTurns,
+  contradictions,
   ask,
   execute: makeExecutor({ folder }),
   approve: async () => false, // no real or paid action without a human

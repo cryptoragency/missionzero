@@ -1,0 +1,299 @@
+[
+  {
+    "id": "Artificial_intelligence:true",
+    "kind": "good",
+    "claim": "This growth accelerated further after 2017 with the transformer architecture.",
+    "url": "https://en.wikipedia.org/wiki/Artificial_intelligence"
+  },
+  {
+    "id": "Artificial_intelligence:altered",
+    "kind": "bad",
+    "why": "altered number",
+    "claim": "This growth accelerated further after 6062 with the transformer architecture.",
+    "url": "https://en.wikipedia.org/wiki/Artificial_intelligence"
+  },
+  {
+    "id": "Artificial_intelligence:wrong-source",
+    "kind": "bad",
+    "why": "real claim, wrong source",
+    "claim": "This growth accelerated further after 2017 with the transformer architecture.",
+    "url": "https://en.wikipedia.org/wiki/Cloud_computing"
+  },
+  {
+    "id": "Artificial_intelligence:invented",
+    "kind": "bad",
+    "why": "invented link",
+    "claim": "This growth accelerated further after 2017 with the transformer architecture.",
+    "url": "https://en.wikipedia.org/wiki/Artificial_intelligence_Institute_Report_2024"
+  },
+  {
+    "id": "Cloud_computing:true",
+    "kind": "good",
+    "claim": "The \"cloud\" metaphor for virtualized services dates to 1994, when it was used by General Magic for the universe of \"places\" that mobile agents in the Telescript environment could \"go\".",
+    "url": "https://en.wikipedia.org/wiki/Cloud_computing"
+  },
+  {
+    "id": "Cloud_computing:altered",
+    "kind": "bad",
+    "why": "altered number",
+    "claim": "The \"cloud\" metaphor for virtualized services dates to 5993, when it was used by General Magic for the universe of \"places\" that mobile agents in the Telescript environment could \"go\".",
+    "url": "https://en.wikipedia.org/wiki/Cloud_computing"
+  },
+  {
+    "id": "Cloud_computing:wrong-source",
+    "kind": "bad",
+    "why": "real claim, wrong source",
+    "claim": "The \"cloud\" metaphor for virtualized services dates to 1994, when it was used by General Magic for the universe of \"places\" that mobile agents in the Telescript environment could \"go\".",
+    "url": "https://en.wikipedia.org/wiki/General_Data_Protection_Regulation"
+  },
+  {
+    "id": "Cloud_computing:invented",
+    "kind": "bad",
+    "why": "invented link",
+    "claim": "The \"cloud\" metaphor for virtualized services dates to 1994, when it was used by General Magic for the universe of \"places\" that mobile agents in the Telescript environment could \"go\".",
+    "url": "https://en.wikipedia.org/wiki/Cloud_computing_Institute_Report_2024"
+  },
+  {
+    "id": "General_Data_Protection_Regulation:true",
+    "kind": "good",
+    "claim": "It supersedes the Data Protection Directive 95/46/EC and, among other things, simplifies the terminology.",
+    "url": "https://en.wikipedia.org/wiki/General_Data_Protection_Regulation"
+  },
+  {
+    "id": "General_Data_Protection_Regulation:altered",
+    "kind": "bad",
+    "why": "altered number",
+    "claim": "It supersedes the Data Protection Directive 296/46/EC and, among other things, simplifies the terminology.",
+    "url": "https://en.wikipedia.org/wiki/General_Data_Protection_Regulation"
+  },
+  {
+    "id": "General_Data_Protection_Regulation:wrong-source",
+    "kind": "bad",
+    "why": "real claim, wrong source",
+    "claim": "It supersedes the Data Protection Directive 95/46/EC and, among other things, simplifies the terminology.",
+    "url": "https://en.wikipedia.org/wiki/ISO/IEC_27001"
+  },
+  {
+    "id": "General_Data_Protection_Regulation:invented",
+    "kind": "bad",
+    "why": "invented link",
+    "claim": "It supersedes the Data Protection Directive 95/46/EC and, among other things, simplifies the terminology.",
+    "url": "https://en.wikipedia.org/wiki/General_Data_Protection_Regulation_Institute_Report_2024"
+  },
+  {
+    "id": "ISO/IEC_27001:true",
+    "kind": "good",
+    "claim": "A systematic review of the academic literature published in 2021 found that few studies had examined the outcomes of certification empirically.",
+    "url": "https://en.wikipedia.org/wiki/ISO/IEC_27001"
+  },
+  {
+    "id": "ISO/IEC_27001:altered",
+    "kind": "bad",
+    "why": "altered number",
+    "claim": "A systematic review of the academic literature published in 6074 found that few studies had examined the outcomes of certification empirically.",
+    "url": "https://en.wikipedia.org/wiki/ISO/IEC_27001"
+  },
+  {
+    "id": "ISO/IEC_27001:wrong-source",
+    "kind": "bad",
+    "why": "real claim, wrong source",
+    "claim": "A systematic review of the academic literature published in 2021 found that few studies had examined the outcomes of certification empirically.",
+    "url": "https://en.wikipedia.org/wiki/Machine_learning"
+  },
+  {
+    "id": "ISO/IEC_27001:invented",
+    "kind": "bad",
+    "why": "invented link",
+    "claim": "A systematic review of the academic literature published in 2021 found that few studies had examined the outcomes of certification empirically.",
+    "url": "https://en.wikipedia.org/wiki/ISO/IEC_27001_Institute_Report_2024"
+  },
+  {
+    "id": "Machine_learning:true",
+    "kind": "good",
+    "claim": "In 1949, Canadian psychologist Donald Hebb published the book The Organization of Behavior, in which he introduced a theoretical neural structure formed by certain interactions among nerve cells.",
+    "url": "https://en.wikipedia.org/wiki/Machine_learning"
+  },
+  {
+    "id": "Machine_learning:altered",
+    "kind": "bad",
+    "why": "altered number",
+    "claim": "In 5858, Canadian psychologist Donald Hebb published the book The Organization of Behavior, in which he introduced a theoretical neural structure formed by certain interactions among nerve cells.",
+    "url": "https://en.wikipedia.org/wiki/Machine_learning"
+  },
+  {
+    "id": "Machine_learning:wrong-source",
+    "kind": "bad",
+    "why": "real claim, wrong source",
+    "claim": "In 1949, Canadian psychologist Donald Hebb published the book The Organization of Behavior, in which he introduced a theoretical neural structure formed by certain interactions among nerve cells.",
+    "url": "https://en.wikipedia.org/wiki/Computer_security"
+  },
+  {
+    "id": "Machine_learning:invented",
+    "kind": "bad",
+    "why": "invented link",
+    "claim": "In 1949, Canadian psychologist Donald Hebb published the book The Organization of Behavior, in which he introduced a theoretical neural structure formed by certain interactions among nerve cells.",
+    "url": "https://en.wikipedia.org/wiki/Machine_learning_Institute_Report_2024"
+  },
+  {
+    "id": "Computer_security:true",
+    "kind": "good",
+    "claim": "Estimates of global information security spending in 2026 range from US$244 billion to US$308 billion.",
+    "url": "https://en.wikipedia.org/wiki/Computer_security"
+  },
+  {
+    "id": "Computer_security:altered",
+    "kind": "bad",
+    "why": "altered number",
+    "claim": "Estimates of global information security spending in 6089 range from US$244 billion to US$308 billion.",
+    "url": "https://en.wikipedia.org/wiki/Computer_security"
+  },
+  {
+    "id": "Computer_security:wrong-source",
+    "kind": "bad",
+    "why": "real claim, wrong source",
+    "claim": "Estimates of global information security spending in 2026 range from US$244 billion to US$308 billion.",
+    "url": "https://en.wikipedia.org/wiki/Blockchain"
+  },
+  {
+    "id": "Computer_security:invented",
+    "kind": "bad",
+    "why": "invented link",
+    "claim": "Estimates of global information security spending in 2026 range from US$244 billion to US$308 billion.",
+    "url": "https://en.wikipedia.org/wiki/Computer_security_Institute_Report_2024"
+  },
+  {
+    "id": "Blockchain:true",
+    "kind": "good",
+    "claim": "Further work on a cryptographically secured chain of blocks was described in 1991 by Stuart Haber and W.",
+    "url": "https://en.wikipedia.org/wiki/Blockchain"
+  },
+  {
+    "id": "Blockchain:altered",
+    "kind": "bad",
+    "why": "altered number",
+    "claim": "Further work on a cryptographically secured chain of blocks was described in 5984 by Stuart Haber and W.",
+    "url": "https://en.wikipedia.org/wiki/Blockchain"
+  },
+  {
+    "id": "Blockchain:wrong-source",
+    "kind": "bad",
+    "why": "real claim, wrong source",
+    "claim": "Further work on a cryptographically secured chain of blocks was described in 1991 by Stuart Haber and W.",
+    "url": "https://en.wikipedia.org/wiki/Internet_of_things"
+  },
+  {
+    "id": "Blockchain:invented",
+    "kind": "bad",
+    "why": "invented link",
+    "claim": "Further work on a cryptographically secured chain of blocks was described in 1991 by Stuart Haber and W.",
+    "url": "https://en.wikipedia.org/wiki/Blockchain_Institute_Report_2024"
+  },
+  {
+    "id": "Internet_of_things:true",
+    "kind": "good",
+    "claim": "Commercial asset tracking and fleet management represent the largest single application of IoT, accounting for 22% of the total market, driven by the need to monitor mobile assets like vehicles and shipping containers.",
+    "url": "https://en.wikipedia.org/wiki/Internet_of_things"
+  },
+  {
+    "id": "Internet_of_things:altered",
+    "kind": "bad",
+    "why": "altered number",
+    "claim": "Commercial asset tracking and fleet management represent the largest single application of IoT, accounting for 77% of the total market, driven by the need to monitor mobile assets like vehicles and shipping containers.",
+    "url": "https://en.wikipedia.org/wiki/Internet_of_things"
+  },
+  {
+    "id": "Internet_of_things:wrong-source",
+    "kind": "bad",
+    "why": "real claim, wrong source",
+    "claim": "Commercial asset tracking and fleet management represent the largest single application of IoT, accounting for 22% of the total market, driven by the need to monitor mobile assets like vehicles and shipping containers.",
+    "url": "https://en.wikipedia.org/wiki/Large_language_model"
+  },
+  {
+    "id": "Internet_of_things:invented",
+    "kind": "bad",
+    "why": "invented link",
+    "claim": "Commercial asset tracking and fleet management represent the largest single application of IoT, accounting for 22% of the total market, driven by the need to monitor mobile assets like vehicles and shipping containers.",
+    "url": "https://en.wikipedia.org/wiki/Internet_of_things_Institute_Report_2024"
+  },
+  {
+    "id": "Large_language_model:true",
+    "kind": "good",
+    "claim": "In 2001, a smoothed n-gram model, such as those employing Kneser–Ney smoothing, trained on 300 million words, achieved state-of-the-art perplexity on benchmark tests.",
+    "url": "https://en.wikipedia.org/wiki/Large_language_model"
+  },
+  {
+    "id": "Large_language_model:altered",
+    "kind": "bad",
+    "why": "altered number",
+    "claim": "In 6014, a smoothed n-gram model, such as those employing Kneser–Ney smoothing, trained on 300 million words, achieved state-of-the-art perplexity on benchmark tests.",
+    "url": "https://en.wikipedia.org/wiki/Large_language_model"
+  },
+  {
+    "id": "Large_language_model:wrong-source",
+    "kind": "bad",
+    "why": "real claim, wrong source",
+    "claim": "In 2001, a smoothed n-gram model, such as those employing Kneser–Ney smoothing, trained on 300 million words, achieved state-of-the-art perplexity on benchmark tests.",
+    "url": "https://en.wikipedia.org/wiki/Big_data"
+  },
+  {
+    "id": "Large_language_model:invented",
+    "kind": "bad",
+    "why": "invented link",
+    "claim": "In 2001, a smoothed n-gram model, such as those employing Kneser–Ney smoothing, trained on 300 million words, achieved state-of-the-art perplexity on benchmark tests.",
+    "url": "https://en.wikipedia.org/wiki/Large_language_model_Institute_Report_2024"
+  },
+  {
+    "id": "Big_data:true",
+    "kind": "good",
+    "claim": "Based on an IDC report prediction, the global data volume was predicted to grow exponentially from 4.4 zettabytes to 44 zettabytes between 2013 and 2020.",
+    "url": "https://en.wikipedia.org/wiki/Big_data"
+  },
+  {
+    "id": "Big_data:altered",
+    "kind": "bad",
+    "why": "altered number",
+    "claim": "Based on an IDC report prediction, the global data volume was predicted to grow exponentially from 4.4 zettabytes to 143 zettabytes between 2013 and 2020.",
+    "url": "https://en.wikipedia.org/wiki/Big_data"
+  },
+  {
+    "id": "Big_data:wrong-source",
+    "kind": "bad",
+    "why": "real claim, wrong source",
+    "claim": "Based on an IDC report prediction, the global data volume was predicted to grow exponentially from 4.4 zettabytes to 44 zettabytes between 2013 and 2020.",
+    "url": "https://en.wikipedia.org/wiki/Data_center"
+  },
+  {
+    "id": "Big_data:invented",
+    "kind": "bad",
+    "why": "invented link",
+    "claim": "Based on an IDC report prediction, the global data volume was predicted to grow exponentially from 4.4 zettabytes to 44 zettabytes between 2013 and 2020.",
+    "url": "https://en.wikipedia.org/wiki/Big_data_Institute_Report_2024"
+  },
+  {
+    "id": "Data_center:true",
+    "kind": "good",
+    "claim": "Data Center Energy Usage Report, Lawrence Berkeley National Laboratory estimated that hyperscale and colocation centers contained 74% of computer servers in 2023.",
+    "url": "https://en.wikipedia.org/wiki/Data_center"
+  },
+  {
+    "id": "Data_center:altered",
+    "kind": "bad",
+    "why": "altered number",
+    "claim": "Data Center Energy Usage Report, Lawrence Berkeley National Laboratory estimated that hyperscale and colocation centers contained 233% of computer servers in 2023.",
+    "url": "https://en.wikipedia.org/wiki/Data_center"
+  },
+  {
+    "id": "Data_center:wrong-source",
+    "kind": "bad",
+    "why": "real claim, wrong source",
+    "claim": "Data Center Energy Usage Report, Lawrence Berkeley National Laboratory estimated that hyperscale and colocation centers contained 74% of computer servers in 2023.",
+    "url": "https://en.wikipedia.org/wiki/Artificial_intelligence"
+  },
+  {
+    "id": "Data_center:invented",
+    "kind": "bad",
+    "why": "invented link",
+    "claim": "Data Center Energy Usage Report, Lawrence Berkeley National Laboratory estimated that hyperscale and colocation centers contained 74% of computer servers in 2023.",
+    "url": "https://en.wikipedia.org/wiki/Data_center_Institute_Report_2024"
+  }
+]

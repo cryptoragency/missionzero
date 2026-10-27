@@ -3,8 +3,9 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { createClient } from './meta.js';
 import { run, readJson } from './loop.js';
-import { makeExecutor } from './tools.js';
+import { makeExecutor, readPage } from './tools.js';
 import { synthesize } from './synthesis.js';
+import { loadLessons, saveLessons, mergeLessons, distill, approvedTexts } from './memory.js';
 
 const goal = process.argv[2];
 if (!goal) { console.error('Usage: node --env-file=.env src/compare.js "goal" [maxTurns]'); process.exit(1); }
@@ -25,28 +26,38 @@ async function fixedPlan(client) {
   for (const query of queries) {
     const obs = await execute({ type: 'web_search', query });
     evidence.push({ step: 'observation', obs });
+    if (obs.results?.[0]?.url) evidence.push({ step: 'observation', obs: await readPage(obs.results[0].url) });
   }
   const final = await synthesize({ goal, evidence, ask });
   return { final, searches: queries.length };
 }
 
+const lessonsPath = 'memory/lessons.json';
 async function missionZero(client) {
   const ask = (m, o) => client.ask(m, { ...o, max_tokens: 6000 });
-  const result = await run({ goal, constraints: ['public sources only', 'no spending'], maxTurns, ask, execute: makeExecutor({ folder }), approve: async () => false });
+  const past = loadLessons(lessonsPath);
+  const result = await run({ goal, constraints: ['public sources only', 'no spending'], lessons: approvedTexts(past), maxTurns, ask, execute: makeExecutor({ folder }), approve: async () => false });
   const final = await synthesize({ goal, evidence: result.evidence, ask });
-  return { final, searches: result.turns };
+  const learned = mergeLessons(past, await distill({ goal, evidence: result.evidence, ask }));
+  saveLessons(lessonsPath, learned.lessons);
+  return { final, searches: result.turns, lessonsUsed: approvedTexts(past).length };
 }
 
 // One neutral judge scores both answers blindly (A/B in random order) on the same rubric.
-async function judge(client, answers) {
-  const order = Math.random() < 0.5 ? [0, 1] : [1, 0];
+async function judgeOnce(client, answers, order) {
   const r = await client.ask([
     { role: 'system', content: 'You are a strict, neutral judge. Score each answer from 0 to 10 on: directly answers the goal, concrete and quantified, sources really support the claims, honesty about limits. JSON: {"A":0-10,"B":0-10,"why":""}.' },
     { role: 'user', content: JSON.stringify({ goal, A: answers[order[0]], B: answers[order[1]] }) },
   ], { max_tokens: 6000 });
   const j = readJson(r.text) || { A: 0, B: 0, why: 'unreadable' };
-  const scores = []; scores[order[0]] = j.A; scores[order[1]] = j.B;
+  const scores = []; scores[order[0]] = Number(j.A) || 0; scores[order[1]] = Number(j.B) || 0;
   return { scores, why: j.why };
+}
+// The judge scores twice with the order swapped and averages, to cancel position bias and noise.
+async function judge(client, answers) {
+  const a = await judgeOnce(client, answers, [0, 1]);
+  const b = await judgeOnce(client, answers, [1, 0]);
+  return { scores: [(a.scores[0] + b.scores[0]) / 2, (a.scores[1] + b.scores[1]) / 2], why: a.why };
 }
 
 const cFixed = createClient(); const cMz = createClient(); const cJudge = createClient();
@@ -60,7 +71,7 @@ const verdict = await judge(cJudge, [
 ]);
 const row = (name, x, c, ms, score) => ({ approach: name, searches: x.searches, verifiedSources: x.final.sources.length, rejectedSources: x.final.rejectedSources, selfConfidence: x.final.confidence, judgeScore: score, modelCalls: c.counter.calls, costUsd: Number(c.counter.usd.toFixed(3)), seconds: Math.round(ms / 1000) });
 const table = [row('Fixed plan', fixed, cFixed, tFixed, verdict.scores[0]), row('Mission Zero', mz, cMz, tMz, verdict.scores[1])];
-const out = { goal, table, judgeWhy: verdict.why, fixedAnswer: fixed.final.answer, missionZeroAnswer: mz.final.answer };
+const out = { goal, lessonsUsedByMissionZero: mz.lessonsUsed, table, judgeWhy: verdict.why, fixedAnswer: fixed.final.answer, missionZeroAnswer: mz.final.answer };
 writeFileSync(folder + '/comparison.json', JSON.stringify(out, null, 2));
 console.table(table);
 console.log('Judge:', verdict.why);

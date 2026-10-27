@@ -6,6 +6,7 @@ export function seenUrls(evidence) {
   for (const p of evidence) {
     if (p.step !== 'observation') continue;
     for (const r of p.obs?.results || []) if (r.url) seen.set(r.url, r);
+    if (p.obs?.url && p.obs?.text) seen.set(p.obs.url, { url: p.obs.url, title: 'page read in full', snippet: p.obs.text.slice(0, 700) });
   }
   return seen;
 }
