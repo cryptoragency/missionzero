@@ -66,7 +66,11 @@ export async function refineAnswer({ goal, answer, seen, ask, verify, research =
     if (research) {
       try {
         for (const s of (await research({ goal, answer: current, objections, seen })) || []) {
-          if (s?.url && !seenUrls.has(s.url)) { seen.push(s); seenUrls.add(s.url); fetched += 1; }
+          if (!s?.url) continue;
+          const i = seen.findIndex((x) => x.url === s.url);
+          // A page read in full replaces the search snippet of the same URL: the rewrite gets the real text.
+          if (i >= 0) { if (s.title === 'page read in full' && seen[i].title !== s.title) { seen[i] = s; fetched += 1; } }
+          else { seen.push(s); seenUrls.add(s.url); fetched += 1; }
         }
       } catch { /* the rewrite goes on with what was seen */ }
     }

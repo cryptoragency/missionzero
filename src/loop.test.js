@@ -136,3 +136,23 @@ test('an objection about a missing figure triggers one research action and the r
   assert.equal(r.versions[1].fetched, 1);
   assert.equal(r.score, 9);
 });
+
+test('a page read in full replaces the search snippet of the same URL, and is never fetched twice', async () => {
+  const { refineAnswer } = await import('./contradictAnswer.js');
+  const { makeResearch } = await import('./research.js');
+  const url = 'https://primary.example/report.pdf';
+  const A = '{"answer":"53%","sources":[{"url":"' + url + '","contribution":"53%"}],"confidence":8}';
+  const ask = script([
+    '{"score":2}', '{"objections":["primary report seen but not read"]}',
+    '{"action":{"type":"read_page","url":"' + url + '","costUsd":0,"real":false}}', A, '{"score":4}',
+    '{"objections":["figure still missing"]}',
+    '{"action":{"type":"read_page","url":"' + url + '","costUsd":0,"real":false}}', A, '{"score":4}',
+  ]);
+  let fetches = 0;
+  const execute = async (a) => { fetches += 1; return { ok: true, url: a.url, text: 'full text '.repeat(40) }; };
+  const seen = [{ url, title: 'DBIR 2025', snippet: 'snippet' }];
+  const r = await refineAnswer({ goal: 'g', answer: { answer: 'x', sources: [] }, seen, ask, verify: async () => ({ results: [], green: 1, red: 0 }), research: makeResearch({ ask, execute }), rounds: 2, escalate: false });
+  assert.equal(fetches, 1);
+  assert.equal(r.versions[1].fetched, 1); // the snippet was upgraded to the full text
+  assert.equal(r.versions[2].fetched, 0);
+});
