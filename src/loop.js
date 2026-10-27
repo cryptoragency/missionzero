@@ -20,7 +20,7 @@ const PLAN_PROMPT = 'You are Mission Zero. You reach a goal through successive e
   + 'Prefer reading primary institutional or study pages over snippets, and count sources by independent institution. '
   + 'No cost and no real-world action (costUsd 0, real false) unless indispensable. After an empty search, change the keywords. '
   + 'Answer ONLY in JSON: {"hypotheses":[""],"action":{"type":"","query":"","url":"","name":"","content":"","costUsd":0,"real":false},"expected":""}.';
-const EVAL_PROMPT = 'Evaluate honestly. JSON: {"score":0-10,"reached":false,"lesson":"","uncertainties":[""],"pivot":""}.';
+const EVAL_PROMPT = 'Evaluate honestly, lesson and pivot in one sentence each, no prose outside the JSON. JSON: {"score":0-10,"reached":false,"lesson":"","uncertainties":[""],"pivot":""}.';
 
 export async function run({ goal, constraints = [], lessons = [], budgetUsd = 100, maxTurns = 6, contradictions = 0, escalate = true, ask, execute, approve, help = null, memoryPath = null, journalPath = null }) {
   const memory = loadMemory(memoryPath);
@@ -35,7 +35,7 @@ export async function run({ goal, constraints = [], lessons = [], budgetUsd = 10
       const r = await ask([
         { role: 'system', content: PLAN_PROMPT },
         { role: 'user', content: JSON.stringify({ goal, constraints, budgetUsd, lessonsFromPastRuns: lessons, failures: memory.filter((m) => !m.ok).slice(-8), recentEvidence: evidence.slice(-4) }) },
-      ], { max_tokens: 2500 });
+      ], { max_tokens: 2500, tag: 'plan' });
       plan = readJson(r.text);
     } catch (e) { note({ turn, step: 'model-error', message: e.message }); break; }
     if (!plan || !plan.action) { note({ turn, step: 'unreadable-plan' }); continue; }
@@ -66,7 +66,7 @@ export async function run({ goal, constraints = [], lessons = [], budgetUsd = 10
       const r = await ask([
         { role: 'system', content: EVAL_PROMPT },
         { role: 'user', content: JSON.stringify({ goal, action: plan.action, expected: plan.expected, observation: obs }) },
-      ], { max_tokens: 2000 });
+      ], { max_tokens: 1200, tag: 'evaluate' });
       ev = readJson(r.text);
     } catch (e) { note({ turn, step: 'evaluation-error', message: e.message }); }
     if (!ev) ev = { score: 0, reached: false, lesson: 'unreadable evaluation', uncertainties: [], pivot: '' };

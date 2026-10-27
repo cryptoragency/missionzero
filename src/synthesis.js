@@ -17,7 +17,7 @@ export async function synthesize({ goal, evidence, ask }) {
   const r = await ask([
     { role: 'system', content: 'Write the final answer in English. Cite ONLY URLs from the provided list, copied exactly. Answer in JSON: {"answer":"","sources":[{"url":"","contribution":""}],"confidence":0-10,"uncertainties":[""]}.' },
     { role: 'user', content: JSON.stringify({ goal, seenSources: sources, lessons: evidence.filter((p) => p.step === 'evaluation').map((p) => p.lesson) }) },
-  ], { max_tokens: 6000 });
+  ], { max_tokens: 3000, tag: 'synthesize' });
   const j = readJson(r.text) || { answer: '', sources: [], confidence: 0, uncertainties: ['unreadable synthesis'] };
   const cited = Array.isArray(j.sources) ? j.sources : [];
   const verified = cited.filter((s) => seen.has(s.url));

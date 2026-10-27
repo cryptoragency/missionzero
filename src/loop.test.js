@@ -156,3 +156,25 @@ test('a page read in full replaces the search snippet of the same URL, and is ne
   assert.equal(r.versions[1].fetched, 1); // the snippet was upgraded to the full text
   assert.equal(r.versions[2].fetched, 0);
 });
+
+test('the contradictor stops after two rounds without a better note', async () => {
+  const { refineAnswer, STAGNATION } = await import('./contradictAnswer.js');
+  const A = '{"answer":"x","sources":[],"confidence":1}';
+  const ask = script(['{"score":2}', ...Array(5).fill(['{"objections":["o"]}', A, '{"score":2}']).flat()]);
+  const r = await refineAnswer({ goal: 'g', answer: { answer: 'x', sources: [] }, seen: [], ask, verify: async () => ({ results: [], green: 0, red: 0 }), rounds: 3 });
+  assert.equal(r.rounds, STAGNATION);
+});
+
+test('a verified claim is not checked twice in the same run', async () => {
+  const { verifyReport } = await import('./verify.js');
+  let calls = 0;
+  const ask = async () => { calls += 1; return { text: '{"verdict":"supported","quote":"the study surveyed 4000 firms"}' }; };
+  const fetchPage = async () => ({ ok: true, text: 'Intro sentence here that is long enough. The study surveyed 4000 firms across eleven countries in 2019.' });
+  const cache = new Map();
+  const items = [{ claim: 'surveyed 4000 firms', url: 'https://a.example' }];
+  const a = await verifyReport({ items, ask, fetchPage, cache });
+  const b = await verifyReport({ items, ask, fetchPage, cache });
+  assert.equal(calls, 1);
+  assert.equal(a.green, 1);
+  assert.equal(b.results[0].cached, true);
+});

@@ -13,7 +13,7 @@ export async function verifyClaim({ claim, url, ask, fetchPage = (u) => readPage
   const r = await ask([
     { role: 'system', content: 'You check one claim against passages of the page it cites. Be strict: numbers, names and dates must match the passages. JSON: {"verdict":"supported|unsupported|contradicted","quote":"exact words from a passage, or empty"}.' },
     { role: 'user', content: JSON.stringify({ claim, passages }) },
-  ], { max_tokens: 3000 });
+  ], { max_tokens: 600, tag: 'verify' });
   const j = readJson(r.text) || {};
   const verdict = ['supported', 'unsupported', 'contradicted'].includes(j.verdict) ? j.verdict : 'unsupported';
   // A "supported" verdict must come with a quote that really appears in the passages, otherwise it is not trusted.
@@ -22,9 +22,16 @@ export async function verifyClaim({ claim, url, ask, fetchPage = (u) => readPage
   return { claim, url, verdict: final, color: final === 'supported' ? 'green' : 'red', detail: quoted ? j.quote : '' };
 }
 
-export async function verifyReport({ items, ask, fetchPage }) {
+// `cache` (a Map, one per run): the same claim against the same page gives the same verdict, so it is checked once.
+export async function verifyReport({ items, ask, fetchPage, cache = null }) {
   const results = [];
-  for (const it of items) results.push(await verifyClaim({ claim: it.claim, url: it.url, ask, fetchPage }));
+  for (const it of items) {
+    const key = `${it.url}\n${String(it.claim || '').trim().toLowerCase()}`;
+    if (cache?.has(key)) { results.push({ ...cache.get(key), cached: true }); continue; }
+    const r = await verifyClaim({ claim: it.claim, url: it.url, ask, fetchPage });
+    cache?.set(key, r);
+    results.push(r);
+  }
   const green = results.filter((r) => r.color === 'green').length;
   return { results, green, red: results.length - green };
 }

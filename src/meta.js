@@ -7,13 +7,13 @@ const PRICE = { input: 1.25, output: 4.25 };
 
 export function createClient({ key = process.env.MODEL_API_KEY, model = process.env.MZ_MODEL || 'muse-spark-1.3', capUsd = Number(process.env.MZ_CAP_USD) || 100, dailyCapUsd = Number(process.env.MZ_DAILY_CAP_USD) || 0, ledgerPath = 'memory/spend.json', fetchFn = fetch } = {}) {
   if (!key) throw new Error('MODEL_API_KEY is missing (.env file)');
-  const counter = { calls: 0, input: 0, output: 0, usd: 0, totalMs: 0 };
+  const counter = { calls: 0, input: 0, output: 0, usd: 0, totalMs: 0, byTag: {} };
 // Daily ledger: the spend of every run of the day adds up, so a daily cap holds across runs.
   const today = () => new Date().toISOString().slice(0, 10);
   const spentToday = () => { try { const l = JSON.parse(readFileSync(ledgerPath, 'utf8')); return l.date === today() ? Number(l.usd) || 0 : 0; } catch { return 0; } };
   const startedAt = spentToday();
   const saveLedger = () => { if (!dailyCapUsd) return; try { mkdirSync(dirname(ledgerPath), { recursive: true }); writeFileSync(ledgerPath, JSON.stringify({ date: today(), usd: Math.round((startedAt + counter.usd) * 1e4) / 1e4 })); } catch { /* the cap still holds in memory */ } };
-  async function ask(messages, { max_tokens = 1500, temperature = 0.7 } = {}) {
+  async function ask(messages, { max_tokens = 1500, temperature = 0.7, tag = 'other' } = {}) {
     if (counter.usd >= capUsd) throw new Error(`Spending cap of ${capUsd} $ reached: human approval required`);
     if (dailyCapUsd && startedAt + counter.usd >= dailyCapUsd) throw new Error(`Daily cap of ${dailyCapUsd} $ reached: stopped until tomorrow or a human yes`);
     const t0 = Date.now();
@@ -30,6 +30,8 @@ export function createClient({ key = process.env.MODEL_API_KEY, model = process.
     counter.input += u.prompt_tokens || 0;
     counter.output += u.completion_tokens || 0;
     counter.totalMs += Date.now() - t0;
+    const b = counter.byTag[tag] || (counter.byTag[tag] = { calls: 0, input: 0, output: 0 });
+    b.calls += 1; b.input += u.prompt_tokens || 0; b.output += u.completion_tokens || 0;
     counter.usd = (counter.input * PRICE.input + counter.output * PRICE.output) / 1e6;
     saveLedger();
     return { text: j.choices?.[0]?.message?.content ?? '', usage: u, counter: { ...counter } };

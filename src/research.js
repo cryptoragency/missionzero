@@ -21,7 +21,7 @@ export function makeResearch({ ask, execute, evidence = null, note = null }) {
       const r = await ask([
         { role: 'system', content: RESEARCH_PROMPT },
         { role: 'user', content: JSON.stringify({ goal, objections, alreadyReadInFull: [...read.keys()], seenSources: seen.map((s) => ({ url: s.url, title: s.title })) }) },
-      ], { max_tokens: 800 });
+      ], { max_tokens: 500, tag: 'research' });
       action = readJson(r.text)?.action;
     } catch { return []; }
     if (!action?.type || action.real || Number(action.costUsd) > 0) return []; // never a paid or real action from here

@@ -7,11 +7,13 @@ import { MAX_ROUNDS, GOOD_ENOUGH } from './contradict.js';
 
 const CONTRADICT_PROMPT = 'You are the contradictor. Attack this final answer against the goal: a claim its source does not support (see verification), '
   + 'a missing figure, a secondary source where a primary one was seen, a number without edition year or definition. If you find no real flaw, say so. '
-  + 'JSON: {"objections":["concrete flaw"],"flawless":false}.';
+  + 'At most 4 objections of one sentence each, no prose outside the JSON. JSON: {"objections":["concrete flaw"],"flawless":false}.';
 const REVISE_PROMPT = 'Rewrite the final answer so it answers every objection. Cite ONLY URLs from seenSources, copied exactly; drop any claim you cannot back with one of them. '
+  + 'Answer in at most 120 words, each contribution in one sentence, no prose outside the JSON. '
   + 'JSON: {"answer":"","sources":[{"url":"","contribution":""}],"confidence":0-10,"uncertainties":[""]}.';
 const JUDGE_PROMPT = 'You are the judge. Score this final answer from 0 to 10 against the goal, using the verification: a GREEN claim is confirmed by its page, a RED one is not. '
-  + 'Be strict: precision of figures, primary sources, every claim backed. JSON: {"score":0-10,"reason":""}.';
+  + 'Be strict: precision of figures, primary sources, every claim backed. Reason in at most 25 words, no prose outside the JSON. JSON: {"score":0-10,"reason":""}.';
+export const STAGNATION = 2; // rounds without a better note before the contradictor stops (the best version is kept anyway)
 export const RED_CAP = 5; // an answer with an unsupported claim can never score above this
 export const NO_SOURCE_CAP = 2; // an answer without any source is not an answer
 
@@ -24,7 +26,7 @@ async function grade({ goal, answer, ask, verify }) {
     const r = await ask([
       { role: 'system', content: JUDGE_PROMPT },
       { role: 'user', content: JSON.stringify({ goal, answer: answer.answer, sources: answer.sources, verification: (check.results || []).map(({ url, verdict, detail }) => ({ url, verdict, detail })) }) },
-    ], { max_tokens: 1500 });
+    ], { max_tokens: 700, tag: 'judge' });
     const n = Number(readJson(r.text)?.score);
     score = Number.isFinite(n) ? Math.max(0, Math.min(10, n)) : 0;
   } catch { score = 0; }
@@ -48,14 +50,16 @@ export async function refineAnswer({ goal, answer, seen, ask, verify, research =
   const done = () => ({ answer: best.answer, score: best.score, green: best.green, red: best.red, rounds: versions.length - 1, versions: versions.map(({ answer: _a, ...r }) => r) });
   if (base === 0) return done();
 
+  let flat = 0; // rounds in a row without a better note
   for (let round = 1; round <= max; round += 1) {
     if (round > base && best.score >= GOOD_ENOUGH) break; // beyond the base rounds, only while the note is bad
+    if (flat >= STAGNATION) break; // the note is not moving: stop paying for rounds
     let found;
     try {
       const r = await ask([
         { role: 'system', content: CONTRADICT_PROMPT },
         { role: 'user', content: JSON.stringify({ goal, answer: current, verification: { green: best.green, red: best.red } }) },
-      ], { max_tokens: 1500 });
+      ], { max_tokens: 900, tag: 'contradict' });
       found = readJson(r.text);
     } catch { break; }
     const objections = Array.isArray(found?.objections) ? found.objections.filter(Boolean) : [];
@@ -80,14 +84,14 @@ export async function refineAnswer({ goal, answer, seen, ask, verify, research =
       const r = await ask([
         { role: 'system', content: REVISE_PROMPT },
         { role: 'user', content: JSON.stringify({ goal, answer: current, objections, seenSources: seen }) },
-      ], { max_tokens: 6000 });
+      ], { max_tokens: 2500, tag: 'rewrite' });
       revised = readJson(r.text);
     } catch { break; }
     if (!revised?.answer) continue;
     current = keepSeen(revised);
     const v = { round, ...(await grade({ goal, answer: current, ask, verify })), objections, fetched, answer: current };
     versions.push(v);
-    if (v.score > best.score) best = v; // strictly better only: an earlier version wins ties
+    if (v.score > best.score) { best = v; flat = 0; } else flat += 1; // strictly better only: an earlier version wins ties
   }
   return done();
 }

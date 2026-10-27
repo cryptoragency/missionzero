@@ -13,8 +13,9 @@ const goal = process.argv[2] || 'Find the three most-cited public studies on how
 const folder = 'evidence/ab-' + new Date().toISOString().slice(0, 16).replace(/[:T]/g, '-');
 mkdirSync(folder, { recursive: true });
 const client = createClient();
-const ask = (messages, opts) => client.ask(messages, { ...opts, max_tokens: 6000 });
-const verify = (sources) => verifyReport({ items: sources.map((s) => ({ claim: s.contribution, url: s.url })), ask });
+const ask = (messages, opts) => client.ask(messages, { max_tokens: 3000, ...opts });
+const verifyCache = new Map();
+const verify = (sources) => verifyReport({ items: sources.map((s) => ({ claim: s.contribution, url: s.url })), ask, cache: verifyCache });
 
 // One research loop, shared by both variants: only the treatment of the final answer differs.
 const result = await run({
