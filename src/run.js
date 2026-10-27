@@ -23,7 +23,7 @@ const lessonsPath = 'memory/lessons.json';
 const past = loadLessons(lessonsPath);
 const client = createClient();
 const ask = (messages, opts) => client.ask(messages, { ...opts, max_tokens: 6000 });
-const execute = makeExecutor({ folder });
+const execute = makeExecutor({ folder, goal });
 const result = await run({
   goal,
   constraints: ['public sources only', 'no spending', 'no contact with third parties'],

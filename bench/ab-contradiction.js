@@ -19,7 +19,7 @@ const verify = (sources) => verifyReport({ items: sources.map((s) => ({ claim: s
 // One research loop, shared by both variants: only the treatment of the final answer differs.
 const result = await run({
   goal, constraints: ['public sources only', 'no spending', 'no contact with third parties'],
-  budgetUsd: 1, maxTurns: 2, ask, execute: makeExecutor({ folder }), approve: async () => false,
+  budgetUsd: 1, maxTurns: 2, ask, execute: makeExecutor({ folder, goal }), approve: async () => false,
   journalPath: `${folder}/journal.jsonl`,
 });
 const draft = await synthesize({ goal, evidence: result.evidence, ask });
