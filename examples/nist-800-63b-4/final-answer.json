@@ -1,0 +1,95 @@
+{
+  "answer": "Under NIST SP 800-63B-4: Verifiers and CSPs SHALL require passwords used as a single-factor authentication mechanism to be a minimum of 15 characters in length. Verifiers and CSPs MAY allow passwords only used as part of multi-factor authentication processes to be shorter but SHALL require them to be a minimum of eight characters in length. Verifiers and CSPs SHOULD permit a maximum password length of at least 64 characters.",
+  "sources": [
+    {
+      "url": "https://pages.nist.gov/800-63-4/sp800-63b.html",
+      "contribution": "Verifiers and CSPs SHALL require passwords that are used as a single-factor authentication mechanism to be a minimum of 15 characters in length."
+    },
+    {
+      "url": "https://pages.nist.gov/800-63-4/sp800-63b.html",
+      "contribution": "Verifiers and CSPs MAY allow passwords that are only used as part of multi-factor authentication processes to be shorter but SHALL require them to be a minimum of eight characters in length."
+    },
+    {
+      "url": "https://pages.nist.gov/800-63-4/sp800-63b.html",
+      "contribution": "Verifiers and CSPs SHOULD permit a maximum password length of at least 64 characters."
+    }
+  ],
+  "confidence": 10,
+  "uncertainties": [],
+  "rejectedSources": 0,
+  "judge": {
+    "score": 10,
+    "green": 3,
+    "red": 0,
+    "rounds": 1,
+    "versions": [
+      {
+        "round": 0,
+        "score": 3,
+        "green": 1,
+        "red": 3,
+        "reason": "Two of three length claims unsupported; max-length SHALL misstates SHOULD, single-factor wording mismatched; fails strict backing.",
+        "verification": [
+          {
+            "url": "https://pages.nist.gov/800-63-4/sp800-63b.html",
+            "claim": "Verifiers SHALL require subscriber-chosen memorized secrets to be at least 15 characters in length when used as a single-factor authenticator",
+            "verdict": "unsupported",
+            "detail": "nearest passages: « Verifiers and CSPs SHALL require passwords that are used as a single-factor authentication mechanism to be a minimum of 15 characters in length. » « 3.1.7 ) When a combination of two single-factor authenticators is used, the combination SHALL include one physical authenticator (i.e., “something you have”) from the following list in conjunction with either a password  » « Verifiers and CSPs MAY allow passwords that are only used as part of multi-factor authentication processes to be shorter but SHALL require them to be a minimum of eight characters in length. »"
+          },
+          {
+            "url": "https://pages.nist.gov/800-63-4/sp800-63b.html",
+            "claim": "Verifiers SHALL require subscriber-chosen memorized secrets used with multi-factor authenticators to be at least 8 characters in length",
+            "verdict": "supported",
+            "detail": "Verifiers and CSPs MAY allow passwords that are only used as part of multi-factor authentication processes to be shorter but SHALL require them to be a minimum of eight characters in length."
+          },
+          {
+            "url": "https://pages.nist.gov/800-63-4/sp800-63b.html",
+            "claim": "Verifiers SHALL permit subscriber-chosen memorized secrets at least 64 characters in length",
+            "verdict": "unsupported",
+            "detail": "nearest passages: « Verifiers and CSPs SHOULD permit a maximum password length of at least 64 characters. » « The salt SHALL be at least 32 bits in length and chosen to minimize salt value collisions among stored hashes (i.e., to prevent multiple subscriber accounts from having the same hashed password). » « Verifiers and CSPs SHALL require passwords that are used as a single-factor authentication mechanism to be a minimum of 15 characters in length. »"
+          },
+          {
+            "url": "https://csrc.nist.gov/pubs/sp/800/63/b/4/final",
+            "claim": "Verifiers SHALL permit subscriber-chosen memorized secrets at least 64 characters in length",
+            "verdict": "unsupported",
+            "detail": "nearest passages: « Author(s) David Temoshok (NIST) , James Fenton (Altmode Networks) , Yee-Yin Choong (NIST) , Naomi Lefkovitz (NIST) , Andrew Regenscheid (NIST) , Ryan Galluzzo (NIST) , Justin Richer (Bespoke Engineering) Abstract This gu » « This guideline focuses on the authentication of subjects who interact with government information systems over networks to establish that a given claimant is a subscriber who has been previously authenticated. » « See full abstract This guideline focuses on the authentication of subjects who interact with government information systems over networks to establish that a given claimant is a subscriber who has been previously authent »"
+          }
+        ],
+        "objections": []
+      },
+      {
+        "round": 1,
+        "score": 10,
+        "green": 3,
+        "red": 0,
+        "reason": "All length figures verified against NIST page, primary source cited for each claim.",
+        "verification": [
+          {
+            "url": "https://pages.nist.gov/800-63-4/sp800-63b.html",
+            "claim": "Verifiers and CSPs SHALL require passwords that are used as a single-factor authentication mechanism to be a minimum of 15 characters in length.",
+            "verdict": "supported",
+            "detail": "Verifiers and CSPs SHALL require passwords that are used as a single-factor authentication mechanism to be a minimum of 15 characters in length."
+          },
+          {
+            "url": "https://pages.nist.gov/800-63-4/sp800-63b.html",
+            "claim": "Verifiers and CSPs MAY allow passwords that are only used as part of multi-factor authentication processes to be shorter but SHALL require them to be a minimum of eight characters in length.",
+            "verdict": "supported",
+            "detail": "Verifiers and CSPs MAY allow passwords that are only used as part of multi-factor authentication processes to be shorter but SHALL require them to be a minimum of eight characters in length."
+          },
+          {
+            "url": "https://pages.nist.gov/800-63-4/sp800-63b.html",
+            "claim": "Verifiers and CSPs SHOULD permit a maximum password length of at least 64 characters.",
+            "verdict": "supported",
+            "detail": "Verifiers and CSPs SHOULD permit a maximum password length of at least 64 characters."
+          }
+        ],
+        "objections": [
+          "The answer claims verifiers SHALL permit secrets at least 64 characters while the cited NIST passage states Verifiers and CSPs SHOULD permit a maximum password length of at least 64 characters.",
+          "The csrc.nist.gov final landing-page citation is claimed to support the 64-character sentence but verification shows it contains only title and abstract text.",
+          "The answer narrows the 8-character rule to as a second factor while NIST states only used as part of multi-factor authentication processes with a minimum of eight characters."
+        ],
+        "fetched": 0
+      }
+    ]
+  }
+}

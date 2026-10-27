@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mission Zero · replay</title>
+<style>
+:root{--bg:#0a0e18;--panel:#111a2c;--line:#263552;--tx:#f3f6fc;--mut:#9fb0d3;--gold:#e5bd52;--ok:#5fe09a;--red:#ff6b7a;--blue:#6fb3ff}
+*{box-sizing:border-box}html,body{height:100%}body{margin:0;background:var(--bg);color:var(--tx);font:20px/1.45 "Segoe UI",Inter,Arial,sans-serif;overflow:hidden}
+#stage{position:relative;width:100vw;height:100vh;padding:34px 56px;display:flex;flex-direction:column;gap:18px}
+header{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:12px}
+header .brand{font-weight:700;font-size:26px;letter-spacing:.02em}header .brand span{color:var(--gold)}
+header .meters{display:flex;gap:26px;font-size:17px;color:var(--mut)}header .meters b{color:var(--tx);font-variant-numeric:tabular-nums}
+#goal{font-size:21px;color:var(--mut)}#goal b{color:var(--tx)}
+#scene{flex:1;position:relative}
+.card{position:absolute;inset:0;display:flex;flex-direction:column;gap:14px;opacity:0;transform:translateY(18px);transition:opacity .5s,transform .5s;pointer-events:none}
+.card.on{opacity:1;transform:none;pointer-events:auto}
+.title{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px}
+.title h1{font-size:68px;margin:0;letter-spacing:-.01em}.title h1 span{color:var(--gold)}.title p{font-size:28px;color:var(--mut);margin:0}
+.title small{font-size:18px;color:var(--mut)}
+.step{display:grid;grid-template-columns:150px 1fr;gap:16px;align-items:start;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 20px;opacity:0;transform:translateX(-14px);transition:opacity .45s,transform .45s}
+.step.on{opacity:1;transform:none}.step .k{color:var(--gold);font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:15px;padding-top:4px}
+.step .v{min-width:0}.step .v .mono{font-family:Consolas,monospace;font-size:17px;color:var(--blue);word-break:break-all}
+.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:2px 12px;font-size:16px;color:var(--mut);margin-right:8px}
+.score{display:inline-flex;align-items:center;gap:10px}.bar{width:220px;height:10px;background:#1b2740;border-radius:6px;overflow:hidden}.bar i{display:block;height:100%;background:var(--gold);width:0;transition:width 1.2s ease}
+.turnhead{display:flex;align-items:baseline;gap:16px}.turnhead h2{margin:0;font-size:30px}.turnhead span{color:var(--mut)}
+.src{display:grid;grid-template-columns:36px 1fr;gap:14px;align-items:start;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 18px;opacity:0;transition:opacity .5s}
+.src.on{opacity:1}.dot{width:26px;height:26px;border-radius:50%;background:#2a3858;margin-top:4px;transition:background .4s}.dot.g{background:var(--ok);box-shadow:0 0 18px var(--ok)}.dot.r{background:var(--red);box-shadow:0 0 18px var(--red)}
+.src .u{color:var(--blue);font-family:Consolas,monospace;font-size:16px;word-break:break-all}.src q{display:block;color:var(--mut);font-style:italic;margin-top:4px;font-size:18px}
+.answer{font-size:26px;line-height:1.4;background:var(--panel);border:1px solid var(--line);border-left:5px solid var(--gold);border-radius:14px;padding:18px 22px;min-height:96px}
+.big{display:flex;gap:40px;align-items:center;justify-content:center;flex:1}.big .n{text-align:center}.big .n b{display:block;font-size:92px;line-height:1;font-variant-numeric:tabular-nums}.big .n span{color:var(--mut);font-size:18px;text-transform:uppercase;letter-spacing:.1em}
+.big .ok b{color:var(--ok)}.big .gold b{color:var(--gold)}
+.obj{border-left:3px solid var(--red);padding-left:12px;color:var(--mut);font-size:19px}
+.rounds{display:flex;gap:14px}.round{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;opacity:0;transition:opacity .5s,border-color .5s}.round.on{opacity:1}.round.best{border-color:var(--gold)}.round b{font-size:34px}.round small{display:block;color:var(--mut);font-size:15px}
+footer{display:flex;justify-content:space-between;color:var(--mut);font-size:15px;border-top:1px solid var(--line);padding-top:10px}
+#prog{position:absolute;left:0;bottom:0;height:4px;background:var(--gold);width:0}
+#ctrl{position:absolute;right:16px;bottom:10px;color:var(--mut);font-size:13px}
+.type::after{content:"▍";color:var(--gold);animation:blink 1s steps(1) infinite}@keyframes blink{50%{opacity:0}}
+</style></head><body>
+<div id="stage">
+<header><div class="brand">MISSION <span>ZERO</span></div><div class="meters"><div>turn <b id="m-turn">0</b></div><div>model calls <b id="m-calls">0</b></div><div>cost <b id="m-cost">$0.000</b></div><div>proof <b id="m-proof">0 green</b></div></div></header>
+<div id="goal"></div>
+<div id="scene"></div>
+<footer><div>Every step is written to the evidence folder: journal, memory, final answer, verdicts.</div><div>CRYPTOR.AGENCY · Meta Global AI Developer Hackathon 2026</div></footer>
+<div id="prog"></div><div id="ctrl">space: pause · ←/→: scene</div>
+</div>
+<script>
+const DATA = {"goal":"In NIST SP 800-63B (latest revision), what minimum password length must a verifier require for a user-chosen memorized secret, and what maximum length must it at least allow? Cite NIST.","turns":[{"turn":1,"hypotheses":["Latest is SP 800-63B Rev 4 / SP 800-63-4: min 8 chars (MFA) and longer e.g., 15 for single-factor, max at least 64; need primary text","Older Rev 3 rule was min 8 and max at least 64; latest may have changed minima by context"],"action":{"type":"web_search","query":"NIST SP 800-63B memorized secret length SHALL","url":"","find":"","name":"","content":"","costUsd":0,"real":false},"observation":{"kind":"search","count":8,"top":[{"title":"NIST Special Publication 800-63B","url":"https://pages.nist.gov/800-63-3/sp800-63b.html"},{"title":"NIST Special Publication 800-63B","url":"https://pages.nist.gov/800-63-4/sp800-63b.html"},{"title":"SP 800-63B, Digital Identity Guidelines: Authentication and Lifecycle ...","url":"https://csrc.nist.gov/pubs/sp/800/63/b/upd2/final"}]},"evaluation":{"score":3,"reached":false,"lesson":"The search located official NIST SP 800-63B sources but the snippets did not contain the section 5.1.1.2 length SHALL requirements.","pivot":"Fetch the official SP 800-63B-4 section 5.1.1.2 page or PDF directly to extract and cite the memorized secret length requirements."}},{"turn":2,"hypotheses":["Latest Rev 4 requires min 8 chars and allow at least 64, need primary text citation"],"action":{"type":"read_page","url":"https://pages.nist.gov/800-63-4/sp800-63b.html","find":"memorized secret length minimum maximum verifier SHALL require allow characters","costUsd":0,"real":false},"observation":{"kind":"page","chars":253847,"find":"memorized secret length minimum maximum verifier SHALL require allow characters"},"evaluation":{"score":5,"reached":false,"lesson":"The latest revision requires 15 characters for single-factor passwords and only 8 for MFA-only passwords, contradicting the old universal 8-character expectation.","pivot":"Fetch section 3.1.1.2 directly to cite the precise SHALL for 15/8 and SHOULD for 64 characters."}},{"turn":3,"hypotheses":["Latest Rev 4 Sec 3.1.1.2 requires min 15 chars single-factor, min 8 chars MFA-only, and SHOULD allow max of at least 64 chars"],"action":{"type":"read_page","url":"https://pages.nist.gov/800-63-4/sp800-63b.html","find":"3.1.1 Passwords single-factor minimum 15 multi-factor eight maximum 64","costUsd":0,"real":false},"observation":{"kind":"page","chars":253847,"find":"3.1.1 Passwords single-factor minimum 15 multi-factor eight maximum 64"},"evaluation":{"score":10,"reached":true,"lesson":"Single-factor minimum is 15 characters, multi-factor-only minimum is 8 characters, and maximum allowance is at least 64 characters.","pivot":"Answer using Section 3.1.1.2 with direct SHALL and SHOULD quotations and NIST citation."}}],"final":{"answer":"Under NIST SP 800-63B-4: Verifiers and CSPs SHALL require passwords used as a single-factor authentication mechanism to be a minimum of 15 characters in length. Verifiers and CSPs MAY allow passwords only used as part of multi-factor authentication processes to be shorter but SHALL require them to be a minimum of eight characters in length. Verifiers and CSPs SHOULD permit a maximum password length of at least 64 characters.","sources":[{"url":"https://pages.nist.gov/800-63-4/sp800-63b.html","contribution":"Verifiers and CSPs SHALL require passwords that are used as a single-factor authentication mechanism to be a minimum of 15 characters in length."},{"url":"https://pages.nist.gov/800-63-4/sp800-63b.html","contribution":"Verifiers and CSPs MAY allow passwords that are only used as part of multi-factor authentication processes to be shorter but SHALL require them to be a minimum of eight characters in length."},{"url":"https://pages.nist.gov/800-63-4/sp800-63b.html","contribution":"Verifiers and CSPs SHOULD permit a maximum password length of at least 64 characters."}],"uncertainties":[]},"judge":{"score":10,"green":3,"red":0,"rounds":1,"versions":[{"round":0,"score":3,"green":1,"red":3,"reason":"Two of three length claims unsupported; max-length SHALL misstates SHOULD, single-factor wording mismatched; fails strict backing.","verification":[{"url":"https://pages.nist.gov/800-63-4/sp800-63b.html","claim":"Verifiers SHALL require subscriber-chosen memorized secrets to be at least 15 characters in length when used as a single-factor authenticator","verdict":"unsupported","detail":"nearest passages: « Verifiers and CSPs SHALL require passwords that are used as a single-factor authentication mechanism to be a minimum of 15 characters in length. » « 3.1.7 ) When a combination of two single-factor authenticators is used, the combination SHALL include one physical authenticator (i.e., “something you have”) from the following list in conjunction with either a password  » « Verifiers and CSPs MAY allow passwords that are only used as part of multi-factor authentication processes to be shorter but SHALL require them to be a minimum of eight characters in length. »"},{"url":"https://pages.nist.gov/800-63-4/sp800-63b.html","claim":"Verifiers SHALL require subscriber-chosen memorized secrets used with multi-factor authenticators to be at least 8 characters in length","verdict":"supported","detail":"Verifiers and CSPs MAY allow passwords that are only used as part of multi-factor authentication processes to be shorter but SHALL require them to be a minimum of eight characters in length."},{"url":"https://pages.nist.gov/800-63-4/sp800-63b.html","claim":"Verifiers SHALL permit subscriber-chosen memorized secrets at least 64 characters in length","verdict":"unsupported","detail":"nearest passages: « Verifiers and CSPs SHOULD permit a maximum password length of at least 64 characters. » « The salt SHALL be at least 32 bits in length and chosen to minimize salt value collisions among stored hashes (i.e., to prevent multiple subscriber accounts from having the same hashed password). » « Verifiers and CSPs SHALL require passwords that are used as a single-factor authentication mechanism to be a minimum of 15 characters in length. »"},{"url":"https://csrc.nist.gov/pubs/sp/800/63/b/4/final","claim":"Verifiers SHALL permit subscriber-chosen memorized secrets at least 64 characters in length","verdict":"unsupported","detail":"nearest passages: « Author(s) David Temoshok (NIST) , James Fenton (Altmode Networks) , Yee-Yin Choong (NIST) , Naomi Lefkovitz (NIST) , Andrew Regenscheid (NIST) , Ryan Galluzzo (NIST) , Justin Richer (Bespoke Engineering) Abstract This gu » « This guideline focuses on the authentication of subjects who interact with government information systems over networks to establish that a given claimant is a subscriber who has been previously authenticated. » « See full abstract This guideline focuses on the authentication of subjects who interact with government information systems over networks to establish that a given claimant is a subscriber who has been previously authent »"}],"objections":[]},{"round":1,"score":10,"green":3,"red":0,"reason":"All length figures verified against NIST page, primary source cited for each claim.","verification":[{"url":"https://pages.nist.gov/800-63-4/sp800-63b.html","claim":"Verifiers and CSPs SHALL require passwords that are used as a single-factor authentication mechanism to be a minimum of 15 characters in length.","verdict":"supported","detail":"Verifiers and CSPs SHALL require passwords that are used as a single-factor authentication mechanism to be a minimum of 15 characters in length."},{"url":"https://pages.nist.gov/800-63-4/sp800-63b.html","claim":"Verifiers and CSPs MAY allow passwords that are only used as part of multi-factor authentication processes to be shorter but SHALL require them to be a minimum of eight characters in length.","verdict":"supported","detail":"Verifiers and CSPs MAY allow passwords that are only used as part of multi-factor authentication processes to be shorter but SHALL require them to be a minimum of eight characters in length."},{"url":"https://pages.nist.gov/800-63-4/sp800-63b.html","claim":"Verifiers and CSPs SHOULD permit a maximum password length of at least 64 characters.","verdict":"supported","detail":"Verifiers and CSPs SHOULD permit a maximum password length of at least 64 characters."}],"objections":["The answer claims verifiers SHALL permit secrets at least 64 characters while the cited NIST passage states Verifiers and CSPs SHOULD permit a maximum password length of at least 64 characters.","The csrc.nist.gov final landing-page citation is claimed to support the 64-character sentence but verification shows it contains only title and abstract text.","The answer narrows the 8-character rule to as a second factor while NIST states only used as part of multi-factor authentication processes with a minimum of eight characters."],"fetched":0}]},"cost":{"usd":0.085153,"calls":20,"ms":59393},"lessons":3,"reached":true};
+const DUR = [5000,7000,9000,9000,9000,7000,9000,9000,9000,7000];
+const $ = (s, r = document) => r.querySelector(s);
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const host = (u) => { try { return new URL(u).hostname.replace(/^www\./, ''); } catch (e) { return u; } };
+const money = (n) => '$' + (Number(n) || 0).toFixed(3);
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+let paused = false, cur = -1, token = 0;
+const meters = { turn: 0, calls: 0, cost: 0, green: 0 };
+// The counters follow the real totals of the run: a share of the calls per turn, the rest for the answer stage.
+const TOTAL = { calls: DATA.cost.calls || 0, usd: DATA.cost.usd || 0 };
+function meter(add) { Object.assign(meters, add); $('#m-turn').textContent = meters.turn; $('#m-calls').textContent = meters.calls; $('#m-cost').textContent = money(meters.cost); $('#m-proof').textContent = meters.green + ' green'; }
+function meterAt(fraction) { meter({ calls: Math.round(TOTAL.calls * fraction), cost: TOTAL.usd * fraction }); }
+const turnShare = (k, half) => (0.6 * (k - 1 + (half ? 0.5 : 1))) / Math.max(1, DATA.turns.length);
+function reveal(el, delay) { return new Promise((r) => setTimeout(() => { el.classList.add('on'); r(); }, delay)); }
+async function typeInto(el, text, ms) { el.classList.add('type'); const per = Math.max(8, Math.min(40, ms / Math.max(1, text.length))); for (let i = 1; i <= text.length; i += 1) { if (token !== typeInto.token) return; el.textContent = text.slice(0, i); await sleep(per); } el.classList.remove('type'); }
+const step = (k, v) => '<div class="step"><div class="k">' + k + '</div><div class="v">' + v + '</div></div>';
+
+function titleScene(h, p, small) { return '<div class="title"><h1>' + h + '</h1><p>' + p + '</p>' + (small ? '<small>' + small + '</small>' : '') + '</div>'; }
+function turnScene(t) {
+  const a = t.action || {}; const o = t.observation || {}; const e = t.evaluation || {};
+  let act = '';
+  if (/search/.test(a.type || '')) act = '<span class="pill">web_search</span><span class="mono">' + esc(a.query) + '</span>';
+  else if (/read/.test(a.type || '')) act = '<span class="pill">read_page</span><span class="mono">' + esc(a.url) + '</span>' + (a.find ? '<div style="color:var(--mut);font-size:17px;margin-top:4px">looking for: “' + esc(a.find) + '”</div>' : '');
+  else act = '<span class="pill">' + esc(a.type) + '</span>' + esc(a.detail || a.name || '');
+  let obs = '';
+  if (o.kind === 'search') obs = '<b>' + o.count + ' results</b><div style="font-size:17px;color:var(--mut)">' + (o.top || []).map((r) => esc(host(r.url)) + ' · ' + esc(r.title).slice(0, 70)).join('<br>') + '</div>';
+  else if (o.kind === 'pdf') obs = '<b>PDF read: ' + o.pages + ' pages, ' + Number(o.chars).toLocaleString('en') + ' characters</b><div style="font-size:17px;color:var(--mut)">reduced to the passages that match the search, then the goal</div>';
+  else if (o.kind === 'page') obs = '<b>page read: ' + Number(o.chars).toLocaleString('en') + ' characters</b>' + (o.via ? '<div style="font-size:17px;color:var(--mut)">read via official mirror ' + esc(host(o.via)) + '</div>' : '');
+  else obs = '<b style="color:var(--red)">' + esc(o.error || 'no observation') + '</b>';
+  const score = Number(e.score) || 0;
+  const ev = '<div class="score"><div class="bar"><i data-w="' + score * 10 + '"></i></div><b>' + score + ' / 10</b>' + (e.reached ? '<span class="pill" style="color:var(--ok);border-color:var(--ok)">goal reached</span>' : '') + '</div>'
+    + '<div style="margin-top:6px"><span style="color:var(--mut)">lesson:</span> ' + esc(e.lesson) + '</div>' + (e.pivot && !e.reached ? '<div><span style="color:var(--mut)">pivot:</span> ' + esc(e.pivot) + '</div>' : '');
+  return '<div class="turnhead"><h2>Turn ' + t.turn + '</h2><span>hypothesis → action → observation → evaluation</span></div>'
+    + step('hypothesis', esc((t.hypotheses || [])[0] || '—')) + step('action', act) + step('observation', obs) + step('evaluation', ev);
+}
+function draftScene() { return '<div class="turnhead"><h2>Draft answer</h2><span>written only from what was seen</span></div><div class="answer" id="ans"></div><div style="color:var(--mut)">' + DATA.final.sources.length + ' source' + (DATA.final.sources.length > 1 ? 's' : '') + ' cited · a URL that was never read cannot be cited</div>'; }
+function verifyScene() {
+  const v0 = (DATA.judge.versions[0] || {}).verification || [];
+  const items = DATA.final.sources.map((s) => v0.find((x) => x.url === s.url && x.claim === s.contribution) || { url: s.url, claim: s.contribution, verdict: 'unsupported', detail: '' });
+  // The final version's own verdicts win when they exist (the best version may be a later one).
+  const best = DATA.judge.versions.find((v) => v.score === DATA.judge.score && v.green === DATA.judge.green) || DATA.judge.versions[0] || {};
+  const list = (best.verification && best.verification.length ? best.verification : items);
+  return '<div class="turnhead"><h2>Verification</h2><span>each cited page is re-read; an exact quote is required</span></div>'
+    + list.map((x) => '<div class="src" data-v="' + (x.verdict === 'supported' ? 'g' : 'r') + '"><div class="dot"></div><div><div>' + esc(x.claim) + '</div><div class="u">' + esc(x.url) + '</div><q>' + esc(x.verdict === 'supported' ? x.detail : (x.detail || 'no passage matches')) + '</q></div></div>').join('');
+}
+function contradictScene() {
+  const vs = DATA.judge.versions; const bestScore = DATA.judge.score;
+  const objs = vs.flatMap((v) => (v.objections || []).slice(0, 2)).slice(0, 3);
+  return '<div class="turnhead"><h2>Contradictor and judge</h2><span>' + (vs.length - 1) + ' round' + (vs.length - 1 === 1 ? '' : 's') + ' · the best version is kept</span></div>'
+    + (objs.length ? objs.map((o) => '<div class="obj step">' + esc(o) + '</div>').join('') : '<div class="step" style="display:block"><span style="color:var(--ok)">The contradictor found no real flaw.</span> Every figure is confirmed by its page: nothing to rewrite, nothing to pay for.</div>')
+    + '<div class="rounds">' + vs.map((v, i) => '<div class="round' + (v.score === bestScore && vs.indexOf(vs.find((x) => x.score === bestScore)) === i ? ' best' : '') + '"><small>version ' + i + '</small><b>' + v.score + '</b><small>' + v.green + ' green · ' + v.red + ' red</small><small>' + esc(v.reason || '').slice(0, 90) + '</small></div>').join('') + '</div>';
+}
+function resultScene() {
+  return '<div class="turnhead"><h2>Result</h2><span>proof, not promises</span></div><div class="answer">' + esc(DATA.final.answer) + '</div>'
+    + '<div class="big"><div class="n gold"><b>' + DATA.judge.score + '</b><span>judge / 10</span></div><div class="n ok"><b>' + DATA.judge.green + '</b><span>green proofs</span></div><div class="n"><b>' + (DATA.judge.red || 0) + '</b><span>red</span></div><div class="n"><b>' + money(DATA.cost.usd) + '</b><span>cost</span></div><div class="n"><b>' + Math.round((DATA.cost.ms || 0) / 1000) + 's</b><span>model time</span></div></div>';
+}
+const SCENES = [
+  { html: titleScene('MISSION <span>ZERO</span>', 'Give it a goal. Let it discover the path. Demand proof.', 'CRYPTOR.AGENCY · Meta Global AI Developer Hackathon 2026 · built on Muse Spark'), run: async () => {} },
+  { html: titleScene('The goal', esc(DATA.goal), 'no plan, no tool list, public sources only, no spending'), run: async () => { $('#goal').innerHTML = '<b>Goal</b> · ' + esc(DATA.goal); } },
+  ...DATA.turns.map((t) => ({ html: turnScene(t), run: async (card, dur) => {
+    meter({ turn: t.turn });
+    const steps = card.querySelectorAll('.step'); const gap = Math.min(1400, dur / 6);
+    for (let i = 0; i < steps.length; i += 1) { await reveal(steps[i], gap); if (i === 1) meterAt(turnShare(t.turn, true)); if (i === 3) meterAt(turnShare(t.turn, false)); }
+    const bar = card.querySelector('.bar i'); if (bar) bar.style.width = bar.dataset.w + '%';
+  } })),
+  { html: draftScene(), run: async (card, dur) => { meterAt(0.68); typeInto.token = token; await typeInto(card.querySelector('#ans'), DATA.final.answer, dur * 0.7); } },
+  { html: verifyScene(), run: async (card, dur) => {
+    const items = card.querySelectorAll('.src'); const gap = Math.min(1800, dur / (items.length + 1)); let g = 0;
+    for (let i = 0; i < items.length; i += 1) { const it = items[i]; await reveal(it, gap * 0.5); await sleep(gap * 0.5); it.querySelector('.dot').classList.add(it.dataset.v); if (it.dataset.v === 'g') g += 1; meterAt(0.68 + 0.14 * (i + 1) / items.length); meter({ green: g }); }
+  } },
+  { html: contradictScene(), run: async (card, dur) => {
+    const objs = card.querySelectorAll('.step'); const rounds = card.querySelectorAll('.round'); const gap = Math.min(1500, dur / (objs.length + rounds.length + 1));
+    for (const o of objs) await reveal(o, gap);
+    for (let i = 0; i < rounds.length; i += 1) { await reveal(rounds[i], gap); meterAt(0.82 + 0.18 * (i + 1) / rounds.length); }
+  } },
+  { html: resultScene(), run: async () => { meterAt(1); meter({ green: DATA.judge.green || meters.green }); } },
+  { html: titleScene('Proof, <span>not promises</span>', 'Everything in this repository was written during the hackathon.', 'github.com/cryptoragency/mission0 · Meta Model API · muse-spark-1.3 · reasoning effort tuned per role'), run: async () => {} },
+];
+async function play(i) {
+  if (i < 0 || i >= SCENES.length) return;
+  token += 1; const my = token; cur = i;
+  const scene = $('#scene'); scene.innerHTML = '<div class="card">' + SCENES[i].html + '</div>'; const card = scene.firstChild;
+  await sleep(30); card.classList.add('on');
+  const dur = DUR[i] || 8000; const start = performance.now();
+  $('#prog').style.transition = 'none'; $('#prog').style.width = '0'; await sleep(20); $('#prog').style.transition = 'width ' + dur + 'ms linear'; $('#prog').style.width = '100%';
+  SCENES[i].run(card, dur).catch(() => {});
+  while (performance.now() - start < dur || paused) { if (my !== token) return; await sleep(100); if (paused) { /* hold */ } }
+  if (my === token) play(i + 1);
+}
+document.addEventListener('keydown', (e) => { if (e.key === ' ') { paused = !paused; e.preventDefault(); } if (e.key === 'ArrowRight') play(cur + 1); if (e.key === 'ArrowLeft') play(cur - 1); });
+window.MZ = { play, scenes: SCENES.length, durations: DUR };
+const q = new URLSearchParams(location.search);
+if (q.get('auto') !== '0') setTimeout(() => play(Number(q.get('from')) || 0), 400);
+</script></body></html>

@@ -1,0 +1,67 @@
+{
+  "answer": "The ANSSI 'Guide d'hygiène informatique' lists 42 measures. Its current edition is Version 2.0, published in September 2017.",
+  "sources": [
+    {
+      "url": "https://messervices.cyber.gouv.fr/guides/guide-dhygiene-informatique",
+      "contribution": "Il vous présente les 42 mesures d'hygiène informatique essentielles pour assurer la sécurité de votre système d'information"
+    },
+    {
+      "url": "https://messervices.cyber.gouv.fr/documents-guides/guide_hygiene_informatique_anssi.pdf",
+      "contribution": "RENFORCER LA SÉCURITÉ DE SON SYSTÈME D’INFORMATION EN 42 MESURES"
+    },
+    {
+      "url": "https://messervices.cyber.gouv.fr/documents-guides/guide_hygiene_informatique_anssi.pdf",
+      "contribution": "Version 2.0"
+    },
+    {
+      "url": "https://messervices.cyber.gouv.fr/documents-guides/guide_hygiene_informatique_anssi.pdf",
+      "contribution": "Septembre 2017"
+    }
+  ],
+  "confidence": 9,
+  "uncertainties": [],
+  "rejectedSources": 0,
+  "seenSources": 8,
+  "judge": {
+    "score": 10,
+    "green": 4,
+    "red": 0,
+    "rounds": 0,
+    "versions": [
+      {
+        "round": 0,
+        "score": 10,
+        "green": 4,
+        "red": 0,
+        "reason": "All three claims verified by ANSSI sources with exact figures.",
+        "verification": [
+          {
+            "url": "https://messervices.cyber.gouv.fr/guides/guide-dhygiene-informatique",
+            "claim": "Il vous présente les 42 mesures d'hygiène informatique essentielles pour assurer la sécurité de votre système d'information",
+            "verdict": "supported",
+            "detail": "Il vous présente les 42 mesures d’hygiène informatique essentielles pour assurer la sécurité de votre système d’information et les moyens de les mettre en œuvre, outils pratiques à l’appui."
+          },
+          {
+            "url": "https://messervices.cyber.gouv.fr/documents-guides/guide_hygiene_informatique_anssi.pdf",
+            "claim": "RENFORCER LA SÉCURITÉ DE SON SYSTÈME D’INFORMATION EN 42 MESURES",
+            "verdict": "supported",
+            "detail": "RENFORCER LA SÉCURITÉ DE SON SYSTÈME D’INFORMATION EN 42 MESURES"
+          },
+          {
+            "url": "https://messervices.cyber.gouv.fr/documents-guides/guide_hygiene_informatique_anssi.pdf",
+            "claim": "Version 2.0",
+            "verdict": "supported",
+            "detail": "Version 2.0 - Septembre 2017 20170901-1756 Licence Ouverte/Open Licence (Etalab - V1) agence nationale de la sécurité des systèmes d’information ANSSI - 51, boulevard de la Tour-Maubourg - 75700 PARIS 07 SP www.ssi.gouv.fr / communication@ssi.gouv.fr"
+          },
+          {
+            "url": "https://messervices.cyber.gouv.fr/documents-guides/guide_hygiene_informatique_anssi.pdf",
+            "claim": "Septembre 2017",
+            "verdict": "supported",
+            "detail": "Septembre 2017"
+          }
+        ],
+        "objections": []
+      }
+    ]
+  }
+}

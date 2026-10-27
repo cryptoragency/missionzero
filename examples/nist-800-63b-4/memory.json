@@ -1,0 +1,41 @@
+[
+  {
+    "turn": 1,
+    "action": {
+      "type": "web_search",
+      "query": "NIST SP 800-63B memorized secret length SHALL",
+      "url": "",
+      "find": "",
+      "name": "",
+      "content": "",
+      "costUsd": 0,
+      "real": false
+    },
+    "ok": false,
+    "lesson": "The search located official NIST SP 800-63B sources but the snippets did not contain the section 5.1.1.2 length SHALL requirements."
+  },
+  {
+    "turn": 2,
+    "action": {
+      "type": "read_page",
+      "url": "https://pages.nist.gov/800-63-4/sp800-63b.html",
+      "find": "memorized secret length minimum maximum verifier SHALL require allow characters",
+      "costUsd": 0,
+      "real": false
+    },
+    "ok": false,
+    "lesson": "The latest revision requires 15 characters for single-factor passwords and only 8 for MFA-only passwords, contradicting the old universal 8-character expectation."
+  },
+  {
+    "turn": 3,
+    "action": {
+      "type": "read_page",
+      "url": "https://pages.nist.gov/800-63-4/sp800-63b.html",
+      "find": "3.1.1 Passwords single-factor minimum 15 multi-factor eight maximum 64",
+      "costUsd": 0,
+      "real": false
+    },
+    "ok": true,
+    "lesson": "Single-factor minimum is 15 characters, multi-factor-only minimum is 8 characters, and maximum allowance is at least 64 characters."
+  }
+]

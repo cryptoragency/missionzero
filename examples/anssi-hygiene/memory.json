@@ -1,0 +1,29 @@
+[
+  {
+    "turn": 1,
+    "action": {
+      "type": "web_search",
+      "query": "ANSSI guide hygiène informatique mesures",
+      "url": "",
+      "find": "",
+      "name": "",
+      "content": "",
+      "costUsd": 0,
+      "real": false
+    },
+    "ok": false,
+    "lesson": "Search confirmed 42 measures but did not yet retrieve the current edition version and publication date."
+  },
+  {
+    "turn": 2,
+    "action": {
+      "type": "read_page",
+      "url": "https://messervices.cyber.gouv.fr/documents-guides/guide_hygiene_informatique_anssi.pdf",
+      "find": "version edition date janvier 2017 avant-propos mesures 42",
+      "costUsd": 0,
+      "real": false
+    },
+    "ok": true,
+    "lesson": "The PDF title page and colophon directly provide 42 measures and Version 2.0 September 2017."
+  }
+]

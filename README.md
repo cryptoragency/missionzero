@@ -45,12 +45,12 @@ Muse Spark reasons before answering and the reasoning is billed as output: it wa
 | # | Goal | Judge | Green proofs | Cost |
 |---|------|-------|--------------|------|
 | 1 | Verizon DBIR 2025: breaches analyzed, human element (117-page PDF) | **10 / 10** | 2 | $0.059 |
-| 2 | GDPR maximum fine, article (official text via the EU Publications Office) | **10 / 10** | 1 | $0.047 |
-| 4 | Latest CVSS version, year, Critical range (first.org) | **10 / 10** | 2 | $0.037 |
-| 3 | NIST SP 800-63B password lengths (latest revision) | 4 / 10 | 2 | $0.167 |
-| 5 | ANSSI *Guide d'hygiène informatique*: measures, version, date | 4 / 10 | 3 | $0.135 |
+| 2 | GDPR maximum fine, article (official text via the EU Publications Office) | **10 / 10** | 3 | $0.061 |
+| 3 | NIST SP 800-63B-4 password lengths: 15 single-factor, eight multi-factor, 64 allowed | **10 / 10** | 3 | $0.086 |
+| 4 | Latest CVSS version, year, Critical range (first.org) | **10 / 10** | 3 | $0.041 |
+| 5 | ANSSI *Guide d'hygiène informatique*: 42 measures, "Version 2.0 - Septembre 2017" from the PDF footer | **10 / 10** | 4 | $0.084 |
 
-The two low scores are honest: the system mixes revisions of the NIST standard, and takes the ANSSI version from blogs instead of the footer of the official PDF. The judge says so, and the evidence folder shows it. Reproduce with `npm run demo`.
+Every figure is green: confirmed by an exact quote from the primary page. Scores vary between runs because web search does: in one run of goal 1 the search returned the public-sector snapshot instead of the full report, and the judge gave 5 / 10 for citing the wrong document. That honesty is the point. Reproduce with `npm run demo`; each run writes its own evidence folder.
 
 ## Run it
 

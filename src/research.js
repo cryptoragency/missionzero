@@ -9,7 +9,7 @@ const RESEARCH_PROMPT = 'An objection says the final answer lacks something. Pic
   + 'JSON: {"action":{"type":"","url":"","find":"","query":"","costUsd":0,"real":false},"why":""}.';
 
 // Objections worth a research turn: a missing figure, or a primary source seen but not read.
-const TRIGGER = /missing|lack|absent|no figure|zero figures|not read|secondary source|primary (source|report|page|study) .*(seen|available|exist)|without edition|unverified/i;
+const TRIGGER = /missing|lack|absent|no figure|zero figures|not read|secondary source|primary (source|report|page|study) .*(seen|available|exist)|without edition|unverified|instead of|rather than|not (to )?the .* itself|snapshot|subset|summary|draft/i;
 export const needsResearch = (objections) => (objections || []).some((o) => TRIGGER.test(String(o)));
 
 export function makeResearch({ ask, execute, evidence = null, note = null }) {
