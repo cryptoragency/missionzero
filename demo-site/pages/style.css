@@ -1,0 +1,12 @@
+body{margin:0;font:17px/1.5 "Segoe UI",Arial,sans-serif;color:#1f2a24;background:#f6f7f4}
+header{background:#1f4d3a;color:#fff;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+header a{color:#fff;text-decoration:none;margin-left:16px}header .logo{font-size:22px;font-weight:700;letter-spacing:.04em}
+main{max-width:900px;margin:0 auto;padding:28px 20px}
+h1{font-size:36px;margin:0 0 8px}h2{color:#1f4d3a}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.card{background:#fff;border:1px solid #dde3dc;border-radius:10px;padding:18px}
+.price{font-size:22px;font-weight:700;color:#1f4d3a}
+label{display:block;margin:10px 0 4px}input,textarea{width:100%;padding:8px;border:1px solid #b9c4bb;border-radius:6px;font:inherit;box-sizing:border-box}
+button{background:#1f4d3a;color:#fff;border:0;border-radius:6px;padding:10px 18px;font:inherit;cursor:pointer;margin-top:12px}
+.ok{color:#1d6b2e}.err{color:#a3261c}
+footer{text-align:center;color:#5f7067;padding:20px;font-size:14px}footer a{color:#1f4d3a}

@@ -24,7 +24,7 @@ function wavSeconds(file) { const b = readFileSync(file); const byteRate = b.rea
 const turns = readFileSync(join(folder, 'journal.jsonl'), 'utf8').trim().split('\n').filter((l) => /"step":"plan"/.test(l)).length;
 const texts = [N.intro, N.goal, ...Array.from({ length: turns }, (_, i) => N.turns[i] || `Turn ${i + 1}. A hypothesis, one action, an observation, and a strict self-evaluation.`), N.draft, N.verify, N.contradict, N.result, N.outro];
 const minimum = [5000, 6000, ...Array.from({ length: turns }, () => 9000), 6000, 8000, 7000, 7000, 6000];
-const PAD = 900; // silence after each narration, so the eye finishes before the next scene
+const PAD = 1600; // silence after each narration, so the eye finishes before the next scene
 const wavs = []; const durations = [];
 texts.forEach((t, i) => { const f = join(outDir, `scene-${i}.wav`); speak(t, f); wavs.push(f); durations.push(Math.max(minimum[i], Math.round(wavSeconds(f) * 1000) + PAD)); });
 const total = durations.reduce((a, b) => a + b, 0);
