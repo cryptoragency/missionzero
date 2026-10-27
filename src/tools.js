@@ -48,18 +48,21 @@ export function createPage(name, html, folder = 'evidence') {
 }
 
 // A long document (a 100-page report) is read in full, then reduced to its opening plus the passages that matter for the goal.
-export async function readForGoal(url, goal, { fetchFn = fetch, maxChars = 400000, keep = 6000 } = {}) {
+// `find` (from the planner) says what to locate; the goal is the fallback. Passages for `find` come first, then for the goal.
+export async function readForGoal(url, goal, { fetchFn = fetch, maxChars = 400000, keep = 6000, find = '' } = {}) {
   const r = await readPage(url, { fetchFn, maxChars });
   if (!r.ok || r.text.length <= keep) return r;
-  const passages = goal ? relevantPassages(r.text, goal, 24) : [];
-  const text = (r.text.slice(0, 2500) + '\n[...]\n' + passages.join('\n')).slice(0, keep);
-  return { ...r, text, fullLength: r.text.length };
+  const seen = new Set();
+  const pick = (q, k) => (q ? relevantPassages(r.text, q, k) : []).filter((p) => !seen.has(p) && seen.add(p));
+  const passages = [...pick(find, 16), ...pick(goal, 12)];
+  const text = (r.text.slice(0, 1500) + '\n[...]\n' + passages.join('\n')).slice(0, keep);
+  return { ...r, text, fullLength: r.text.length, find: find || undefined };
 }
 
 export function makeExecutor({ folder = 'evidence', fetchFn = fetch, goal = '' } = {}) {
   return async (action) => {
     const t = String(action.type || '').toLowerCase();
-    if (t.includes('read')) return readForGoal(action.url, goal, { fetchFn });
+    if (t.includes('read')) return readForGoal(action.url, goal, { fetchFn, find: action.find || '' });
     if (t.includes('search')) return webSearch(action.query || action.detail, { fetchFn });
     if (t.includes('page') || t.includes('prototype')) return createPage(action.name || 'prototype', action.content || action.detail, folder);
     return { ok: false, error: 'unknown action: ' + action.type + ' (allowed: web_search, read_page, create_page)' };

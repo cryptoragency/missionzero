@@ -37,3 +37,20 @@ test('a PDF larger than the cap is refused without being parsed', async () => {
   assert.equal(r.ok, false);
   assert.match(r.error, /too large/);
 });
+
+test('a long report comes back as the passages matching what the planner wants to find, numbers first', async () => {
+  const { readForGoal } = await import('./tools.js');
+  const { relevantPassages } = await import('./passages.js');
+  const filler = Array.from({ length: 300 }, (_, i) => `Chapter ${i} discusses governance practices and the role of leadership in security culture programs.`).join(' ');
+  const key = 'This year, the DBIR team analyzed 22,052 real-world security incidents, of which 12,195 were confirmed data breaches.';
+  const human = 'The human element was involved in approximately 60% of breaches this year, similar to last year.';
+  const page = filler.slice(0, 8000) + '\n' + key + '\n' + filler.slice(8000) + '\n' + human;
+  const fetchFn = async () => new Response(page, { status: 200, headers: { 'content-type': 'text/html' } });
+  const r = await readForGoal('https://p.example/report', 'how many breaches were analyzed and what share involved the human element', { fetchFn, find: 'confirmed breaches analyzed, human element share' });
+  assert.ok(r.text.includes('12,195'));
+  assert.ok(r.text.includes('60%'));
+  assert.ok(r.text.length <= 6000);
+  // the number boost: with a counting query, the sentence carrying the figure ranks above a wordy one without figures
+  const [first] = relevantPassages('Breaches analyzed by the team were many and varied in nature across sectors. The team analyzed 12,195 breaches.', 'how many breaches analyzed', 2);
+  assert.match(first, /12,195/);
+});

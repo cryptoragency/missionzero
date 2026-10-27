@@ -22,17 +22,20 @@ const clampRounds = (n) => Math.max(0, Math.min(MAX_ROUNDS, Math.floor(Number(n)
 async function grade({ goal, answer, ask, verify }) {
   const check = await verify(answer.sources || []);
   let score = 0;
+  let reason = '';
   try {
     const r = await ask([
       { role: 'system', content: JUDGE_PROMPT },
       { role: 'user', content: JSON.stringify({ goal, answer: answer.answer, sources: answer.sources, verification: (check.results || []).map(({ url, verdict, detail }) => ({ url, verdict, detail })) }) },
     ], { max_tokens: 1200, tag: 'judge' });
-    const n = Number(readJson(r.text)?.score);
+    const j = readJson(r.text);
+    const n = Number(j?.score);
     score = Number.isFinite(n) ? Math.max(0, Math.min(10, n)) : 0;
+    reason = String(j?.reason || '').slice(0, 300);
   } catch { score = 0; }
   if (check.red > 0) score = Math.min(score, RED_CAP);
   if (!(answer.sources || []).length) score = Math.min(score, NO_SOURCE_CAP);
-  return { score, green: check.green, red: check.red };
+  return { score, green: check.green, red: check.red, reason };
 }
 
 // Returns the best version of the answer, its grade and the trace of every version.
