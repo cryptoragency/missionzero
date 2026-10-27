@@ -3,13 +3,18 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import { createClient } from './meta.js';
 import { run } from './loop.js';
 import { makeExecutor } from './tools.js';
-import { synthesize } from './synthesis.js';
+import { synthesize, seenUrls } from './synthesis.js';
+import { refineAnswer } from './contradictAnswer.js';
+import { verifyReport } from './verify.js';
 import { loadLessons, saveLessons, mergeLessons, distill, approvedTexts } from './memory.js';
 
 const goal = process.argv[2];
 if (!goal) { console.error('Usage: node --env-file=.env src/run.js "goal" [maxTurns] [contradictions 0-5]'); process.exit(1); }
 const maxTurns = Number(process.argv[3]) || 3;
+// Contradiction rounds apply to the FINAL ANSWER (3 by default, up to 5 while the note is bad).
+// Rounds on the plan lost the A/B of 2026-10-27; they stay available through MZ_PLAN_CONTRADICTIONS (default 0).
 const contradictions = Math.max(0, Math.min(5, Number(process.argv[4] ?? 3) || 0));
+const planContradictions = Math.max(0, Math.min(5, Number(process.env.MZ_PLAN_CONTRADICTIONS) || 0));
 const folder = 'evidence/' + new Date().toISOString().slice(0, 16).replace(/[:T]/g, '-');
 mkdirSync(folder, { recursive: true });
 
@@ -23,18 +28,21 @@ const result = await run({
   lessons: approvedTexts(past),
   budgetUsd: 1,
   maxTurns,
-  contradictions,
+  contradictions: planContradictions,
   ask,
   execute: makeExecutor({ folder }),
   approve: async () => false, // no real or paid action without a human
   memoryPath: folder + '/memory.json',
   journalPath: folder + '/journal.jsonl',
 });
-const final = await synthesize({ goal, evidence: result.evidence, ask });
+const draft = await synthesize({ goal, evidence: result.evidence, ask });
+const verify = (sources) => verifyReport({ items: sources.map((s) => ({ claim: s.contribution, url: s.url })), ask });
+const refined = await refineAnswer({ goal, answer: draft, seen: [...seenUrls(result.evidence).values()], ask, verify, rounds: contradictions });
+const final = { ...refined.answer, rejectedSources: draft.rejectedSources, judge: { score: refined.score, green: refined.green, red: refined.red, rounds: refined.rounds, versions: refined.versions } };
 const learned = mergeLessons(past, await distill({ goal, evidence: result.evidence, ask }));
 saveLessons(lessonsPath, learned.lessons);
 writeFileSync(folder + '/final-answer.json', JSON.stringify(final, null, 2));
-const summary = { goal, reached: result.reached, turns: result.turns, best: result.best, confidence: final.confidence, verifiedSources: final.sources.length, rejectedSources: final.rejectedSources, cost: client.counter, lessonsUsed: approvedTexts(past).length, lessonsLearned: learned.added.length };
+const summary = { goal, reached: result.reached, turns: result.turns, best: result.best, confidence: final.confidence, judgeScore: refined.score, verifiedGreen: refined.green, verifiedRed: refined.red, contradictionRounds: refined.rounds, verifiedSources: final.sources.length, rejectedSources: final.rejectedSources, cost: client.counter, lessonsUsed: approvedTexts(past).length, lessonsLearned: learned.added.length };
 writeFileSync(folder + '/summary.json', JSON.stringify(summary, null, 2));
 console.log(JSON.stringify(summary, null, 2));
 console.log('Evidence folder:', folder);

@@ -88,3 +88,29 @@ test('only the objections that raised the note feed the lessons', async () => {
   ] }];
   assert.deepEqual(winningObjections(evidence), ['DBIR is not a prevalence survey']);
 });
+
+test('on the final answer, a red claim caps the note and the best verified version wins', async () => {
+  const { refineAnswer, RED_CAP } = await import('./contradictAnswer.js');
+  const seen = [{ url: 'https://a.example/1' }, { url: 'https://b.example/2' }];
+  const A = (u, c) => `{"answer":"x","sources":[{"url":"${u}","contribution":"${c}"}],"confidence":5,"uncertainties":[]}`;
+  const ask = script([
+    '{"score":9}',                                     // judge v0 (capped: red)
+    '{"objections":["claim not on the page"]}',        // contradict 1
+    A('https://b.example/2', 'ok'), '{"score":8}',     // revise + judge v1 (green)
+    '{"objections":[],"flawless":true}',               // contradict 2: stop
+  ]);
+  const verify = async (sources) => ({ results: [], green: sources.some((s) => s.url.includes('b.example')) ? 1 : 0, red: sources.some((s) => s.url.includes('a.example')) ? 1 : 0 });
+  const r = await refineAnswer({ goal: 'g', answer: JSON.parse(A('https://a.example/1', 'bad')), seen, ask, verify, rounds: 3 });
+  assert.equal(r.versions[0].score, RED_CAP);
+  assert.equal(r.score, 8);
+  assert.equal(r.answer.sources[0].url, 'https://b.example/2');
+  assert.equal(r.rounds, 1);
+});
+
+test('a revised answer citing an unseen URL loses that source', async () => {
+  const { refineAnswer, NO_SOURCE_CAP } = await import('./contradictAnswer.js');
+  const ask = script(['{"score":4}', '{"objections":["x"]}', '{"answer":"y","sources":[{"url":"https://invented.example/z","contribution":"c"}],"confidence":9}', '{"score":9}']);
+  const r = await refineAnswer({ goal: 'g', answer: { answer: 'x', sources: [] }, seen: [], ask, verify: async () => ({ results: [], green: 0, red: 0 }), rounds: 1, escalate: false });
+  assert.equal(r.versions[1].score, NO_SOURCE_CAP);
+  assert.deepEqual(r.answer.sources, []);
+});
