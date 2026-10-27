@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "goal": "In the Verizon 2025 Data Breach Investigations Report, how many confirmed breaches were analyzed and what share of breaches involved the human element? Cite the report itself.",
+    "why": "Primary source is a 117-page PDF: shows the PDF reader and the goal-relevant passages.",
+    "expected": "12,195 confirmed breaches (22,052 incidents); human element in about 60% of breaches."
+  },
+  {
+    "id": 2,
+    "goal": "Under the GDPR (Regulation 2016/679), what is the maximum administrative fine in euros and as a percentage of worldwide annual turnover, and which article sets it? Cite the official text.",
+    "why": "Exact legal figures, verifiable on EUR-Lex: shows the verifier catching rounded or wrong numbers.",
+    "expected": "Up to 20 000 000 EUR or 4% of total worldwide annual turnover, whichever is higher; Article 83(5)."
+  },
+  {
+    "id": 3,
+    "goal": "In NIST SP 800-63B (latest revision), what minimum password length must a verifier require for a user-chosen memorized secret, and what maximum length must it at least allow? Cite NIST.",
+    "why": "Two precise numbers in a long standard, with a trap (8 vs 15 characters depending on the revision and on single-factor use).",
+    "expected": "Rev. 4 (2025): at least 8 characters, 15 when used as a single factor; verifiers must allow at least 64 characters."
+  },
+  {
+    "id": 4,
+    "goal": "What is the most recent major version of the CVSS specification published by FIRST, in which year was it released, and what score range is rated Critical? Cite first.org.",
+    "why": "Recent fact, easy to get wrong from old blogs: shows the contradictor rejecting a stale secondary source.",
+    "expected": "CVSS v4.0, released November 2023; Critical = 9.0 to 10.0."
+  },
+  {
+    "id": 5,
+    "goal": "How many measures does the ANSSI 'Guide d'hygiène informatique' list, and what is the version and publication date of its current edition? Cite the ANSSI document.",
+    "why": "French public source, PDF, the agency's own domain: shows the loop working outside English pages.",
+    "expected": "42 measures; version 2.0, September 2017."
+  }
+]

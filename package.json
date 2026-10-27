@@ -7,7 +7,8 @@
   "scripts": {
     "web": "node web/server.js",
     "check-key": "node --env-file=.env src/check-key.js",
-    "test": "node --test src/loop.test.js src/pdf.test.js web/server.test.js"
+    "test": "node --test src/loop.test.js src/pdf.test.js web/server.test.js",
+    "demo": "node --env-file=.env bench/run-demo.js"
   },
   "dependencies": {
     "pdfjs-dist": "^6.4.299"
