@@ -93,9 +93,7 @@ npm run verify-chain -- evidence/repair-<date>             # recompute the hashe
 | F02 | versions disclosed | proposed | Server and X-Powered-By removed | 0 green |
 | F10 | robots.txt lists sensitive paths | proposed | sensitive Disallow entries removed | 3 green |
 
-15 findings, 15 fixes proposed, 7/7 vital journeys green after every proposed fix, every copy rescanned clean. 17 attempts, 194 model calls, **$1.10 in total** (about 7 cents per finding). Every proposed fix is a patch in its evidence folder; the whole run is in  with its report page and its hashed journal (> mission-zero@0.1.0 verify-chain
-> node bench/verify-chain.js examples/repair-maison-verde
-chain intact: 6 records, head 11c237693cf596cd254050b537e101b7f49c7e574ec7e06021c2691499d40215).
+15 findings, 15 fixes proposed, 7/7 vital journeys green after every proposed fix, every copy rescanned clean. 17 attempts, 194 model calls, **$1.10 in total** (about 7 cents per finding). Every proposed fix is a patch in its evidence folder. The merged report page of the 15 findings and the last run (F01, F06) with its patches and its hashed journal are in `examples/repair-maison-verde/`: open `report.html`, and check the journal with `npm run verify-chain -- examples/repair-maison-verde` (6 records, intact).
 
 ## Trust: built for companies that cannot afford a mistake
 
