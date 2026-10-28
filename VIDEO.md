@@ -45,3 +45,11 @@ flawed shop and the four trust points that let a large company run it, in this o
 | Patch out | the proposed fix as a patch for their own review and deployment | a human applies it |
 
 Narration by the founder (own voice), 3 minutes. Build only on his word.
+
+Added 28 October (afternoon), three more scenes for the final video, all from real runs:
+
+| Scene | On screen | Point made |
+|---|---|---|
+| Spoken goal | the founder says the goal into the microphone; the WAV, the transcript, the cleaned goal, the mission starting | muse-voice-transcribe: talk to it |
+| The look | after the F05 fix: journeys green, scanner silent, then Muse Spark looking at the checkout: « form is incomplete », SAM 5 fields → 2, fix REJECTED | vision catches what HTTP tests cannot |
+| Back to zero | the agent's decision (rule, reason), its lessons archived by itself, the mission rerun knowing nothing, the two answers compared, the one kept | Mission Zero returns to zero by itself |
