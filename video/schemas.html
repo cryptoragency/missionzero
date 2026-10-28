@@ -1,49 +1,71 @@
 <title>Mission Zero schémas</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
-:root { --bg:#f6f7fb; --fg:#0f2446; --mut:#5b6679; --line:#c9cfdb; --card:#ffffff; --acc:#b8922e; --ok:#1e8e5a; --red:#c0392b; --warn:#d08a1a; --soft:#eef1f7; }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#0b1322; --fg:#eef2f8; --mut:#a3adc2; --line:#2a3650; --card:#121c2f; --acc:#d4b25a; --ok:#3fbf7f; --red:#e4645a; --warn:#e3a43a; --soft:#182440; color-scheme: dark; } }
-:root[data-theme="dark"] { --bg:#0b1322; --fg:#eef2f8; --mut:#a3adc2; --line:#2a3650; --card:#121c2f; --acc:#d4b25a; --ok:#3fbf7f; --red:#e4645a; --warn:#e3a43a; --soft:#182440; color-scheme: dark; }
+/* Une seule ambiance, celle de la carte ARGUS : nuit, néon menthe, bleu. */
+:root { --bg:#0d1526; --fg:#eef2fd; --mut:#a9b4cc; --line:rgba(255,255,255,.14); --card:rgba(255,255,255,.05); --acc:#2ee6a0; --accs:rgba(46,230,160,.45); --blue:#2d55d4; --blues:rgba(45,85,212,.45); --red:#ff6b61; --reds:rgba(180,35,24,.5); --amber:#ffe08a; --mint:#c9fff0; color-scheme: dark; }
 body { background:var(--bg); color:var(--fg); font-family: "Segoe UI", system-ui, sans-serif; margin:0; padding-block:24px; padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px)); }
 .wrap { max-width: 1100px; margin: 0 auto; display:grid; gap:28px; }
 h1 { font-size: 1.6rem; margin:0; text-wrap: balance; }
 h1 small { display:block; font-weight:400; color:var(--mut); font-size:1rem; margin-top:4px; }
-.scene { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:18px; display:grid; gap:12px; min-width:0; }
+.scene { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px; display:grid; gap:12px; min-width:0; box-shadow: 0 0 0 1px rgba(46,230,160,.08), 0 12px 40px rgba(0,0,0,.35); }
 .scene header { display:flex; flex-wrap:wrap; gap:10px; align-items:baseline; justify-content:space-between; }
 .scene h2 { margin:0; font-size:1.15rem; }
 .scene .t { color:var(--acc); font-size:.85rem; letter-spacing:.06em; text-transform:uppercase; }
-.sub { color:var(--mut); font-size:.95rem; }
-svg { width:100%; height:auto; display:block; font-family: "Segoe UI", system-ui, sans-serif; }
-.step { opacity:0; transition: opacity .5s ease, transform .5s ease; transform: translateY(6px); }
-.step.on { opacity:1; transform:none; }
-.box { fill:var(--soft); stroke:var(--line); stroke-width:1.5; }
-.box.gold { stroke:var(--acc); stroke-width:2.5; }
-.box.ok { stroke:var(--ok); } .box.red { stroke:var(--red); } .box.warn { stroke:var(--warn); }
+svg { width:100%; height:auto; display:block; font-family: "Segoe UI", system-ui, sans-serif; overflow:visible; }
+/* Cases : apparaissent en s'agrandissant, puis reprennent leur taille. */
+.b { opacity:0; transform-box: fill-box; transform-origin: center; }
+.b.on { animation: pop .9s cubic-bezier(.2,.8,.2,1) forwards; }
+.b.focus rect, .b.focus circle { filter: drop-shadow(0 0 10px var(--accs)); }
+@keyframes pop { 0% { opacity:0; transform: scale(.8); } 55% { opacity:1; transform: scale(1.12); } 100% { opacity:1; transform: scale(1); } }
+.box { fill:rgba(255,255,255,.06); stroke:var(--line); stroke-width:1.5; }
+.box.gold { stroke:var(--acc); stroke-width:2.5; fill:rgba(46,230,160,.08); }
+.box.blue { stroke:var(--blue); stroke-width:2; fill:rgba(45,85,212,.14); }
+.box.ok { stroke:var(--acc); fill:rgba(46,230,160,.08); } .box.red { stroke:var(--red); fill:rgba(180,35,24,.18); }
 .lbl { fill:var(--fg); font-size:15px; font-weight:600; }
 .lbl.s { font-size:12.5px; font-weight:400; fill:var(--mut); }
-.lbl.en { font-size:11.5px; font-weight:400; fill:var(--mut); font-style:italic; }
-.arrow { stroke:var(--mut); stroke-width:2; fill:none; marker-end:url(#m); }
-.arrow.ok { stroke:var(--ok); } .arrow.red { stroke:var(--red); }
-.dot { fill:var(--ok); } .dot.red { fill:var(--red); } .dot.warn { fill:var(--warn); }
+.lbl.en { font-size:11.5px; font-weight:400; fill:var(--mint); font-style:italic; opacity:.8; }
+.lbl.acc { fill:var(--acc); } .lbl.red { fill:var(--red); }
+/* Flèches : se dessinent comme une barre de chargement, un point lumineux court devant. */
+.a { opacity:1; }
+.arrow { stroke:rgba(46,230,160,.75); stroke-width:3.5; stroke-linecap:round; stroke-linejoin:round; fill:none; stroke-dasharray:1; stroke-dashoffset:1; transition: stroke-dashoffset .9s linear; filter: drop-shadow(0 0 4px rgba(46,230,160,.55)); }
+.arrow.red { filter: drop-shadow(0 0 4px rgba(255,107,97,.6)); }
+.a.on .arrow { stroke-dashoffset:0; }
+.a.drawn .arrow { marker-end:url(#m); }
+.a.drawn .arrow.ok { marker-end:url(#mok); } .a.drawn .arrow.red { marker-end:url(#mred); }
+.arrow.ok { stroke:var(--acc); } .arrow.red { stroke:var(--red); } .arrow.dash { stroke-dasharray:1; }
+.runner { fill:#ffffff; r:6px; filter: drop-shadow(0 0 8px var(--acc)) drop-shadow(0 0 16px var(--acc)); opacity:0; }
+.runner.go { opacity:1; }
+.dot { fill:var(--acc); } .dot.red { fill:var(--red); }
+.dot-lbl { fill:#0d1526; font-size:14px; font-weight:700; }
 .bar { display:flex; flex-wrap:wrap; gap:8px; }
-button { background:var(--soft); color:var(--fg); border:1px solid var(--line); border-radius:8px; padding:8px 12px; font:inherit; cursor:pointer; }
+button { background:rgba(255,255,255,.06); color:var(--fg); border:1px solid var(--line); border-radius:8px; padding:8px 12px; font:inherit; cursor:pointer; }
 button:hover { border-color:var(--acc); }
-.caption { min-height:2.4em; font-size:1rem; }
+.caption { min-height:2.4em; font-size:1.05rem; }
 .caption b { color:var(--acc); }
 </style>
 <div class="wrap">
-  <h1>Mission Zero, en trois schémas <small>Pour la vidéo : chaque schéma se construit pièce par pièce, au rythme de la voix. Boutons « Rejouer » et « Tout afficher ».</small></h1>
+  <h1>Mission Zero, en trois schémas <small>Les flèches se dessinent dans le sens de l'histoire, chaque case s'agrandit à son tour. « Rejouer » et « Tout afficher ».</small></h1>
+
+  <svg width="0" height="0" style="position:absolute"><defs>
+    <marker id="m" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="6" markerHeight="6" markerUnits="strokeWidth" orient="auto"><path d="M1,1 L11,6 L1,11 L4,6 z" fill="#2ee6a0" opacity=".85" stroke="#2ee6a0" stroke-width="1" stroke-linejoin="round"/></marker>
+    <marker id="mok" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="6" markerHeight="6" markerUnits="strokeWidth" orient="auto"><path d="M1,1 L11,6 L1,11 L4,6 z" fill="#2ee6a0" stroke="#2ee6a0" stroke-width="1" stroke-linejoin="round"/></marker>
+    <marker id="mred" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="6" markerHeight="6" markerUnits="strokeWidth" orient="auto"><path d="M1,1 L11,6 L1,11 L4,6 z" fill="#ff6b61" stroke="#ff6b61" stroke-width="1" stroke-linejoin="round"/></marker>
+  </defs></svg>
 
   <section class="scene" id="s1">
-    <header><h2>1 · Ce qui arrive, et ce qu'on fait</h2><span class="t">scène 0 et 5</span></header>
+    <header><h2>1 · Ce qui arrive, et ce qu'on fait</h2><span class="t">scènes 0 et 5</span></header>
     <svg viewBox="0 0 1000 300" role="img" aria-label="Un scanner trouve, Mission Zero répare sur une copie, un humain applique">
-      <defs><marker id="m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" style="color:var(--mut)"/></marker></defs>
-      <g class="step" data-k="1"><rect class="box" x="20" y="90" width="200" height="110" rx="14"/><text class="lbl" x="120" y="135" text-anchor="middle">Votre site</text><text class="lbl s" x="120" y="158" text-anchor="middle">sites, serveurs, applications</text><text class="lbl en" x="120" y="180" text-anchor="middle">your systems</text></g>
-      <g class="step" data-k="2"><rect class="box red" x="60" y="20" width="120" height="44" rx="10"/><text class="lbl" x="120" y="48" text-anchor="middle" style="fill:var(--red)">faille</text><path class="arrow red" d="M120 64 L120 88"/></g>
-      <g class="step" data-k="3"><path class="arrow" d="M222 145 L300 145"/><rect class="box" x="302" y="90" width="190" height="110" rx="14"/><text class="lbl" x="397" y="135" text-anchor="middle">Un scanner</text><text class="lbl s" x="397" y="158" text-anchor="middle">n'importe lequel : ARGUS, CVE…</text><text class="lbl en" x="397" y="180" text-anchor="middle">any scanner</text></g>
-      <g class="step" data-k="4"><path class="arrow" d="M494 145 L572 145"/><rect class="box gold" x="574" y="70" width="230" height="150" rx="14"/><text class="lbl" x="689" y="112" text-anchor="middle" style="font-size:18px">Mission Zero</text><text class="lbl s" x="689" y="138" text-anchor="middle">cherche le correctif, le prouve</text><text class="lbl s" x="689" y="158" text-anchor="middle">sur une COPIE du site</text><text class="lbl s" x="689" y="178" text-anchor="middle">jamais sur le site lui-même</text><text class="lbl en" x="689" y="202" text-anchor="middle">on a copy, never the site</text></g>
-      <g class="step" data-k="5"><path class="arrow ok" d="M806 145 L880 145"/><rect class="box ok" x="882" y="90" width="100" height="110" rx="14"/><text class="lbl" x="932" y="135" text-anchor="middle">Patch</text><text class="lbl s" x="932" y="158" text-anchor="middle">+ preuves</text><text class="lbl en" x="932" y="180" text-anchor="middle">a human applies</text></g>
-      <g class="step" data-k="6"><path class="arrow" d="M932 202 L932 255"/><text class="lbl" x="932" y="280" text-anchor="middle" style="fill:var(--acc)">👤 vous validez</text></g>
+      <g class="b" data-k="1"><rect class="box blue" x="20" y="90" width="200" height="110" rx="14"/><text class="lbl" x="120" y="135" text-anchor="middle">Votre site</text><text class="lbl s" x="120" y="158" text-anchor="middle">sites, serveurs, applications</text><text class="lbl en" x="120" y="180" text-anchor="middle">your systems</text></g>
+      <g class="b" data-k="2"><rect class="box red" x="60" y="20" width="120" height="44" rx="10"/><text class="lbl red" x="120" y="48" text-anchor="middle">faille</text></g>
+      <g class="a" data-k="3"><path class="arrow red" pathLength="1" d="M120 66 L120 88"/></g>
+      <g class="a" data-k="4"><path class="arrow" pathLength="1" d="M222 145 L300 145"/></g>
+      <g class="b" data-k="5"><rect class="box" x="302" y="90" width="190" height="110" rx="14"/><text class="lbl" x="397" y="135" text-anchor="middle">Un scanner</text><text class="lbl s" x="397" y="158" text-anchor="middle">n'importe lequel : ARGUS, CVE…</text><text class="lbl en" x="397" y="180" text-anchor="middle">any scanner</text></g>
+      <g class="a" data-k="6"><path class="arrow" pathLength="1" d="M494 145 L572 145"/></g>
+      <g class="b" data-k="7"><rect class="box gold" x="574" y="70" width="230" height="150" rx="14"/><text class="lbl acc" x="689" y="112" text-anchor="middle" style="font-size:18px">Mission Zero</text><text class="lbl s" x="689" y="138" text-anchor="middle">cherche le correctif, le prouve</text><text class="lbl s" x="689" y="158" text-anchor="middle">sur une COPIE du site</text><text class="lbl s" x="689" y="178" text-anchor="middle">jamais sur le site lui-même</text><text class="lbl en" x="689" y="202" text-anchor="middle">on a copy, never the site</text></g>
+      <g class="a" data-k="8"><path class="arrow ok" pathLength="1" d="M806 145 L880 145"/></g>
+      <g class="b" data-k="9"><rect class="box ok" x="882" y="90" width="100" height="110" rx="14"/><text class="lbl" x="932" y="135" text-anchor="middle">Patch</text><text class="lbl s" x="932" y="158" text-anchor="middle">+ preuves</text><text class="lbl en" x="932" y="180" text-anchor="middle">a human applies</text></g>
+      <g class="a" data-k="10"><path class="arrow ok" pathLength="1" d="M932 202 L932 250"/></g>
+      <g class="b" data-k="11"><text class="lbl acc" x="932" y="280" text-anchor="middle">👤 vous validez</text></g>
     </svg>
     <div class="caption" id="c1"></div>
     <div class="bar"><button data-play="s1">▶ Rejouer</button><button data-all="s1">Tout afficher</button></div>
@@ -51,17 +73,27 @@ button:hover { border-color:var(--acc); }
 
   <section class="scene" id="s2">
     <header><h2>2 · Les cinq contrôles, et l'IA qui se dit non</h2><span class="t">scènes 6 à 9</span></header>
-    <svg viewBox="0 0 1000 360" role="img" aria-label="Le correctif passe cinq contrôles ; un rouge et il est refusé">
-      <g class="step" data-k="1"><rect class="box gold" x="20" y="130" width="170" height="90" rx="14"/><text class="lbl" x="105" y="168" text-anchor="middle">Correctif proposé</text><text class="lbl s" x="105" y="192" text-anchor="middle">sur la copie</text></g>
-      <g class="step" data-k="2"><path class="arrow" d="M192 175 L250 175"/><rect class="box ok" x="252" y="40" width="130" height="64" rx="10"/><text class="lbl" x="317" y="66" text-anchor="middle">1 · Parcours</text><text class="lbl s" x="317" y="88" text-anchor="middle">les tests du client</text><path class="arrow" d="M250 175 L250 72 L250 72"/></g>
-      <g class="step" data-k="3"><rect class="box ok" x="252" y="112" width="130" height="64" rx="10"/><text class="lbl" x="317" y="138" text-anchor="middle">2 · Rescan</text><text class="lbl s" x="317" y="160" text-anchor="middle">la faille a disparu ?</text></g>
-      <g class="step" data-k="4"><rect class="box ok" x="252" y="184" width="130" height="64" rx="10"/><text class="lbl" x="317" y="210" text-anchor="middle">3 · Regard</text><text class="lbl s" x="317" y="232" text-anchor="middle">Muse Spark + SAM 3.1</text></g>
-      <g class="step" data-k="5"><rect class="box ok" x="252" y="256" width="130" height="64" rx="10"/><text class="lbl" x="317" y="282" text-anchor="middle">4 · Relecture</text><text class="lbl s" x="317" y="304" text-anchor="middle">cause ou symptôme ?</text></g>
-      <g class="step" data-k="6"><rect class="box ok" x="252" y="328" width="130" height="28" rx="8"/><text class="lbl s" x="317" y="347" text-anchor="middle" style="fill:var(--fg)">5 · Réserves écrites</text></g>
-      <g class="step" data-k="7"><path class="arrow" d="M384 72 L470 175"/><path class="arrow" d="M384 144 L470 175"/><path class="arrow" d="M384 216 L470 175"/><path class="arrow" d="M384 288 L470 175"/><circle class="dot" cx="520" cy="175" r="34"/><text class="lbl" x="520" y="181" text-anchor="middle" style="fill:#fff">tout vert</text></g>
-      <g class="step" data-k="8"><path class="arrow ok" d="M556 175 L640 175"/><rect class="box ok" x="642" y="140" width="150" height="70" rx="12"/><text class="lbl" x="717" y="170" text-anchor="middle">Proposé</text><text class="lbl s" x="717" y="192" text-anchor="middle">patch + preuves</text></g>
-      <g class="step" data-k="9"><circle class="dot red" cx="520" cy="290" r="34"/><text class="lbl" x="520" y="296" text-anchor="middle" style="fill:#fff">un rouge</text><path class="arrow red" d="M556 290 L640 290"/><rect class="box red" x="642" y="255" width="150" height="70" rx="12"/><text class="lbl" x="717" y="285" text-anchor="middle" style="fill:var(--red)">Refusé</text><text class="lbl s" x="717" y="307" text-anchor="middle">par lui-même, et il réessaie</text></g>
-      <g class="step" data-k="10"><path class="arrow" d="M717 253 C 760 230, 760 230, 800 200"/><text class="lbl s" x="860" y="120" text-anchor="middle" style="fill:var(--acc)">Une IA qui dit non</text><text class="lbl s" x="860" y="140" text-anchor="middle" style="fill:var(--acc)">à elle-même</text><text class="lbl en" x="860" y="160" text-anchor="middle">an AI that says no to itself</text></g>
+    <svg viewBox="0 0 1000 395" role="img" aria-label="Le correctif passe cinq contrôles ; un rouge et il est refusé">
+      <g class="b" data-k="1"><rect class="box gold" x="20" y="130" width="170" height="90" rx="14"/><text class="lbl acc" x="105" y="168" text-anchor="middle">Correctif proposé</text><text class="lbl s" x="105" y="192" text-anchor="middle">sur la copie</text></g>
+      <g class="a" data-k="2"><path class="arrow" pathLength="1" d="M192 175 L232 175 L232 72 L250 72"/></g>
+      <g class="b" data-k="3"><rect class="box ok" x="252" y="40" width="130" height="64" rx="10"/><text class="lbl" x="317" y="66" text-anchor="middle">1 · Parcours</text><text class="lbl s" x="317" y="88" text-anchor="middle">les tests du client</text></g>
+      <g class="a" data-k="4"><path class="arrow" pathLength="1" d="M232 100 L232 144 L250 144"/></g>
+      <g class="b" data-k="5"><rect class="box ok" x="252" y="112" width="130" height="64" rx="10"/><text class="lbl" x="317" y="138" text-anchor="middle">2 · Rescan</text><text class="lbl s" x="317" y="160" text-anchor="middle">la faille a disparu ?</text></g>
+      <g class="a" data-k="6"><path class="arrow" pathLength="1" d="M232 172 L232 216 L250 216"/></g>
+      <g class="b" data-k="7"><rect class="box ok" x="252" y="184" width="130" height="64" rx="10"/><text class="lbl" x="317" y="210" text-anchor="middle">3 · Regard</text><text class="lbl s" x="317" y="232" text-anchor="middle">Muse Spark + SAM 3.1</text></g>
+      <g class="a" data-k="8"><path class="arrow" pathLength="1" d="M232 244 L232 288 L250 288"/></g>
+      <g class="b" data-k="9"><rect class="box ok" x="252" y="256" width="130" height="64" rx="10"/><text class="lbl" x="317" y="282" text-anchor="middle">4 · Relecture</text><text class="lbl s" x="317" y="304" text-anchor="middle">cause ou symptôme ?</text></g>
+      <g class="a" data-k="10"><path class="arrow" pathLength="1" d="M232 316 L232 345 L250 345"/></g>
+      <g class="b" data-k="11"><rect class="box ok" x="252" y="330" width="130" height="30" rx="8"/><text class="lbl s" x="317" y="350" text-anchor="middle" style="fill:var(--fg)">5 · Réserves écrites</text></g>
+      <g class="a" data-k="12"><path class="arrow" pathLength="1" d="M384 72 L470 175"/><path class="arrow" pathLength="1" d="M384 144 L470 175"/><path class="arrow" pathLength="1" d="M384 216 L470 175"/><path class="arrow" pathLength="1" d="M384 288 L470 175"/></g>
+      <g class="b" data-k="13"><circle class="dot" cx="520" cy="175" r="34"/><text class="dot-lbl" x="520" y="180" text-anchor="middle">tout vert</text></g>
+      <g class="a" data-k="14"><path class="arrow ok" pathLength="1" d="M556 175 L640 175"/></g>
+      <g class="b" data-k="15"><rect class="box ok" x="642" y="140" width="150" height="70" rx="12"/><text class="lbl acc" x="717" y="170" text-anchor="middle">Proposé</text><text class="lbl s" x="717" y="192" text-anchor="middle">patch + preuves</text></g>
+      <g class="b" data-k="16"><circle class="dot red" cx="520" cy="290" r="34"/><text class="dot-lbl" x="520" y="295" text-anchor="middle">un rouge</text></g>
+      <g class="a" data-k="17"><path class="arrow red" pathLength="1" d="M556 290 L640 290"/></g>
+      <g class="b" data-k="18"><rect class="box red" x="642" y="255" width="150" height="70" rx="12"/><text class="lbl red" x="717" y="285" text-anchor="middle">Refusé</text><text class="lbl s" x="717" y="307" text-anchor="middle">par lui-même, et il réessaie</text></g>
+      <g class="a" data-k="19"><path class="arrow red" pathLength="1" d="M717 327 L717 378 L105 378 L105 226"/></g>
+      <g class="b" data-k="20"><text class="lbl acc" x="880" y="120" text-anchor="middle">Une IA qui dit non</text><text class="lbl acc" x="880" y="142" text-anchor="middle">à elle-même</text><text class="lbl en" x="880" y="164" text-anchor="middle">an AI that says no to itself</text></g>
     </svg>
     <div class="caption" id="c2"></div>
     <div class="bar"><button data-play="s2">▶ Rejouer</button><button data-all="s2">Tout afficher</button></div>
@@ -69,13 +101,16 @@ button:hover { border-color:var(--acc); }
 
   <section class="scene" id="s3">
     <header><h2>3 · Chez vous, avec MYTHOZOR</h2><span class="t">scènes 10 et 12</span></header>
-    <svg viewBox="0 0 1000 300" role="img" aria-label="ARGUS surveille, Mission Zero répare, vous validez, chez vous">
-      <g class="step" data-k="1"><rect class="box" x="20" y="30" width="960" height="240" rx="18" style="stroke-dasharray:8 6"/><text class="lbl s" x="40" y="58">🏠 Chez vous : vos serveurs ou votre cloud, modèle en poids ouverts, vos secrets masqués, rien ne sort</text><text class="lbl en" x="40" y="78">on your premises, open weights, secrets masked, nothing leaves</text></g>
-      <g class="step" data-k="2"><rect class="box gold" x="60" y="120" width="220" height="100" rx="14"/><text class="lbl" x="170" y="158" text-anchor="middle">ARGUS surveille</text><text class="lbl s" x="170" y="182" text-anchor="middle">le scanner de MYTHOZOR, en continu</text><text class="lbl en" x="170" y="204" text-anchor="middle">ARGUS watches</text></g>
-      <g class="step" data-k="3"><path class="arrow" d="M282 170 L376 170"/><rect class="box gold" x="378" y="120" width="240" height="100" rx="14"/><text class="lbl" x="498" y="158" text-anchor="middle">Mission Zero répare</text><text class="lbl s" x="498" y="182" text-anchor="middle">sur une copie, avec preuves</text><text class="lbl en" x="498" y="204" text-anchor="middle">Mission Zero repairs</text></g>
-      <g class="step" data-k="4"><path class="arrow ok" d="M620 170 L714 170"/><rect class="box ok" x="716" y="120" width="220" height="100" rx="14"/><text class="lbl" x="826" y="158" text-anchor="middle">Vous validez</text><text class="lbl s" x="826" y="182" text-anchor="middle">dans votre espace, un clic</text><text class="lbl en" x="826" y="204" text-anchor="middle">you approve</text></g>
-      <g class="step" data-k="5"><path class="arrow" d="M826 222 C 826 248, 170 248, 170 222" style="stroke-dasharray:6 5"/><text class="lbl s" x="498" y="262" text-anchor="middle" style="fill:var(--acc)">et ARGUS vérifie à nouveau · and ARGUS checks again</text></g>
-      <g class="step" data-k="6"><text class="lbl" x="500" y="292" text-anchor="middle" style="fill:var(--acc)">MYTHOZOR.com · un produit de CRYPTOR.AGENCY</text></g>
+    <svg viewBox="0 0 1000 310" role="img" aria-label="ARGUS surveille, Mission Zero répare, vous validez, chez vous">
+      <g class="b" data-k="1"><rect class="box blue" x="20" y="30" width="960" height="245" rx="18" style="stroke-dasharray:8 6"/><text class="lbl s" x="40" y="58">🏠 Chez vous : vos serveurs ou votre cloud, modèle en poids ouverts, vos secrets masqués, rien ne sort</text><text class="lbl en" x="40" y="78">on your premises, open weights, secrets masked, nothing leaves</text></g>
+      <g class="b" data-k="2"><rect class="box gold" x="60" y="120" width="220" height="100" rx="14"/><text class="lbl acc" x="170" y="158" text-anchor="middle">ARGUS surveille</text><text class="lbl s" x="170" y="182" text-anchor="middle">le scanner de MYTHOZOR, en continu</text><text class="lbl en" x="170" y="204" text-anchor="middle">ARGUS watches</text></g>
+      <g class="a" data-k="3"><path class="arrow" pathLength="1" d="M282 170 L376 170"/></g>
+      <g class="b" data-k="4"><rect class="box gold" x="378" y="120" width="240" height="100" rx="14"/><text class="lbl acc" x="498" y="158" text-anchor="middle">Mission Zero répare</text><text class="lbl s" x="498" y="182" text-anchor="middle">sur une copie, avec preuves</text><text class="lbl en" x="498" y="204" text-anchor="middle">Mission Zero repairs</text></g>
+      <g class="a" data-k="5"><path class="arrow ok" pathLength="1" d="M620 170 L714 170"/></g>
+      <g class="b" data-k="6"><rect class="box ok" x="716" y="120" width="220" height="100" rx="14"/><text class="lbl" x="826" y="158" text-anchor="middle">Vous validez</text><text class="lbl s" x="826" y="182" text-anchor="middle">dans votre espace, un clic</text><text class="lbl en" x="826" y="204" text-anchor="middle">you approve</text></g>
+      <g class="a" data-k="7"><path class="arrow" pathLength="1" d="M826 222 C 826 250, 170 250, 170 222"/></g>
+      <g class="b" data-k="8"><text class="lbl s" x="498" y="262" text-anchor="middle" style="fill:var(--acc)">et ARGUS vérifie à nouveau · and ARGUS checks again</text></g>
+      <g class="b" data-k="9"><text class="lbl acc" x="500" y="300" text-anchor="middle">MYTHOZOR.com · un produit de CRYPTOR.AGENCY</text></g>
     </svg>
     <div class="caption" id="c3"></div>
     <div class="bar"><button data-play="s3">▶ Rejouer</button><button data-all="s3">Tout afficher</button></div>
@@ -83,19 +118,44 @@ button:hover { border-color:var(--acc); }
 </div>
 <script>
 (function () {
+  var SVGNS = 'http://www.w3.org/2000/svg', XLINK = 'http://www.w3.org/1999/xlink';
+  // null = la phrase précédente reste pendant que la flèche se dessine.
   var CAP = {
-    s1: ['Votre site tourne.', 'Une faille. Ça arrive, c\'est certain.', 'Un scanner la trouve. N\'importe lequel : ARGUS, un scanner de CVE, un outil d\'infrastructure.', '<b>Mission Zero</b> cherche le correctif et le prouve sur une copie. Jamais sur le site lui-même.', 'Vous recevez un patch, avec les preuves.', 'Et c\'est vous qui appliquez.'],
-    s2: ['Un correctif est proposé, sur la copie.', 'Contrôle 1 : les parcours vitaux du client sont rejoués.', 'Contrôle 2 : le scanner repasse, la faille doit avoir disparu.', 'Contrôle 3 : Muse Spark regarde la page comme un client, SAM compte les champs.', 'Contrôle 4 : il relit son propre patch. Cause corrigée, ou symptôme caché ?', 'Contrôle 5 : ce qu\'il n\'est pas sûr de prouver, il l\'écrit.', 'Tout vert ?', 'Le correctif est <b>proposé</b>, avec le patch et les preuves.', 'Un seul rouge ? <b>Refusé</b>, par lui-même. Il lit pourquoi, et réessaie.', 'Une IA qui dit non à elle-même.'],
-    s3: ['Tout tourne chez vous. Modèle en poids ouverts, secrets masqués, rien ne sort.', '<b>ARGUS</b> surveille, en continu.', '<b>Mission Zero</b> répare, sur une copie, avec preuves.', 'Vous validez, en un clic, dans votre espace.', 'Et ARGUS vérifie à nouveau.', 'MYTHOZOR.com, un produit de CRYPTOR.AGENCY.']
+    s1: ['Votre site tourne.', 'Une faille. Ça arrive, c\'est certain.', null, null, 'Un scanner la trouve. N\'importe lequel : ARGUS, un scanner de CVE, un outil d\'infrastructure.', null, '<b>Mission Zero</b> cherche le correctif et le prouve sur une copie. Jamais sur le site lui-même.', null, 'Vous recevez un patch, avec les preuves.', null, 'Et c\'est vous qui appliquez.'],
+    s2: ['Un correctif est proposé, sur la copie.', null, 'Contrôle 1 : les parcours vitaux du client sont rejoués.', null, 'Contrôle 2 : le scanner repasse, la faille doit avoir disparu.', null, 'Contrôle 3 : Muse Spark regarde la page comme un client, SAM compte les champs.', null, 'Contrôle 4 : il relit son propre patch. Cause corrigée, ou symptôme caché ?', null, 'Contrôle 5 : ce qu\'il n\'est pas sûr de prouver, il l\'écrit.', null, 'Tout vert ?', null, 'Le correctif est <b>proposé</b>, avec le patch et les preuves.', 'Un seul rouge ?', null, '<b>Refusé</b>, par lui-même.', 'Il lit pourquoi, et réessaie.', 'Une IA qui dit non à elle-même.'],
+    s3: ['Tout tourne chez vous. Modèle en poids ouverts, secrets masqués, rien ne sort.', '<b>ARGUS</b> surveille, en continu.', null, '<b>Mission Zero</b> répare, sur une copie, avec preuves.', null, 'Vous validez, en un clic, dans votre espace.', null, 'Et ARGUS vérifie à nouveau.', 'MYTHOZOR.com, un produit de CRYPTOR.AGENCY.']
   };
   var timers = {};
-  function steps(id) { return Array.prototype.slice.call(document.querySelectorAll('#' + id + ' .step')); }
-  function show(id, k) { steps(id).forEach(function (s) { s.classList.toggle('on', Number(s.dataset.k) <= k); }); var c = document.getElementById('c' + id.slice(1)); c.innerHTML = CAP[id][k - 1] || ''; }
-  function play(id) { clearTimeout(timers[id]); document.getElementById(id).dataset.played = '1'; var n = steps(id).length, k = 0; show(id, 0); (function next() { k += 1; if (k > n) return; show(id, k); timers[id] = setTimeout(next, 1800); })(); }
-  function all(id) { clearTimeout(timers[id]); document.getElementById(id).dataset.played = '1'; show(id, steps(id).length); }
+  function steps(id) { return Array.prototype.slice.call(document.querySelectorAll('#' + id + ' [data-k]')); }
+  // Le point lumineux qui court le long de chaque flèche pendant qu'elle se dessine.
+  var n = 0;
+  document.querySelectorAll('.a .arrow').forEach(function (p) {
+    n += 1; p.id = p.id || 'p' + n;
+    var c = document.createElementNS(SVGNS, 'circle'); c.setAttribute('r', '6'); c.setAttribute('class', 'runner');
+    var m = document.createElementNS(SVGNS, 'animateMotion'); m.setAttribute('dur', '0.9s'); m.setAttribute('begin', 'indefinite'); m.setAttribute('fill', 'freeze');
+    var mp = document.createElementNS(SVGNS, 'mpath'); mp.setAttributeNS(XLINK, 'xlink:href', '#' + p.id); mp.setAttribute('href', '#' + p.id);
+    m.appendChild(mp); c.appendChild(m); p.parentNode.appendChild(c);
+  });
+  function fire(step) {
+    step.classList.add('on');
+    if (step.classList.contains('a')) {
+      step.querySelectorAll('.runner').forEach(function (c) { c.classList.add('go'); var m = c.querySelector('animateMotion'); try { m.beginElement(); } catch (e) { /* no SMIL: the line still draws */ } setTimeout(function () { c.classList.remove('go'); }, 950); });
+      setTimeout(function () { step.classList.add('drawn'); }, 900);
+    } else {
+      step.classList.add('focus'); setTimeout(function () { step.classList.remove('focus'); }, 1400);
+    }
+  }
+  function reset(id) { steps(id).forEach(function (s) { s.classList.remove('on', 'drawn', 'focus'); }); document.getElementById('c' + id.slice(1)).innerHTML = ''; }
+  function caption(id, k) { var t = CAP[id][k - 1]; if (t) document.getElementById('c' + id.slice(1)).innerHTML = t; }
+  function play(id) {
+    clearTimeout(timers[id]); document.getElementById(id).dataset.played = '1'; reset(id);
+    var list = steps(id), k = 0;
+    (function next() { if (k >= list.length) return; var s = list[k]; k += 1; fire(s); caption(id, k); timers[id] = setTimeout(next, s.classList.contains('a') ? 1000 : 1500); })();
+  }
+  function all(id) { clearTimeout(timers[id]); document.getElementById(id).dataset.played = '1'; var list = steps(id); list.forEach(function (s) { s.classList.add('on', 'drawn'); }); caption(id, list.length); }
   document.querySelectorAll('[data-play]').forEach(function (b) { b.addEventListener('click', function () { play(b.dataset.play); }); });
   document.querySelectorAll('[data-all]').forEach(function (b) { b.addEventListener('click', function () { all(b.dataset.all); }); });
-  var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting && !e.target.dataset.played) { e.target.dataset.played = '1'; play(e.target.id); } }); }, { threshold: 0.4 });
+  var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting && !e.target.dataset.played) play(e.target.id); }); }, { threshold: 0.4 });
   ['s1', 's2', 's3'].forEach(function (id) { io.observe(document.getElementById(id)); });
 })();
 </script>
