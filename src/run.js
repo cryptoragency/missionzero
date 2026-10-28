@@ -77,8 +77,10 @@ if (decision.reset) {
   console.log(`Kept: ${cmp.kept} (${cmp.why}).`);
 }
 
-// 3) Relearn from the answer that was kept (after a reset, the memory starts from that mission alone).
-const base = decision.reset ? [] : past;
+// 3) Relearn from the answer that was kept. After a reset: if the from-zero answer won, the memory starts from that mission
+// alone; if the memory did no harm, the archived lessons come back (the archive stays, as the trace of the decision).
+const base = decision.reset && zero.kept === 'from-zero' ? [] : past;
+if (decision.reset && zero.kept !== 'from-zero') { note(folder)({ step: 'zero', restored: past.length }); console.log(`Memory restored: ${past.length} lessons back (the archive stays).`); }
 const learned = mergeLessons(base, await distill({ goal, evidence: kept.result.evidence, ask }));
 saveLessons(lessonsPath, learned.lessons);
 writeFileSync(folder + '/final-answer.json', JSON.stringify(kept.final, null, 2));

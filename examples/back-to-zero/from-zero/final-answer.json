@@ -1,0 +1,72 @@
+{
+  "answer": "60% of confirmed breaches involved the human element in the Verizon DBIR 2025.",
+  "sources": [
+    {
+      "url": "https://www.verizon.com/business/resources/reports/2025-dbir-data-breach-investigations-report.pdf",
+      "contribution": "60% of breaches involved the human element"
+    }
+  ],
+  "confidence": 9,
+  "uncertainties": [
+    "Exact sentence wording in the full PDF may vary slightly around the 60% figure"
+  ],
+  "rejectedSources": 0,
+  "seenSources": 8,
+  "judge": {
+    "score": 10,
+    "green": 1,
+    "red": 0,
+    "rounds": 1,
+    "versions": [
+      {
+        "round": 0,
+        "score": 10,
+        "green": 1,
+        "red": 0,
+        "reason": "Figure 60% exact, primary DBIR PDF cited, verification confirms quote.",
+        "verification": [
+          {
+            "url": "https://www.verizon.com/business/resources/reports/2025-dbir-data-breach-investigations-report.pdf",
+            "claim": "60% of breaches involved the human element",
+            "verdict": "supported",
+            "detail": "we see the human involvement in breaches at 60% this year, as opposed to 61% last year"
+          }
+        ],
+        "objections": []
+      },
+      {
+        "round": 1,
+        "score": 8,
+        "green": 3,
+        "red": 0,
+        "reason": "All core 60% claims GREEN with primary Verizon PDFs; definition relies on secondary blog and extra prior-year comment unbacked.",
+        "verification": [
+          {
+            "url": "https://www.verizon.com/business/resources/reports/2025-dbir-data-breach-investigations-report.pdf",
+            "claim": "human involvement in breaches at 60% this year",
+            "verdict": "supported",
+            "detail": "we see the human involvement in breaches at 60% this year"
+          },
+          {
+            "url": "https://www98.verizon.com/business/resources/infographics/2025-dbir-public-sector-snapshot.pdf",
+            "claim": "involvement of the human element in breaches hovering around 60%",
+            "verdict": "supported",
+            "detail": "Although the involvement of the human element in breaches remained roughly the same as last year, hovering around 60%, the percentages of breaches where a third party was involved doubled, going from 15% to 30%."
+          },
+          {
+            "url": "https://www.mimecast.com/blog/verizon-60-of-breaches-involve-human-error/",
+            "claim": "60% of breaches involve a human element whether through error, manipulation, or malicious misuse",
+            "verdict": "supported",
+            "detail": "nearly 60% of breaches involve a human element, whether through error, manipulation, or malicious misuse."
+          }
+        ],
+        "objections": [
+          "The answer claims 60% of confirmed breaches but the cited contribution and verification claim only support 60% of breaches without the confirmed qualifier.",
+          "The answer gives the 60% figure for 2025 without defining what DBIR counts as the human element.",
+          "The verification detail claims 61% last year while DBIR 2024 reported 68% for the human element so the supporting quote is inaccurate."
+        ],
+        "fetched": 0
+      }
+    ]
+  }
+}

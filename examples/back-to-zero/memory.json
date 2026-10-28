@@ -1,0 +1,25 @@
+[
+  {
+    "turn": 1,
+    "action": {
+      "type": "web_search",
+      "query": "Verizon DBIR 2025 human element share",
+      "costUsd": 0,
+      "real": false
+    },
+    "ok": false,
+    "lesson": "Search found the official report links but the 60% figure so far comes only from secondary summaries, not the report itself."
+  },
+  {
+    "turn": 2,
+    "action": {
+      "type": "read_page",
+      "url": "https://www.verizon.com/business/resources/reports/2025-dbir-data-breach-investigations-report.pdf",
+      "find": "human element breaches 60% confirmed",
+      "costUsd": 0,
+      "real": false
+    },
+    "ok": true,
+    "lesson": "The PDF text directly supplied the 60% human-element figure with page context."
+  }
+]

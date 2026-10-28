@@ -1,0 +1,25 @@
+{
+  "decision": {
+    "reset": true,
+    "rule": "forced",
+    "reason": "reset requested for the experiment"
+  },
+  "archive": {
+    "archived": "memory\\archive\\lessons-2026-10-28T09-35-53-040Z.json",
+    "count": 30
+  },
+  "withMemory": {
+    "score": 10,
+    "green": 1,
+    "red": 0,
+    "usd": 0.03122075
+  },
+  "fromZero": {
+    "score": 10,
+    "green": 1,
+    "red": 0,
+    "usd": 0.05443850000000001
+  },
+  "kept": "with-memory",
+  "why": "same result either way: the memory did no harm"
+}

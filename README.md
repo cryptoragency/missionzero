@@ -109,6 +109,18 @@ First real measurements (28 October): voice, an 11-second goal transcribed in 3.
 
 What vision caught that HTTP tests did not (28 October, `--vision` on F05): the model's fix removed the card inputs and left their labels. The 7 journeys were green, the scanner was silent, and Muse Spark looking at the page said « payment page form is incomplete: 'Numéro de carte', 'Expiration', 'Cryptogramme' appear as text with no visible input fields ». SAM counted 5 text fields before, 2 after. The fix was **rejected**. On F03, the same look confirmed the escaped `<script>` shown as plain text with no popup. The two looks cost $0.01.
 
+## Mission Zero returns to zero by itself
+
+An agent that learns can learn wrong. Mission Zero keeps a ledger of its missions (`memory/outcomes.json`: judge score, verified sources, lessons used) and, after every mission, decides whether its own memory is hurting it. Three rules, all explainable in one sentence:
+
+- **A.** two bad missions in a row (judge under 7) while lessons were applied;
+- **B.** the same goal scored at least 2 points higher before, with fewer lessons: the memory made it worse;
+- **C.** drift: the last three missions average 2 points under the three before.
+
+When a rule fires, the agent **archives its lessons itself** (`memory/archive/lessons-<date>.json`, never deleted), writes the rule and the reason in `memory/resets.json` and in the journal, **runs the mission again knowing nothing** (`evidence/<run>/from-zero/`), compares both answers (judge score, then verified sources, then contradicted ones), keeps the better one, and relearns from that one only. `zero.json` holds the comparison. No human presses the button; `MZ_ZERO=off` disables it, `--from-zero` forces it for an experiment (marked « forced », never presented as a natural reset).
+
+First real run (28 October, forced for the experiment, DBIR 2025 goal, 3 turns, 1 round): the agent archived its 30 lessons, ran again knowing nothing, and both answers were identical, 10/10, the 60 % human element quoted from the report. With memory: $0.031. From zero: $0.054, 75 % more: both took 2 turns, the difference is in what was read and written (the first turn scored 4/10 with memory and 8/10 from zero, so the lessons did not even help the first move here). Verdict written by the agent: « same result either way: the memory did no harm », memory restored. The run and its replay are in `examples/back-to-zero/`. A natural reset (rules A, B or C) has not fired yet; when one does, it will be shown as it happened, never staged.
+
 ## Known limits (read before trusting a « proposed » fix)
 
 We would rather list these ourselves.
