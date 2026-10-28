@@ -25,7 +25,7 @@ export function loadRun(folder) {
     if (e.step === 'evaluation') t.evaluation = { score: e.score, reached: e.reached, lesson: e.lesson, pivot: e.pivot };
   }
   const research = journal.filter((e) => e.step === 'research');
-  return { folder, goal: summary.goal || '', turns: turns.filter(Boolean), final, summary, research };
+  return { folder, goal: summary.goal || '', turns: turns.filter(Boolean), final, summary, research, zero: read('zero.json', null) };
 }
 
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -36,9 +36,9 @@ export function renderReplay(run, { scenes = null, title = 'Mission Zero' } = {}
   const j = run.final.judge || {};
   const versions = j.versions || [];
   const cost = run.summary.cost || {};
-  const data = { goal: run.goal, turns: run.turns, final: { answer: run.final.answer, sources: run.final.sources || [], uncertainties: run.final.uncertainties || [] }, judge: { score: j.score, green: j.green, red: j.red, rounds: j.rounds, versions }, cost: { usd: cost.usd, calls: cost.calls, ms: cost.totalMs }, lessons: run.summary.lessonsLearned, reached: run.summary.reached };
+  const data = { goal: run.goal, turns: run.turns, final: { answer: run.final.answer, sources: run.final.sources || [], uncertainties: run.final.uncertainties || [] }, judge: { score: j.score, green: j.green, red: j.red, rounds: j.rounds, versions }, cost: { usd: cost.usd, calls: cost.calls, ms: cost.totalMs }, lessons: run.summary.lessonsLearned, reached: run.summary.reached, zero: run.zero || null };
   // Scenes: intro, goal, one per turn, draft, verification, contradiction, result, outro. Durations in ms.
-  const defaults = [5000, 7000, ...run.turns.map(() => 9000), 7000, 9000, 9000, 9000, 7000];
+  const defaults = [5000, 7000, ...run.turns.map(() => 9000), 7000, 9000, 9000, ...(run.zero ? [10000] : []), 9000, 7000]; // + back to zero, when the agent did it
   const durations = scenes && scenes.length ? scenes : defaults;
   return `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -141,6 +141,15 @@ function resultScene() {
   return '<div class="turnhead"><h2>Result</h2><span>proof, not promises</span></div><div class="answer">' + esc(DATA.final.answer) + '</div>'
     + '<div class="big"><div class="n gold"><b>' + DATA.judge.score + '</b><span>judge / 10</span></div><div class="n ok"><b>' + DATA.judge.green + '</b><span>green proofs</span></div><div class="n"><b>' + (DATA.judge.red || 0) + '</b><span>red</span></div><div class="n"><b>' + money(DATA.cost.usd) + '</b><span>cost</span></div><div class="n"><b>' + Math.round((DATA.cost.ms || 0) / 1000) + 's</b><span>model time</span></div></div>';
 }
+function zeroScene() {
+  const z = DATA.zero; const d = z.decision || {};
+  return '<div class="turnhead"><h2>Back to zero</h2><span>the agent judged its own memory and started again knowing nothing</span></div>'
+    + step('decision', '<b>rule ' + esc(d.rule) + '</b> · ' + esc(d.reason))
+    + step('archived', esc(String((z.archive || {}).count)) + ' lessons put aside by the agent itself, never deleted')
+    + step('with memory', '<b>' + esc(z.withMemory.score) + ' / 10</b> · ' + esc(z.withMemory.green) + ' green · ' + money(z.withMemory.usd))
+    + step('from zero', '<b>' + esc(z.fromZero.score) + ' / 10</b> · ' + esc(z.fromZero.green) + ' green · ' + money(z.fromZero.usd))
+    + step('kept', '<b>' + esc(z.kept) + '</b> · ' + esc(z.why));
+}
 const SCENES = [
   { html: titleScene('MISSION <span>ZERO</span>', 'Give it a goal. Let it discover the path. Demand proof.', 'CRYPTOR.AGENCY · Meta Global AI Developer Hackathon 2026 · built on Muse Spark'), run: async () => {} },
   { html: titleScene('The goal', esc(DATA.goal), 'no plan, no tool list, public sources only, no spending'), run: async () => { $('#goal').innerHTML = '<b>Goal</b> · ' + esc(DATA.goal); } },
@@ -160,6 +169,7 @@ const SCENES = [
     for (const o of objs) await reveal(o, gap);
     for (let i = 0; i < rounds.length; i += 1) { await reveal(rounds[i], gap); meterAt(0.82 + 0.18 * (i + 1) / rounds.length); }
   } },
+  ...(DATA.zero ? [{ html: zeroScene(), run: async (card, dur) => { const steps = card.querySelectorAll('.step'); const gap = Math.min(1600, dur / (steps.length + 1)); for (const s of steps) await reveal(s, gap); } }] : []),
   { html: resultScene(), run: async () => { meterAt(1); meter({ green: DATA.judge.green || meters.green }); } },
   { html: titleScene('Proof, <span>not promises</span>', 'Everything in this repository was written during the hackathon.', 'github.com/cryptoragency/mission0 · Meta Model API · muse-spark-1.3 · reasoning effort tuned per role'), run: async () => {} },
 ];
