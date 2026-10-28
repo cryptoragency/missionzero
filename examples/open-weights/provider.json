@@ -1,0 +1,19 @@
+{
+  "note": "Record of the command that produced this folder (written right after the run; later runs carry provider and model inside summary.json).",
+  "command": "MZ_BASE_URL=https://inference.baseten.co/v1 MZ_ZERO=off node --env-file=.env src/run.js \"<goal>\" 3 3",
+  "baseUrl": "https://inference.baseten.co/v1",
+  "provider": "baseten",
+  "model": "meta-models/muse-spark-open",
+  "modelsListedByBaseten": [
+    "meta-models/muse-spark-open"
+  ],
+  "hackathonSlugInGuide": "meta-models/muse-spark-open-1026",
+  "hackathonSlugServed": false,
+  "date": "2026-10-28",
+  "judgeScore": 10,
+  "verifiedGreen": 2,
+  "turns": 2,
+  "calls": 20,
+  "usd": 0.0727,
+  "totalMs": 61515
+}

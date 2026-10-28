@@ -1,0 +1,112 @@
+{
+  "answer": "The Verizon 2025 Data Breach Investigations Report analyzed 12,195 confirmed data breaches (from 22,052 security incidents) and found 60% of breaches involved a human element.",
+  "sources": [
+    {
+      "url": "https://www.verizon.com/business/resources/reports/2025-dbir-data-breach-investigations-report.pdf",
+      "contribution": "12,195 confirmed data breaches were analyzed"
+    },
+    {
+      "url": "https://www.verizon.com/business/resources/reports/2025-dbir-data-breach-investigations-report.pdf",
+      "contribution": "60% of breaches involved a human element"
+    }
+  ],
+  "confidence": 7,
+  "uncertainties": [
+    "Figures are based on memory of the report's widely cited key findings and press summary; the PDF text was not directly extracted in this session to verbatim verify the numbers on the page."
+  ],
+  "rejectedSources": 0,
+  "seenSources": 8,
+  "judge": {
+    "score": 10,
+    "green": 2,
+    "red": 0,
+    "rounds": 2,
+    "versions": [
+      {
+        "round": 0,
+        "score": 10,
+        "green": 2,
+        "red": 0,
+        "reason": "Both figures match verification quotes from primary Verizon 2025 DBIR PDF; 12,195 breaches and 60% human element precisely supported.",
+        "verification": [
+          {
+            "url": "https://www.verizon.com/business/resources/reports/2025-dbir-data-breach-investigations-report.pdf",
+            "claim": "12,195 confirmed data breaches were analyzed",
+            "verdict": "supported",
+            "detail": "This year, the Verizon DBIR team analyzed 22,052 real-world security incidents, of which 12,195 were confirmed data breaches that occurred inside organizations of all sizes and types."
+          },
+          {
+            "url": "https://www.verizon.com/business/resources/reports/2025-dbir-data-breach-investigations-report.pdf",
+            "claim": "60% of breaches involved a human element",
+            "verdict": "supported",
+            "detail": "human involvement in breaches at 60% this year"
+          }
+        ],
+        "objections": []
+      },
+      {
+        "round": 1,
+        "score": 10,
+        "green": 2,
+        "red": 0,
+        "reason": "Both figures verified verbatim on cited report pages: 12,195 confirmed breaches of 22,052 incidents and 60% human involvement, satisfying precision and primary source requirements.",
+        "verification": [
+          {
+            "url": "https://www.verizon.com/business/resources/reports/2025-dbir-data-breach-investigations-report.pdf",
+            "claim": "analyzed 22,052 real-world security incidents, of which 12,195 were confirmed data breaches",
+            "verdict": "supported",
+            "detail": "This year, the Verizon DBIR team analyzed 22,052 real-world security incidents, of which 12,195 were confirmed data breaches that occurred inside organizations of all sizes and types."
+          },
+          {
+            "url": "https://www.verizon.com/business/resources/reports/2025-dbir-data-breach-investigations-report.pdf",
+            "claim": "human involvement in breaches at 60% this year",
+            "verdict": "supported",
+            "detail": "we see the human involvement in breaches at 60% this year"
+          }
+        ],
+        "objections": [
+          "60% figure is presented without the report's definition of 'human element' (which determines what counts toward the percentage), leaving the number without definition as required."
+        ],
+        "fetched": 0
+      },
+      {
+        "round": 2,
+        "score": 9,
+        "green": 4,
+        "red": 0,
+        "reason": "All figures precise and verified against primary DBIR PDF: 22,052 incidents, 12,195 breaches, 60% human involvement, 18th edition. One source URL typo prevents perfect 10.",
+        "verification": [
+          {
+            "url": "https://www.verizon.com/business/resources/reports/2025-dbir-data-breach-investigations-report.pdf",
+            "claim": "analyzed 22,052 real-world security incidents",
+            "verdict": "supported",
+            "detail": "This year, the Verizon DBIR team analyzed 22,052 real-world security incidents, of which 12,195 were confirmed data breaches that occurred inside organizations of all sizes and types."
+          },
+          {
+            "url": "https://www.verizon.com/business/resources/reports/2025-dbir-data-breach-investigations-report.pdf",
+            "claim": "12,195 were confirmed data breaches",
+            "verdict": "supported",
+            "detail": "of which 12,195 were confirmed data breaches"
+          },
+          {
+            "url": "https://www.verizon.com/business/resources/reports/2025-dbir-data-breach-investigations-report.pdf",
+            "claim": "human involvement in breaches at 60% this year",
+            "verdict": "supported",
+            "detail": "we see the human involvement in breaches at 60% this year"
+          },
+          {
+            "url": "https://www.verizon.com/business/resources/Tea/reports/2025-dbir-data-breach-investigations-report.pdf",
+            "claim": "Welcome to Verizon's 2025 Data Breach Investigations Report ( DBIR )! We are thrilled to have you with us for this, the 18th annual installment",
+            "verdict": "supported",
+            "detail": "We are thrilled to have you with us for this, the 18th annual installment of the DBIR."
+          }
+        ],
+        "objections": [
+          "60% human involvement figure is presented without the report's definition of 'human element'/'human involvement' - uncertainties admit definition was not retrieved, leaving number without definition.",
+          "12,195 confirmed breaches claim is verified only by a snippet saying 'This year' with no explicit 2025 edition year in quoted text, relying on URL inference for edition attribution."
+        ],
+        "fetched": 0
+      }
+    ]
+  }
+}

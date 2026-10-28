@@ -1,6 +1,6 @@
 // Run Mission Zero on a goal: node --env-file=.env src/run.js "goal" [maxTurns] [contradictions 0-5] [--from-zero]
 import { mkdirSync, writeFileSync, appendFileSync } from 'node:fs';
-import { createClient } from './meta.js';
+import { createClient, provider } from './meta.js';
 import { run } from './loop.js';
 import { makeExecutor } from './tools.js';
 import { synthesize, seenUrls } from './synthesis.js';
@@ -84,7 +84,7 @@ if (decision.reset && zero.kept !== 'from-zero') { note(folder)({ step: 'zero', 
 const learned = mergeLessons(base, await distill({ goal, evidence: kept.result.evidence, ask }));
 saveLessons(lessonsPath, learned.lessons);
 writeFileSync(folder + '/final-answer.json', JSON.stringify(kept.final, null, 2));
-const summary = { goal, reached: kept.result.reached, turns: kept.result.turns, best: kept.result.best, confidence: kept.final.confidence, judgeScore: kept.refined.score, verifiedGreen: kept.refined.green, verifiedRed: kept.refined.red, contradictionRounds: kept.refined.rounds, verifiedSources: kept.final.sources.length, rejectedSources: kept.final.rejectedSources, cost: client.counter, verificationsCached: [...kept.verifyCache.keys()].length, lessonsUsed: decision.reset && kept !== first ? 0 : approvedTexts(past).length, lessonsLearned: learned.added.length, zero: zero ? { rule: zero.decision.rule, reason: zero.decision.reason, kept: zero.kept, withMemory: zero.withMemory.score, fromZero: zero.fromZero.score } : { reset: false, reason: decision.reason } };
+const summary = { goal, provider: provider(), model: client.model, reached: kept.result.reached, turns: kept.result.turns, best: kept.result.best, confidence: kept.final.confidence, judgeScore: kept.refined.score, verifiedGreen: kept.refined.green, verifiedRed: kept.refined.red, contradictionRounds: kept.refined.rounds, verifiedSources: kept.final.sources.length, rejectedSources: kept.final.rejectedSources, cost: client.counter, verificationsCached: [...kept.verifyCache.keys()].length, lessonsUsed: decision.reset && kept !== first ? 0 : approvedTexts(past).length, lessonsLearned: learned.added.length, zero: zero ? { rule: zero.decision.rule, reason: zero.decision.reason, kept: zero.kept, withMemory: zero.withMemory.score, fromZero: zero.fromZero.score } : { reset: false, reason: decision.reason } };
 writeFileSync(folder + '/summary.json', JSON.stringify(summary, null, 2));
 console.log(JSON.stringify(summary, null, 2));
 console.log('Evidence folder:', folder);
