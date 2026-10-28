@@ -14,6 +14,7 @@ const STATUS = {
   reserved: ['warn', 'Proposed with reservation', 'mechanically green, but the agent has a reservation written below'],
   rejected: ['red', 'Rejected', 'the fix broke a vital journey or the site'],
   ineffective: ['warn', 'Ineffective', 'journeys pass but the scanner still sees the flaw'],
+  unverified: ['warn', 'Unverified', 'journeys pass, but no rescan could confirm the fix (no probe for this type, or the scanners disagree): a human verifies before applying'],
   'no-edit': ['mut', 'No edit', 'the model proposed nothing usable'],
   error: ['red', 'Error', 'the run itself failed'],
 };

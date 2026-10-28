@@ -141,3 +141,23 @@ test('a weak justification (judge under 7) turns "proposed" into "reserved" with
   assert.equal(r.status, 'reserved');
   assert.match(r.reservations[0], /weak justification: the judge scored the cited recommendation 3\/10 \(0 verified sources\)/);
 });
+
+test('a finding of a type Mission Zero cannot rescan is UNVERIFIED, never proposed', async () => {
+  const propose = async () => ({ edits: [HEADER_FIX], summary: 'drop versions', risk: 'none' });
+  const finding = { id: 'A-zzz', severity: 'low', type: 'argus-zzz', url: 'http://x/', evidence: 'e', description: 'd' };
+  const r = await repairOne({ finding, siteDir: SITE, ask: null, know, propose, review: async () => ({ verdict: 'cause', reason: 'r' }) });
+  assert.equal(r.status, 'unverified', r.why);
+  assert.ok(r.journeysAfter.ok);
+  assert.ok(!r.rescan, 'no rescan');
+  assert.equal(r.confirmedOnCopy, null);
+});
+
+test('a finding from another scanner is rescanned by TYPE: the policy probes answer for it and stay out of the default scan', async () => {
+  const port = await freePort(); const site = await startSite(SITE, port);
+  try {
+    const r = await scan('http://127.0.0.1:' + port, { only: ['missing-hsts'] });
+    assert.equal(r.findings.length, 1); assert.equal(r.findings[0].id, 'F16');
+    const all = await scan('http://127.0.0.1:' + port, {});
+    assert.ok(!all.findings.some((f) => f.id === 'F16'), 'policy probes stay out of the default scan');
+  } finally { site.stop(); }
+});

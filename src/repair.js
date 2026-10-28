@@ -13,7 +13,7 @@ import { synthesize, seenUrls } from './synthesis.js';
 import { refineAnswer } from './contradictAnswer.js';
 import { verifyReport } from './verify.js';
 import { makeExecutor } from './tools.js';
-import { scan } from './scanner.js';
+import { scan, hasProbe } from './scanner.js';
 import { maskDeep } from './secrets.js';
 import { appendChain } from './chain.js';
 
@@ -116,24 +116,30 @@ export function makePatch(original, copy, files) {
 export const journeyNames = (dir) => [...(readFileSync(join(dir, 'journeys.test.js'), 'utf8').matchAll(/name: '([^']+)'/g)).map((m) => m[1])];
 
 // One attempt: propose, apply to a fresh copy, replay the journeys, rescan. Returns the record with its status.
-async function attemptFix({ finding, rec, siteDir, journeys, before, previous, propose, ask, login, vision = null, review = null }) {
+async function attemptFix({ finding, rec, siteDir, journeys, before, previous, propose, ask, login, vision = null, review = null, files = ['server.js'], confirmed = null }) {
   const copy = copySite(siteDir);
-  const fix = await propose({ finding, recommendation: rec, siteDir: copy, journeys, previous, ask });
+  const fix = await propose({ finding, recommendation: rec, siteDir: copy, journeys, previous, ask, files });
   const { applied, refused } = applyEdits(copy, fix.edits);
-  const record = { finding, recommendation: rec, fix: { summary: fix.summary, risk: fix.risk, secretsMasked: fix.secretsMasked || 0, applied, refused }, journeysBefore: before, copy };
+  const record = { finding, recommendation: rec, fix: { summary: fix.summary, risk: fix.risk, secretsMasked: fix.secretsMasked || 0, applied, refused }, journeysBefore: before, confirmedOnCopy: confirmed, copy };
   if (applied.length) record.patch = makePatch(siteDir, copy, [...new Set(applied.map((e) => e.file))]);
   if (!applied.length) return { ...record, status: 'no-edit', why: refused.length ? 'every edit was refused: ' + refused.map((x) => x.why).join('; ') : 'the model proposed no edit' };
   const after = runJourneys(copy);
   record.journeysAfter = after;
   if (!after.ok) return { ...record, status: 'rejected', why: 'the fix breaks: ' + (after.broken.join(', ') || 'the journeys') };
-  // Rescan the copy: is the flaw gone?
-  let gone = false; let rescan = null;
-  try {
-    const port = await freePort(); const site = await startSite(copy, port);
-    try { rescan = await scan('http://127.0.0.1:' + port, { login, only: [finding.id] }); gone = rescan.findings.length === 0; } finally { site.stop(); }
-  } catch (e) { return { ...record, status: 'rejected', why: 'the fixed site does not start: ' + e.message.slice(0, 200) }; }
-  record.rescan = rescan;
-  if (!gone) return { ...record, status: 'ineffective', why: 'journeys pass but the scanner still sees the flaw' };
+  // Rescan the copy with the probe that matches the finding (by id, or by TYPE for another scanner's finding): is the flaw gone?
+  // No probe for this type, or a probe that did not see the flaw on the untouched copy (the scanners disagree): the rescan cannot
+  // confirm anything, and the fix ends UNVERIFIED, never proposed.
+  let gone = false; let rescan = null; let unverifiable = null;
+  if (!hasProbe(finding)) unverifiable = 'Mission Zero has no probe for this type of finding: the scanner that found it must rescan once the patch is applied';
+  else if (confirmed === false) unverifiable = 'Mission Zero\'s probe did not see this finding on the untouched copy (the scanners disagree): the rescan cannot confirm the fix';
+  else {
+    try {
+      const port = await freePort(); const site = await startSite(copy, port);
+      try { rescan = await scan('http://127.0.0.1:' + port, { login, only: [finding.id, finding.type] }); gone = rescan.findings.length === 0; } finally { site.stop(); }
+    } catch (e) { return { ...record, status: 'rejected', why: 'the fixed site does not start: ' + e.message.slice(0, 200) }; }
+    record.rescan = rescan;
+    if (!gone) return { ...record, status: 'ineffective', why: 'journeys pass but the scanner still sees the flaw' };
+  }
   // Optional visual check: the repaired copy is screenshotted and shown to Muse Spark as a customer would see it;
   // SAM 3.1 counts the text fields on the finding's page before and after (visual evidence, not a gate).
   if (vision) {
@@ -152,6 +158,7 @@ async function attemptFix({ finding, rec, siteDir, journeys, before, previous, p
       if (record.review.verdict === 'hides') return { ...record, status: 'hides', why: 'the agent judges its own patch hides the symptom instead of removing the cause: ' + record.review.reason };
     } catch (e) { record.review = { verdict: 'unknown', reason: String(e.message || e).slice(0, 200) }; }
   }
+  if (unverifiable) return { ...record, status: 'unverified', why: 'journeys pass, but ' + unverifiable + '; a human verifies before applying' };
   return { ...record, status: 'proposed', why: 'journeys pass and the flaw is gone on the copy; a human applies it' };
 }
 
@@ -201,17 +208,22 @@ const feedback = (r) => ({ status: r.status, why: r.why, edits: (r.fix?.applied 
 // `review` (default: the agent reviewing its own patch) can be replaced or set to null. WEAK_JUSTIFICATION: a recommendation
 // the judge scored under this is not hidden behind "proposed": the status becomes "reserved", with the reservation written.
 export const WEAK_JUSTIFICATION = 7;
-export async function repairOne({ finding, siteDir, ask, folder = null, login = null, know = knowledge, propose = proposeFix, review = reviewPatch, turns = 2, rounds = 1, retries = 1, lessons = [], vision = null }) {
+export async function repairOne({ finding, siteDir, ask, folder = null, login = null, know = knowledge, propose = proposeFix, review = reviewPatch, turns = 2, rounds = 1, retries = 1, lessons = [], vision = null, files = ['server.js'] }) {
   if (vision && !vision.folder && folder) vision = { ...vision, folder };
   const t0 = Date.now();
   const rec = await know({ finding, ask, folder, turns, rounds, lessons });
   const journeys = journeyNames(siteDir);
   const before = runJourneys(copySite(siteDir));
+  // Is the finding reproduced on the untouched copy by the probe of its id or type? (null: no probe, or the site did not start)
+  let confirmed = null;
+  if (hasProbe(finding)) {
+    try { const port = await freePort(); const site = await startSite(siteDir, port); try { const r0 = await scan('http://127.0.0.1:' + port, { login, only: [finding.id, finding.type] }); confirmed = r0.findings.length > 0; } finally { site.stop(); } } catch { confirmed = null; }
+  }
   const attempts = [];
   let previous = null; let r;
   for (let n = 0; n <= retries; n += 1) {
-    r = await attemptFix({ finding, rec, siteDir, journeys, before, previous, propose, ask, login, vision, review });
-    if (r.status === 'proposed') break;
+    r = await attemptFix({ finding, rec, siteDir, journeys, before, previous, propose, ask, login, vision, review, files, confirmed });
+    if (r.status === 'proposed' || r.status === 'unverified') break;
     previous = feedback(r);
     attempts.push({ ...previous, copy: r.copy });
     if (n === retries) attempts.pop(); // the last attempt is the record itself, not a previous one

@@ -15,7 +15,11 @@ const file = process.argv.find((x, i) => i >= 2 && !x.startsWith('--'));
 const siteDir = arg('site', 'demo-site');
 const only = arg('only', '') ? arg('only', '').split(',') : null;
 const from = arg('from', process.env.MZ_SCANNER_URL || '');
-const login = { user: 'admin', password: 'maisonverde2019' }; // the demo shop's admin, for the session probes
+// --login=user:password enables the session probes (default: the demo shop's admin); --login=none for a site without accounts.
+const loginArg = arg('login', 'admin:maisonverde2019');
+const login = loginArg === 'none' ? null : { user: loginArg.split(':')[0], password: loginArg.split(':').slice(1).join(':') };
+// --files=server.js,index.html: the files the model may edit (default: server.js). --policy: the generic policy probes join --scan.
+const files = arg('files', 'server.js').split(',').map((s) => s.trim()).filter(Boolean);
 const folder = 'evidence/repair-' + new Date().toISOString().slice(0, 16).replace(/[:T]/g, '-');
 mkdirSync(folder, { recursive: true });
 
@@ -31,7 +35,7 @@ export async function fetchFindings(url, key = process.env.MZ_SCANNER_KEY) {
 let findings;
 if (process.argv.includes('--scan') || (!file && !from)) {
   const port = await freePort(); const site = await startSite(siteDir, port);
-  try { const r = await scan('http://127.0.0.1:' + port, { login }); findings = r.findings; writeFileSync(join(folder, 'findings.json'), JSON.stringify(r, null, 2)); } finally { site.stop(); }
+  try { const r = await scan('http://127.0.0.1:' + port, { login, policy: process.argv.includes('--policy') }); findings = r.findings; writeFileSync(join(folder, 'findings.json'), JSON.stringify(r, null, 2)); } finally { site.stop(); }
 } else if (from) {
   const r = await fetchFindings(from); findings = r.findings; writeFileSync(join(folder, 'findings.json'), JSON.stringify(r, null, 2));
   console.log('findings fetched from the scanner:', findings.length);
@@ -42,7 +46,7 @@ const client = createClient();
 const ask = (messages, opts) => client.ask(messages, { max_tokens: 3500, ...opts });
 // --vision: Muse Spark looks at the repaired pages as a customer, SAM 3.1 counts the text fields before and after.
 const vision = process.argv.includes('--vision') ? { ask, playwrightPath: process.env.MZ_PLAYWRIGHT || 'playwright' } : null;
-const results = await repairAll({ findings, siteDir, ask, folder, login, only, vision, turns: Number(arg('turns', 2)), rounds: Number(arg('rounds', 1)), retries: Number(arg('retries', 1)), lessons: approvedTexts(loadLessons('memory/lessons.json')) });
+const results = await repairAll({ findings, siteDir, ask, folder, login, only, vision, files, turns: Number(arg('turns', 2)), rounds: Number(arg('rounds', 1)), retries: Number(arg('retries', 1)), lessons: approvedTexts(loadLessons('memory/lessons.json')) });
 const rows = results.map((r) => ({ id: r.finding.id, severity: r.finding.severity, status: r.status, sources: r.recommendation ? r.recommendation.green + ' green' : '', journeys: r.journeysAfter ? r.journeysAfter.pass + '/' + (r.journeysAfter.pass + r.journeysAfter.fail) : '', masked: r.fix ? r.fix.secretsMasked : '', why: String(r.why || '').slice(0, 70) }));
 console.table(rows);
 writeFileSync(join(folder, 'report.json'), JSON.stringify({ findings: findings.length, results, cost: client.counter }, null, 2));

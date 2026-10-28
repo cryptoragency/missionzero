@@ -85,11 +85,45 @@ export const PROBES = [
   } },
 ];
 
+// Policy probes: the classes of flaw a surface scanner reports on any site (headers, consent, rate limiting). They stay out
+// of the default shop scan (the 15 flaws) and answer when named by id or by TYPE: a finding from another scanner is rescanned
+// here by its type, with the same probe before and after the fix.
+export const POLICY_PROBES = [
+  { id: 'F16', type: 'missing-hsts', severity: 'medium', path: '/', run: async (b) => {
+    const r = await get(b, '/'); const h = r.headers['strict-transport-security'] || '';
+    const age = Number((h.match(/max-age=(\d+)/i) || [])[1] || 0);
+    return age < 15552000 ? { evidence: h ? 'strict-transport-security: ' + h : 'no strict-transport-security header', description: 'Browsers are not told to stay on HTTPS: a first visit over HTTP can be intercepted.' } : null;
+  } },
+  { id: 'F17', type: 'weak-csp-script-src', severity: 'medium', path: '/', run: async (b) => {
+    const r = await get(b, '/'); const csp = r.headers['content-security-policy'] || (r.body.match(/http-equiv="content-security-policy"\s+content="([^"]*)"/i) || [])[1] || '';
+    return csp && !/(^|;)\s*(script-src|default-src)\s/i.test(csp) ? { evidence: 'content-security-policy: ' + csp.slice(0, 160), description: 'The policy restricts framing only: any injected script still runs. A script-src (or default-src) directive is missing.' } : null;
+  } },
+  { id: 'F18', type: 'missing-corp', severity: 'low', path: '/', run: async (b) => {
+    const r = await get(b, '/'); return r.headers['cross-origin-resource-policy'] ? null : { evidence: 'no cross-origin-resource-policy header', description: 'Any site can embed the resources of this one (images, scripts) without restriction.' };
+  } },
+  { id: 'F19', type: 'missing-coep', severity: 'low', path: '/', run: async (b) => {
+    const r = await get(b, '/'); return r.headers['cross-origin-embedder-policy'] ? null : { evidence: 'no cross-origin-embedder-policy header', description: 'The page is not isolated from the cross-origin resources it embeds.' };
+  } },
+  { id: 'F20', type: 'missing-cookie-consent', severity: 'medium', path: '/', run: async (b) => {
+    const r = await get(b, '/'); const body = r.body.toLowerCase();
+    const sets = Boolean(r.headers['set-cookie']) || /document\.cookie\s*=/.test(r.body) || /<script[^>]+src="https?:\/\//i.test(r.body);
+    const consent = /cookie/.test(body) && /(accept|consent|j'accepte|refuser|param[eè]tres des cookies)/.test(body);
+    return sets && !consent ? { evidence: 'cookies or third-party scripts are set and the page shows no consent banner text', description: 'Visitors are not asked before cookies or third-party scripts are used (ePrivacy, CNIL).' } : null;
+  } },
+  { id: 'F21', type: 'no-rate-limiting', severity: 'medium', path: '/', run: async (b) => {
+    const rs = await Promise.all(Array.from({ length: 40 }, (_, i) => get(b, '/?burst=' + i)));
+    const limited = rs.some((r) => r.status === 429 || r.headers['retry-after'] || r.headers['x-ratelimit-limit'] || r.headers['ratelimit-limit']);
+    return !limited && rs.every((r) => r.status === 200) ? { evidence: '40 requests in a burst, all answered 200, no 429 and no rate-limit header', description: 'Nothing slows down an automated attack (password guessing, scraping, flooding).' } : null;
+  } },
+];
+export const ALL_PROBES = [...PROBES, ...POLICY_PROBES];
+export const hasProbe = (f) => ALL_PROBES.some((p) => p.id === f.id || p.type === f.type);
+
 export async function scan(base, opts = {}) {
   const findings = [];
-  for (const p of PROBES) {
+  for (const p of (opts.policy || opts.only ? ALL_PROBES : PROBES)) {
     if (p.needsLogin && !opts.login) continue;
-    if (opts.only && !opts.only.includes(p.id)) continue;
+    if (opts.only && !opts.only.includes(p.id) && !opts.only.includes(p.type)) continue;
     const hit = await p.run(base, opts);
     if (hit) findings.push({ id: p.id, severity: p.severity, type: p.type, url: base + p.path, ...hit });
   }

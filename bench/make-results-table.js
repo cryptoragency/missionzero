@@ -6,7 +6,7 @@ const folders = process.argv.slice(2);
 if (!folders.length) { console.error('usage: node bench/make-results-table.js <repair folder> [...]'); process.exit(1); }
 const run = mergeReports(folders.map(loadReport));
 const FLAW = { F01: 'no security headers', F02: 'versions disclosed', F03: 'reflected XSS', F04: 'price trusted from the client', F05: 'card data over HTTP', F06: 'IDOR on /order', F07: 'weak authentication', F08: 'insecure session cookie', F09: 'admin trusts a guessable cookie', F10: 'robots.txt lists sensitive paths', F11: '.env served with secrets', F12: 'backups listed', F13: 'customer export without auth', F14: 'jQuery 1.8.3', F15: 'no privacy policy' };
-const STATUS = { proposed: 'proposed', reserved: '**proposed with reservation**', rejected: '**rejected**', ineffective: 'ineffective', 'no-edit': 'no edit', error: 'error' };
+const STATUS = { proposed: 'proposed', reserved: '**proposed with reservation**', rejected: '**rejected**', ineffective: 'ineffective', unverified: '**unverified** (no rescan for this type)', 'no-edit': 'no edit', error: 'error' };
 const cell = (s) => String(s || '').replace(/\|/g, '/').replace(/\s+/g, ' ').trim();
 console.log('| # | Flaw | Status | What the agent did (its own words) | Judge | Checks |');
 console.log('|---|------|--------|------------------------------------|-------|--------|');
