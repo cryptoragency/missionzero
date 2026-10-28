@@ -20,7 +20,7 @@ export async function synthesize({ goal, evidence, ask }) {
       + 'ONE FIGURE PER CONTRIBUTION: several figures from the same page make several entries with the same url, each verified on its own. '
       + 'Answer in JSON: {"answer":"","sources":[{"url":"","contribution":""}],"confidence":0-10,"uncertainties":[""]}.' },
     { role: 'user', content: JSON.stringify({ goal, seenSources: sources, lessons: evidence.filter((p) => p.step === 'evaluation').map((p) => p.lesson) }) },
-  ], { max_tokens: 3500, tag: 'synthesize' });
+  ], { max_tokens: 5000, tag: 'synthesize' }); // reasoning is billed inside the cap
   const j = readJson(r.text) || { answer: '', sources: [], confidence: 0, uncertainties: ['unreadable synthesis'] };
   const cited = Array.isArray(j.sources) ? j.sources : [];
   const verified = cited.filter((s) => seen.has(s.url));

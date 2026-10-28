@@ -25,16 +25,20 @@ async function grade({ goal, answer, ask, verify }) {
   const check = await verify(answer.sources || []);
   let score = 0;
   let reason = '';
-  try {
+  // The judge reasons before it answers and the reasoning is billed inside the cap: a cut answer is unreadable, and an
+  // unreadable judge must never pass for a 0/10. One retry with a higher cap, then the reason says it was unreadable.
+  for (const cap of [2500, 5000]) try {
     const r = await ask([
       { role: 'system', content: JUDGE_PROMPT },
       { role: 'user', content: JSON.stringify({ goal, answer: answer.answer, sources: answer.sources, verification: (check.results || []).map(({ url, verdict, detail }) => ({ url, verdict, detail })) }) },
-    ], { max_tokens: 1200, tag: 'judge' });
+    ], { max_tokens: cap, tag: 'judge' });
     const j = readJson(r.text);
     const n = Number(j?.score);
-    score = Number.isFinite(n) ? Math.max(0, Math.min(10, n)) : 0;
+    if (!j || !Number.isFinite(n)) { reason = 'the judge answer was unreadable (cut by the token cap)'; continue; }
+    score = Math.max(0, Math.min(10, n));
     reason = String(j?.reason || '').slice(0, 300);
-  } catch { score = 0; }
+    break;
+  } catch (e) { score = 0; reason = 'judge failed: ' + String(e.message || e).slice(0, 120); }
   if (check.red > 0) score = Math.min(score, RED_CAP);
   if (!(answer.sources || []).length) score = Math.min(score, NO_SOURCE_CAP);
   const verification = (check.results || []).map(({ url, claim, verdict, detail }) => ({ url, claim, verdict, detail }));
@@ -92,7 +96,7 @@ export async function refineAnswer({ goal, answer, seen, ask, verify, research =
       const r = await ask([
         { role: 'system', content: REVISE_PROMPT },
         { role: 'user', content: JSON.stringify({ goal, answer: current, objections, verification: last.verification, seenSources: seen }) },
-      ], { max_tokens: 3500, tag: 'rewrite' });
+      ], { max_tokens: 5000, tag: 'rewrite' });
       revised = readJson(r.text);
     } catch { break; }
     if (!revised?.answer) continue;

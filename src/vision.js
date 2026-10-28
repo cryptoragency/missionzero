@@ -7,8 +7,8 @@ import { readJson } from './loop.js';
 export const toDataUrl = (path, type = 'image/png') => `data:${type};base64,${readFileSync(path).toString('base64')}`;
 
 const LOOK_PROMPT = 'You check screenshots of a small online shop after a security fix. Answer from what is VISIBLE only. '
-  + 'JSON: {"ok":true|false,"problems":["..."],"seen":["short list of what the page shows"]}. "ok" is false if the page is blank, '
-  + 'shows an error or stack trace, lost its product cards, its forms or its navigation, or shows raw code. Minor styling is fine.';
+  + 'JSON: {"ok":true|false,"problems":["..."],"seen":["at most 4 short items"]}. "ok" is false if the page is blank, '
+  + 'shows an error or stack trace, lost its product cards, its forms or its navigation, or shows raw code. Minor styling is fine. A page that now says access denied, forbidden, not found or asks to log in is NOT a problem when the fix restricts access: judge the shop by its other pages.';
 
 // `ask` is the Meta client's ask (messages, opts). Content parts carry the text and the image(s).
 export async function lookAtPages({ shots, ask, question = 'Is this page still a working shop page for a customer?' }) {
@@ -17,9 +17,9 @@ export async function lookAtPages({ shots, ask, question = 'Is this page still a
     content.push({ type: 'text', text: 'Page: ' + s.name });
     content.push({ type: 'image_url', image_url: { url: s.dataUrl || toDataUrl(s.path) } });
   }
-  const r = await ask([{ role: 'system', content: LOOK_PROMPT }, { role: 'user', content }], { max_tokens: 1200, tag: 'vision' });
+  const r = await ask([{ role: 'system', content: LOOK_PROMPT }, { role: 'user', content }], { max_tokens: 3000, tag: 'vision' });
   const j = readJson(r.text) || {};
-  return { ok: j.ok === true, problems: Array.isArray(j.problems) ? j.problems.map(String) : [], seen: Array.isArray(j.seen) ? j.seen.map(String) : [], raw: j.ok === undefined ? String(r.text).slice(0, 300) : undefined };
+  return { ok: j.ok === true, unreadable: j.ok === undefined, problems: Array.isArray(j.problems) ? j.problems.map(String) : [], seen: Array.isArray(j.seen) ? j.seen.map(String) : [], raw: j.ok === undefined ? String(r.text).slice(0, 300) : undefined };
 }
 
 // Screenshots of a running site, headless (Playwright from the path in MZ_PLAYWRIGHT, or the package if installed).

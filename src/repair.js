@@ -139,7 +139,8 @@ async function attemptFix({ finding, rec, siteDir, journeys, before, previous, p
   if (vision) {
     try {
       record.vision = await visualCheck({ siteDir, copy, finding, vision });
-      if (!record.vision.look.ok) return { ...record, status: 'rejected', why: 'the page no longer looks right to a customer: ' + record.vision.look.problems.join('; ') };
+      // An unreadable look (answer cut) is not a verdict: it is recorded, never a rejection.
+      if (!record.vision.look.ok && !record.vision.look.unreadable) return { ...record, status: 'rejected', why: 'the page no longer looks right to a customer: ' + record.vision.look.problems.join('; ') };
     } catch (e) { record.vision = { error: String(e.message || e).slice(0, 200) }; }
   }
   // The agent judges its own patch: does it remove the cause the cited recommendation describes, or hide the symptom?
