@@ -10,7 +10,8 @@ export const JOURNEYS = [
   { name: 'search an article', run: () => { const [c, , b] = handle('GET', '/search?q=lampe'); assert.equal(c, 200); assert.ok(b.includes('lampe')); } },
   { name: 'add to cart and see the total', run: () => { handle('POST', '/cart', 'id=2&price=45'); const [c, , b] = handle('GET', '/cart'); assert.equal(c, 200); assert.ok(b.includes('Vase Terracotta')); assert.match(b, /Total : \d+ €/); } },
   { name: 'reach the checkout and pay', run: () => { assert.equal(handle('GET', '/checkout')[0], 200); const [c, , b] = handle('POST', '/checkout', 'name=Test&email=t%40example.org&card=4242'); assert.equal(c, 200); assert.ok(b.includes('Commande')); } },
-  { name: 'follow my own order', run: () => { const [c, , b] = handle('GET', '/order?id=1001'); assert.equal(c, 200); assert.ok(b.includes('Commande 1001')); } },
+  // The customer places an order, gets a link and whatever cookie the shop sets, and follows that order with them.
+  { name: 'follow my own order', run: () => { const [, h, done] = handle('POST', '/checkout', 'name=Test&email=t%40example.org&card=4242'); const link = (done.match(/href="(\/order\?id=\d+)"/) || [])[1]; assert.ok(link, 'no order link after checkout'); const cookie = String(h['set-cookie'] || '').split(';')[0]; const [c, , b] = handle('GET', link, '', { cookie }); assert.equal(c, 200); assert.ok(b.includes('Commande ' + link.split('=')[1])); } },
   { name: 'log in as the administrator', run: () => { const [c, h] = handle('POST', '/login', 'user=admin&password=maisonverde2019'); assert.equal(c, 302); assert.ok(h['set-cookie']); assert.equal(handle('GET', '/admin', '', { cookie: h['set-cookie'] })[0], 200); } },
   { name: 'read the legal notice', run: () => { assert.equal(handle('GET', '/mentions-legales')[0], 200); } },
 ];

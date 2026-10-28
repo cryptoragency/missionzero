@@ -41,7 +41,12 @@ export function handle(method, url, body = '', headers = {}) {
   }
   if (path === '/checkout') {
     // FLAW 5 (payment): the card form is served and posted over plain HTTP, no CSRF token, card number handled by the shop itself.
-    if (method === 'POST') { const p = Object.fromEntries(new URLSearchParams(body)); return html(page('checkout.html').replace('<!--DONE-->', `<p class="ok">Commande n° 1004 enregistrée pour ${p.name || ''}. Carte ${p.card || ''}.</p>`)); } // FLAW 3 again, and the card number echoed
+    if (method === 'POST') {
+      const p = Object.fromEntries(new URLSearchParams(body));
+      // The order is registered to the customer, who gets a cookie and a link to follow it. The cookie is not checked by /order (FLAW 6).
+      const id = 1004; ORDERS[id] = { customer: p.name || '', email: p.email || '', address: p.address || '', total: cart.reduce((a, c) => a + c.price, 0), card: '**** **** **** ' + String(p.card || '').slice(-4) };
+      return html(page('checkout.html').replace('<!--DONE-->', `<p class="ok">Commande n° ${id} enregistrée pour ${p.name || ''}. Carte ${p.card || ''}. <a href="/order?id=${id}">Suivre ma commande</a></p>`), { 'set-cookie': `customer=${encodeURIComponent(p.email || '')}; Path=/` }); // FLAW 3 again, and the card number echoed
+    }
     return html(page('checkout.html'));
   }
   if (path === '/order') {

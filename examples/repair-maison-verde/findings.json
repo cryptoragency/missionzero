@@ -1,0 +1,127 @@
+{
+  "target": "http://127.0.0.1:8098",
+  "scanner": "any scanner that writes this format",
+  "scannedAt": "2026-10-27T21:40:00Z",
+  "findings": [
+    {
+      "id": "F01",
+      "severity": "medium",
+      "type": "missing-security-headers",
+      "url": "http://127.0.0.1:8098/",
+      "evidence": "response has no Content-Security-Policy, X-Frame-Options, X-Content-Type-Options, Referrer-Policy or Strict-Transport-Security header",
+      "description": "Browsers get no instruction against framing, MIME sniffing or script injection."
+    },
+    {
+      "id": "F02",
+      "severity": "low",
+      "type": "version-disclosure",
+      "url": "http://127.0.0.1:8098/",
+      "evidence": "Server: Apache/2.4.29 (Ubuntu) PHP/7.2.24; X-Powered-By: PHP/7.2.24 WooCommerce/3.5.1",
+      "description": "The stack and its versions are announced to anyone."
+    },
+    {
+      "id": "F03",
+      "severity": "high",
+      "type": "reflected-xss",
+      "url": "http://127.0.0.1:8098/search?q=%3Cscript%3Ealert(1)%3C/script%3E",
+      "evidence": "the query is echoed unescaped inside <h1>",
+      "description": "A crafted link runs script in the visitor's browser."
+    },
+    {
+      "id": "F04",
+      "severity": "high",
+      "type": "client-side-price",
+      "url": "http://127.0.0.1:8098/cart",
+      "evidence": "POST /cart with price=1 gives a 1 € line for a 120 € product",
+      "description": "The price is read from the form instead of the catalogue."
+    },
+    {
+      "id": "F05",
+      "severity": "critical",
+      "type": "card-data-over-http",
+      "url": "http://127.0.0.1:8098/checkout",
+      "evidence": "form with fields card, exp, cvv posted to http://",
+      "description": "Card numbers travel in clear and are handled by the shop itself."
+    },
+    {
+      "id": "F06",
+      "severity": "high",
+      "type": "idor",
+      "url": "http://127.0.0.1:8098/order?id=1002",
+      "evidence": "order 1002 (name, e-mail, address, card ending) returned without any session",
+      "description": "Any order is readable by changing the number."
+    },
+    {
+      "id": "F07",
+      "severity": "high",
+      "type": "weak-authentication",
+      "url": "http://127.0.0.1:8098/login",
+      "evidence": "error text differs for a valid username; 50 attempts in 10 s accepted",
+      "description": "Usernames can be enumerated and passwords brute-forced."
+    },
+    {
+      "id": "F08",
+      "severity": "medium",
+      "type": "insecure-cookie",
+      "url": "http://127.0.0.1:8098/login",
+      "evidence": "Set-Cookie: session=admin-7c9e; Path=/ (no HttpOnly, Secure, SameSite)",
+      "description": "The session cookie can be read by script and sent cross-site."
+    },
+    {
+      "id": "F09",
+      "severity": "critical",
+      "type": "broken-access-control",
+      "url": "http://127.0.0.1:8098/admin",
+      "evidence": "request with Cookie: session=admin-7c9e returns the admin dashboard",
+      "description": "The session value is static and guessable."
+    },
+    {
+      "id": "F10",
+      "severity": "low",
+      "type": "robots-discloses-paths",
+      "url": "http://127.0.0.1:8098/robots.txt",
+      "evidence": "Disallow: /admin, /backup/, /.env, /export/",
+      "description": "The file points attackers to the sensitive paths."
+    },
+    {
+      "id": "F11",
+      "severity": "critical",
+      "type": "exposed-secrets",
+      "url": "http://127.0.0.1:8098/.env",
+      "evidence": "DB_PASSWORD, SMTP_PASSWORD and STRIPE_SECRET returned with HTTP 200",
+      "description": "Database, mail and payment secrets are public."
+    },
+    {
+      "id": "F12",
+      "severity": "high",
+      "type": "directory-listing-backups",
+      "url": "http://127.0.0.1:8098/backup/",
+      "evidence": "index listing wp-config.php.bak and shop-2024-03-01.sql",
+      "description": "Configuration and database backups are downloadable."
+    },
+    {
+      "id": "F13",
+      "severity": "critical",
+      "type": "personal-data-exposed",
+      "url": "http://127.0.0.1:8098/export/customers.csv",
+      "evidence": "names, e-mails and phone numbers returned without authentication",
+      "description": "Customer personal data is public: a GDPR breach."
+    },
+    {
+      "id": "F14",
+      "severity": "medium",
+      "type": "outdated-library",
+      "url": "http://127.0.0.1:8098/js/jquery-1.8.3.min.js",
+      "evidence": "jQuery v1.8.3 banner",
+      "description": "A library with published vulnerabilities is loaded on every page."
+    },
+    {
+      "id": "F15",
+      "severity": "medium",
+      "type": "missing-privacy-policy",
+      "url": "http://127.0.0.1:8098/mentions-legales",
+      "evidence": "no privacy policy, no information on the data collected by the checkout form",
+      "description": "Personal data is collected without the information the law requires."
+    }
+  ]
+}

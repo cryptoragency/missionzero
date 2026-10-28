@@ -1,0 +1,112 @@
+{
+  "finding": {
+    "id": "F01",
+    "severity": "medium",
+    "type": "missing-security-headers",
+    "url": "http://127.0.0.1:8098/",
+    "evidence": "response has no Content-Security-Policy, X-Frame-Options, X-Content-Type-Options, Referrer-Policy or Strict-Transport-Security header",
+    "description": "Browsers get no instruction against framing, MIME sniffing or script injection."
+  },
+  "recommendation": {
+    "goal": "What is the recommended fix for this web security flaw: missing-security-headers (Browsers get no instruction against framing, MIME sniffing or script injection. Evidence: response has no Content-Security-Policy, X-Frame-Options, X-Content-Type-Options, Referrer-Policy or Strict-Transport-Security header). State the concrete fix and cite a primary source (OWASP, MDN, NIST, PCI DSS, IETF RFC, or the vendor's own advisory).",
+    "answer": "Fix: configure server to send on every HTTPS response: Strict-Transport-Security: max-age=63072000; includeSubDomains; preload, X-Frame-Options DENY, X-Content-Type-Options: nosniff, Referrer-Policy: strict-origin-when-cross-origin, plus Content-Security-Policy where frame-ancestors obsoletes X-Frame-Options for supporting browsers. Tune CSP to app.",
+    "sources": [
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html",
+        "contribution": "Strict-Transport-Security: max-age=63072000; includeSubDomains; preload"
+      },
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html",
+        "contribution": "Header always set X-Frame-Options \"DENY\""
+      },
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html",
+        "contribution": "Ensure X-Content-Type-Options: nosniff is set"
+      },
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html",
+        "contribution": "Referrer-Policy: strict-origin-when-cross-origin"
+      },
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html",
+        "contribution": "Content Security Policy (CSP) frame-ancestors directive obsoletes X-Frame-Options for supporting browsers"
+      }
+    ],
+    "score": 9,
+    "green": 5,
+    "red": 0,
+    "verification": [
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html",
+        "claim": "Strict-Transport-Security: max-age=63072000; includeSubDomains; preload",
+        "verdict": "supported",
+        "detail": "Strict-Transport-Security: max-age=63072000; includeSubDomains; preload"
+      },
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html",
+        "claim": "Header always set X-Frame-Options \"DENY\"",
+        "verdict": "supported",
+        "detail": "Header always set X-Frame-Options \"DENY\""
+      },
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html",
+        "claim": "Ensure X-Content-Type-Options: nosniff is set",
+        "verdict": "supported",
+        "detail": "Ensure X-Content-Type-Options: nosniff is set to prevent MIME type sniffing."
+      },
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html",
+        "claim": "Referrer-Policy: strict-origin-when-cross-origin",
+        "verdict": "supported",
+        "detail": "Referrer-Policy: strict-origin-when-cross-origin NOTE: For more information on configuring this header please see Mozilla Referrer-Policy ."
+      },
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html",
+        "claim": "Content Security Policy (CSP) frame-ancestors directive obsoletes X-Frame-Options for supporting browsers",
+        "verdict": "supported",
+        "detail": "Content Security Policy (CSP) frame-ancestors directive obsoletes X-Frame-Options for supporting browsers ( source )."
+      }
+    ],
+    "savedAt": "2026-10-28T08:05:47.081Z",
+    "cached": true
+  },
+  "fix": {
+    "summary": "Add HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy and CSP frame-ancestors headers to HTML responses.",
+    "risk": "Overly restrictive CSP could block legitimate inline scripts or styles in browsers if the pages rely on them.",
+    "secretsMasked": 5,
+    "applied": [
+      {
+        "file": "server.js",
+        "find": "  const html = (b, extra = {}) => [200, { 'content-type': 'text/html; charset=utf-8', server: 'Apache/2.4.29 (Ubuntu) PHP/7.2.24', 'x-powered-by': 'PHP/7.2.24 WooCommerce/3.5.1', ...extra }, b];",
+        "replace": "  const html = (b, extra = {}) => [200, { 'content-type': 'text/html; charset=utf-8', server: 'Apache/2.4.29 (Ubuntu) PHP/7.2.24', 'x-powered-by': 'PHP/7.2.24 WooCommerce/3.5.1', ...extra, 'strict-transport-security': 'max-age=63072000; includeSubDomains; preload', 'x-frame-options': 'DENY', 'x-content-type-options': 'nosniff', 'referrer-policy': 'strict-origin-when-cross-origin', 'content-security-policy': \"default-src 'self'; frame-ancestors 'none'\" }, b];"
+      }
+    ],
+    "refused": []
+  },
+  "journeysBefore": {
+    "ok": true,
+    "pass": 7,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ journey: browse the catalogue (1.2443ms)\n✔ journey: search an article (0.2645ms)\n✔ journey: add to cart and see the total (0.5724ms)\n✔ journey: reach the checkout and pay (0.4289ms)\n✔ journey: follow my own order (0.4779ms)\n✔ journey: log in as the administrator (0.2725ms)\n✔ journey: read the legal notice (0.251ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 99.9545\n"
+  },
+  "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-ACG7lq",
+  "patch": "diff --git a/server.js b/server.js\nindex 6f1b3eb..89af07a 100644\n--- a/server.js\n+++ b/server.js\n@@ -25,7 +25,7 @@ export function handle(method, url, body = '', headers = {}) {\n   const q = Object.fromEntries(new URLSearchParams(qs));\n   // FLAW 1 (headers): no Content-Security-Policy, X-Frame-Options, X-Content-Type-Options, Referrer-Policy or HSTS.\n   // FLAW 2 (information disclosure): Server and X-Powered-By reveal an old stack.\n-  const html = (b, extra = {}) => [200, { 'content-type': 'text/html; charset=utf-8', server: 'Apache/2.4.29 (Ubuntu) PHP/7.2.24', 'x-powered-by': 'PHP/7.2.24 WooCommerce/3.5.1', ...extra }, b];\n+  const html = (b, extra = {}) => [200, { 'content-type': 'text/html; charset=utf-8', server: 'Apache/2.4.29 (Ubuntu) PHP/7.2.24', 'x-powered-by': 'PHP/7.2.24 WooCommerce/3.5.1', ...extra, 'strict-transport-security': 'max-age=63072000; includeSubDomains; preload', 'x-frame-options': 'DENY', 'x-content-type-options': 'nosniff', 'referrer-policy': 'strict-origin-when-cross-origin', 'content-security-policy': \"default-src 'self'; frame-ancestors 'none'\" }, b];\n   const esc = (s) => String(s).replace(/[&<>\"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;' }[c]));\n \n   if (path === '/') return html(page('index.html').replace('<!--PRODUCTS-->', PRODUCTS.map((p) => `<div class=\"card\"><h3>${p.name}</h3><p class=\"price\">${p.price} €</p><form method=\"post\" action=\"/cart\"><input type=\"hidden\" name=\"id\" value=\"${p.id}\"><input type=\"hidden\" name=\"price\" value=\"${p.price}\"><button>Ajouter au panier</button></form></div>`).join('')));\n",
+  "journeysAfter": {
+    "ok": true,
+    "pass": 7,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ journey: browse the catalogue (1.3301ms)\n✔ journey: search an article (0.2784ms)\n✔ journey: add to cart and see the total (0.6126ms)\n✔ journey: reach the checkout and pay (0.4536ms)\n✔ journey: follow my own order (0.5035ms)\n✔ journey: log in as the administrator (0.4004ms)\n✔ journey: read the legal notice (0.2423ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 107.4194\n"
+  },
+  "rescan": {
+    "target": "http://127.0.0.1:57220",
+    "scanner": "mission-zero scan 0.1",
+    "scannedAt": "2026-10-28T08:11:50.369Z",
+    "findings": []
+  },
+  "status": "proposed",
+  "why": "journeys pass and the flaw is gone on the copy; a human applies it",
+  "attempts": [],
+  "ms": 8013
+}

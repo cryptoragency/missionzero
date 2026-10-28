@@ -73,7 +73,29 @@ npm run repair-report -- evidence/repair-<date>            # one readable page p
 npm run verify-chain -- evidence/repair-<date>             # recompute the hashed evidence journal
 ```
 
-RESULTS_TABLE
+### Results on Maison Verde (28 October 2026, 2 research turns, 1 contradiction round, 1 retry)
+
+| # | Flaw | Status | Fix proposed (the model's own summary) | Sources verified |
+|---|------|--------|----------------------------------------|------------------|
+| F11 | .env served with secrets | proposed | deny dotfiles, rotate every secret | 2 green |
+| F05 | card data over HTTP | proposed | no card form in the shop, payment delegated to a certified provider | 4 green |
+| F09 | admin trusts a guessable cookie | proposed | random server-side session issued after login, validated on /admin | 2 green |
+| F13 | customer export without auth | proposed | admin session required on /export/customers.csv | 2 green |
+| F03 | reflected XSS | proposed | output escaped on search, checkout echo and 404 | 1 green |
+| F04 | price trusted from the client | proposed | price looked up server-side by product id | 2 green |
+| F06 | IDOR on /order | **rejected, then proposed** | 1st fix required an admin session and broke « follow my own order »; 2nd fix: ownership (customer cookie matching the order's e-mail) or admin, else 403 | 2 green |
+| F07 | weak authentication | proposed | generic error, rate limit with 429, failures logged | 3 green |
+| F12 | backups listed | proposed | directory listing off, backup files 404 | 2 green |
+| F01 | no security headers | **cut, then proposed** | 1st answer was truncated by the token cap (raised); 2nd: HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, CSP frame-ancestors | 5 green |
+| F08 | insecure session cookie | proposed | Secure, HttpOnly, SameSite=Strict | 3 green |
+| F14 | jQuery 1.8.3 | proposed | the vulnerable file is no longer served (removal, not an update: the scanner cannot tell the difference, a reviewer can) | 2 green |
+| F15 | no privacy policy | proposed | privacy notice on the legal page, linked from the checkout | 3 green |
+| F02 | versions disclosed | proposed | Server and X-Powered-By removed | 0 green |
+| F10 | robots.txt lists sensitive paths | proposed | sensitive Disallow entries removed | 3 green |
+
+15 findings, 15 fixes proposed, 7/7 vital journeys green after every proposed fix, every copy rescanned clean. 17 attempts, 194 model calls, **$1.10 in total** (about 7 cents per finding). Every proposed fix is a patch in its evidence folder; the whole run is in  with its report page and its hashed journal (> mission-zero@0.1.0 verify-chain
+> node bench/verify-chain.js examples/repair-maison-verde
+chain intact: 6 records, head 11c237693cf596cd254050b537e101b7f49c7e574ec7e06021c2691499d40215).
 
 ## Trust: built for companies that cannot afford a mistake
 
@@ -99,7 +121,7 @@ Who pays: online shops and the agencies and hosts that run them, where the same 
 cp .env.example .env            # add your MODEL_API_KEY (Meta Model API)
 npm install
 npm run check-key
-npm test                        # 45 tests, no network, no model calls
+npm test                        # 47 tests, no network, no model calls
 node --env-file=.env src/run.js "your goal" 4 3     # 4 turns, 3 contradiction rounds
 npm run demo                    # the 5 goals above, table + evidence
 node bench/make-replay.js evidence/<folder>         # animated replay of a mission (one HTML file)

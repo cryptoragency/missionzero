@@ -93,10 +93,21 @@ ${cards}
 </main></body></html>`;
 }
 
+// Several runs can be merged into one page (a later run overrides an earlier one for the same finding id): the chain
+// is shown only for a single run, since each run has its own journal.
+export function mergeReports(runs) {
+  if (runs.length === 1) return runs[0];
+  const byId = new Map();
+  for (const run of runs) for (const r of run.results) byId.set(r.finding?.id, r);
+  const results = [...byId.values()].sort((a, b) => (ORDER[a.finding?.severity] ?? 9) - (ORDER[b.finding?.severity] ?? 9));
+  const cost = { usd: runs.reduce((a, r) => a + (Number(r.cost.usd) || 0), 0), calls: runs.reduce((a, r) => a + (Number(r.cost.calls) || 0), 0) };
+  return { folder: runs.map((r) => r.folder).join(' + '), findings: results.length, results, cost, chain: null };
+}
+
 if (process.argv[1] && process.argv[1].endsWith('make-repair-report.js')) {
-  const folder = process.argv[2];
-  if (!folder) { console.error('usage: node bench/make-repair-report.js evidence/repair-<date> [out.html]'); process.exit(1); }
-  const out = process.argv[3] || join(folder, 'report.html');
-  writeFileSync(out, renderReport(loadReport(folder)));
+  const folders = process.argv.slice(2).filter((a) => !a.startsWith('--') && !a.endsWith('.html'));
+  const out = process.argv.slice(2).find((a) => a.endsWith('.html')) || join(folders[0] || '.', 'report.html');
+  if (!folders.length) { console.error('usage: node bench/make-repair-report.js evidence/repair-<date> [evidence/repair-<date2> ...] [out.html]'); process.exit(1); }
+  writeFileSync(out, renderReport(mergeReports(folders.map(loadReport))));
   console.log('report:', out);
 }

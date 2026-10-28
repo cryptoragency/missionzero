@@ -93,10 +93,11 @@ export async function proposeFix({ finding, recommendation, siteDir, files = ['s
   const r = await ask([
     { role: 'system', content: FIX_PROMPT },
     { role: 'user', content: JSON.stringify(value) },
-  ], { max_tokens: 4000, tag: 'fix' });
+  ], { max_tokens: 7000, tag: 'fix' }); // reasoning is billed inside the cap: a header fix with a long CSP was cut at 4000
   const j = readJson(r.text) || {};
   const edits = (Array.isArray(j.edits) ? j.edits : []).map((e) => ({ ...e, find: restore(e.find), replace: restore(e.replace) }));
-  return { edits, summary: restore(j.summary || ''), risk: restore(j.risk || ''), secretsMasked: masked };
+  // When nothing usable comes back, the start of the raw answer is kept: a truncated JSON and a refusal look different.
+  return { edits, summary: restore(j.summary || ''), risk: restore(j.risk || ''), secretsMasked: masked, raw: edits.length ? undefined : String(r.text || '').slice(0, 400), truncated: r.finish_reason === 'length' || undefined };
 }
 
 // The proposed fix as a unified diff between the site and its repaired copy (what a reviewer applies with `git apply`).
