@@ -9,8 +9,11 @@ const PRICE = { input: Number(process.env.MZ_PRICE_IN) || 1.25, output: Number(p
 // Reasoning effort by role: checks and scores need little, planning and writing a bit more.
 const EFFORT = { verify: 'minimal', judge: 'low', contradict: 'low', research: 'low', evaluate: 'low', distill: 'minimal', plan: 'medium', synthesize: 'medium', rewrite: 'medium', fix: 'medium', other: 'low' };
 
-export function createClient({ key = process.env.MODEL_API_KEY, model = process.env.MZ_MODEL || 'muse-spark-1.3', capUsd = Number(process.env.MZ_CAP_USD) || 100, dailyCapUsd = Number(process.env.MZ_DAILY_CAP_USD) || 0, ledgerPath = 'memory/spend.json', fetchFn = fetch } = {}) {
-  if (!key) throw new Error('MODEL_API_KEY is missing (.env file)');
+// The key follows the provider: BASETEN_API_KEY when the base URL is Baseten's, MODEL_API_KEY (Meta) otherwise; MZ_API_KEY overrides.
+const KEY = process.env.MZ_API_KEY || (/baseten/i.test(BASE) ? process.env.BASETEN_API_KEY : process.env.MODEL_API_KEY);
+export const provider = () => (/baseten/i.test(BASE) ? 'baseten' : /api\.meta\.ai/.test(BASE) ? 'meta' : new URL(BASE).hostname);
+export function createClient({ key = KEY, model = process.env.MZ_MODEL || (/baseten/i.test(BASE) ? 'meta-models/muse-spark-open' : 'muse-spark-1.3'), capUsd = Number(process.env.MZ_CAP_USD) || 100, dailyCapUsd = Number(process.env.MZ_DAILY_CAP_USD) || 0, ledgerPath = 'memory/spend.json', fetchFn = fetch } = {}) {
+  if (!key) throw new Error((/baseten/i.test(BASE) ? 'BASETEN_API_KEY' : 'MODEL_API_KEY') + ' is missing (.env file)');
   const counter = { calls: 0, input: 0, output: 0, usd: 0, totalMs: 0, byTag: {} };
 // Daily ledger: the spend of every run of the day adds up, so a daily cap holds across runs.
   const today = () => new Date().toISOString().slice(0, 10);
