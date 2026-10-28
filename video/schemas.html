@@ -74,7 +74,7 @@ button:hover { border-color:var(--acc); }
       <g class="step" data-k="2"><rect class="box gold" x="60" y="120" width="220" height="100" rx="14"/><text class="lbl" x="170" y="158" text-anchor="middle">ARGUS surveille</text><text class="lbl s" x="170" y="182" text-anchor="middle">le scanner de MYTHOZOR, en continu</text><text class="lbl en" x="170" y="204" text-anchor="middle">ARGUS watches</text></g>
       <g class="step" data-k="3"><path class="arrow" d="M282 170 L376 170"/><rect class="box gold" x="378" y="120" width="240" height="100" rx="14"/><text class="lbl" x="498" y="158" text-anchor="middle">Mission Zero répare</text><text class="lbl s" x="498" y="182" text-anchor="middle">sur une copie, avec preuves</text><text class="lbl en" x="498" y="204" text-anchor="middle">Mission Zero repairs</text></g>
       <g class="step" data-k="4"><path class="arrow ok" d="M620 170 L714 170"/><rect class="box ok" x="716" y="120" width="220" height="100" rx="14"/><text class="lbl" x="826" y="158" text-anchor="middle">Vous validez</text><text class="lbl s" x="826" y="182" text-anchor="middle">dans votre espace, un clic</text><text class="lbl en" x="826" y="204" text-anchor="middle">you approve</text></g>
-      <g class="step" data-k="5"><path class="arrow" d="M826 222 C 826 262, 170 262, 170 222" style="stroke-dasharray:6 5"/><text class="lbl s" x="498" y="252" text-anchor="middle" style="fill:var(--acc)">et ARGUS vérifie à nouveau · and ARGUS checks again</text></g>
+      <g class="step" data-k="5"><path class="arrow" d="M826 222 C 826 248, 170 248, 170 222" style="stroke-dasharray:6 5"/><text class="lbl s" x="498" y="262" text-anchor="middle" style="fill:var(--acc)">et ARGUS vérifie à nouveau · and ARGUS checks again</text></g>
       <g class="step" data-k="6"><text class="lbl" x="500" y="292" text-anchor="middle" style="fill:var(--acc)">MYTHOZOR.com · un produit de CRYPTOR.AGENCY</text></g>
     </svg>
     <div class="caption" id="c3"></div>
@@ -91,8 +91,8 @@ button:hover { border-color:var(--acc); }
   var timers = {};
   function steps(id) { return Array.prototype.slice.call(document.querySelectorAll('#' + id + ' .step')); }
   function show(id, k) { steps(id).forEach(function (s) { s.classList.toggle('on', Number(s.dataset.k) <= k); }); var c = document.getElementById('c' + id.slice(1)); c.innerHTML = CAP[id][k - 1] || ''; }
-  function play(id) { clearTimeout(timers[id]); var n = steps(id).length, k = 0; show(id, 0); (function next() { k += 1; if (k > n) return; show(id, k); timers[id] = setTimeout(next, 1800); })(); }
-  function all(id) { clearTimeout(timers[id]); show(id, steps(id).length); }
+  function play(id) { clearTimeout(timers[id]); document.getElementById(id).dataset.played = '1'; var n = steps(id).length, k = 0; show(id, 0); (function next() { k += 1; if (k > n) return; show(id, k); timers[id] = setTimeout(next, 1800); })(); }
+  function all(id) { clearTimeout(timers[id]); document.getElementById(id).dataset.played = '1'; show(id, steps(id).length); }
   document.querySelectorAll('[data-play]').forEach(function (b) { b.addEventListener('click', function () { play(b.dataset.play); }); });
   document.querySelectorAll('[data-all]').forEach(function (b) { b.addEventListener('click', function () { all(b.dataset.all); }); });
   var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting && !e.target.dataset.played) { e.target.dataset.played = '1'; play(e.target.id); } }); }, { threshold: 0.4 });
