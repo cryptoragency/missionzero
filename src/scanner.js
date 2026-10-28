@@ -99,8 +99,8 @@ export const POLICY_PROBES = [
     return csp && !/(^|;)\s*(script-src|default-src)\s/i.test(csp) ? { evidence: 'content-security-policy: ' + csp.slice(0, 160), description: 'The policy restricts framing only: any injected script still runs. A script-src (or default-src) directive is missing.' } : null;
   } },
   { id: 'F22', type: 'weak-csp-connect-src', severity: 'medium', path: '/', run: async (b) => {
-    const r = await get(b, '/'); const csp = r.headers['content-security-policy'] || (r.body.match(/http-equiv="content-security-policy"s+content="([^"]*)"/i) || [])[1] || '';
-    return csp && !/(^|;)s*(connect-src|default-src)s/i.test(csp) ? { evidence: 'content-security-policy: ' + csp.slice(0, 160), description: 'The policy does not restrict where the page may send data (connect-src): an injected script can exfiltrate to any server.' } : null;
+    const r = await get(b, '/'); const csp = r.headers['content-security-policy'] || (r.body.match(/http-equiv="content-security-policy"\s+content="([^"]*)"/i) || [])[1] || '';
+    return csp && !/(^|;)\s*(connect-src|default-src)\s/i.test(csp) ? { evidence: 'content-security-policy: ' + csp.slice(0, 160), description: 'The policy does not restrict where the page may send data (connect-src): an injected script can exfiltrate to any server.' } : null;
   } },
   { id: 'F18', type: 'missing-corp', severity: 'low', path: '/', run: async (b) => {
     const r = await get(b, '/'); return r.headers['cross-origin-resource-policy'] ? null : { evidence: 'no cross-origin-resource-policy header', description: 'Any site can embed the resources of this one (images, scripts) without restriction.' };
