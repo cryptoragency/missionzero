@@ -103,11 +103,13 @@ npm run verify-chain -- evidence/repair-<date>             # recompute the hashe
 | `muse-voice-transcribe-1.0` (speech to text) | `npm run voice -- recording.wav --run`: a goal spoken into a microphone becomes the mission's goal (`src/voice.js`) | the first thing a founder does with an agent is talk to it; the WAV is resampled to mono 16 kHz with ffmpeg when needed, the wake name and stutters are dropped |
 | `muse-spark-1.3` (vision) | `--vision` in repair mode: after a fix passes the journeys and the rescan, the repaired pages are screenshotted headless and shown to the model as a customer sees them (`src/vision.js`) | an HTTP assertion is blind: a blank page or a vanished product grid returns 200. The model answers « ok / problems / seen » and a « not ok » rejects the fix |
 | `sam-3.1` (segmentation) | same `--vision` step: SAM boxes the text fields of the finding's page before and after (`src/sam.js`) | visual evidence a reviewer understands in one glance: the card form had 5 fields, the fixed page has 2. Concepts must be visual (« form », « text input field », « button »): « credit card form » finds nothing |
-| Muse Spark open weights (Baseten) | `MZ_BASE_URL` + `MZ_MODEL` switch the whole system to the open-weight model on any OpenAI-compatible endpoint (`src/meta.js`) | the trust promise « the model stays with you » needs the open weights; same requests, same prompts, prices per provider |
+| Muse Spark open weights (Baseten) | `MZ_BASE_URL` + `BASETEN_API_KEY` switch the whole system to `meta-models/muse-spark-open` on Baseten, or any OpenAI-compatible endpoint (`src/meta.js`) | the trust promise « the model stays with you » needs the open weights; same requests, same prompts; measured below |
 
 First real measurements (28 October): voice, an 11-second goal transcribed in 3.0 s; vision, two pages read correctly for $0.005; SAM, « form » 1 box, « text input field » 5 boxes, « button » 1 box on the checkout page, under 2 s each.
 
 What vision caught that HTTP tests did not (28 October, `--vision` on F05): the model's fix removed the card inputs and left their labels. The 7 journeys were green, the scanner was silent, and Muse Spark looking at the page said « payment page form is incomplete: 'Numéro de carte', 'Expiration', 'Cryptogramme' appear as text with no visible input fields ». SAM counted 5 text fields before, 2 after. The fix was **rejected**. On F03, the same look confirmed the escaped `<script>` shown as plain text with no popup. The two looks cost $0.01.
+
+Open weights, measured (28 October): the same DBIR mission on `meta-models/muse-spark-open` served by Baseten (`MZ_BASE_URL=https://inference.baseten.co/v1`, `BASETEN_API_KEY`): judge 10/10, 1 verified source, the 60 % quoted from the report, 3 turns, 11 model calls, $0.039, 27 seconds in all. Same code, same prompts, same `reasoning_effort` per role; only the base URL changed. On the Meta API the same mission took 2 turns and $0.031. Baseten's prices are the same as Meta's ($1.25 in, $4.25 out per million tokens) with cached input at $0.15.
 
 ## Mission Zero returns to zero by itself
 
@@ -132,7 +134,7 @@ We would rather list these ourselves.
 5. **The secret filter is pattern-based.** It masks the usual shapes (`.env` lines, `password=`, `define('X_PASSWORD'…)`, Stripe, AWS, GitHub, Google, Slack, JWT, private keys, bearer tokens). A secret that looks like nothing (the demo's static `session=admin-7c9e` cookie value, for instance) goes through. The report says how many were masked, not that none remained.
 6. **The hashed journal proves integrity, not identity.** It shows that no record changed since the run; it does not sign who ran it. A signature (the customer's key) is the next step.
 7. **One model does everything.** Muse Spark plans, writes, verifies, contradicts, judges and repairs; there is no second model and no human until the end. The verifier demands an exact quote from the cited page, which limits what the writer can invent, but the chain is still one model checking itself.
-8. **Costs are measured on `muse-spark-1.3` with reasoning**; the open-weight variant has not been benchmarked yet.
+8. **Costs are measured on `muse-spark-1.3` with reasoning** and, for one mission, on the open weights at Baseten; Baseten documents that the open model gives no reproducible output at temperature 0 and no forced JSON mode (our JSON reader is tolerant).
 
 ## Trust: built for companies that cannot afford a mistake
 
