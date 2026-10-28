@@ -10,6 +10,8 @@ Every step is written to an evidence folder you can open: journal, memory, final
 
 Startups track · CRYPTOR.AGENCY · Meta Global AI Developer Hackathon 2026 · built on the Meta Model API (`muse-spark-1.3`)
 
+**What is judged, in one paragraph.** Two things, one loop. (1) A research agent that answers a goal only from primary documents it read, with an exact quote for every figure (5 demo goals at 10/10, 4 to 9 cents each). (2) A repair mode that takes any scanner's findings on a website and returns, for each flaw, a patch applied on a copy and checked five ways (the customer's own tests, a rescan, a look at the pages, the agent's review of its own patch, written reservations), at about ten cents a finding, never touching the site itself. Plus an agent that returns to zero by itself when its memory hurts. Repository: `github.com/cryptoragency/mission0` (public from 4 November 2026). Prerequisites: Node 24, a Meta Model API key; optional: Playwright and ffmpeg for the vision and voice features, a Baseten key for the open weights.
+
 ## What is new in this repository
 
 Everything here was written during the hackathon, from 26 October 2026. The git history is dated and public. No code, data or prompt comes from the agency's existing products.
@@ -47,8 +49,8 @@ Muse Spark reasons before answering and the reasoning is billed as output: it wa
 | 1 | Verizon DBIR 2025: breaches analyzed, human element (117-page PDF) | **10 / 10** | 2 | $0.059 |
 | 2 | GDPR maximum fine, article (official text via the EU Publications Office) | **10 / 10** | 3 | $0.061 |
 | 3 | NIST SP 800-63B-4 password lengths: 15 single-factor, eight multi-factor, 64 allowed | **10 / 10** | 3 | $0.086 |
-| 4 | Latest CVSS version, year, Critical range (first.org) | **10 / 10** | 3 | $0.041 |
-| 5 | ANSSI *Guide d'hygiène informatique*: 42 measures, "Version 2.0 - Septembre 2017" from the PDF footer | **10 / 10** | 4 | $0.084 |
+| 4 | Latest CVSS version, year, Critical range (first.org) | **10 / 10** | 3 | $0.037 |
+| 5 | ANSSI *Guide d'hygiène informatique*: 42 measures, "Version 2.0 - Septembre 2017" from the PDF footer | **10 / 10** | 4 | $0.047 |
 
 Every figure is green: confirmed by an exact quote from the primary page. Scores vary between runs because web search does: in one run of goal 1 the search returned the public-sector snapshot instead of the full report, and the judge gave 5 / 10 for citing the wrong document. That honesty is the point. Reproduce with `npm run demo`; each run writes its own evidence folder.
 
@@ -99,6 +101,8 @@ Every status below was decided by the system, not edited by hand: the table is g
 
 5 reserved, 10 proposed · 15 findings · 237 model calls · $1.49 (about 10 cents per finding, vision and self-review included)
 
+Reading the « Checks » column: « journeys 7/7 » the customer's tests replayed on the repaired copy; « rescan clean » the scanner no longer fires on the copy; « look ok » Muse Spark judged the repaired pages still work for a customer; « fields a→b » SAM 3.1's count of text fields on the finding's page before and after; « self-review: cause / hides / partial » the agent's verdict on its own patch. « green » is a cited source whose exact quote the verifier found on the page; « red » a contradiction.
+
 The two runs behind this table, with every patch and their hashed journals (32 and 16 records, intact), are in `examples/repair-maison-verde/`, with the merged report page `report.html`. Earlier in the day, before the self-review existed and while a token cap could cut the judge's answer, the same 15 findings had come out « 15 proposed »: that run is not the one shown, because a 0/10 from a cut answer is not a judgement.
 
 ## Meta tools, each where it earns its place
@@ -106,26 +110,26 @@ The two runs behind this table, with every patch and their hashed journals (32 a
 | Tool | Where | Why there and not elsewhere |
 |---|---|---|
 | `muse-spark-1.3` (text, reasoning) | every role: planner, evaluator, writer, verifier, contradictor, judge, repairer | one model, one effort level per role (`reasoning_effort`): the cost finding of this project |
-| `muse-voice-transcribe-1.0` (speech to text) | `npm run voice -- recording.wav --run`: a goal spoken into a microphone becomes the mission's goal (`src/voice.js`) | the first thing a founder does with an agent is talk to it; the WAV is resampled to mono 16 kHz with ffmpeg when needed, the wake name and stutters are dropped |
+| `muse-voice-transcribe-1.0` (speech to text) | `npm run voice -- recording.wav --run`: a goal spoken into a microphone becomes the mission's goal (`src/voice.js`) | the first thing a founder does with an agent is talk to it; the WAV is resampled to mono 16 kHz with ffmpeg when needed, the wake name and stutters are dropped (the committed sample is a synthetic Windows voice, not a person) |
 | `muse-spark-1.3` (vision) | `--vision` in repair mode: after a fix passes the journeys and the rescan, the repaired pages are screenshotted headless and shown to the model as a customer sees them (`src/vision.js`) | an HTTP assertion is blind: a blank page or a vanished product grid returns 200. The model answers « ok / problems / seen » and a « not ok » rejects the fix |
 | `sam-3.1` (segmentation) | same `--vision` step: SAM boxes the text fields of the finding's page before and after (`src/sam.js`) | visual evidence a reviewer understands in one glance: the card form had 5 fields, the fixed page has 2. Concepts must be visual (« form », « text input field », « button »): « credit card form » finds nothing |
 | Muse Spark open weights (Baseten) | `MZ_BASE_URL` + `BASETEN_API_KEY` switch the whole system to `meta-models/muse-spark-open` on Baseten, or any OpenAI-compatible endpoint (`src/meta.js`) | the trust promise « the model stays with you » needs the open weights; same requests, same prompts; measured below |
 
-First real measurements (28 October): voice, an 11-second goal transcribed in 3.0 s; vision, two pages read correctly for $0.005; SAM, « form » 1 box, « text input field » 5 boxes, « button » 1 box on the checkout page, under 2 s each.
+First real measurements (28 October): voice, an 11-second goal transcribed in 3.0 s; vision, two pages read correctly for $0.005; SAM, « form » 1 box, « text input field » 5 boxes, « button » 1 box on the checkout page, under 2 s each. Official prices on 28 October 2026 (dev.meta.ai, pricing and rate limits): Muse Spark 1.3 $1.25 per million input tokens, $0.15 cached, $4.25 output; voice $0.18 per hour of audio; SAM $2.50 per 1 000 images.
 
-What vision caught that HTTP tests did not (28 October, `--vision` on F05): the model's fix removed the card inputs and left their labels. The 7 journeys were green, the scanner was silent, and Muse Spark looking at the page said « payment page form is incomplete: 'Numéro de carte', 'Expiration', 'Cryptogramme' appear as text with no visible input fields ». SAM counted 5 text fields before, 2 after. The fix was **rejected**. On F03, the same look confirmed the escaped `<script>` shown as plain text with no popup. The two looks cost $0.01.
+What vision caught that HTTP tests did not (28 October, 09:31 run, `--vision` on F05, versioned in `examples/repair-maison-verde/stories/repair-2026-10-28-09-31/F05/` with its replay and screenshots): the model's fix removed the card inputs and left their labels. The 7 journeys were green, the scanner was silent, and Muse Spark looking at the page said « payment page form is incomplete: 'Numero de carte', 'Expiration', 'Cryptogramme' appear as text with no visible input fields ». SAM counted 5 text fields before, 2 after. The fix was **rejected**. On F03, the same look confirmed the escaped `<script>` shown as plain text with no popup. The two looks cost $0.01. In the final run (11:18) the same F05 fix removed the whole card form and announced an external payment provider: the look accepted it (SAM 5 → 0), and the fix is « proposed with reservation » for its thin justification. Raw outputs of the three Meta tools are in `examples/meta-tools/`.
 
 Open weights, measured (28 October): the same DBIR mission on `meta-models/muse-spark-open` served by Baseten (`MZ_BASE_URL=https://inference.baseten.co/v1`, `BASETEN_API_KEY`): judge 10/10, 1 verified source, the 60 % quoted from the report, 3 turns, 11 model calls, $0.039, 27 seconds in all. Same code, same prompts, same `reasoning_effort` per role; only the base URL changed. On the Meta API the same mission took 2 turns and $0.031. Baseten's prices are the same as Meta's ($1.25 in, $4.25 out per million tokens) with cached input at $0.15.
 
 ## Mission Zero returns to zero by itself
 
-An agent that learns can learn wrong. Mission Zero keeps a ledger of its missions (`memory/outcomes.json`: judge score, verified sources, lessons used) and, after every mission, decides whether its own memory is hurting it. Three rules, all explainable in one sentence:
+An agent that learns can learn wrong. Mission Zero keeps a ledger of its missions (`memory/outcomes.json`, local and not versioned: judge score, verified sources, lessons used) and, after every mission, decides whether its own memory is hurting it. Three rules, all explainable in one sentence:
 
 - **A.** two bad missions in a row (judge under 7) while lessons were applied;
 - **B.** the same goal scored at least 2 points higher before, with fewer lessons: the memory made it worse;
 - **C.** drift: the last three missions average 2 points under the three before.
 
-When a rule fires, the agent **archives its lessons itself** (`memory/archive/lessons-<date>.json`, never deleted), writes the rule and the reason in `memory/resets.json` and in the journal, **runs the mission again knowing nothing** (`evidence/<run>/from-zero/`), compares both answers (judge score, then verified sources, then contradicted ones), keeps the better one, and relearns from that one only. `zero.json` holds the comparison. No human presses the button; `MZ_ZERO=off` disables it, `--from-zero` forces it for an experiment (marked « forced », never presented as a natural reset).
+When a rule fires, the agent **archives its lessons itself** (`memory/archive/lessons-<date>.json`, never deleted), writes the rule and the reason in `memory/resets.json` and in the journal, **runs the mission again knowing nothing** (`evidence/<run>/from-zero/`), compares both answers (judge score, then verified sources, then contradicted ones), keeps the better one, and relearns from that one only. `zero.json` holds the comparison. The archived lessons and the reset record of the versioned run are in `examples/back-to-zero/memory/`. No human presses the button; `MZ_ZERO=off` disables it, `--from-zero` forces it for an experiment (marked « forced », never presented as a natural reset).
 
 First real run (28 October, forced for the experiment, DBIR 2025 goal, 3 turns, 1 round): the agent archived its 30 lessons, ran again knowing nothing, and both answers were identical, 10/10, the 60 % human element quoted from the report. With memory: $0.031. From zero: $0.054, 75 % more: both took 2 turns, the difference is in what was read and written (the first turn scored 4/10 with memory and 8/10 from zero, so the lessons did not even help the first move here). Verdict written by the agent: « same result either way: the memory did no harm », memory restored. The run and its replay are in `examples/back-to-zero/`. A natural reset (rules A, B or C) has not fired yet; when one does, it will be shown as it happened, never staged.
 
@@ -144,7 +148,7 @@ We would rather list these ourselves.
 
 ## Trust: built for companies that cannot afford a mistake
 
-Mission Zero does not ask to be trusted. It is built so that it cannot steal, cannot break and cannot lie.
+Mission Zero does not ask to be trusted. It is built so that it has no way to take your data, little room to break your service, and no way to cite what it did not read. The limits above say where that stops.
 
 | Concern | What Mission Zero does |
 |---|---|
@@ -158,7 +162,7 @@ What this repository does not claim: certifications (ISO 27001, SOC 2), a third-
 
 ## Impact: the flaws of Maison Verde are the flaws we see in the wild
 
-The fictional shop was not built at random. CRYPTOR.AGENCY's surface scanner (ARGUS, a passive read of a site's public home page and headers, nothing intrusive) has scanned 26 French business sites. It is a small sample, not a study, and no site is named here; the figures are shares of those 26 sites, read in aggregate on 28 October 2026.
+The fictional shop was not built at random. CRYPTOR.AGENCY's surface scanner (ARGUS, a passive read of a site's public home page and headers, nothing intrusive) has scanned 26 French business sites (prospects of the agency, scanned the way any visitor's browser reads a public page: one request to the home page, its headers and its HTML, no probing). It is a small sample, not a study, and no site is named anywhere; the figures are shares of those 26 sites, read in aggregate on 28 October 2026 and versioned as `examples/argus-aggregate.json` (counts only). The scanner itself predates the hackathon and is not part of this repository.
 
 | Share of the 26 sites | Failing control | Maison Verde flaw it maps to |
 |---|---|---|
@@ -178,7 +182,7 @@ Average score 56/100; 19 of the 26 sites scored C, D or F. Each of these flaws h
 
 ## Business
 
-Who pays: online shops and the agencies and hosts that run them, where the same 15 flaws come back site after site, and where a wrong fix costs more than the flaw. What they buy: a proven fix per finding, or the tool installed on their side, fed by the scanner they already have. The loop behind it is already deployed in production on two sites by CRYPTOR.AGENCY; Mission Zero is the public, from-scratch version built for this hackathon. We are open to a seed round and to a strategic partnership or acquisition by a platform player.
+Who pays: online shops and the agencies and hosts that run them, where the same 15 flaws come back site after site, and where a wrong fix costs more than the flaw. What they buy: a proven fix per finding, or the tool installed on their side, fed by the scanner they already have. CRYPTOR.AGENCY runs two production sites of its own where Mission Zero will be integrated first, after the hackathon; nothing of them is in this repository, and nothing in this repository predates 26 October 2026. We are open to a seed round and to a strategic partnership or acquisition by a platform player.
 
 ## Run it
 
@@ -192,7 +196,7 @@ npm run demo                    # the 5 goals above, table + evidence
 node bench/make-replay.js evidence/<folder>         # animated replay of a mission (one HTML file)
 ```
 
-Two real runs are committed in `examples/` (DBIR 2025, CVSS v4): open `replay.html` in a browser to watch the mission replayed from its own evidence, or read the raw `journal.jsonl`.
+Real runs are committed in `examples/`: five research missions (`dbir-2025`, `gdpr-max-fine`, `nist-800-63b-4`, `cvss-v4`, `anssi-hygiene`), the self-reset (`back-to-zero`), the repair of the 15 flaws (`repair-maison-verde`, two runs with their patches and hashed journals, plus the `stories/` runs the video shows) and the raw outputs of the Meta tools (`meta-tools`). Open any `replay.html` in a browser to watch a mission or a repair replayed from its own evidence, or read the raw `journal.jsonl` and `repair.json`.
 
 The evidence folder (`evidence/<date>/`) holds `journal.jsonl` (every plan, observation, evaluation), `memory.json`, `final-answer.json` (answer, sources, every version with its verdicts and quotes) and `summary.json` (score, proofs, cost by role).
 
@@ -208,7 +212,9 @@ The evidence folder (`evidence/<date>/`) holds `journal.jsonl` (every plan, obse
 | `src/contradictAnswer.js` | contradictor, judge, best version kept |
 | `src/research.js` | one free research action per objection |
 | `src/memory.js` | lessons, generic only |
-| `src/meta.js` | Meta Model API client, reasoning effort per role, daily ledger |
+| `src/meta.js` | Meta Model API client (or Baseten open weights by base URL), reasoning effort per role, daily ledger |
+| `src/run.js`, `src/zero.js` | one mission end to end; the agent's own return to zero (outcomes, rules, archive, rerun, compare) |
+| `src/contradict.js`, `src/compare.js` | contradictor on the plan (kept for the A/B, off by default) and run comparison |
 | `src/scanner.js` | 15 probes, generic findings (any scanner can replace it) |
 | `src/repair.js` | cited recommendation, exact edits on a copy, journeys replayed, rescan, patch |
 | `src/secrets.js` | secret filter before every model call, restored in the edits only |
@@ -216,7 +222,8 @@ The evidence folder (`evidence/<date>/`) holds `journal.jsonl` (every plan, obse
 | `src/voice.js`, `src/vision.js`, `src/sam.js` | spoken goal (muse-voice-transcribe), pages looked at (Muse Spark vision), fields boxed (SAM 3.1) |
 | `demo-site/` | Maison Verde, the flawed shop, its vital journeys and its 15 documented flaws |
 | `bench/` | demo goals, A/B of the contradictor, replay generator, repair runner and report, chain check |
-| `web/` | anonymous community page (one question, no personal data) |
+| `web/` | a side experiment from day one (anonymous community question, no personal data); not part of the judged product |
+| `examples/` | committed real runs, replays, patches, hashed journals, Meta tool outputs, the anonymous scan aggregate |
 
 ## License
 

@@ -1,0 +1,73 @@
+{
+  "finding": {
+    "id": "F06",
+    "severity": "high",
+    "type": "idor",
+    "url": "http://127.0.0.1:8098/order?id=1002",
+    "evidence": "order 1002 (name, e-mail, address, card ending) returned without any session",
+    "description": "Any order is readable by changing the number."
+  },
+  "recommendation": {
+    "goal": "What is the recommended fix for this web security flaw: idor (Any order is readable by changing the number. Evidence: order 1002 (name, e-mail, address, card ending) returned without any session). State the concrete fix and cite a primary source (OWASP, MDN, NIST, PCI DSS, IETF RFC, or the vendor's own advisory).",
+    "answer": "Enforce server-side authorization on every order access: require an authenticated session and implement access control checks for each object that users try to access, verifying the requesting user is authorized to access the referenced object such as database keys, file names, or record IDs before returning data.",
+    "sources": [
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html",
+        "contribution": "To mitigate IDOR, implement access control checks for each object that users try to access."
+      },
+      {
+        "url": "https://community.owasp.org/attacks/insecure_direct_object_reference",
+        "contribution": "IDOR occurs when an application exposes internal object references such as database keys, file names, or record IDs and fails to verify that the requesting user is authorized to access the referenced object."
+      }
+    ],
+    "score": 10,
+    "green": 2,
+    "red": 0,
+    "verification": [
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html",
+        "claim": "To mitigate IDOR, implement access control checks for each object that users try to access.",
+        "verdict": "supported",
+        "detail": "To mitigate IDOR, implement access control checks for each object that users try to access."
+      },
+      {
+        "url": "https://community.owasp.org/attacks/insecure_direct_object_reference",
+        "claim": "IDOR occurs when an application exposes internal object references such as database keys, file names, or record IDs and fails to verify that the requesting user is authorized to access the referenced object.",
+        "verdict": "supported",
+        "detail": "Insecure Direct Object Reference (IDOR) is an access control vulnerability that occurs when an application exposes internal object references — such as database keys, file names, or record IDs — and fails to verify that the requesting user is authorized to access the referenced object."
+      }
+    ]
+  },
+  "fix": {
+    "summary": "Require authenticated admin session for /order, redirecting unauthenticated requests to /login.",
+    "risk": "Anonymous order tracking now redirects to login; only authenticated admin session can view orders.",
+    "applied": [
+      {
+        "file": "server.js",
+        "find": "  if (path === '/order') {\n    // FLAW 6 (IDOR): any order is readable by changing its number, no login needed.\n    const o = ORDERS[q.id];",
+        "replace": "  if (path === '/order') {\n    if (!/session=admin-7c9e/.test(headers.cookie || '')) return [302, { location: '/login' }, ''];\n    const o = ORDERS[q.id];"
+      }
+    ],
+    "refused": []
+  },
+  "journeysBefore": {
+    "ok": true,
+    "pass": 7,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ journey: browse the catalogue (1.2674ms)\n✔ journey: search an article (0.2595ms)\n✔ journey: add to cart and see the total (0.7019ms)\n✔ journey: reach the checkout and pay (0.3801ms)\n✔ journey: follow my own order (0.3275ms)\n✔ journey: log in as the administrator (0.2805ms)\n✔ journey: read the legal notice (0.247ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 108.4806\n"
+  },
+  "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-mMpXFk",
+  "journeysAfter": {
+    "ok": false,
+    "pass": 6,
+    "fail": 1,
+    "broken": [
+      "follow my own order"
+    ],
+    "output": "✔ journey: browse the catalogue (1.2685ms)\n✔ journey: search an article (0.2809ms)\n✔ journey: add to cart and see the total (0.6015ms)\n✔ journey: reach the checkout and pay (0.4042ms)\n✖ journey: follow my own order (0.8534ms)\n✔ journey: log in as the administrator (0.3381ms)\n✔ journey: read the legal notice (0.2342ms)\nℹ tests 7\nℹ suites 0\nℹ pass 6\nℹ fail 1\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 109.5756\n\n✖ failing tests:\n\ntest at journeys.test.js:18:27\n✖ journey: follow my own order (0.8534ms)\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  \n  302 !== 200\n  \n      at Object.run (file:///C:/Users/GAME/AppData/Local/Temp/mz-repair-mMpXFk/journeys.test.js:13:104)\n      at TestContext.<anonymous> (file:///C:/Users/GAME/AppData/Local/Temp/mz-repair-mMpXFk/journeys.test.js:18:62)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1402:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)\n      at Test.postRun (node:internal/test_runner/test:1542:19)\n      at Test.run (node:internal/test_runner/test:1467:12)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: 302,\n    expected: 200,\n    operator: 'strictEqual',\n    diff: 'simple'\n  }\n"
+  },
+  "status": "rejected",
+  "why": "the fix breaks: follow my own order",
+  "ms": 58467
+}

@@ -1,5 +1,6 @@
 // Meta Model API client (OpenAI-compatible) with a cost counter and a hard spending cap.
-// Prices in dollars per million tokens: to confirm on dev.meta.ai (muse-spark-1.1: 1.25 in / 4.25 out).
+// Prices in dollars per million tokens, as listed on 28 October 2026 for Muse Spark (1.25 in / 4.25 out; Baseten's model page
+// shows the same for the open weights, plus 0.15 for cached input). MZ_PRICE_IN / MZ_PRICE_OUT override them for another provider.
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { dirname } from 'node:path';
 // MZ_BASE_URL switches the provider: the open-weight Muse Spark served by Baseten (or any OpenAI-compatible endpoint)

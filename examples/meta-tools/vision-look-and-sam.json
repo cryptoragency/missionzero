@@ -1,0 +1,56 @@
+{
+  "shots": [
+    {
+      "name": "home",
+      "path": "evidence\\vision-2026-10-28-09-29\\home.png"
+    },
+    {
+      "name": "checkout",
+      "path": "evidence\\vision-2026-10-28-09-29\\checkout.png"
+    }
+  ],
+  "look": {
+    "ok": true,
+    "problems": [],
+    "seen": [
+      "header MAISON VERDE with Boutique/Panier navigation",
+      "home search input with Rechercher button",
+      "3 product cards Lampe Osier/Vase Terracotta/Plaid Lin with prices and Ajouter au panier",
+      "checkout Paiement form with Nom, E-mail, Numero de carte, Expiration, Cryptogramme and Payer button"
+    ]
+  },
+  "sam": {
+    "concept": "credit card form",
+    "boxes": [],
+    "raw": "",
+    "usage": {
+      "input_tokens": 0,
+      "input_tokens_details": {
+        "cached_tokens": 0
+      },
+      "output_tokens": 0,
+      "output_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "total_tokens": 0,
+      "images_processed": 1
+    },
+    "ms": 1549
+  },
+  "cost": {
+    "calls": 1,
+    "input": 2643,
+    "output": 488,
+    "usd": 0.00537775,
+    "totalMs": 4063,
+    "byTag": {
+      "vision": {
+        "calls": 1,
+        "input": 2643,
+        "output": 488,
+        "reasoning": 394,
+        "truncated": 0
+      }
+    }
+  }
+}

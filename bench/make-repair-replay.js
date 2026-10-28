@@ -15,7 +15,9 @@ export function loadRepair(folder, id) {
   const vision = r.vision ? { look: r.vision.look, sam: r.vision.sam, before: shots(r.vision.shots?.before), after: shots(r.vision.shots?.after) } : null;
   const byUrl = new Map((r.recommendation?.verification || []).map((v) => [v.url, v]));
   const sources = (r.recommendation?.sources || []).map((s) => ({ url: s.url, host: host(s.url), claim: s.contribution, verdict: byUrl.get(s.url)?.verdict || null, quote: byUrl.get(s.url)?.detail || '' }));
-  const patch = String(r.patch || '').split('\n').filter((l) => /^[+-]/.test(l) && !/^(\+\+\+|---)/.test(l)).slice(0, 18);
+  // Runs older than the patch feature keep their exact edits: shown as removed/added lines.
+  const patch = r.patch ? String(r.patch).split('\n').filter((l) => /^[+-]/.test(l) && !/^(\+\+\+|---)/.test(l)).slice(0, 18)
+    : (r.fix?.applied || []).flatMap((e) => [...String(e.find).split('\n').map((l) => '-' + l), ...String(e.replace).split('\n').map((l) => '+' + l)]).slice(0, 18);
   const journeys = (() => { try { return [...readFileSync(join(folder, '..', '..', 'demo-site', 'journeys.test.js'), 'utf8').matchAll(/name: '([^']+)'/g)].map((m) => m[1]); } catch { return []; } })();
   return { id, finding: r.finding, status: r.status, why: r.why, rec: { answer: r.recommendation?.answer, score: r.recommendation?.score, green: r.recommendation?.green, red: r.recommendation?.red, sources }, fix: { summary: r.fix?.summary, risk: r.fix?.risk, masked: r.fix?.secretsMasked, edits: (r.fix?.applied || []).length }, patch, journeys, journeysAfter: r.journeysAfter, rescan: r.rescan ? { gone: !(r.rescan.findings || []).length } : null, vision, review: r.review || null, attempts: (r.attempts || []).map((a) => ({ status: a.status, why: a.why, broken: a.brokenJourneys || [] })), reservations: r.reservations || [], ms: r.ms };
 }

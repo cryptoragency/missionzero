@@ -1,5 +1,7 @@
 # Demo video (3 minutes)
 
+> **Current plan: video/script-fr-en.md** (28 October, evening): French narration by the founder, English subtitles, every scene from a committed replay. The sections below are the earlier plans, kept as history; where they differ, the script file wins.
+
 The video is the animated replay of one real mission (`bench/make-replay.js`), recorded headless and narrated.
 Nothing is staged: every figure on screen comes from the evidence folder of that run.
 
@@ -26,7 +28,7 @@ The narration text is in `video/narration.json`; replace the synthetic voice by 
 
 - **Impact**: an agent whose answers come with quotes from primary sources, at cents per mission.
 - **Meta tools**: Meta Model API, `muse-spark-1.3`, `reasoning_effort` per role (the cost finding).
-- **Technical depth**: self-evaluation loop, goal-targeted PDF reading, verifier with mandatory quote, contradictor and judge, daily budget ledger, 24 tests.
+- **Technical depth**: self-evaluation loop, goal-targeted PDF reading, verifier with mandatory quote, contradictor and judge, daily budget ledger, 65 tests (28 October).
 - **Demo**: a real run, replayed from its own evidence.
 
 ## Final video (2 or 3 November, on the final version): the repair mode and the trust scenes

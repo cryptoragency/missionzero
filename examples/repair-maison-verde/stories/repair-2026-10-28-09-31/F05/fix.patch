@@ -1,0 +1,18 @@
+diff --git a/server.js b/server.js
+index 6f1b3eb..260e2ec 100644
+--- a/server.js
++++ b/server.js
+@@ -44,10 +44,10 @@ export function handle(method, url, body = '', headers = {}) {
+     if (method === 'POST') {
+       const p = Object.fromEntries(new URLSearchParams(body));
+       // The order is registered to the customer, who gets a cookie and a link to follow it. The cookie is not checked by /order (FLAW 6).
+-      const id = 1004; ORDERS[id] = { customer: p.name || '', email: p.email || '', address: p.address || '', total: cart.reduce((a, c) => a + c.price, 0), card: '**** **** **** ' + String(p.card || '').slice(-4) };
+-      return html(page('checkout.html').replace('<!--DONE-->', `<p class="ok">Commande n° ${id} enregistrée pour ${p.name || ''}. Carte ${p.card || ''}. <a href="/order?id=${id}">Suivre ma commande</a></p>`), { 'set-cookie': `customer=${encodeURIComponent(p.email || '')}; Path=/` }); // FLAW 3 again, and the card number echoed
++      const id = 1004; ORDERS[id] = { customer: p.name || '', email: p.email || '', address: p.address || '', total: cart.reduce((a, c) => a + c.price, 0), card: 'psp-token' }; // no PAN stored, PSP token only
++      return html(page('checkout.html').replace(/<input[^>]*name="(card|exp|cvv)"[^>]*>/gi, '').replace('<!--DONE-->', `<p class="ok">Commande n° ${id} enregistrée pour ${esc(p.name || '')} (paiement PSP). <a href="/order?id=${id}">Suivre ma commande</a></p>`), { 'set-cookie': `customer=${encodeURIComponent(p.email || '')}; Path=/` }); // FLAW 3 again, and the card number echoed
+     }
+-    return html(page('checkout.html'));
++    return html(page('checkout.html').replace(/<input[^>]*name="(card|exp|cvv)"[^>]*>/gi, '').replace(/<form[^>]*>/i, '<p>Paiement via PSP externe (tokenisation, aucune donnee carte sur ce site).</p><form method="post" action="/checkout">'));
+   }
+   if (path === '/order') {
+     // FLAW 6 (IDOR): any order is readable by changing its number, no login needed.

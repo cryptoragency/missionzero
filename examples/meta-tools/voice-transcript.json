@@ -1,0 +1,10 @@
+{
+  "file": "video/voice/goal-sample.wav",
+  "note": "synthetic sample (Windows voice), 22 050 Hz, resampled to 16 kHz mono by ffmpeg before the call",
+  "model": "muse-voice-transcribe-1.0",
+  "heard": "Mission Zero, Zero, find the share of confirmed breaches involving the human element in the Verizon Data Breach Investigations Report Report 2025 and cite the report itself.",
+  "cleanedGoal": "Find the share of confirmed breaches involving the human element in the Verizon Data Breach Investigations Report 2025 and cite the report itself.",
+  "audioDurationMs": 11040,
+  "transcribedInMs": 3020,
+  "at": "2026-10-28"
+}

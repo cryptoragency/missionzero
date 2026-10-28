@@ -1,0 +1,88 @@
+{
+  "answer": "Under GDPR Regulation (EU) 2016/679, Article 83 – General conditions for imposing administrative fines – sets the maximum administrative fine at up to 20,000,000 EUR, or up to 4% of the total worldwide annual turnover of the preceding financial year, whichever is higher.",
+  "sources": [
+    {
+      "url": "https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng",
+      "contribution": "Article 83 is General conditions for imposing administrative fines"
+    },
+    {
+      "url": "https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng",
+      "contribution": "administrative fines up to 20 000 000 EUR"
+    },
+    {
+      "url": "https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng",
+      "contribution": "up to 4 % of the total worldwide annual turnover of the preceding financial year, whichever is higher"
+    }
+  ],
+  "confidence": 10,
+  "uncertainties": [],
+  "rejectedSources": 0,
+  "seenSources": 8,
+  "judge": {
+    "score": 10,
+    "green": 3,
+    "red": 0,
+    "rounds": 1,
+    "versions": [
+      {
+        "round": 0,
+        "score": 10,
+        "green": 3,
+        "red": 0,
+        "reason": "All figures, article, and official source exactly match verified EUR-Lex text.",
+        "verification": [
+          {
+            "url": "https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng",
+            "claim": "Article 83 is General conditions for imposing administrative fines",
+            "verdict": "supported",
+            "detail": "Article 83 General conditions for imposing administrative fines 1."
+          },
+          {
+            "url": "https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng",
+            "claim": "administrative fines up to 20 000 000 EUR",
+            "verdict": "supported",
+            "detail": "be subject to administrative fines up to 20 000 000 EUR, or in the case of an undertaking, up to 4 % of the total worldwide annual turnover of the preceding financial year, whichever is higher"
+          },
+          {
+            "url": "https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng",
+            "claim": "up to 4 % of the total worldwide annual turnover of the preceding financial year, whichever is higher",
+            "verdict": "supported",
+            "detail": "up to 4 % of the total worldwide annual turnover of the preceding financial year, whichever is higher"
+          }
+        ],
+        "objections": []
+      },
+      {
+        "round": 1,
+        "score": 10,
+        "green": 3,
+        "red": 0,
+        "reason": "All claims supported by official EUR-Lex text; figures 20M EUR and 4% and Article 83 exact.",
+        "verification": [
+          {
+            "url": "https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng",
+            "claim": "Article 83 General conditions for imposing administrative fines",
+            "verdict": "supported",
+            "detail": "Article 83 General conditions for imposing administrative fines 1."
+          },
+          {
+            "url": "https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng",
+            "claim": "administrative fines up to 20 000 000 EUR",
+            "verdict": "supported",
+            "detail": "be subject to administrative fines up to 20 000 000 EUR, or in the case of an undertaking, up to 4 % of the total worldwide annual turnover of the preceding financial year, whichever is higher"
+          },
+          {
+            "url": "https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng",
+            "claim": "in the case of an undertaking, up to 4 % of the total worldwide annual turnover of the preceding financial year, whichever is higher",
+            "verdict": "supported",
+            "detail": "in the case of an undertaking, up to 4 % of the total worldwide annual turnover of the preceding financial year, whichever is higher"
+          }
+        ],
+        "objections": [
+          "Answer omits the source's 'in the case of an undertaking' qualifier for the turnover-based alternative."
+        ],
+        "fetched": 0
+      }
+    ]
+  }
+}

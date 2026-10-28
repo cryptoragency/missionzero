@@ -1,0 +1,195 @@
+{
+  "reports": 76,
+  "distinctHosts": 26,
+  "withDecryptedChecks": 26,
+  "averageScore": 56,
+  "scoreDistribution": {
+    "under30": 1,
+    "from30to60": 16,
+    "from60": 9
+  },
+  "grades": {
+    "A": 2,
+    "A+": 1,
+    "B": 4,
+    "C": 9,
+    "D": 9,
+    "F": 1
+  },
+  "failingByCheck": [
+    {
+      "id": "permissions",
+      "label": "Permissions-Policy",
+      "failing": 23,
+      "pct": 88
+    },
+    {
+      "id": "corp",
+      "label": "Cross-Origin-Resource-Policy",
+      "failing": 22,
+      "pct": 85
+    },
+    {
+      "id": "csp",
+      "label": "Content-Security-Policy (anti-XSS)",
+      "failing": 21,
+      "pct": 81
+    },
+    {
+      "id": "referrer",
+      "label": "Referrer-Policy",
+      "failing": 21,
+      "pct": 81
+    },
+    {
+      "id": "coop",
+      "label": "Cross-Origin-Opener-Policy",
+      "failing": 19,
+      "pct": 73
+    },
+    {
+      "id": "frame",
+      "label": "Anti-clickjacking",
+      "failing": 19,
+      "pct": 73
+    },
+    {
+      "id": "coep",
+      "label": "Cross-Origin-Embedder-Policy",
+      "failing": 18,
+      "pct": 69
+    },
+    {
+      "id": "nosniff",
+      "label": "X-Content-Type-Options",
+      "failing": 17,
+      "pct": 65
+    },
+    {
+      "id": "hsts",
+      "label": "HSTS (Strict-Transport-Security)",
+      "failing": 16,
+      "pct": 62
+    },
+    {
+      "id": "auto-throttle",
+      "label": "Résistance aux attaques automatisées",
+      "failing": 15,
+      "pct": 58
+    },
+    {
+      "id": "disclosure",
+      "label": "Discrétion serveur",
+      "failing": 12,
+      "pct": 46
+    },
+    {
+      "id": "fonts",
+      "label": "Polices/ressources hors UE",
+      "failing": 11,
+      "pct": 42
+    },
+    {
+      "id": "generator",
+      "label": "Version applicative divulguée",
+      "failing": 11,
+      "pct": 42
+    },
+    {
+      "id": "tabnabbing",
+      "label": "Reverse tabnabbing",
+      "failing": 11,
+      "pct": 42
+    },
+    {
+      "id": "trackers",
+      "label": "Traceurs avant consentement",
+      "failing": 8,
+      "pct": 31
+    },
+    {
+      "id": "cookies-consent",
+      "label": "Cookies & consentement",
+      "failing": 8,
+      "pct": 31
+    },
+    {
+      "id": "comments",
+      "label": "Commentaires HTML sensibles",
+      "failing": 7,
+      "pct": 27
+    },
+    {
+      "id": "privacy",
+      "label": "Politique de confidentialité",
+      "failing": 7,
+      "pct": 27
+    },
+    {
+      "id": "cache",
+      "label": "Cache des pages",
+      "failing": 6,
+      "pct": 23
+    },
+    {
+      "id": "mixed",
+      "label": "Contenu mixte (HTTP)",
+      "failing": 6,
+      "pct": 23
+    },
+    {
+      "id": "cookies",
+      "label": "Cookies sécurisés",
+      "failing": 6,
+      "pct": 23
+    },
+    {
+      "id": "legal",
+      "label": "Mentions légales",
+      "failing": 6,
+      "pct": 23
+    },
+    {
+      "id": "cookies-samesite",
+      "label": "Cookies · SameSite",
+      "failing": 5,
+      "pct": 19
+    },
+    {
+      "id": "hsts-sub",
+      "label": "HSTS · includeSubDomains",
+      "failing": 4,
+      "pct": 15
+    },
+    {
+      "id": "csp-strength",
+      "label": "CSP · robustesse anti-XSS automatisé",
+      "failing": 3,
+      "pct": 12
+    },
+    {
+      "id": "cors",
+      "label": "CORS permissif",
+      "failing": 3,
+      "pct": 12
+    },
+    {
+      "id": "xxss",
+      "label": "X-XSS-Protection obsolète",
+      "failing": 3,
+      "pct": 12
+    },
+    {
+      "id": "csp-connect",
+      "label": "CSP · canal d'exfiltration borné",
+      "failing": 2,
+      "pct": 8
+    },
+    {
+      "id": "pw-autocomplete",
+      "label": "Champ mot de passe · autocomplétion",
+      "failing": 1,
+      "pct": 4
+    }
+  ]
+}
