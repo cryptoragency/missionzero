@@ -3,6 +3,7 @@
 // node bench/make-repair-report.js evidence/repair-2026-10-27-21-46 [out.html]
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { verifyChain } from '../src/chain.js';
 
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const host = (u) => { try { return new URL(u).hostname.replace(/^www\./, ''); } catch { return u; } };
@@ -19,7 +20,7 @@ const STATUS = {
 export function loadReport(folder) {
   const report = JSON.parse(readFileSync(join(folder, 'report.json'), 'utf8'));
   const results = (report.results || []).slice().sort((a, b) => (ORDER[a.finding?.severity] ?? 9) - (ORDER[b.finding?.severity] ?? 9));
-  return { folder, findings: report.findings, results, cost: report.cost || {} };
+  return { folder, findings: report.findings, results, cost: report.cost || {}, chain: verifyChain(folder) };
 }
 
 const verdictDot = (v) => `<i class="dot ${v === 'green' ? 'g' : v === 'red' ? 'r' : 'a'}" title="${esc(v || 'unverified')}"></i>`;
@@ -51,7 +52,7 @@ export function renderReport(run, { title = 'Mission Zero · repair report' } = 
 <p class="desc">${esc(f.description)} <span class="mut">Evidence: ${esc(f.evidence)}</span><br><a href="${esc(f.url)}" rel="noopener" class="mut">${esc(f.url)}</a></p>
 <p class="why"><b>Verdict.</b> ${esc(r.why || st[2])}${r.ms ? ` <span class="mut">(${(r.ms / 1000).toFixed(0)} s)</span>` : ''}</p>
 ${rec ? `<details open><summary>Recommended fix <span class="mut">${rec.cached ? 'from cache · ' : ''}judge ${esc(rec.score ?? '?')}/10 · ${rec.green ?? 0} green, ${rec.red ?? 0} red</span></summary><p class="answer">${esc(rec.answer)}</p>${sourcesHtml(rec)}</details>` : ''}
-${r.fix ? `<details open><summary>Edits <span class="mut">${esc(r.fix.summary)}</span></summary>${editsHtml(r.fix)}${r.fix.risk ? `<p class="mut">Risk: ${esc(r.fix.risk)}</p>` : ''}</details>` : ''}
+${r.fix ? `<details open><summary>Edits <span class="mut">${esc(r.fix.summary)}${r.fix.secretsMasked ? ` · ${r.fix.secretsMasked} secret${r.fix.secretsMasked > 1 ? 's' : ''} masked before the model call` : ''}</span></summary>${editsHtml(r.fix)}${r.fix.risk ? `<p class="mut">Risk: ${esc(r.fix.risk)}</p>` : ''}${r.patch ? `<p class="mut">Patch for review: <a href="${esc(f.id)}/fix.patch">${esc(f.id)}/fix.patch</a> (apply with <code>git apply</code>)</p>` : ''}</details>` : ''}
 <p class="journeys">${journeysHtml(r.journeysBefore, 'journeys before')} ${journeysHtml(r.journeysAfter, 'journeys after')} ${r.rescan ? `<span class="jr ${r.rescan.findings?.length ? 'red' : 'ok'}">rescan: ${r.rescan.findings?.length ? 'flaw still there' : 'flaw gone'}</span>` : ''}</p>
 </section>`;
   }).join('\n');
@@ -80,10 +81,11 @@ pre.del{background:#2a1419;color:#ffb3bb;border-left:3px solid var(--red)}pre.ad
 .edit.refused pre.del{opacity:.6}
 .journeys{margin:10px 0 0;display:flex;flex-wrap:wrap;gap:8px}.jr{font-size:13px;padding:2px 10px;border-radius:99px;background:#1a2440}.jr.ok{color:var(--ok)}.jr.red{color:var(--red)}
 footer{color:var(--mut);font-size:13px;margin-top:30px;border-top:1px solid var(--line);padding-top:12px}
+.okc{color:var(--ok)}.redc{color:var(--red)}code{font-family:Consolas,monospace;font-size:13px}
 </style></head><body><main>
 <h1>Mission <span>Zero</span> · repair report</h1>
 <p class="lead">A scanner reported ${run.findings} finding${run.findings === 1 ? '' : 's'} on <b>${esc(target)}</b>. For each one, Mission Zero researched the fix from primary sources, proposed exact edits, applied them to a copy, replayed the vital journeys and rescanned the copy. Nothing was changed on the site itself: a human applies each proposed fix.</p>
-<div class="meters"><span>${summaryRow}</span><span>cost <b>${money(run.cost.usd)}</b></span><span>model calls <b>${run.cost.calls ?? '?'}</b></span><span>run <b>${esc(run.folder)}</b></span></div>
+<div class="meters"><span>${summaryRow}</span><span>cost <b>${money(run.cost.usd)}</b></span><span>model calls <b>${run.cost.calls ?? '?'}</b></span><span>run <b>${esc(run.folder)}</b></span>${run.chain && run.chain.why !== 'no chain file' ? `<span>evidence journal <b class="${run.chain.ok ? 'okc' : 'redc'}">${run.chain.ok ? 'intact · ' + run.chain.entries + ' records · ' + esc(String(run.chain.head).slice(0, 12)) : 'BROKEN: ' + esc(run.chain.why)}</b></span>` : ''}</div>
 ${cards}
 <footer>Severity order: critical, high, medium, low. A green dot is a source whose cited passage was found on the page by the verifier; red is a contradiction; amber is unverified. Edits are exact-string replacements: each "find" occurs once in the file, or the edit is refused.</footer>
 </main></body></html>`;

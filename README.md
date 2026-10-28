@@ -52,13 +52,54 @@ Muse Spark reasons before answering and the reasoning is billed as output: it wa
 
 Every figure is green: confirmed by an exact quote from the primary page. Scores vary between runs because web search does: in one run of goal 1 the search returned the public-sector snapshot instead of the full report, and the judge gave 5 / 10 for citing the wrong document. That honesty is the point. Reproduce with `npm run demo`; each run writes its own evidence folder.
 
+## Repair mode: from a scanner's finding to a proven fix, never applied by the agent
+
+The same loop, pointed at code. A scanner (any scanner: the input is a generic JSON file, or a URL) reports the flaws of a website. For each finding, Mission Zero:
+
+1. **researches the fix** from primary sources (OWASP, MDN, NIST, PCI DSS, IETF) with the verifier and the judge, and caches the recommendation by flaw type (the second site with the same flaw costs nothing);
+2. **proposes exact edits** to the code (find/replace, each `find` must occur exactly once or the edit is refused);
+3. **applies them to a copy** of the site, never to the site itself;
+4. **replays the vital journeys** on the copy (browse, search, add to cart, check out, log in, follow my own order, legal page): one broken journey = the fix is **rejected**;
+5. **rescans the copy**: the flaw must be gone, or the fix is **ineffective**;
+6. writes the fix as a **patch** for a human to review and apply, plus a readable report.
+
+The target in this repository is Maison Verde (`demo-site/`), a fictional shop built with the 15 flaws scanners find on most e-commerce sites (`demo-site/FLAWS.md`). It runs locally only.
+
+```bash
+npm run repair -- demo-site/findings.example.json          # the 15 findings, one proposed fix each
+npm run repair -- --scan                                   # scan the demo shop first, then repair
+npm run repair -- --from=https://scanner.example/findings  # any scanner's URL (MZ_SCANNER_URL / MZ_SCANNER_KEY in .env)
+npm run repair-report -- evidence/repair-<date>            # one readable page per run
+npm run verify-chain -- evidence/repair-<date>             # recompute the hashed evidence journal
+```
+
+RESULTS_TABLE
+
+## Trust: built for companies that cannot afford a mistake
+
+Mission Zero does not ask to be trusted. It is built so that it cannot steal, cannot break and cannot lie.
+
+| Concern | What Mission Zero does |
+|---|---|
+| **Our data must not leave our premises** | It runs where you run it: a Node script on your machine or your cloud, no server of ours in the loop. With an open-weight model (`muse-spark-open`, self-hosted or in your own Baseten account), the model stays with you too. The code is public: you can read every network call it makes (public sources and the model, nothing else). |
+| **Our production must keep working** | It never touches the live site. Every fix is applied to a copy, your own vital journeys are replayed, one failure rejects the fix, the copy is rescanned, and what comes out is a patch your developers review and your pipeline deploys. Mission Zero proposes; a human applies. |
+| **Our secrets must not reach a model** | A secret filter masks passwords, keys and tokens (`.env` lines, `define('X_PASSWORD', …)`, `password: '…'`, Stripe, AWS, GitHub, JWT, private keys) before every model call, and restores them only in the edits, in memory, for one call (`src/secrets.js`). The report says how many were masked. |
+| **We need to prove what happened** | Every record of a run (findings, each repair, each patch, the report) is chained in a hashed journal (`chain.json`, sha256 of the file and of the previous link). `npm run verify-chain` recomputes it: an altered, removed or reordered record breaks the chain (`src/chain.js`). |
+| **Does it know when it is wrong?** | Yes, and it says so: a fix that breaks a journey is rejected by Mission Zero itself, in the report, with the name of the journey it broke. |
+
+What this repository does not claim: certifications (ISO 27001, SOC 2), a third-party pentest of the tool, contracts. Those come with the first large customer, not with a hackathon.
+
+## Business
+
+Who pays: online shops and the agencies and hosts that run them, where the same 15 flaws come back site after site, and where a wrong fix costs more than the flaw. What they buy: a proven fix per finding, or the tool installed on their side, fed by the scanner they already have. The loop behind it is already deployed in production on two sites by CRYPTOR.AGENCY; Mission Zero is the public, from-scratch version built for this hackathon. We are open to a seed round and to a strategic partnership or acquisition by a platform player.
+
 ## Run it
 
 ```bash
 cp .env.example .env            # add your MODEL_API_KEY (Meta Model API)
 npm install
 npm run check-key
-npm test                        # 24 tests, no network, no model calls
+npm test                        # 45 tests, no network, no model calls
 node --env-file=.env src/run.js "your goal" 4 3     # 4 turns, 3 contradiction rounds
 npm run demo                    # the 5 goals above, table + evidence
 node bench/make-replay.js evidence/<folder>         # animated replay of a mission (one HTML file)
@@ -81,7 +122,12 @@ The evidence folder (`evidence/<date>/`) holds `journal.jsonl` (every plan, obse
 | `src/research.js` | one free research action per objection |
 | `src/memory.js` | lessons, generic only |
 | `src/meta.js` | Meta Model API client, reasoning effort per role, daily ledger |
-| `bench/` | demo goals, A/B of the contradictor, replay generator |
+| `src/scanner.js` | 15 probes, generic findings (any scanner can replace it) |
+| `src/repair.js` | cited recommendation, exact edits on a copy, journeys replayed, rescan, patch |
+| `src/secrets.js` | secret filter before every model call, restored in the edits only |
+| `src/chain.js` | hashed evidence journal of a run |
+| `demo-site/` | Maison Verde, the flawed shop, its vital journeys and its 15 documented flaws |
+| `bench/` | demo goals, A/B of the contradictor, replay generator, repair runner and report, chain check |
 | `web/` | anonymous community page (one question, no personal data) |
 
 ## License

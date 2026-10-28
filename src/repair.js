@@ -14,6 +14,8 @@ import { refineAnswer } from './contradictAnswer.js';
 import { verifyReport } from './verify.js';
 import { makeExecutor } from './tools.js';
 import { scan } from './scanner.js';
+import { maskDeep } from './secrets.js';
+import { appendChain } from './chain.js';
 
 export const freePort = () => new Promise((res) => { const s = createServer(); s.listen(0, '127.0.0.1', () => { const p = s.address().port; s.close(() => res(p)); }); });
 export const copySite = (dir) => { const t = mkdtempSync(join(tmpdir(), 'mz-repair-')); cpSync(dir, t, { recursive: true }); return t; };
@@ -80,14 +82,30 @@ const FIX_PROMPT = 'You repair a small website. You get one scanner finding, the
   + 'No prose outside the JSON. JSON: {"edits":[{"file":"server.js","find":"","replace":""}],"summary":"one sentence","risk":"what could break"}.';
 
 // 2) The code change itself, proposed by the model from the finding, the recommendation and the code.
+// Secrets in the code or the finding (passwords, keys, tokens) are masked before the call and restored in the edits.
 export async function proposeFix({ finding, recommendation, siteDir, files = ['server.js'], journeys = [], ask }) {
   const code = Object.fromEntries(files.filter((f) => existsSync(join(siteDir, f))).map((f) => [f, readFileSync(join(siteDir, f), 'utf8').slice(0, 14000)]));
+  const { value, masked, restore } = maskDeep({ finding, recommendation: { fix: recommendation.answer, sources: recommendation.sources }, vitalJourneys: journeys, code });
   const r = await ask([
     { role: 'system', content: FIX_PROMPT },
-    { role: 'user', content: JSON.stringify({ finding, recommendation: { fix: recommendation.answer, sources: recommendation.sources }, vitalJourneys: journeys, code }) },
+    { role: 'user', content: JSON.stringify(value) },
   ], { max_tokens: 4000, tag: 'fix' });
   const j = readJson(r.text) || {};
-  return { edits: Array.isArray(j.edits) ? j.edits : [], summary: String(j.summary || ''), risk: String(j.risk || '') };
+  const edits = (Array.isArray(j.edits) ? j.edits : []).map((e) => ({ ...e, find: restore(e.find), replace: restore(e.replace) }));
+  return { edits, summary: restore(j.summary || ''), risk: restore(j.risk || ''), secretsMasked: masked };
+}
+
+// The proposed fix as a unified diff between the site and its repaired copy (what a reviewer applies with `git apply`).
+export function makePatch(original, copy, files) {
+  const chunks = [];
+  for (const f of files) {
+    const o = join(original, f).replace(/\\/g, '/'); const c = join(copy, f).replace(/\\/g, '/');
+    const r = spawnSync('git', ['-c', 'core.quotepath=false', 'diff', '--no-index', '--no-color', '--', o, c], { encoding: 'utf8' });
+    if (r.error) return null; // no git: no patch, the edits in repair.json remain
+    const text = (r.stdout || '').split('a/' + o).join('a/' + f).split('b/' + c).join('b/' + f); // headers name the file as in the site
+    if (text.trim()) chunks.push(text);
+  }
+  return chunks.join('');
 }
 
 export const journeyNames = (dir) => [...(readFileSync(join(dir, 'journeys.test.js'), 'utf8').matchAll(/name: '([^']+)'/g)).map((m) => m[1])];
@@ -101,7 +119,8 @@ export async function repairOne({ finding, siteDir, ask, folder = null, login = 
   const before = runJourneys(copy);
   const fix = await propose({ finding, recommendation: rec, siteDir: copy, journeys, ask });
   const { applied, refused } = applyEdits(copy, fix.edits);
-  const record = { finding, recommendation: rec, fix: { summary: fix.summary, risk: fix.risk, applied, refused }, journeysBefore: before, copy };
+  const record = { finding, recommendation: rec, fix: { summary: fix.summary, risk: fix.risk, secretsMasked: fix.secretsMasked || 0, applied, refused }, journeysBefore: before, copy };
+  if (applied.length) record.patch = makePatch(siteDir, copy, [...new Set(applied.map((e) => e.file))]);
   if (!applied.length) return { ...record, status: 'no-edit', why: refused.length ? 'every edit was refused: ' + refused.map((x) => x.why).join('; ') : 'the model proposed no edit', ms: Date.now() - t0 };
   const after = runJourneys(copy);
   record.journeysAfter = after;
@@ -125,7 +144,12 @@ export async function repairAll({ findings, siteDir, ask, folder, login = null, 
     const sub = folder ? join(folder, finding.id) : null; if (sub) mkdirSync(sub, { recursive: true });
     let r;
     try { r = await repairOne({ finding, siteDir, ask, folder: sub, login, ...rest }); } catch (e) { r = { finding, status: 'error', why: String(e.message || e).slice(0, 300) }; }
-    if (sub) writeFileSync(join(sub, 'repair.json'), JSON.stringify(r, null, 2));
+    if (sub) {
+      // Every record goes into the hashed journal of the run: altered or missing afterwards = the chain breaks.
+      writeFileSync(join(sub, 'repair.json'), JSON.stringify(r, null, 2));
+      appendChain(folder, finding.id + '/repair.json', { finding: finding.id, status: r.status });
+      if (r.patch) { writeFileSync(join(sub, 'fix.patch'), r.patch); appendChain(folder, finding.id + '/fix.patch', { finding: finding.id }); }
+    }
     results.push(r);
   }
   return results;

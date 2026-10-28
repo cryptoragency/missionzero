@@ -53,3 +53,32 @@ test('a fix that changes nothing useful is INEFFECTIVE', async () => {
   const r = await repairOne({ finding: F02, siteDir: SITE, ask: null, know, propose });
   assert.equal(r.status, 'ineffective');
 });
+
+test('a proposed fix comes with a unified patch, and the run keeps a hashed journal that detects tampering', async () => {
+  const { mkdtempSync, writeFileSync, readFileSync: read } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const { repairAll } = await import('./repair.js');
+  const { verifyChain } = await import('./chain.js');
+  const propose = async () => ({ edits: [{ file: 'server.js', find: "server: 'Apache/2.4.29 (Ubuntu) PHP/7.2.24', 'x-powered-by': 'PHP/7.2.24 WooCommerce/3.5.1', ", replace: '' }], summary: 'drop version headers', risk: 'none' });
+  const folder = mkdtempSync(join(tmpdir(), 'mz-chain-'));
+  const results = await repairAll({ findings: [F02], siteDir: SITE, ask: null, folder, know, propose });
+  assert.equal(results[0].status, 'proposed', results[0].why);
+  const patch = read(join(folder, 'F02', 'fix.patch'), 'utf8');
+  assert.ok(patch.includes('--- a/server.js') && patch.includes('+++ b/server.js') && patch.includes("-") && patch.includes('WooCommerce/3.5.1'), patch.slice(0, 300));
+  assert.deepEqual(verifyChain(folder).ok, true);
+  assert.equal(verifyChain(folder).entries, 2); // repair.json + fix.patch
+  writeFileSync(join(folder, 'F02', 'repair.json'), '{"status":"proposed","tampered":true}');
+  const v = verifyChain(folder);
+  assert.equal(v.ok, false); assert.match(v.why, /changed after the run/);
+});
+
+test('proposeFix masks the secrets of the code before the model call and restores them in the edits', async () => {
+  const { proposeFix } = await import('./repair.js');
+  let sent = '';
+  const ask = async (messages) => { sent = messages[1].content; const masked = sent.match(/p\.password === '(«SECRET_\d+»)'/); return { text: JSON.stringify({ edits: [{ file: 'server.js', find: "p.password === '" + masked[1] + "'", replace: 'verify(p.password)' }], summary: 'hash ' + masked[1], risk: '' }) }; };
+  const fix = await proposeFix({ finding: F02, recommendation: { answer: 'x', sources: [] }, siteDir: SITE, ask });
+  assert.ok(!sent.includes('maisonverde2019') && !sent.includes('Verde2019!') && !sent.includes('sk_live_'), 'a secret reached the model');
+  assert.ok(fix.secretsMasked >= 3, String(fix.secretsMasked));
+  assert.equal(fix.edits[0].find, "p.password === 'maisonverde2019'");
+  assert.equal(fix.summary, 'hash maisonverde2019');
+});
