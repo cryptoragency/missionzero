@@ -1,7 +1,7 @@
-<title>Mission Zero schémas</title>
+<title>Mission Zero film</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
-/* Ambiance de la carte ARGUS (nuit, menthe, bleu), adoucie : peu de halo, le vert réservé aux titres et aux « OK ». */
+/* Ambiance de la carte MYTHOZOR ARGUS (nuit, menthe, bleu), adoucie : peu de halo, le vert réservé aux titres et aux « OK ». */
 :root { --bg:#0d1526; --fg:#e8edf7; --mut:#a9b4cc; --line:rgba(255,255,255,.16); --card:rgba(255,255,255,.05); --acc:#2ee6a0; --acc2:rgba(46,230,160,.72); --accf:rgba(46,230,160,.12); --blue:#2d55d4; --red:#ff6b61; --redf:rgba(180,35,24,.22); --amber:#ffd27a; --mint:#c9fff0; color-scheme: dark; }
 body { background:var(--bg); color:var(--fg); font-family: "Segoe UI", system-ui, sans-serif; margin:0; padding-block:16px; padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px)); }
 .wrap { max-width: 1700px; margin: 0 auto; display:grid; gap:22px; }
@@ -41,16 +41,28 @@ svg { width:100%; height:auto; display:block; font-family: "Segoe UI", system-ui
 .chip-t { font-size:15px; fill:var(--fg); }
 .bar { display:flex; flex-wrap:wrap; gap:8px; } button { background:rgba(255,255,255,.06); color:var(--fg); border:1px solid var(--line); border-radius:8px; padding:8px 12px; font:inherit; cursor:pointer; } button:hover { border-color:var(--acc2); }
 .caption { min-height:2.2em; font-size:1.15rem; } .caption b { color:var(--acc); }
+/* Le film : un seul écran, trois chapitres, une carte-titre avant chacun. */
+.filmbar { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+.filmbar .big { background:rgba(46,230,160,.14); border-color:var(--acc2); font-weight:600; }
+.film .scene { display:none; } .film .scene.active { display:grid; } .film .scene header, .film .bar { display:none; }
+.card { display:none; aspect-ratio: 16/9; max-height: 70vh; border:1px solid var(--line); border-radius:16px; background: radial-gradient(ellipse at 50% 40%, rgba(45,85,212,.25), transparent 60%), var(--bg); place-items:center; text-align:center; padding: 24px; }
+.card.show { display:grid; }
+.card .n { color:var(--acc); font-size: clamp(28px, 4vw, 56px); font-weight:700; letter-spacing:.06em; }
+.card .h { color:var(--fg); font-size: clamp(30px, 5.2vw, 76px); font-weight:800; line-height:1.1; margin-top:12px; text-wrap: balance; max-width: 18ch; }
+.card .s { color:var(--mut); font-size: clamp(16px, 1.8vw, 26px); margin-top:18px; }
+.card.end .h { color:var(--acc); }
 </style>
 <div class="wrap">
-  <h1>Mission Zero, en trois schémas <small>Format vidéo, en français ; les sous-titres anglais sont incrustés au montage. Chaque élément arrive à son tour, les flèches se dessinent, les ronds prennent leur couleur au passage. « Rejouer » et « Tout afficher ».</small></h1>
+  <h1>Mission Zero, le film en trois chapitres <small>Format vidéo, en français ; les sous-titres anglais sont incrustés au montage. Le film enchaîne les trois chapitres avec une carte-titre devant chacun.</small></h1>
+  <div class="filmbar"><button class="big" id="go">▶ Lancer le film</button><button data-ch="s1">1 · Constat</button><button data-ch="s2">2 · Correction</button><button data-ch="s3">3 · MYTHOZOR ARGUS + Mission Zero</button><button id="grid">Voir les trois schémas</button></div>
+  <div class="card" id="card"><div><div class="n" id="card-n"></div><div class="h" id="card-h"></div><div class="s" id="card-s"></div></div></div>
   <svg width="0" height="0" style="position:absolute"><defs>
     <marker id="mok" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="4" markerHeight="4" markerUnits="strokeWidth" orient="auto"><path d="M1,1 L11,6 L1,11 L4,6 z" fill="#2ee6a0" opacity=".8"/></marker>
     <marker id="mred" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="4" markerHeight="4" markerUnits="strokeWidth" orient="auto"><path d="M1,1 L11,6 L1,11 L4,6 z" fill="#ff6b61" opacity=".85"/></marker>
   </defs></svg>
 
   <section class="scene" id="s1">
-    <header><h2>1 · Un commerce qui tourne, ses failles, et ce qu'on en fait</h2><span class="t">scènes 0 et 5</span></header>
+    <header><h2>1 · CONSTAT</h2><span class="t">scènes 0 et 5</span></header>
     <svg viewBox="0 0 1600 900" role="img" aria-label="Une boutique en ligne, ses failles, puis le circuit scanner, Mission Zero, patch, validation">
       <g class="shop" id="shop1">
         <g class="b" data-k="1" data-d="900"><rect class="box blue" x="200" y="60" width="1200" height="600" rx="20"/><rect x="200" y="60" width="1200" height="62" rx="20" fill="rgba(45,85,212,.3)"/><text class="lbl" x="240" y="102">🌿 Maison Verde · boutique en ligne</text><text class="lbl s" x="1360" y="102" text-anchor="end">Boutique · Panier · Mon compte</text>
@@ -70,7 +82,7 @@ svg { width:100%; height:auto; display:block; font-family: "Segoe UI", system-ui
       <g class="b" data-k="10" data-act="shrink:#shop1" data-d="1700"><rect class="box red" x="40" y="120" width="320" height="280" rx="16"/><text class="lbl red" x="200" y="156" text-anchor="middle" style="font-size:22px">Votre site · 5 failles</text><text class="lbl xs" x="200" y="380" text-anchor="middle">tel qu'il est, en ligne, aujourd'hui</text></g>
       <g class="b" data-k="11" data-d="1500"><text class="lbl amber" x="1200" y="200" text-anchor="middle" style="font-size:34px">Ça arrive. C'est certain.</text><text class="lbl s" x="1200" y="240" text-anchor="middle" style="font-size:22px">Une faille, un site fermé, des clients perdus.</text><text class="lbl s" x="1200" y="272" text-anchor="middle" style="font-size:22px">La seule question, c'est quand.</text></g>
       <g class="a" data-k="12"><path class="arrow" pathLength="1" d="M362 260 L438 260"/></g>
-      <g class="b" data-k="13"><rect class="box" x="440" y="120" width="380" height="280" rx="16"/><text class="lbl" x="630" y="160" text-anchor="middle">Un scanner</text><text class="lbl s" x="630" y="188" text-anchor="middle">n'importe lequel : ARGUS, CVE, dépendances</text>
+      <g class="b" data-k="13"><rect class="box" x="440" y="120" width="380" height="280" rx="16"/><text class="lbl" x="630" y="160" text-anchor="middle">Un scanner</text><text class="lbl s" x="630" y="188" text-anchor="middle">n'importe lequel : MYTHOZOR ARGUS, CVE, dépendances</text>
         <text class="lbl xs" x="470" y="228">⚠ aucun en-tête de sécurité</text><text class="lbl xs" x="470" y="256">⚠ prix modifiable par le client</text><text class="lbl xs" x="470" y="284">⚠ carte bancaire en clair</text><text class="lbl xs" x="470" y="312">⚠ jQuery 2012 · 4 failles connues</text><text class="lbl xs" x="470" y="340">⚠ mot de passe faible accepté</text>
         </g>
       <g class="a" data-k="14"><path class="arrow" pathLength="1" d="M630 402 L630 478"/></g>
@@ -96,7 +108,7 @@ svg { width:100%; height:auto; display:block; font-family: "Segoe UI", system-ui
   </section>
 
   <section class="scene" id="s2">
-    <header><h2>2 · Les cinq contrôles : un rouge, il recommence, jusqu'au vert</h2><span class="t">scènes 6 à 9</span></header>
+    <header><h2>2 · CORRECTION AVEC MISSION ZERO</h2><span class="t">scènes 6 à 9</span></header>
     <svg viewBox="0 0 1600 900" role="img" aria-label="Le correctif traverse cinq contrôles ; un rouge le renvoie au départ ; au second passage les suivants sont verts">
       <g class="b" data-k="1" id="fix1"><rect class="box gold" x="40" y="330" width="230" height="150" rx="16"/><text class="lbl acc" x="155" y="385" text-anchor="middle">Correctif n°1</text><text class="lbl s" x="155" y="420" text-anchor="middle">appliqué sur la copie</text></g>
       <g class="a" data-k="2"><path class="arrow" pathLength="1" d="M272 405 L334 405"/></g>
@@ -126,11 +138,11 @@ svg { width:100%; height:auto; display:block; font-family: "Segoe UI", system-ui
   </section>
 
   <section class="scene" id="s3">
-    <header><h2>3 · Chez vous : ARGUS surveille, Mission Zero répare, vous validez, ARGUS revérifie</h2><span class="t">scènes 10 et 12</span></header>
-    <svg viewBox="0 0 1600 900" role="img" aria-label="Chez le client : ARGUS surveille le site, Mission Zero répare, le client valide, ARGUS vérifie à nouveau">
+    <header><h2>3 · MYTHOZOR ARGUS, DÉTECTION EN DIRECT + CORRECTION AVEC MISSION ZERO</h2><span class="t">scènes 10 et 12</span></header>
+    <svg viewBox="0 0 1600 900" role="img" aria-label="Chez le client : MYTHOZOR ARGUS surveille le site, Mission Zero répare, le client valide, MYTHOZOR ARGUS vérifie à nouveau">
       <g class="b" data-k="1"><rect class="box blue" x="30" y="40" width="1540" height="820" rx="24" style="stroke-dasharray:12 10"/><text class="lbl" x="60" y="90">🏠 Chez vous</text><text class="lbl s" x="230" y="90">vos serveurs ou votre cloud · modèle en poids ouverts · secrets masqués · rien ne sort</text></g>
       <g class="b" data-k="2"><rect class="box" x="180" y="290" width="340" height="310" rx="18"/><rect x="180" y="290" width="340" height="44" rx="18" fill="rgba(45,85,212,.3)"/><text class="lbl s" x="350" y="320" text-anchor="middle" style="fill:var(--fg)">🌿 votre site · votre serveur</text><rect class="tile" x="205" y="356" width="90" height="66" rx="8"/><rect class="tile" x="305" y="356" width="90" height="66" rx="8"/><rect class="tile" x="405" y="356" width="90" height="66" rx="8"/><rect class="tile" x="205" y="440" width="290" height="34" rx="8"/><text class="lbl xs" x="350" y="463" text-anchor="middle">🛒 panier · payer</text><text class="lbl xs" x="350" y="520" text-anchor="middle">✔ commandes · comptes</text><text class="lbl xs" x="350" y="570" text-anchor="middle">en ligne, tous les jours</text></g>
-      <g class="b" data-k="3"><text class="lbl acc" x="350" y="200" text-anchor="middle" style="font-size:30px">👁 ARGUS surveille</text><text class="lbl s" x="350" y="232" text-anchor="middle">35 contrôles, en continu</text></g>
+      <g class="b" data-k="3"><text class="lbl acc" x="350" y="200" text-anchor="middle" style="font-size:30px">👁 MYTHOZOR ARGUS surveille</text><text class="lbl s" x="350" y="232" text-anchor="middle">35 contrôles, en continu</text></g>
       <g class="b" data-k="4" data-chip="ch1:ok" data-d="600"><rect class="chip" id="ch1" x="20" y="300" width="150" height="40" rx="20"/><text class="chip-t" x="95" y="326" text-anchor="middle">✔ HTTPS, certificat</text></g>
       <g class="b" data-k="5" data-chip="ch2:ok" data-d="600"><rect class="chip" id="ch2" x="20" y="352" width="150" height="40" rx="20"/><text class="chip-t" x="95" y="378" text-anchor="middle">✔ cookies</text></g>
       <g class="b" data-k="6" data-chip="ch3:ok" data-d="600"><rect class="chip" id="ch3" x="20" y="404" width="150" height="40" rx="20"/><text class="chip-t" x="95" y="430" text-anchor="middle">✔ formulaires</text></g>
@@ -156,7 +168,7 @@ svg { width:100%; height:auto; display:block; font-family: "Segoe UI", system-ui
         <text class="lbl xs" x="1300" y="520" text-anchor="middle">dans votre espace MYTHOZOR, un clic par correctif</text><text class="lbl xs" x="1300" y="546" text-anchor="middle">rien n'est appliqué sans vous</text>
         </g>
       <g class="a" data-k="15"><path class="arrow" pathLength="1" d="M1300 602 L1300 735 L350 735 L350 602"/></g>
-      <g class="b" data-k="16"><text class="lbl acc" x="825" y="712" text-anchor="middle" style="font-size:24px">et ARGUS vérifie à nouveau</text></g>
+      <g class="b" data-k="16"><text class="lbl acc" x="825" y="712" text-anchor="middle" style="font-size:24px">et MYTHOZOR ARGUS vérifie à nouveau</text></g>
       <g class="b" data-k="17" data-hide="#badko" data-chip="ch5:ok,ch6:ok" data-d="1500"><rect class="badge ok" x="230" y="252" width="240" height="36" rx="18"/><text class="badge-t ok" x="350" y="277" text-anchor="middle">✔ corrigé · 2 à vérifier</text><text class="lbl xs" x="350" y="640" text-anchor="middle">les rouges sont passés au vert</text></g>
       <g class="b" data-k="18"><text class="lbl acc" x="800" y="822" text-anchor="middle" style="font-size:30px">MYTHOZOR.com · un produit de CRYPTOR.AGENCY</text></g>
     </svg>
@@ -170,7 +182,7 @@ svg { width:100%; height:auto; display:block; font-family: "Segoe UI", system-ui
   var CAP = {
     s1: ['Une boutique en ligne. Elle tourne, les clients achètent.', 'Les commandes tombent.', null, 'Tout va bien.', 'Sauf que… aucun en-tête de sécurité.', 'Le prix peut être changé par le client.', 'La carte bancaire passe en clair.', 'Une bibliothèque de 2012, quatre failles connues.', 'Un mot de passe faible est accepté.', 'Voilà <b>votre site</b>, tel qu\'il est en ligne, avec ses failles.', 'Ça arrive. C\'est certain. La seule question, c\'est quand.', null, 'Un scanner les trouve. N\'importe lequel : il écrit une liste de constats.', null, '<b>Mission Zero</b> : pour chaque constat, une copie du site, un correctif avec ses sources, cinq contrôles. Un rouge, il recommence.', null, 'Vous recevez le patch, ligne par ligne, avec les preuves et un journal que personne ne peut retoucher.', null, 'Et c\'est vous qui appliquez. Jamais lui.'],
     s2: ['Un premier correctif, appliqué sur une copie.', null, 'Contrôle 1 : les tests du client passent. Vert.', null, 'Contrôle 2 : le scanner ne voit plus la faille. Vert.', null, 'Contrôle 3 : Muse Spark regarde la page…', '…et le formulaire de paiement a perdu ses champs. <b>Rouge.</b>', null, '<b>Refusé</b>, par lui-même. Il lit pourquoi.', null, 'Un second correctif, sur une copie neuve. Le rouge disparaît.', 'Les contrôles 1 et 2 sont rejoués : toujours verts.', null, 'Regard : vert, cette fois.', null, 'Relecture : il corrige la cause, pas le symptôme. Vert.', null, 'Réserves : rien à cacher. Vert.', null, 'Cinq verts : le correctif est <b>proposé</b>, avec le patch et les preuves.', 'Une IA qui dit non à elle-même, jusqu\'à ce que ce soit vert.'],
-    s3: ['Tout tourne chez vous. Rien ne sort.', 'Votre site, sur votre serveur, en ligne tous les jours.', '<b>ARGUS</b> le surveille en continu, 35 contrôles.', 'HTTPS et certificat : conformes.', 'Cookies : conformes.', 'Formulaires : conformes.', 'Mentions légales : conformes.', 'En-têtes de sécurité : 4 constats.', 'Scripts et anti-robot : 3 constats.', 'Vert, c\'est conforme. Rouge, c\'est à corriger : 7 constats.', null, '<b>Mission Zero</b> prend les 7 constats : copie, correctif, contrôles. 5 proposés avec preuves, 2 qu\'il refuse de certifier.', null, 'Vous validez, correctif par correctif, dans votre espace. Rien n\'est appliqué sans vous.', null, 'Et ARGUS vérifie à nouveau.', 'Les rouges sont passés au vert. La boucle continue.', 'MYTHOZOR.com, un produit de CRYPTOR.AGENCY.']
+    s3: ['Tout tourne chez vous. Rien ne sort.', 'Votre site, sur votre serveur, en ligne tous les jours.', '<b>MYTHOZOR ARGUS</b> le surveille en continu, 35 contrôles.', 'HTTPS et certificat : conformes.', 'Cookies : conformes.', 'Formulaires : conformes.', 'Mentions légales : conformes.', 'En-têtes de sécurité : 4 constats.', 'Scripts et anti-robot : 3 constats.', 'Vert, c\'est conforme. Rouge, c\'est à corriger : 7 constats.', null, '<b>Mission Zero</b> prend les 7 constats : copie, correctif, contrôles. 5 proposés avec preuves, 2 qu\'il refuse de certifier.', null, 'Vous validez, correctif par correctif, dans votre espace. Rien n\'est appliqué sans vous.', null, 'Et MYTHOZOR ARGUS vérifie à nouveau.', 'Les rouges sont passés au vert. La boucle continue.', 'MYTHOZOR.com, un produit de CRYPTOR.AGENCY.']
   };
   var timers = {};
   function steps(id) { return Array.prototype.slice.call(document.querySelectorAll('#' + id + ' [data-k]')); }
@@ -203,15 +215,38 @@ svg { width:100%; height:auto; display:block; font-family: "Segoe UI", system-ui
     document.getElementById('c' + id.slice(1)).innerHTML = '';
   }
   function caption(id, k) { var t = CAP[id][k - 1]; if (t) document.getElementById('c' + id.slice(1)).innerHTML = t; }
-  function play(id) {
+  function play(id, done) {
     clearTimeout(timers[id]); document.getElementById(id).dataset.played = '1'; reset(id);
     var list = steps(id), k = 0;
-    (function next() { if (k >= list.length) return; var s = list[k]; k += 1; fire(s); caption(id, k); var d = Number(s.dataset.d) || (s.classList.contains('a') ? 1100 : 1300); timers[id] = setTimeout(next, d); })();
+    (function next() { if (k >= list.length) { if (done) timers[id] = setTimeout(done, 1800); return; } var s = list[k]; k += 1; fire(s); caption(id, k); var d = Number(s.dataset.d) || (s.classList.contains('a') ? 1100 : 1300); timers[id] = setTimeout(next, d); })();
   }
   function all(id) { clearTimeout(timers[id]); document.getElementById(id).dataset.played = '1'; reset(id); var list = steps(id); list.forEach(function (s) { s.classList.add('on', 'drawn'); act(s); }); caption(id, list.length); }
   document.querySelectorAll('[data-play]').forEach(function (b) { b.addEventListener('click', function () { play(b.dataset.play); }); });
   document.querySelectorAll('[data-all]').forEach(function (b) { b.addEventListener('click', function () { all(b.dataset.all); }); });
-  var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting && !e.target.dataset.played) play(e.target.id); }); }, { threshold: 0.3 });
+  // Le film : carte-titre, chapitre, carte-titre, chapitre, carte-titre, chapitre, carte de fin.
+  var CH = [
+    { id: 's1', n: '1', h: 'CONSTAT', s: 'Un commerce qui tourne. Ses failles. Ce qu\'on en fait.' },
+    { id: 's2', n: '2', h: 'CORRECTION AVEC MISSION ZERO', s: 'Cinq contrôles. Un rouge, il recommence, jusqu\'au vert.' },
+    { id: 's3', n: '3', h: 'MYTHOZOR ARGUS, DÉTECTION EN DIRECT + CORRECTION AVEC MISSION ZERO', s: 'Chez vous : MYTHOZOR ARGUS surveille, Mission Zero répare, vous validez.' },
+  ];
+  var wrap = document.querySelector('.wrap'), card = document.getElementById('card'), filmTimer = null, filmOn = false;
+  function stopFilm() { filmOn = false; clearTimeout(filmTimer); ['s1', 's2', 's3'].forEach(function (id) { clearTimeout(timers[id]); }); }
+  function showCard(ch, ms, then) {
+    document.querySelectorAll('.scene').forEach(function (s) { s.classList.remove('active'); });
+    card.classList.toggle('end', !ch.n); document.getElementById('card-n').textContent = ch.n ? 'Chapitre ' + ch.n : ''; document.getElementById('card-h').textContent = ch.h; document.getElementById('card-s').textContent = ch.s;
+    card.classList.add('show'); filmTimer = setTimeout(function () { card.classList.remove('show'); then(); }, ms);
+  }
+  function chapter(i) {
+    if (i >= CH.length) { showCard({ n: '', h: 'Preuves, pas promesses.', s: 'MYTHOZOR.com · un produit de CRYPTOR.AGENCY' }, 4000, function () { card.classList.add('show'); }); return; }
+    var ch = CH[i];
+    showCard(ch, 2600, function () { document.getElementById(ch.id).classList.add('active'); play(ch.id, function () { if (filmOn) chapter(i + 1); }); });
+  }
+  function film(from) { stopFilm(); filmOn = true; wrap.classList.add('film'); chapter(from || 0); }
+  document.getElementById('go').addEventListener('click', function () { film(0); });
+  document.querySelectorAll('[data-ch]').forEach(function (b) { b.addEventListener('click', function () { film(['s1', 's2', 's3'].indexOf(b.dataset.ch)); }); });
+  document.getElementById('grid').addEventListener('click', function () { stopFilm(); card.classList.remove('show'); wrap.classList.remove('film'); document.querySelectorAll('.scene').forEach(function (s) { s.classList.remove('active'); }); });
+  var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (!filmOn && e.isIntersecting && !e.target.dataset.played) play(e.target.id); }); }, { threshold: 0.3 });
   ['s1', 's2', 's3'].forEach(function (id) { io.observe(document.getElementById(id)); });
+  film(0);
 })();
 </script>
