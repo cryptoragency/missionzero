@@ -161,3 +161,12 @@ test('a finding from another scanner is rescanned by TYPE: the policy probes ans
     assert.ok(!all.findings.some((f) => f.id === 'F16'), 'policy probes stay out of the default scan');
   } finally { site.stop(); }
 });
+
+test('a policy that forbids the inline scripts the page itself runs is detected (the fix would break the page)', async () => {
+  const { inlineScriptsBlocked } = await import('./repair.js');
+  const html = '<script type="application/ld+json">{}</script><script>window.x = 1;</script><script src="a.js"></script>';
+  assert.match(inlineScriptsBlocked("frame-ancestors 'self'; script-src 'self'", html), /runs 1 of them/);
+  assert.equal(inlineScriptsBlocked("frame-ancestors 'self'; script-src 'self' 'unsafe-inline'", html), null);
+  assert.equal(inlineScriptsBlocked("frame-ancestors 'self'", html), null);
+  assert.equal(inlineScriptsBlocked("default-src 'self'", '<script src="a.js"></script>'), null);
+});

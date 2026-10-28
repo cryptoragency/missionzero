@@ -115,6 +115,23 @@ export function makePatch(original, copy, files) {
 
 export const journeyNames = (dir) => [...(readFileSync(join(dir, 'journeys.test.js'), 'utf8').matchAll(/name: '([^']+)'/g)).map((m) => m[1])];
 
+// Does a Content-Security-Policy forbid the inline scripts the page itself runs? (script-src or default-src without
+// 'unsafe-inline', a nonce or a hash, on a page with inline <script> blocks). Data blocks (JSON-LD, templates) do not count.
+export function inlineScriptsBlocked(csp, html) {
+  const dir = ((csp || '').match(/(?:^|;)\s*script-src\s([^;]*)/i) || (csp || '').match(/(?:^|;)\s*default-src\s([^;]*)/i) || [])[1];
+  if (!dir || /'unsafe-inline'|'nonce-|'sha(256|384|512)-/i.test(dir)) return null;
+  const inline = [...(html || '').matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)].filter((m) => !/\bsrc\s*=/i.test(m[1]) && !/type\s*=\s*["']?(application\/(ld\+)?json|text\/template|text\/plain)/i.test(m[1]) && m[2].trim());
+  return inline.length ? `the Content-Security-Policy (${dir.trim().slice(0, 80)}) forbids inline scripts and the page runs ${inline.length} of them: they would be blocked` : null;
+}
+export async function policyBreaksPage(base) {
+  try {
+    const r = await fetch(base + '/', { signal: AbortSignal.timeout(8000) });
+    const csp = r.headers.get('content-security-policy') || ''; const html = await r.text();
+    const meta = (html.match(/http-equiv="content-security-policy"\s+content="([^"]*)"/i) || [])[1] || '';
+    return inlineScriptsBlocked(csp, html) || inlineScriptsBlocked(meta, html);
+  } catch { return null; }
+}
+
 // One attempt: propose, apply to a fresh copy, replay the journeys, rescan. Returns the record with its status.
 async function attemptFix({ finding, rec, siteDir, journeys, before, previous, propose, ask, login, vision = null, review = null, files = ['server.js'], confirmed = null }) {
   const copy = copySite(siteDir);
@@ -129,14 +146,19 @@ async function attemptFix({ finding, rec, siteDir, journeys, before, previous, p
   // Rescan the copy with the probe that matches the finding (by id, or by TYPE for another scanner's finding): is the flaw gone?
   // No probe for this type, or a probe that did not see the flaw on the untouched copy (the scanners disagree): the rescan cannot
   // confirm anything, and the fix ends UNVERIFIED, never proposed.
-  let gone = false; let rescan = null; let unverifiable = null;
+  let gone = false; let rescan = null; let unverifiable = null; let broken = null;
   if (!hasProbe(finding)) unverifiable = 'Mission Zero has no probe for this type of finding: the scanner that found it must rescan once the patch is applied';
   else if (confirmed === false) unverifiable = 'Mission Zero\'s probe did not see this finding on the untouched copy (the scanners disagree): the rescan cannot confirm the fix';
-  else {
+  try {
+    const port = await freePort(); const site = await startSite(copy, port);
     try {
-      const port = await freePort(); const site = await startSite(copy, port);
-      try { rescan = await scan('http://127.0.0.1:' + port, { login, only: [finding.id, finding.type] }); gone = rescan.findings.length === 0; } finally { site.stop(); }
-    } catch (e) { return { ...record, status: 'rejected', why: 'the fixed site does not start: ' + e.message.slice(0, 200) }; }
+      // A policy that forbids the page's own inline scripts breaks the page silently: HTTP tests pass, a screenshot looks fine.
+      broken = await policyBreaksPage('http://127.0.0.1:' + port);
+      if (!broken && !unverifiable) { rescan = await scan('http://127.0.0.1:' + port, { login, only: [finding.id, finding.type] }); gone = rescan.findings.length === 0; }
+    } finally { site.stop(); }
+  } catch (e) { return { ...record, status: 'rejected', why: 'the fixed site does not start: ' + e.message.slice(0, 200) }; }
+  if (broken) return { ...record, status: 'rejected', why: 'the fix breaks the page: ' + broken };
+  if (!unverifiable) {
     record.rescan = rescan;
     if (!gone) return { ...record, status: 'ineffective', why: 'journeys pass but the scanner still sees the flaw' };
   }
