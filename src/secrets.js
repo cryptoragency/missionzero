@@ -15,6 +15,7 @@ const PATTERNS = [
   /((?:^|[\s,;{(]|\\n)[A-Z0-9_]*(?:PASSWORD|PASSWD|SECRET|TOKEN|API_KEY|APIKEY|PRIVATE_KEY|AUTH_KEY)[A-Z0-9_]*\s*=\s*)(["']?)([^\s"'#\\\n]{4,})\2/g, // also inside a JS string ('...\nKEY=value\n...')
   /((?:password|passwd|secret|token|api_key|apikey|auth_key|private_key)["']?\s*[:=]=?=?\s*)(["'])([^"'\n]{4,})\2/gi,
   /(define\(\s*["'][A-Z0-9_]*(?:PASSWORD|SECRET|KEY|SALT)[A-Z0-9_]*["']\s*,\s*)(["'])([^"'\n]{4,})\2/g,
+  /((?:password|passwd|secret|token|api_key|apikey)=)([^&\s"'\\\n]{4,})/gi, // query strings and form bodies: password=value
 ];
 const PLACEHOLDER = /^«SECRET_\d+»$/;
 

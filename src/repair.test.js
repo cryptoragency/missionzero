@@ -82,3 +82,32 @@ test('proposeFix masks the secrets of the code before the model call and restore
   assert.equal(fix.edits[0].find, "p.password === 'maisonverde2019'");
   assert.equal(fix.summary, 'hash maisonverde2019');
 });
+
+test('a refused fix is retried once with the reason fed back; the second, different fix is PROPOSED and the first stays in attempts', async () => {
+  const seen = [];
+  const propose = async ({ previous }) => {
+    seen.push(previous);
+    if (!previous) return { edits: [{ file: 'server.js', find: "if (path === '/') return html(", replace: "if (path === '/') return [500, {}, 'broken'] || html(" }], summary: 'first, breaks the catalogue', risk: 'all' };
+    return { edits: [{ file: 'server.js', find: "server: 'Apache/2.4.29 (Ubuntu) PHP/7.2.24', 'x-powered-by': 'PHP/7.2.24 WooCommerce/3.5.1', ", replace: '' }], summary: 'second, drops version headers', risk: 'none' };
+  };
+  const r = await repairOne({ finding: F02, siteDir: SITE, ask: null, know, propose });
+  assert.equal(r.status, 'proposed', r.why);
+  assert.equal(seen.length, 2);
+  assert.equal(seen[1].status, 'rejected');
+  assert.ok(seen[1].brokenJourneys.includes('browse the catalogue'));
+  assert.ok(seen[1].edits[0].replace.includes('broken'));
+  assert.equal(r.attempts.length, 1);
+  assert.equal(r.fix.summary, 'second, drops version headers');
+});
+
+test('with retries=0 a broken fix is rejected at once; the journeys code reaches the model', async () => {
+  let calls = 0;
+  const propose = async () => { calls += 1; return { edits: [{ file: 'server.js', find: "if (path === '/') return html(", replace: "if (path === '/') return [500, {}, 'broken'] || html(" }], summary: 'oops', risk: 'everything' }; };
+  const r = await repairOne({ finding: F02, siteDir: SITE, ask: null, know, propose, retries: 0 });
+  assert.equal(r.status, 'rejected'); assert.equal(calls, 1); assert.equal(r.attempts.length, 0);
+  const { proposeFix } = await import('./repair.js');
+  let sent = null;
+  await proposeFix({ finding: F02, recommendation: { answer: 'x', sources: [] }, siteDir: SITE, previous: { status: 'rejected', why: 'breaks' }, ask: async (m) => { sent = JSON.parse(m[1].content); return { text: '{"edits":[]}' }; } });
+  assert.ok(sent.journeysCode.includes("name: 'follow my own order'"));
+  assert.equal(sent.previous.why, 'breaks');
+});

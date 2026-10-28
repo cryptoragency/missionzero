@@ -79,13 +79,17 @@ export async function knowledge({ finding, ask, folder, turns = 2, rounds = 1, l
 const FIX_PROMPT = 'You repair a small website. You get one scanner finding, the recommended fix with its sources, the site\'s code and the list of vital journeys that MUST keep working. '
   + 'Propose the smallest code change that removes the flaw without changing what the journeys do. Edits are exact-string replacements: "find" must be copied EXACTLY from the code, once; "replace" is the new text. '
   + 'Prefer fixing the cause (escape output, look prices up server-side, require a session, add headers, refuse the path) over hiding it. Never change the journeys file. '
+  + 'The journeys are given as code: read what each one sends and expects, and keep exactly that working (a journey that carries no session must keep working without one). '
+  + 'If "previous" is present, your earlier fix was refused for the reason given: propose a DIFFERENT fix that keeps the named journey working, never the same edits again. '
   + 'No prose outside the JSON. JSON: {"edits":[{"file":"server.js","find":"","replace":""}],"summary":"one sentence","risk":"what could break"}.';
 
-// 2) The code change itself, proposed by the model from the finding, the recommendation and the code.
+// 2) The code change itself, proposed by the model from the finding, the recommendation, the code and the journeys' code.
 // Secrets in the code or the finding (passwords, keys, tokens) are masked before the call and restored in the edits.
-export async function proposeFix({ finding, recommendation, siteDir, files = ['server.js'], journeys = [], ask }) {
+// `previous` is the refused attempt (its edits and why), so the second try is a different fix.
+export async function proposeFix({ finding, recommendation, siteDir, files = ['server.js'], journeys = [], previous = null, ask }) {
   const code = Object.fromEntries(files.filter((f) => existsSync(join(siteDir, f))).map((f) => [f, readFileSync(join(siteDir, f), 'utf8').slice(0, 14000)]));
-  const { value, masked, restore } = maskDeep({ finding, recommendation: { fix: recommendation.answer, sources: recommendation.sources }, vitalJourneys: journeys, code });
+  const journeysCode = existsSync(join(siteDir, 'journeys.test.js')) ? readFileSync(join(siteDir, 'journeys.test.js'), 'utf8').slice(0, 6000) : '';
+  const { value, masked, restore } = maskDeep({ finding, recommendation: { fix: recommendation.answer, sources: recommendation.sources }, vitalJourneys: journeys, journeysCode, code, previous });
   const r = await ask([
     { role: 'system', content: FIX_PROMPT },
     { role: 'user', content: JSON.stringify(value) },
@@ -110,30 +114,49 @@ export function makePatch(original, copy, files) {
 
 export const journeyNames = (dir) => [...(readFileSync(join(dir, 'journeys.test.js'), 'utf8').matchAll(/name: '([^']+)'/g)).map((m) => m[1])];
 
-// The whole thing for one finding. `know` and `propose` can be replaced (tests, other models).
-export async function repairOne({ finding, siteDir, ask, folder = null, login = null, know = knowledge, propose = proposeFix, turns = 2, rounds = 1, lessons = [] }) {
-  const t0 = Date.now();
-  const rec = await know({ finding, ask, folder, turns, rounds, lessons });
+// One attempt: propose, apply to a fresh copy, replay the journeys, rescan. Returns the record with its status.
+async function attemptFix({ finding, rec, siteDir, journeys, before, previous, propose, ask, login }) {
   const copy = copySite(siteDir);
-  const journeys = journeyNames(siteDir);
-  const before = runJourneys(copy);
-  const fix = await propose({ finding, recommendation: rec, siteDir: copy, journeys, ask });
+  const fix = await propose({ finding, recommendation: rec, siteDir: copy, journeys, previous, ask });
   const { applied, refused } = applyEdits(copy, fix.edits);
   const record = { finding, recommendation: rec, fix: { summary: fix.summary, risk: fix.risk, secretsMasked: fix.secretsMasked || 0, applied, refused }, journeysBefore: before, copy };
   if (applied.length) record.patch = makePatch(siteDir, copy, [...new Set(applied.map((e) => e.file))]);
-  if (!applied.length) return { ...record, status: 'no-edit', why: refused.length ? 'every edit was refused: ' + refused.map((x) => x.why).join('; ') : 'the model proposed no edit', ms: Date.now() - t0 };
+  if (!applied.length) return { ...record, status: 'no-edit', why: refused.length ? 'every edit was refused: ' + refused.map((x) => x.why).join('; ') : 'the model proposed no edit' };
   const after = runJourneys(copy);
   record.journeysAfter = after;
-  if (!after.ok) return { ...record, status: 'rejected', why: 'the fix breaks: ' + (after.broken.join(', ') || 'the journeys'), ms: Date.now() - t0 };
+  if (!after.ok) return { ...record, status: 'rejected', why: 'the fix breaks: ' + (after.broken.join(', ') || 'the journeys') };
   // Rescan the copy: is the flaw gone?
   let gone = false; let rescan = null;
   try {
     const port = await freePort(); const site = await startSite(copy, port);
     try { rescan = await scan('http://127.0.0.1:' + port, { login, only: [finding.id] }); gone = rescan.findings.length === 0; } finally { site.stop(); }
-  } catch (e) { return { ...record, status: 'rejected', why: 'the fixed site does not start: ' + e.message.slice(0, 200), ms: Date.now() - t0 }; }
+  } catch (e) { return { ...record, status: 'rejected', why: 'the fixed site does not start: ' + e.message.slice(0, 200) }; }
   record.rescan = rescan;
-  if (!gone) return { ...record, status: 'ineffective', why: 'journeys pass but the scanner still sees the flaw', ms: Date.now() - t0 };
-  return { ...record, status: 'proposed', why: 'journeys pass and the flaw is gone on the copy; a human applies it', ms: Date.now() - t0 };
+  if (!gone) return { ...record, status: 'ineffective', why: 'journeys pass but the scanner still sees the flaw' };
+  return { ...record, status: 'proposed', why: 'journeys pass and the flaw is gone on the copy; a human applies it' };
+}
+
+// What the next attempt is told about the refused one: its edits, the verdict, the journey it broke and the failing assertion.
+const feedback = (r) => ({ status: r.status, why: r.why, edits: (r.fix?.applied || []).map((e) => ({ file: e.file, find: e.find.slice(0, 300), replace: e.replace.slice(0, 300) })), refused: r.fix?.refused || [], brokenJourneys: r.journeysAfter?.broken || [], testOutput: (r.journeysAfter?.output || '').slice(-700), scannerStillSees: r.rescan?.findings?.[0]?.evidence || null });
+
+// The whole thing for one finding. `know` and `propose` can be replaced (tests, other models).
+// A refused attempt (no edit, rejected, ineffective) is retried `retries` times with the reason fed back: the agent says no to
+// its own fix, reads why, and proposes another one. Earlier attempts stay in `attempts` for the report.
+export async function repairOne({ finding, siteDir, ask, folder = null, login = null, know = knowledge, propose = proposeFix, turns = 2, rounds = 1, retries = 1, lessons = [] }) {
+  const t0 = Date.now();
+  const rec = await know({ finding, ask, folder, turns, rounds, lessons });
+  const journeys = journeyNames(siteDir);
+  const before = runJourneys(copySite(siteDir));
+  const attempts = [];
+  let previous = null; let r;
+  for (let n = 0; n <= retries; n += 1) {
+    r = await attemptFix({ finding, rec, siteDir, journeys, before, previous, propose, ask, login });
+    if (r.status === 'proposed') break;
+    previous = feedback(r);
+    attempts.push({ ...previous, copy: r.copy });
+    if (n === retries) attempts.pop(); // the last attempt is the record itself, not a previous one
+  }
+  return { ...r, attempts, ms: Date.now() - t0 };
 }
 
 const ORDER = { critical: 0, high: 1, medium: 2, low: 3 };

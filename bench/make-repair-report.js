@@ -51,6 +51,7 @@ export function renderReport(run, { title = 'Mission Zero · repair report' } = 
 <header><span class="sev ${esc(f.severity)}">${esc(f.severity)}</span><b>${esc(f.id)}</b> <span class="type">${esc(f.type)}</span><span class="status ${st[0]}">${esc(st[1])}</span></header>
 <p class="desc">${esc(f.description)} <span class="mut">Evidence: ${esc(f.evidence)}</span><br><a href="${esc(f.url)}" rel="noopener" class="mut">${esc(f.url)}</a></p>
 <p class="why"><b>Verdict.</b> ${esc(r.why || st[2])}${r.ms ? ` <span class="mut">(${(r.ms / 1000).toFixed(0)} s)</span>` : ''}</p>
+${(r.attempts || []).map((a, i) => `<p class="attempt"><b>Attempt ${i + 1}, refused by Mission Zero itself.</b> ${esc(a.why)}${a.brokenJourneys?.length ? ` <span class="mut">Broken: ${esc(a.brokenJourneys.join(', '))}.</span>` : ''} ${a.edits?.length ? `<span class="mut">It had proposed: ${esc(a.edits.map((e) => e.replace.slice(0, 120)).join(' | '))}</span>` : ''}</p>`).join('')}
 ${rec ? `<details open><summary>Recommended fix <span class="mut">${rec.cached ? 'from cache · ' : ''}judge ${esc(rec.score ?? '?')}/10 · ${rec.green ?? 0} green, ${rec.red ?? 0} red</span></summary><p class="answer">${esc(rec.answer)}</p>${sourcesHtml(rec)}</details>` : ''}
 ${r.fix ? `<details open><summary>Edits <span class="mut">${esc(r.fix.summary)}${r.fix.secretsMasked ? ` · ${r.fix.secretsMasked} secret${r.fix.secretsMasked > 1 ? 's' : ''} masked before the model call` : ''}</span></summary>${editsHtml(r.fix)}${r.fix.risk ? `<p class="mut">Risk: ${esc(r.fix.risk)}</p>` : ''}${r.patch ? `<p class="mut">Patch for review: <a href="${esc(f.id)}/fix.patch">${esc(f.id)}/fix.patch</a> (apply with <code>git apply</code>)</p>` : ''}</details>` : ''}
 <p class="journeys">${journeysHtml(r.journeysBefore, 'journeys before')} ${journeysHtml(r.journeysAfter, 'journeys after')} ${r.rescan ? `<span class="jr ${r.rescan.findings?.length ? 'red' : 'ok'}">rescan: ${r.rescan.findings?.length ? 'flaw still there' : 'flaw gone'}</span>` : ''}</p>
@@ -72,6 +73,7 @@ main{max-width:980px;margin:0 auto}h1{font-size:30px;margin:0 0 6px}h1 span{colo
 .sev.critical{background:#3a1420;color:#ff9aa6}.sev.high{background:#3a2412;color:#ffc48a}.sev.medium{background:#2d2a12;color:#f0dc8a}.sev.low{background:#14263a;color:#9fd0ff}
 .status{margin-left:auto;font-weight:600;padding:2px 10px;border-radius:99px;background:#1a2440}.status.ok{color:var(--ok)}.status.red{color:var(--red)}.status.warn{color:var(--warn)}.status.mut{color:var(--mut)}
 .mut{color:var(--mut)}.desc{margin:0 0 8px}.why{margin:0 0 10px}
+.attempt{margin:0 0 10px;padding:8px 12px;border-left:3px solid var(--warn);background:#1a1a2a;border-radius:0 8px 8px 0}
 details{border-top:1px solid var(--line);padding:10px 0 4px}summary{cursor:pointer;font-weight:600}.answer{white-space:pre-wrap;margin:8px 0}
 .src{list-style:none;padding:0;margin:4px 0}.src li{margin:4px 0;display:flex;gap:8px;align-items:baseline}.src a{color:var(--blue)}
 .dot{display:inline-block;width:10px;height:10px;border-radius:50%;flex:none;background:var(--mut);position:relative;top:0}.dot.g{background:var(--ok)}.dot.r{background:var(--red)}.dot.a{background:var(--warn)}
