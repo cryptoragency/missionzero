@@ -72,6 +72,7 @@ npm run repair -- --scan                                   # scan the demo shop 
 npm run repair -- --from=https://scanner.example/findings  # any scanner's URL (MZ_SCANNER_URL / MZ_SCANNER_KEY in .env)
 npm run repair-report -- evidence/repair-<date>            # one readable page per run
 npm run verify-chain -- evidence/repair-<date>             # recompute the hashed evidence journal
+npm run repair-replay -- evidence/repair-<date> F14        # animated replay of one repair, control by control (one HTML file)
 ```
 
 ### Results on Maison Verde (28 October 2026, final run: 2 research turns, 1 contradiction round, 1 retry, vision on, self-review on)

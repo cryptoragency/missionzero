@@ -53,3 +53,9 @@ Added 28 October (afternoon), three more scenes for the final video, all from re
 | Spoken goal | the founder says the goal into the microphone; the WAV, the transcript, the cleaned goal, the mission starting | muse-voice-transcribe: talk to it |
 | The look | after the F05 fix: journeys green, scanner silent, then Muse Spark looking at the checkout: « form is incomplete », SAM 5 fields → 2, fix REJECTED | vision catches what HTTP tests cannot |
 | Back to zero | the agent's decision (rule, reason), its lessons archived by itself, the mission rerun knowing nothing, the two answers compared, the one kept | Mission Zero returns to zero by itself |
+
+Repair replays (28 October, evening): `npm run repair-replay -- <run> <finding>` turns one repaired finding into an animated
+page, control by control (finding, researched fix, patch, journeys, rescan, the look with before/after screenshots, the
+agent's own review, refused attempts, result). Three are versioned for the video: F14 (refused by itself, then proposed with
+reservation), F06 (first attempt broke a journey, ownership fix), F05 (card form, the look) in `examples/repair-maison-verde/`.
+Scene durations can be imposed with `--scenes=ms,...` so the narration drives them, as for the research replay.

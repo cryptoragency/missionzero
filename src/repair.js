@@ -175,7 +175,10 @@ const pathOf = (url) => { try { return new URL(url).pathname + (new URL(url).sea
 export async function visualCheck({ siteDir, copy, finding, vision }) {
   const { screenshotPages, lookAtPages, toDataUrl } = await import('./vision.js');
   const { segment } = await import('./sam.js');
-  const pages = [{ name: 'home', path: '/' }, { name: 'finding', path: pathOf(finding.url) }];
+  // The finding's page is looked at only when it is a page: a script, a stylesheet, a text or data file is not something a customer sees.
+  const fp = pathOf(finding.url);
+  const isAsset = /\.(js|css|csv|txt|json|xml|env|map|png|jpe?g|gif|svg|ico|woff2?)(\?|$)/i.test(fp) || /^\/\.|\/robots\.txt$/.test(fp);
+  const pages = [{ name: 'home', path: '/' }, ...(isAsset ? [] : [{ name: 'finding', path: fp }])];
   const shoot = async (dir, sub) => {
     const port = await freePort(); const site = await startSite(dir, port);
     try { return await screenshotPages('http://127.0.0.1:' + port, pages, join(vision.folder || copy, sub), { playwrightPath: vision.playwrightPath }); } finally { site.stop(); }

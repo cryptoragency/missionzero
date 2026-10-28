@@ -14,7 +14,8 @@
     "repair-report": "node bench/make-repair-report.js",
     "verify-chain": "node bench/verify-chain.js",
     "voice": "node --env-file=.env bench/run-voice.js",
-    "vision": "node --env-file=.env bench/run-vision.js"
+    "vision": "node --env-file=.env bench/run-vision.js",
+    "repair-replay": "node bench/make-repair-replay.js"
   },
   "dependencies": {
     "pdfjs-dist": "^6.4.299"
