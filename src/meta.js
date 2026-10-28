@@ -3,6 +3,7 @@
 // shows the same for the open weights, plus 0.15 for cached input). MZ_PRICE_IN / MZ_PRICE_OUT override them for another provider.
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { dirname } from 'node:path';
+// The Baseten slug is the hackathon one named in the Participant Guide (« use meta-models/muse-spark-open-1026 »); MZ_MODEL overrides.
 // MZ_BASE_URL switches the provider: the open-weight Muse Spark served by Baseten (or any OpenAI-compatible endpoint)
 // takes the same requests; MZ_PRICE_IN / MZ_PRICE_OUT set that provider's prices per million tokens.
 const BASE = (process.env.MZ_BASE_URL || 'https://api.meta.ai/v1').replace(/\/$/, '');
@@ -13,7 +14,7 @@ const EFFORT = { verify: 'minimal', judge: 'low', contradict: 'low', research: '
 // The key follows the provider: BASETEN_API_KEY when the base URL is Baseten's, MODEL_API_KEY (Meta) otherwise; MZ_API_KEY overrides.
 const KEY = process.env.MZ_API_KEY || (/baseten/i.test(BASE) ? process.env.BASETEN_API_KEY : process.env.MODEL_API_KEY);
 export const provider = () => (/baseten/i.test(BASE) ? 'baseten' : /api\.meta\.ai/.test(BASE) ? 'meta' : new URL(BASE).hostname);
-export function createClient({ key = KEY, model = process.env.MZ_MODEL || (/baseten/i.test(BASE) ? 'meta-models/muse-spark-open' : 'muse-spark-1.3'), capUsd = Number(process.env.MZ_CAP_USD) || 100, dailyCapUsd = Number(process.env.MZ_DAILY_CAP_USD) || 0, ledgerPath = 'memory/spend.json', fetchFn = fetch } = {}) {
+export function createClient({ key = KEY, model = process.env.MZ_MODEL || (/baseten/i.test(BASE) ? 'meta-models/muse-spark-open-1026' : 'muse-spark-1.3'), capUsd = Number(process.env.MZ_CAP_USD) || 100, dailyCapUsd = Number(process.env.MZ_DAILY_CAP_USD) || 0, ledgerPath = 'memory/spend.json', fetchFn = fetch } = {}) {
   if (!key) throw new Error((/baseten/i.test(BASE) ? 'BASETEN_API_KEY' : 'MODEL_API_KEY') + ' is missing (.env file)');
   const counter = { calls: 0, input: 0, output: 0, usd: 0, totalMs: 0, byTag: {} };
 // Daily ledger: the spend of every run of the day adds up, so a daily cap holds across runs.
