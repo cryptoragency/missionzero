@@ -40,7 +40,9 @@ appendChain(folder, 'findings.json', { step: 'input' }); // the input is the fir
 
 const client = createClient();
 const ask = (messages, opts) => client.ask(messages, { max_tokens: 3500, ...opts });
-const results = await repairAll({ findings, siteDir, ask, folder, login, only, turns: Number(arg('turns', 2)), rounds: Number(arg('rounds', 1)), retries: Number(arg('retries', 1)), lessons: approvedTexts(loadLessons('memory/lessons.json')) });
+// --vision: Muse Spark looks at the repaired pages as a customer, SAM 3.1 counts the text fields before and after.
+const vision = process.argv.includes('--vision') ? { ask, playwrightPath: process.env.MZ_PLAYWRIGHT || 'playwright' } : null;
+const results = await repairAll({ findings, siteDir, ask, folder, login, only, vision, turns: Number(arg('turns', 2)), rounds: Number(arg('rounds', 1)), retries: Number(arg('retries', 1)), lessons: approvedTexts(loadLessons('memory/lessons.json')) });
 const rows = results.map((r) => ({ id: r.finding.id, severity: r.finding.severity, status: r.status, sources: r.recommendation ? r.recommendation.green + ' green' : '', journeys: r.journeysAfter ? r.journeysAfter.pass + '/' + (r.journeysAfter.pass + r.journeysAfter.fail) : '', masked: r.fix ? r.fix.secretsMasked : '', why: String(r.why || '').slice(0, 70) }));
 console.table(rows);
 writeFileSync(join(folder, 'report.json'), JSON.stringify({ findings: findings.length, results, cost: client.counter }, null, 2));

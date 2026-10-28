@@ -95,6 +95,20 @@ npm run verify-chain -- evidence/repair-<date>             # recompute the hashe
 
 15 findings, 15 fixes proposed, 7/7 vital journeys green after every proposed fix, every copy rescanned clean. 17 attempts, 194 model calls, **$1.10 in total** (about 7 cents per finding). Every proposed fix is a patch in its evidence folder. The merged report page of the 15 findings and the last run (F01, F06) with its patches and its hashed journal are in `examples/repair-maison-verde/`: open `report.html`, and check the journal with `npm run verify-chain -- examples/repair-maison-verde` (6 records, intact).
 
+## Meta tools, each where it earns its place
+
+| Tool | Where | Why there and not elsewhere |
+|---|---|---|
+| `muse-spark-1.3` (text, reasoning) | every role: planner, evaluator, writer, verifier, contradictor, judge, repairer | one model, one effort level per role (`reasoning_effort`): the cost finding of this project |
+| `muse-voice-transcribe-1.0` (speech to text) | `npm run voice -- recording.wav --run`: a goal spoken into a microphone becomes the mission's goal (`src/voice.js`) | the first thing a founder does with an agent is talk to it; the WAV is resampled to mono 16 kHz with ffmpeg when needed, the wake name and stutters are dropped |
+| `muse-spark-1.3` (vision) | `--vision` in repair mode: after a fix passes the journeys and the rescan, the repaired pages are screenshotted headless and shown to the model as a customer sees them (`src/vision.js`) | an HTTP assertion is blind: a blank page or a vanished product grid returns 200. The model answers « ok / problems / seen » and a « not ok » rejects the fix |
+| `sam-3.1` (segmentation) | same `--vision` step: SAM boxes the text fields of the finding's page before and after (`src/sam.js`) | visual evidence a reviewer understands in one glance: the card form had 5 fields, the fixed page has 2. Concepts must be visual (« form », « text input field », « button »): « credit card form » finds nothing |
+| Muse Spark open weights (Baseten) | `MZ_BASE_URL` + `MZ_MODEL` switch the whole system to the open-weight model on any OpenAI-compatible endpoint (`src/meta.js`) | the trust promise « the model stays with you » needs the open weights; same requests, same prompts, prices per provider |
+
+First real measurements (28 October): voice, an 11-second goal transcribed in 3.0 s; vision, two pages read correctly for $0.005; SAM, « form » 1 box, « text input field » 5 boxes, « button » 1 box on the checkout page, under 2 s each.
+
+What vision caught that HTTP tests did not (28 October, `--vision` on F05): the model's fix removed the card inputs and left their labels. The 7 journeys were green, the scanner was silent, and Muse Spark looking at the page said « payment page form is incomplete: 'Numéro de carte', 'Expiration', 'Cryptogramme' appear as text with no visible input fields ». SAM counted 5 text fields before, 2 after. The fix was **rejected**. On F03, the same look confirmed the escaped `<script>` shown as plain text with no popup. The two looks cost $0.01.
+
 ## Known limits (read before trusting a « proposed » fix)
 
 We would rather list these ourselves.
@@ -132,7 +146,7 @@ Who pays: online shops and the agencies and hosts that run them, where the same 
 cp .env.example .env            # add your MODEL_API_KEY (Meta Model API)
 npm install
 npm run check-key
-npm test                        # 47 tests, no network, no model calls
+npm test                        # 62 tests, no network, no model calls
 node --env-file=.env src/run.js "your goal" 4 3     # 4 turns, 3 contradiction rounds
 npm run demo                    # the 5 goals above, table + evidence
 node bench/make-replay.js evidence/<folder>         # animated replay of a mission (one HTML file)
@@ -159,6 +173,7 @@ The evidence folder (`evidence/<date>/`) holds `journal.jsonl` (every plan, obse
 | `src/repair.js` | cited recommendation, exact edits on a copy, journeys replayed, rescan, patch |
 | `src/secrets.js` | secret filter before every model call, restored in the edits only |
 | `src/chain.js` | hashed evidence journal of a run |
+| `src/voice.js`, `src/vision.js`, `src/sam.js` | spoken goal (muse-voice-transcribe), pages looked at (Muse Spark vision), fields boxed (SAM 3.1) |
 | `demo-site/` | Maison Verde, the flawed shop, its vital journeys and its 15 documented flaws |
 | `bench/` | demo goals, A/B of the contradictor, replay generator, repair runner and report, chain check |
 | `web/` | anonymous community page (one question, no personal data) |

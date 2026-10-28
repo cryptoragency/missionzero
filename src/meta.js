@@ -2,8 +2,10 @@
 // Prices in dollars per million tokens: to confirm on dev.meta.ai (muse-spark-1.1: 1.25 in / 4.25 out).
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { dirname } from 'node:path';
-const BASE = 'https://api.meta.ai/v1';
-const PRICE = { input: 1.25, output: 4.25 };
+// MZ_BASE_URL switches the provider: the open-weight Muse Spark served by Baseten (or any OpenAI-compatible endpoint)
+// takes the same requests; MZ_PRICE_IN / MZ_PRICE_OUT set that provider's prices per million tokens.
+const BASE = (process.env.MZ_BASE_URL || 'https://api.meta.ai/v1').replace(/\/$/, '');
+const PRICE = { input: Number(process.env.MZ_PRICE_IN) || 1.25, output: Number(process.env.MZ_PRICE_OUT) || 4.25 };
 // Reasoning effort by role: checks and scores need little, planning and writing a bit more.
 const EFFORT = { verify: 'minimal', judge: 'low', contradict: 'low', research: 'low', evaluate: 'low', distill: 'minimal', plan: 'medium', synthesize: 'medium', rewrite: 'medium', fix: 'medium', other: 'low' };
 

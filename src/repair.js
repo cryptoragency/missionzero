@@ -116,7 +116,7 @@ export function makePatch(original, copy, files) {
 export const journeyNames = (dir) => [...(readFileSync(join(dir, 'journeys.test.js'), 'utf8').matchAll(/name: '([^']+)'/g)).map((m) => m[1])];
 
 // One attempt: propose, apply to a fresh copy, replay the journeys, rescan. Returns the record with its status.
-async function attemptFix({ finding, rec, siteDir, journeys, before, previous, propose, ask, login }) {
+async function attemptFix({ finding, rec, siteDir, journeys, before, previous, propose, ask, login, vision = null }) {
   const copy = copySite(siteDir);
   const fix = await propose({ finding, recommendation: rec, siteDir: copy, journeys, previous, ask });
   const { applied, refused } = applyEdits(copy, fix.edits);
@@ -134,7 +134,36 @@ async function attemptFix({ finding, rec, siteDir, journeys, before, previous, p
   } catch (e) { return { ...record, status: 'rejected', why: 'the fixed site does not start: ' + e.message.slice(0, 200) }; }
   record.rescan = rescan;
   if (!gone) return { ...record, status: 'ineffective', why: 'journeys pass but the scanner still sees the flaw' };
+  // Optional visual check: the repaired copy is screenshotted and shown to Muse Spark as a customer would see it;
+  // SAM 3.1 counts the text fields on the finding's page before and after (visual evidence, not a gate).
+  if (vision) {
+    try {
+      record.vision = await visualCheck({ siteDir, copy, finding, vision });
+      if (!record.vision.look.ok) return { ...record, status: 'rejected', why: 'the page no longer looks right to a customer: ' + record.vision.look.problems.join('; ') };
+    } catch (e) { record.vision = { error: String(e.message || e).slice(0, 200) }; }
+  }
   return { ...record, status: 'proposed', why: 'journeys pass and the flaw is gone on the copy; a human applies it' };
+}
+
+const pathOf = (url) => { try { return new URL(url).pathname + (new URL(url).search || ''); } catch { return '/'; } };
+
+// Screenshots of the original and of the copy (home + the finding's page), Muse Spark's verdict on the copy, SAM's count
+// of text fields on the finding's page before and after. `vision` = { ask, folder, playwrightPath, concept }.
+export async function visualCheck({ siteDir, copy, finding, vision }) {
+  const { screenshotPages, lookAtPages, toDataUrl } = await import('./vision.js');
+  const { segment } = await import('./sam.js');
+  const pages = [{ name: 'home', path: '/' }, { name: 'finding', path: pathOf(finding.url) }];
+  const shoot = async (dir, sub) => {
+    const port = await freePort(); const site = await startSite(dir, port);
+    try { return await screenshotPages('http://127.0.0.1:' + port, pages, join(vision.folder || copy, sub), { playwrightPath: vision.playwrightPath }); } finally { site.stop(); }
+  };
+  const before = await shoot(siteDir, 'shots-before');
+  const after = await shoot(copy, 'shots-after');
+  const look = await lookAtPages({ shots: after, ask: vision.ask, question: 'After a security fix, are these pages still working shop pages for a customer?' });
+  const concept = vision.concept || 'text input field';
+  const count = async (shot) => { try { const s = await segment({ dataUrl: toDataUrl(shot.path), concept, fetchFn: vision.fetchFn }); return s.boxes.length; } catch { return null; } };
+  const sam = { concept, before: await count(before[1]), after: await count(after[1]) };
+  return { shots: { before, after }, look, sam };
 }
 
 // What the next attempt is told about the refused one: its edits, the verdict, the journey it broke and the failing assertion.
@@ -143,7 +172,8 @@ const feedback = (r) => ({ status: r.status, why: r.why, edits: (r.fix?.applied 
 // The whole thing for one finding. `know` and `propose` can be replaced (tests, other models).
 // A refused attempt (no edit, rejected, ineffective) is retried `retries` times with the reason fed back: the agent says no to
 // its own fix, reads why, and proposes another one. Earlier attempts stay in `attempts` for the report.
-export async function repairOne({ finding, siteDir, ask, folder = null, login = null, know = knowledge, propose = proposeFix, turns = 2, rounds = 1, retries = 1, lessons = [] }) {
+export async function repairOne({ finding, siteDir, ask, folder = null, login = null, know = knowledge, propose = proposeFix, turns = 2, rounds = 1, retries = 1, lessons = [], vision = null }) {
+  if (vision && !vision.folder && folder) vision = { ...vision, folder };
   const t0 = Date.now();
   const rec = await know({ finding, ask, folder, turns, rounds, lessons });
   const journeys = journeyNames(siteDir);
@@ -151,7 +181,7 @@ export async function repairOne({ finding, siteDir, ask, folder = null, login = 
   const attempts = [];
   let previous = null; let r;
   for (let n = 0; n <= retries; n += 1) {
-    r = await attemptFix({ finding, rec, siteDir, journeys, before, previous, propose, ask, login });
+    r = await attemptFix({ finding, rec, siteDir, journeys, before, previous, propose, ask, login, vision });
     if (r.status === 'proposed') break;
     previous = feedback(r);
     attempts.push({ ...previous, copy: r.copy });

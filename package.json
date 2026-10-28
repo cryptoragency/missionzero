@@ -7,12 +7,14 @@
   "scripts": {
     "web": "node web/server.js",
     "check-key": "node --env-file=.env src/check-key.js",
-    "test": "node --test src/loop.test.js src/pdf.test.js src/secrets.test.js src/repair.test.js web/server.test.js demo-site/server.test.js demo-site/journeys.test.js",
+    "test": "node --test src/loop.test.js src/pdf.test.js src/secrets.test.js src/media.test.js src/zero.test.js src/repair.test.js web/server.test.js demo-site/server.test.js demo-site/journeys.test.js",
     "demo": "node --env-file=.env bench/run-demo.js",
     "demo-site": "node demo-site/server.js",
     "repair": "node --env-file=.env bench/run-repair.js",
     "repair-report": "node bench/make-repair-report.js",
-    "verify-chain": "node bench/verify-chain.js"
+    "verify-chain": "node bench/verify-chain.js",
+    "voice": "node --env-file=.env bench/run-voice.js",
+    "vision": "node --env-file=.env bench/run-vision.js"
   },
   "dependencies": {
     "pdfjs-dist": "^6.4.299"
