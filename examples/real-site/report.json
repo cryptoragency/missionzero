@@ -1,0 +1,1064 @@
+{
+  "findings": 7,
+  "results": [
+    {
+      "finding": {
+        "id": "A-comments",
+        "severity": "medium",
+        "type": "sensitive-html-comments",
+        "url": "https://6stem.com/",
+        "evidence": "Des commentaires HTML publics contiennent des indices sensibles (notes internes, identifiants, chemins).",
+        "description": "Retirez les commentaires sensibles du HTML livré en production.",
+        "heuristic": true,
+        "points": 6
+      },
+      "recommendation": {
+        "goal": "What is the recommended fix for this web security flaw: sensitive-html-comments (Retirez les commentaires sensibles du HTML livré en production. Evidence: Des commentaires HTML publics contiennent des indices sensibles (notes internes, identifiants, chemins).). State the concrete fix and cite a primary source (OWASP, MDN, NIST, PCI DSS, IETF RFC, or the vendor's own advisory).",
+        "answer": "Fix: remove sensitive HTML comments from production HTML. Review delivered pages and strip internal notes, identifiers, paths and debugging info, because comments and metadata in HTML might reveal internal information that should not be available to attackers. Check source for <!-- comments containing SQL code, usernames/passwords, internal IPs or debugging information.",
+        "sources": [
+          {
+            "url": "https://owasp.github.io/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/01-Information_Gathering/05-Review_Web_Page_Content_for_Information_Leakage",
+            "contribution": "comments and metadata included in the HTML code might reveal internal information that should not be available to potential attackers"
+          },
+          {
+            "url": "https://wstg.owasp.org/v4.1/4-Web_Application_Security_Testing/01-Information_Gathering/05-Review_Webpage_Comments_and_Metadata_for_Information_Leakage/",
+            "contribution": "Check HTML source code for comments containing sensitive information that can help the attacker gain more insight about the application"
+          },
+          {
+            "url": "https://wstg.owasp.org/v4.1/4-Web_Application_Security_Testing/01-Information_Gathering/05-Review_Webpage_Comments_and_Metadata_for_Information_Leakage/",
+            "contribution": "sensitive comments might be SQL code, usernames and passwords, internal IP addresses, or debugging information"
+          }
+        ],
+        "score": 10,
+        "green": 3,
+        "red": 0,
+        "verification": [
+          {
+            "url": "https://owasp.github.io/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/01-Information_Gathering/05-Review_Web_Page_Content_for_Information_Leakage",
+            "claim": "comments and metadata included in the HTML code might reveal internal information that should not be available to potential attackers",
+            "verdict": "supported",
+            "detail": "However, comments and metadata included in the HTML code might reveal internal information that should not be available to potential attackers."
+          },
+          {
+            "url": "https://wstg.owasp.org/v4.1/4-Web_Application_Security_Testing/01-Information_Gathering/05-Review_Webpage_Comments_and_Metadata_for_Information_Leakage/",
+            "claim": "Check HTML source code for comments containing sensitive information that can help the attacker gain more insight about the application",
+            "verdict": "supported",
+            "detail": "Black-Box Testing Check HTML source code for comments containing sensitive information that can help the attacker gain more insight about the application."
+          },
+          {
+            "url": "https://wstg.owasp.org/v4.1/4-Web_Application_Security_Testing/01-Information_Gathering/05-Review_Webpage_Comments_and_Metadata_for_Information_Leakage/",
+            "claim": "sensitive comments might be SQL code, usernames and passwords, internal IP addresses, or debugging information",
+            "verdict": "supported",
+            "detail": "It might be SQL code, usernames and passwords, internal IP addresses, or debugging information."
+          }
+        ],
+        "savedAt": "2026-10-28T20:21:44.170Z",
+        "cached": true
+      },
+      "fix": {
+        "summary": "Strip HTML comments from served HTML to remove internal notes from production output.",
+        "risk": "Inline conditional comments or commented-out markup would also be removed, but visible content and scripts stay intact.",
+        "secretsMasked": 0,
+        "applied": [
+          {
+            "file": "server.js",
+            "find": "  const body = readFileSync(file);",
+            "replace": "  let body = readFileSync(file);\n  if (file.endsWith('.html')) body = Buffer.from(body.toString().replace(/<!--[\\s\\S]*?-->/g, ''));"
+          }
+        ],
+        "refused": []
+      },
+      "journeysBefore": {
+        "ok": true,
+        "pass": 5,
+        "fail": 0,
+        "broken": [],
+        "output": "✔ read the home page (113.8076ms)\n✔ the scripts of the page load (16.8386ms)\n✔ the legal notice and personal data information are present (5.0967ms)\n✔ an unknown path shows the site, not an error (4.8064ms)\n✔ a normal visitor is never blocked (12 pages in a row) (16.6496ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 8085.5587\n"
+      },
+      "confirmedOnCopy": null,
+      "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-wJVDl1",
+      "patch": "diff --git a/server.js b/server.js\nindex d1ca314..e82fe88 100644\n--- a/server.js\n+++ b/server.js\n@@ -27,7 +27,8 @@ createServer((req, res) => {\n   if (!file.startsWith(ROOT)) { res.writeHead(403, HEADERS); return res.end(); }\n   if (existsSync(file) && statSync(file).isDirectory()) file = join(file, 'index.html');\n   if (!existsSync(file) || file.endsWith('server.js') || file.endsWith('journeys.test.js')) file = join(ROOT, 'index.html'); // try_files $uri $uri/ /index.html\n-  const body = readFileSync(file);\n+  let body = readFileSync(file);\n+  if (file.endsWith('.html')) body = Buffer.from(body.toString().replace(/<!--[\\s\\S]*?-->/g, ''));\n   res.writeHead(200, { ...HEADERS, 'content-type': TYPES[extname(file).toLowerCase()] || 'application/octet-stream', 'content-length': body.length });\n   res.end(body);\n }).listen(PORT, '127.0.0.1', () => console.log('6stem.com copy on http://127.0.0.1:' + PORT));\n",
+      "journeysAfter": {
+        "ok": true,
+        "pass": 5,
+        "fail": 0,
+        "broken": [],
+        "output": "✔ read the home page (118.3633ms)\n✔ the scripts of the page load (15.961ms)\n✔ the legal notice and personal data information are present (4.5199ms)\n✔ an unknown path shows the site, not an error (6.5764ms)\n✔ a normal visitor is never blocked (12 pages in a row) (27.5125ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 8087.626\n"
+      },
+      "vision": {
+        "shots": {
+          "before": [
+            {
+              "name": "home",
+              "path": "evidence\\repair-2026-10-28-20-39\\A-comments\\shots-before\\home.png"
+            },
+            {
+              "name": "finding",
+              "path": "evidence\\repair-2026-10-28-20-39\\A-comments\\shots-before\\finding.png"
+            }
+          ],
+          "after": [
+            {
+              "name": "home",
+              "path": "evidence\\repair-2026-10-28-20-39\\A-comments\\shots-after\\home.png"
+            },
+            {
+              "name": "finding",
+              "path": "evidence\\repair-2026-10-28-20-39\\A-comments\\shots-after\\finding.png"
+            }
+          ]
+        },
+        "look": {
+          "ok": true,
+          "unreadable": false,
+          "problems": [],
+          "seen": [
+            "6STEM.COM navigation",
+            "Integration IA badge",
+            "Jour 1 info card",
+            "Etre rappele buttons"
+          ]
+        },
+        "sam": {
+          "concept": "text input field",
+          "before": 0,
+          "after": 0
+        }
+      },
+      "review": {
+        "verdict": "cause",
+        "reason": "Patch strips all HTML comments at serve time, directly removing the sensitive notes/identifiers leakage vector.",
+        "missing": ""
+      },
+      "status": "unverified",
+      "why": "journeys pass, but Mission Zero has no probe for this type of finding: the scanner that found it must rescan once the patch is applied; a human verifies before applying",
+      "reservations": [],
+      "attempts": [],
+      "ms": 46922
+    },
+    {
+      "finding": {
+        "id": "A-csp-strength",
+        "severity": "medium",
+        "type": "weak-csp-script-src",
+        "url": "https://6stem.com/",
+        "evidence": "Votre site n'empêche pas l'exécution de scripts extérieurs : un code malveillant injecté dans votre page peut capturer silencieusement les saisies de vos visiteurs (mots de passe, coordonnées bancaires), comme dans l'affaire British Airways en 2018.",
+        "description": "Dans la configuration de votre serveur web, retirez 'unsafe-inline' et 'unsafe-eval' de l'en-tête Content-Security-Policy. Passez par des nonces ou 'strict-dynamic'.",
+        "heuristic": true,
+        "points": 10
+      },
+      "recommendation": {
+        "goal": "What is the recommended fix for this web security flaw: weak-csp-script-src (Dans la configuration de votre serveur web, retirez 'unsafe-inline' et 'unsafe-eval' de l'en-tête Content-Security-Policy. Passez par des nonces ou 'strict-dynamic'. Evidence: Votre site n'empêche pas l'exécution de scripts extérieurs : un code malveillant injecté dans votre page peut capturer silencieusement les saisies de vos visiteurs (mots de passe, coordonnées bancaires), comme dans l'affaire British Airways en 2018.). State the concrete fix and cite a primary source (OWASP, MDN, NIST, PCI DSS, IETF RFC, or the vendor's own advisory).",
+        "answer": "Concrete fix: Deploy Strict CSP with script-src 'nonce-{RANDOM}' 'strict-dynamic'. Nonces are unique one-time-use random values generated for each HTTP response. 'strict-dynamic' trusts those elements without explicitly adding nonces or hashes. When inline scripts are required, script-src hash allows only specific scripts. Preventing the page from executing inline scripts mitigates injecting <script>.",
+        "sources": [
+          {
+            "url": "https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html",
+            "contribution": "Content-Security-Policy: script-src 'nonce-{RANDOM}'"
+          },
+          {
+            "url": "https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html",
+            "contribution": "'strict-dynamic' tells the browser to trust those elements as well without having to explicitly add nonces or hashes for each one"
+          },
+          {
+            "url": "https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html",
+            "contribution": "When inline scripts are required, the script-src 'hash_algo-hash' is another option for allowing only specific scripts to execute"
+          },
+          {
+            "url": "https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html",
+            "contribution": "By preventing the page from executing inline scripts, attacks like injecting < script > document"
+          }
+        ],
+        "score": 7,
+        "green": 4,
+        "red": 0,
+        "verification": [
+          {
+            "url": "https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html",
+            "claim": "Content-Security-Policy: script-src 'nonce-{RANDOM}'",
+            "verdict": "supported",
+            "detail": "Content-Security-Policy: script-src 'nonce-{RANDOM}' 'strict-dynamic'; object-src 'none'; base-uri 'none';"
+          },
+          {
+            "url": "https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html",
+            "claim": "'strict-dynamic' tells the browser to trust those elements as well without having to explicitly add nonces or hashes for each one",
+            "verdict": "supported",
+            "detail": "strict-dynamic tells the browser to trust those elements as well without having to explicitly add nonces or hashes for each one."
+          },
+          {
+            "url": "https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html",
+            "claim": "When inline scripts are required, the script-src 'hash_algo-hash' is another option for allowing only specific scripts to execute",
+            "verdict": "supported",
+            "detail": "When inline scripts are required, the script-src 'hash_algo-hash' is another option for allowing only specific scripts to execute."
+          },
+          {
+            "url": "https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html",
+            "claim": "By preventing the page from executing inline scripts, attacks like injecting < script > document",
+            "verdict": "supported",
+            "detail": "By preventing the page from executing inline scripts, attacks like injecting &lt; script &gt; document ."
+          }
+        ],
+        "savedAt": "2026-10-28T20:23:20.731Z",
+        "cached": true
+      },
+      "fix": {
+        "summary": "Deploy per-response nonce CSP with strict-dynamic and inject nonce into all script tags so inline and external scripts stay trusted without unsafe-inline.",
+        "risk": "If a proxy caches HTML with old nonce or a script tag uses uppercase SCRIPT it could be blocked; fetch journeys unaffected.",
+        "secretsMasked": 0,
+        "applied": [
+          {
+            "file": "server.js",
+            "find": "import { join, extname, normalize } from 'node:path';",
+            "replace": "import { join, extname, normalize } from 'node:path';\nimport { randomBytes } from 'node:crypto';"
+          },
+          {
+            "file": "server.js",
+            "find": "  const body = readFileSync(file);\n  res.writeHead(200, { ...HEADERS, 'content-type': TYPES[extname(file).toLowerCase()] || 'application/octet-stream', 'content-length': body.length });\n  res.end(body);",
+            "replace": "  const nonce = randomBytes(16).toString('base64');\n  const csp = \"frame-ancestors 'self'; object-src 'none'; base-uri 'self'; script-src 'nonce-\" + nonce + \"' 'strict-dynamic' 'self'\";\n  let body = readFileSync(file);\n  if ((TYPES[extname(file).toLowerCase()] || '').startsWith('text/html')) { body = Buffer.from(String(body).split('<script').join('<script nonce=\"' + nonce + '\"')); }\n  res.writeHead(200, { ...HEADERS, 'content-security-policy': csp, 'content-type': TYPES[extname(file).toLowerCase()] || 'application/octet-stream', 'content-length': body.length });\n  res.end(body);"
+          }
+        ],
+        "refused": []
+      },
+      "journeysBefore": {
+        "ok": true,
+        "pass": 5,
+        "fail": 0,
+        "broken": [],
+        "output": "✔ read the home page (111.5946ms)\n✔ the scripts of the page load (16.2168ms)\n✔ the legal notice and personal data information are present (4.6203ms)\n✔ an unknown path shows the site, not an error (11.9081ms)\n✔ a normal visitor is never blocked (12 pages in a row) (16.4161ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 8093.0555\n"
+      },
+      "confirmedOnCopy": true,
+      "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-FLCxxz",
+      "patch": "diff --git a/server.js b/server.js\nindex d1ca314..da73c22 100644\n--- a/server.js\n+++ b/server.js\n@@ -3,6 +3,7 @@\n import { createServer } from 'node:http';\n import { readFileSync, existsSync, statSync } from 'node:fs';\n import { join, extname, normalize } from 'node:path';\n+import { randomBytes } from 'node:crypto';\n import { fileURLToPath } from 'node:url';\n \n const ROOT = fileURLToPath(new URL('.', import.meta.url));\n@@ -27,7 +28,10 @@ createServer((req, res) => {\n   if (!file.startsWith(ROOT)) { res.writeHead(403, HEADERS); return res.end(); }\n   if (existsSync(file) && statSync(file).isDirectory()) file = join(file, 'index.html');\n   if (!existsSync(file) || file.endsWith('server.js') || file.endsWith('journeys.test.js')) file = join(ROOT, 'index.html'); // try_files $uri $uri/ /index.html\n-  const body = readFileSync(file);\n-  res.writeHead(200, { ...HEADERS, 'content-type': TYPES[extname(file).toLowerCase()] || 'application/octet-stream', 'content-length': body.length });\n+  const nonce = randomBytes(16).toString('base64');\n+  const csp = \"frame-ancestors 'self'; object-src 'none'; base-uri 'self'; script-src 'nonce-\" + nonce + \"' 'strict-dynamic' 'self'\";\n+  let body = readFileSync(file);\n+  if ((TYPES[extname(file).toLowerCase()] || '').startsWith('text/html')) { body = Buffer.from(String(body).split('<script').join('<script nonce=\"' + nonce + '\"')); }\n+  res.writeHead(200, { ...HEADERS, 'content-security-policy': csp, 'content-type': TYPES[extname(file).toLowerCase()] || 'application/octet-stream', 'content-length': body.length });\n   res.end(body);\n }).listen(PORT, '127.0.0.1', () => console.log('6stem.com copy on http://127.0.0.1:' + PORT));\n",
+      "journeysAfter": {
+        "ok": true,
+        "pass": 5,
+        "fail": 0,
+        "broken": [],
+        "output": "✔ read the home page (119.9227ms)\n✔ the scripts of the page load (16.4125ms)\n✔ the legal notice and personal data information are present (4.2561ms)\n✔ an unknown path shows the site, not an error (5.9443ms)\n✔ a normal visitor is never blocked (12 pages in a row) (27.294ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 8084.3026\n"
+      },
+      "rescan": {
+        "target": "http://127.0.0.1:56935",
+        "scanner": "mission-zero scan 0.1",
+        "scannedAt": "2026-10-28T20:41:44.855Z",
+        "findings": []
+      },
+      "vision": {
+        "shots": {
+          "before": [
+            {
+              "name": "home",
+              "path": "evidence\\repair-2026-10-28-20-39\\A-csp-strength\\shots-before\\home.png"
+            },
+            {
+              "name": "finding",
+              "path": "evidence\\repair-2026-10-28-20-39\\A-csp-strength\\shots-before\\finding.png"
+            }
+          ],
+          "after": [
+            {
+              "name": "home",
+              "path": "evidence\\repair-2026-10-28-20-39\\A-csp-strength\\shots-after\\home.png"
+            },
+            {
+              "name": "finding",
+              "path": "evidence\\repair-2026-10-28-20-39\\A-csp-strength\\shots-after\\finding.png"
+            }
+          ]
+        },
+        "look": {
+          "ok": true,
+          "unreadable": false,
+          "problems": [],
+          "seen": [
+            "header navigation with Etre rappele",
+            "IA integration hero text",
+            "Jour 1 / validation info cards",
+            "call-back buttons"
+          ]
+        },
+        "sam": {
+          "concept": "text input field",
+          "before": 0,
+          "after": 0
+        }
+      },
+      "review": {
+        "verdict": "cause",
+        "reason": "Patch generates per-response random nonce and enforces script-src nonce plus strict-dynamic without unsafe-inline/eval as recommended.",
+        "missing": ""
+      },
+      "status": "proposed",
+      "why": "journeys pass and the flaw is gone on the copy; a human applies it",
+      "reservations": [],
+      "attempts": [
+        {
+          "status": "rejected",
+          "why": "the fix breaks the page: the Content-Security-Policy ('self') forbids inline scripts and the page runs 6 of them: they would be blocked",
+          "edits": [
+            {
+              "file": "server.js",
+              "find": "  'content-security-policy': \"frame-ancestors 'self'; object-src 'none'; base-uri 'self'\",",
+              "replace": "  'content-security-policy': \"frame-ancestors 'self'; object-src 'none'; base-uri 'self'; script-src 'self'\","
+            }
+          ],
+          "refused": [],
+          "brokenJourneys": [],
+          "testOutput": "✔ read the home page (130.3677ms)\n✔ the scripts of the page load (15.4731ms)\n✔ the legal notice and personal data information are present (4.856ms)\n✔ an unknown path shows the site, not an error (4.7466ms)\n✔ a normal visitor is never blocked (12 pages in a row) (16.5301ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 8098.2625\n",
+          "scannerStillSees": null,
+          "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-Du25R2"
+        }
+      ],
+      "ms": 70676
+    },
+    {
+      "finding": {
+        "id": "A-csp-connect",
+        "severity": "medium",
+        "type": "weak-csp-connect-src",
+        "url": "https://6stem.com/",
+        "evidence": "Votre site peut envoyer des données vers n'importe quel serveur sur internet : si un code pirate s'exécute sur votre page, il peut transmettre les saisies de vos visiteurs à un serveur inconnu sans laisser de trace.",
+        "description": "Dans votre en-tête Content-Security-Policy, ajoutez une directive connect-src listant uniquement vos propres API et services de confiance (jamais '*' ni un schéma nu comme https:).",
+        "heuristic": true,
+        "points": 8
+      },
+      "recommendation": {
+        "goal": "What is the recommended fix for this web security flaw: weak-csp-connect-src (Dans votre en-tête Content-Security-Policy, ajoutez une directive connect-src listant uniquement vos propres API et services de confiance (jamais '*' ni un schéma nu comme https:). Evidence: Votre site peut envoyer des données vers n'importe quel serveur sur internet : si un code pirate s'exécute sur votre page, il peut transmettre les saisies de vos visiteurs à un serveur inconnu sans laisser de trace.). State the concrete fix and cite a primary source (OWASP, MDN, NIST, PCI DSS, IETF RFC, or the vendor's own advisory).",
+        "answer": "Fix: In your Content-Security-Policy header, add a restrictive connect-src allowlist containing only your own origins and trusted APIs, e.g. Content-Security-Policy: connect-src 'self' https://api.example.com wss://api.example.com. Never use '*' and never use a bare scheme like https:. This blocks exfiltration via fetch(), XMLHttpRequest, WebSocket, EventSource and sendBeacon() to arbitrary servers.",
+        "sources": [
+          {
+            "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy/connect-src",
+            "contribution": "The HTTP Content-Security-Policy (CSP) connect-src directive restricts the URLs which can be loaded using script interfaces."
+          },
+          {
+            "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy/connect-src",
+            "contribution": "The following APIs are controlled by this directive: fetch(), XMLHttpRequest, WebSocket, EventSource, Navigator.sendBeacon()"
+          },
+          {
+            "url": "https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html",
+            "contribution": "By injecting the Content-Security-Policy (CSP) headers from the server, the browser is aware and capable of protecting the user from dynamic calls that will load content into the page currently being visited."
+          }
+        ],
+        "score": 10,
+        "green": 3,
+        "red": 0,
+        "verification": [
+          {
+            "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy/connect-src",
+            "claim": "The HTTP Content-Security-Policy (CSP) connect-src directive restricts the URLs which can be loaded using script interfaces.",
+            "verdict": "supported",
+            "detail": "The HTTP Content-Security-Policy (CSP) connect-src directive restricts the URLs which can be loaded using script interfaces."
+          },
+          {
+            "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy/connect-src",
+            "claim": "The following APIs are controlled by this directive: fetch(), XMLHttpRequest, WebSocket, EventSource, Navigator.sendBeacon()",
+            "verdict": "supported",
+            "detail": "The following APIs are controlled by this directive: The ping attribute in &lt;a&gt; elements fetch() fetchLater() XMLHttpRequest WebSocket EventSource Navigator.sendBeacon()"
+          },
+          {
+            "url": "https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html",
+            "claim": "By injecting the Content-Security-Policy (CSP) headers from the server, the browser is aware and capable of protecting the user from dynamic calls that will load content into the page currently being visited.",
+            "verdict": "supported",
+            "detail": "By injecting the Content-Security-Policy (CSP) headers from the server, the browser is aware and capable of protecting the user from dynamic calls that will load content into the page currently being visited."
+          }
+        ],
+        "savedAt": "2026-10-28T20:24:46.829Z",
+        "cached": true
+      },
+      "fix": {
+        "summary": "Added connect-src 'self' to the Content-Security-Policy to block exfiltration to arbitrary servers.",
+        "risk": "Any legitimate cross-origin fetch/XHR/WebSocket/beacon to an external API would now be blocked.",
+        "secretsMasked": 0,
+        "applied": [
+          {
+            "file": "server.js",
+            "find": "  'content-security-policy': \"frame-ancestors 'self'; object-src 'none'; base-uri 'self'\",",
+            "replace": "  'content-security-policy': \"frame-ancestors 'self'; object-src 'none'; base-uri 'self'; connect-src 'self'\","
+          }
+        ],
+        "refused": []
+      },
+      "journeysBefore": {
+        "ok": true,
+        "pass": 5,
+        "fail": 0,
+        "broken": [],
+        "output": "✔ read the home page (112.489ms)\n✔ the scripts of the page load (15.657ms)\n✔ the legal notice and personal data information are present (4.7211ms)\n✔ an unknown path shows the site, not an error (5.3752ms)\n✔ a normal visitor is never blocked (12 pages in a row) (17.9253ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 8085.3578\n"
+      },
+      "confirmedOnCopy": true,
+      "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-ycO5JP",
+      "patch": "diff --git a/server.js b/server.js\nindex d1ca314..7ce4582 100644\n--- a/server.js\n+++ b/server.js\n@@ -16,7 +16,7 @@ const HEADERS = {\n   'referrer-policy': 'strict-origin-when-cross-origin',\n   'permissions-policy': 'geolocation=(), microphone=(), camera=(), interest-cohort=()',\n   'cross-origin-opener-policy': 'same-origin-allow-popups',\n-  'content-security-policy': \"frame-ancestors 'self'; object-src 'none'; base-uri 'self'\",\n+  'content-security-policy': \"frame-ancestors 'self'; object-src 'none'; base-uri 'self'; connect-src 'self'\",\n   server: 'nginx',\n };\n \n",
+      "journeysAfter": {
+        "ok": true,
+        "pass": 5,
+        "fail": 0,
+        "broken": [],
+        "output": "✔ read the home page (120.3745ms)\n✔ the scripts of the page load (16.5417ms)\n✔ the legal notice and personal data information are present (4.9512ms)\n✔ an unknown path shows the site, not an error (5.0176ms)\n✔ a normal visitor is never blocked (12 pages in a row) (17.0173ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 8103.1882\n"
+      },
+      "rescan": {
+        "target": "http://127.0.0.1:61561",
+        "scanner": "mission-zero scan 0.1",
+        "scannedAt": "2026-10-28T20:42:17.197Z",
+        "findings": []
+      },
+      "vision": {
+        "shots": {
+          "before": [
+            {
+              "name": "home",
+              "path": "evidence\\repair-2026-10-28-20-39\\A-csp-connect\\shots-before\\home.png"
+            },
+            {
+              "name": "finding",
+              "path": "evidence\\repair-2026-10-28-20-39\\A-csp-connect\\shots-before\\finding.png"
+            }
+          ],
+          "after": [
+            {
+              "name": "home",
+              "path": "evidence\\repair-2026-10-28-20-39\\A-csp-connect\\shots-after\\home.png"
+            },
+            {
+              "name": "finding",
+              "path": "evidence\\repair-2026-10-28-20-39\\A-csp-connect\\shots-after\\finding.png"
+            }
+          ]
+        },
+        "look": {
+          "ok": true,
+          "unreadable": false,
+          "problems": [],
+          "seen": [
+            "navigation with Etre rappele button",
+            "Integration IA headline",
+            "Jour 1 / Jour 2 cards",
+            "Etre rappele call-to-action buttons"
+          ]
+        },
+        "sam": {
+          "concept": "text input field",
+          "before": 0,
+          "after": 0
+        }
+      },
+      "review": {
+        "verdict": "cause",
+        "reason": "Patch adds connect-src 'self' which restricts fetch/XHR/WebSocket/Beacon to same-origin instead of allowing arbitrary hosts.",
+        "missing": ""
+      },
+      "status": "proposed",
+      "why": "journeys pass and the flaw is gone on the copy; a human applies it",
+      "reservations": [],
+      "attempts": [],
+      "ms": 32770
+    },
+    {
+      "finding": {
+        "id": "A-corp",
+        "severity": "low",
+        "type": "missing-corp",
+        "url": "https://6stem.com/",
+        "evidence": "En-tête Cross-Origin-Resource-Policy absent : n'importe quel site peut charger vos ressources (images, scripts) et les utiliser à votre insu.",
+        "description": "Ajoutez `Cross-Origin-Resource-Policy: same-origin` dans les en-têtes HTTP de votre serveur.",
+        "heuristic": false,
+        "points": 4
+      },
+      "recommendation": {
+        "goal": "What is the recommended fix for this web security flaw: missing-corp (Ajoutez `Cross-Origin-Resource-Policy: same-origin` dans les en-têtes HTTP de votre serveur. Evidence: En-tête Cross-Origin-Resource-Policy absent : n'importe quel site peut charger vos ressources (images, scripts) et les utiliser à votre insu.). State the concrete fix and cite a primary source (OWASP, MDN, NIST, PCI DSS, IETF RFC, or the vendor's own advisory).",
+        "answer": "Send Cross-Origin-Resource-Policy: same-origin for protected resources. CORP is set by the Cross-Origin-Resource-Policy response header for protection against certain cross-origin <script> and <img> requests, signaling the browser to block no-cors cross-origin/cross-site requests; same-origin only allows same-origin loads.",
+        "sources": [
+          {
+            "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cross-Origin_Resource_Policy",
+            "contribution": "Cross-Origin Resource Policy (CORP) is set by the Cross-Origin-Resource-Policy response header, which lets websites opt in to protection against certain cross-origin requests such as those made by <script> and <img> elements"
+          },
+          {
+            "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cross-Origin_Resource_Policy",
+            "contribution": "same-origin: only the same origin can load the resource with Cross-Origin-Resource-Policy: same-origin"
+          },
+          {
+            "url": "https://http.dev/cross-origin-resource-policy",
+            "contribution": "The HTTP Cross-Origin-Resource-Policy response header signals the browser to block no-cors cross-origin or cross-site requests for the protected resource"
+          }
+        ],
+        "score": 10,
+        "green": 3,
+        "red": 0,
+        "verification": [
+          {
+            "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cross-Origin_Resource_Policy",
+            "claim": "Cross-Origin Resource Policy (CORP) is set by the Cross-Origin-Resource-Policy response header, which lets websites opt in to protection against certain cross-origin requests such as those made by <script> and <img> elements",
+            "verdict": "supported",
+            "detail": "Cross-Origin Resource Policy (CORP) is set by the Cross-Origin-Resource-Policy response header, which lets websites and applications opt in to protection against vulnerabilities related to certain cross-origin requests (such as those made by the"
+          },
+          {
+            "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cross-Origin_Resource_Policy",
+            "claim": "same-origin: only the same origin can load the resource with Cross-Origin-Resource-Policy: same-origin",
+            "verdict": "supported",
+            "detail": "If a resource must not be loaded cross-origin in no-cors mode, the response for the resource should contain: http Cross-Origin-Resource-Policy: same-origin"
+          },
+          {
+            "url": "https://http.dev/cross-origin-resource-policy",
+            "claim": "The HTTP Cross-Origin-Resource-Policy response header signals the browser to block no-cors cross-origin or cross-site requests for the protected resource",
+            "verdict": "supported",
+            "detail": "The HTTP Cross-Origin-Resource-Policy response header defends against this by signaling the browser to block no-cors cross-origin or cross-site requests for the protected resource."
+          }
+        ],
+        "savedAt": "2026-10-28T20:26:40.718Z",
+        "cached": true
+      },
+      "fix": {
+        "summary": "Add Cross-Origin-Resource-Policy: same-origin to all responses via HEADERS.",
+        "risk": "Cross-origin hotlinking or embedding of images/scripts via no-cors would now be blocked by browsers.",
+        "secretsMasked": 0,
+        "applied": [
+          {
+            "file": "server.js",
+            "find": "  'cross-origin-opener-policy': 'same-origin-allow-popups',\n  'content-security-policy'",
+            "replace": "  'cross-origin-opener-policy': 'same-origin-allow-popups',\n  'cross-origin-resource-policy': 'same-origin',\n  'content-security-policy'"
+          }
+        ],
+        "refused": []
+      },
+      "journeysBefore": {
+        "ok": true,
+        "pass": 5,
+        "fail": 0,
+        "broken": [],
+        "output": "✔ read the home page (125.689ms)\n✔ the scripts of the page load (15.9097ms)\n✔ the legal notice and personal data information are present (4.4023ms)\n✔ an unknown path shows the site, not an error (7.2902ms)\n✔ a normal visitor is never blocked (12 pages in a row) (18.3518ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 8112.8902\n"
+      },
+      "confirmedOnCopy": true,
+      "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-kX3u7j",
+      "patch": "diff --git a/server.js b/server.js\nindex d1ca314..d9fd1ff 100644\n--- a/server.js\n+++ b/server.js\n@@ -16,6 +16,7 @@ const HEADERS = {\n   'referrer-policy': 'strict-origin-when-cross-origin',\n   'permissions-policy': 'geolocation=(), microphone=(), camera=(), interest-cohort=()',\n   'cross-origin-opener-policy': 'same-origin-allow-popups',\n+  'cross-origin-resource-policy': 'same-origin',\n   'content-security-policy': \"frame-ancestors 'self'; object-src 'none'; base-uri 'self'\",\n   server: 'nginx',\n };\n",
+      "journeysAfter": {
+        "ok": true,
+        "pass": 5,
+        "fail": 0,
+        "broken": [],
+        "output": "✔ read the home page (129.5222ms)\n✔ the scripts of the page load (17.0694ms)\n✔ the legal notice and personal data information are present (4.9633ms)\n✔ an unknown path shows the site, not an error (5.074ms)\n✔ a normal visitor is never blocked (12 pages in a row) (19.3217ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 8094.0643\n"
+      },
+      "rescan": {
+        "target": "http://127.0.0.1:51886",
+        "scanner": "mission-zero scan 0.1",
+        "scannedAt": "2026-10-28T20:42:52.160Z",
+        "findings": []
+      },
+      "vision": {
+        "shots": {
+          "before": [
+            {
+              "name": "home",
+              "path": "evidence\\repair-2026-10-28-20-39\\A-corp\\shots-before\\home.png"
+            },
+            {
+              "name": "finding",
+              "path": "evidence\\repair-2026-10-28-20-39\\A-corp\\shots-before\\finding.png"
+            }
+          ],
+          "after": [
+            {
+              "name": "home",
+              "path": "evidence\\repair-2026-10-28-20-39\\A-corp\\shots-after\\home.png"
+            },
+            {
+              "name": "finding",
+              "path": "evidence\\repair-2026-10-28-20-39\\A-corp\\shots-after\\finding.png"
+            }
+          ]
+        },
+        "look": {
+          "ok": true,
+          "unreadable": false,
+          "problems": [],
+          "seen": [
+            "navigation 6STEM.COM with Etre rappele",
+            "Integration IA pour les entreprises",
+            "Jour 1 info cards",
+            "Etre rappele buttons"
+          ]
+        },
+        "sam": {
+          "concept": "text input field",
+          "before": 0,
+          "after": 0
+        }
+      },
+      "review": {
+        "verdict": "cause",
+        "reason": "Patch adds Cross-Origin-Resource-Policy: same-origin to responses, directly implementing the recommended browser block on no-cors cross-origin loads.",
+        "missing": ""
+      },
+      "status": "proposed",
+      "why": "journeys pass and the flaw is gone on the copy; a human applies it",
+      "reservations": [],
+      "attempts": [],
+      "ms": 34303
+    },
+    {
+      "finding": {
+        "id": "A-hsts-sub",
+        "severity": "low",
+        "type": "missing-hsts",
+        "url": "https://6stem.com/",
+        "evidence": "HSTS ne couvre pas les sous-domaines (includeSubDomains absent).",
+        "description": "Ajoutez includeSubDomains si tous vos sous-domaines sont en HTTPS.",
+        "heuristic": false,
+        "points": 3
+      },
+      "recommendation": {
+        "goal": "What is the recommended fix for this web security flaw: missing-hsts (Ajoutez includeSubDomains si tous vos sous-domaines sont en HTTPS. Evidence: HSTS ne couvre pas les sous-domaines (includeSubDomains absent).). State the concrete fix and cite a primary source (OWASP, MDN, NIST, PCI DSS, IETF RFC, or the vendor's own advisory).",
+        "answer": "Recommended fix for missing includeSubDomains: use the HSTS example implementation `Strict-Transport-Security: max-age=31536000; includeSubDomains`. This single value fixes the reported evidence that HSTS does not cover subdomains.",
+        "sources": [
+          {
+            "url": "https://wstg.owasp.org/v4.2/4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/07-Test_HTTP_Strict_Transport_Security/",
+            "contribution": "Here's an example of the HSTS header implementation: Strict-Transport-Security: max-age=31536000"
+          },
+          {
+            "url": "https://wstg.owasp.org/v4.2/4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/07-Test_HTTP_Strict_Transport_Security/",
+            "contribution": "Here's an example of the HSTS header implementation: Strict-Transport-Security: max-age=31536000; includeSubDomains"
+          }
+        ],
+        "score": 10,
+        "green": 2,
+        "red": 0,
+        "verification": [
+          {
+            "url": "https://wstg.owasp.org/v4.2/4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/07-Test_HTTP_Strict_Transport_Security/",
+            "claim": "Here's an example of the HSTS header implementation: Strict-Transport-Security: max-age=31536000",
+            "verdict": "supported",
+            "detail": "Here’s an example of the HSTS header implementation: Strict-Transport-Security: max-age=31536000; includeSubDomains"
+          },
+          {
+            "url": "https://wstg.owasp.org/v4.2/4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/07-Test_HTTP_Strict_Transport_Security/",
+            "claim": "Here's an example of the HSTS header implementation: Strict-Transport-Security: max-age=31536000; includeSubDomains",
+            "verdict": "supported",
+            "detail": "Here’s an example of the HSTS header implementation: Strict-Transport-Security: max-age=31536000; includeSubDomains"
+          }
+        ],
+        "savedAt": "2026-10-28T20:27:59.726Z",
+        "cached": true
+      },
+      "fix": {
+        "summary": "Add includeSubDomains to HSTS header to cover subdomains.",
+        "risk": "If an HTTP-only subdomain exists it would become forced to HTTPS.",
+        "secretsMasked": 0,
+        "applied": [
+          {
+            "file": "server.js",
+            "find": "  'strict-transport-security': 'max-age=31536000',",
+            "replace": "  'strict-transport-security': 'max-age=31536000; includeSubDomains',"
+          }
+        ],
+        "refused": []
+      },
+      "journeysBefore": {
+        "ok": true,
+        "pass": 5,
+        "fail": 0,
+        "broken": [],
+        "output": "✔ read the home page (109.2267ms)\n✔ the scripts of the page load (16.6531ms)\n✔ the legal notice and personal data information are present (4.9239ms)\n✔ an unknown path shows the site, not an error (4.6956ms)\n✔ a normal visitor is never blocked (12 pages in a row) (17.8196ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 8092.1368\n"
+      },
+      "confirmedOnCopy": false,
+      "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-80TBxD",
+      "patch": "diff --git a/server.js b/server.js\nindex d1ca314..be48d2b 100644\n--- a/server.js\n+++ b/server.js\n@@ -10,7 +10,7 @@ const PORT = Number(process.env.PORT) || 8097;\n const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.svg': 'image/svg+xml', '.webp': 'image/webp', '.ico': 'image/x-icon', '.woff2': 'font/woff2', '.json': 'application/json' };\n // The hosting's headers (nginx snippet for client domains), reproduced as served on 28 October 2026.\n const HEADERS = {\n-  'strict-transport-security': 'max-age=31536000',\n+  'strict-transport-security': 'max-age=31536000; includeSubDomains',\n   'x-frame-options': 'SAMEORIGIN',\n   'x-content-type-options': 'nosniff',\n   'referrer-policy': 'strict-origin-when-cross-origin',\n",
+      "journeysAfter": {
+        "ok": true,
+        "pass": 5,
+        "fail": 0,
+        "broken": [],
+        "output": "✔ read the home page (113.7654ms)\n✔ the scripts of the page load (18.0363ms)\n✔ the legal notice and personal data information are present (4.6123ms)\n✔ an unknown path shows the site, not an error (4.6761ms)\n✔ a normal visitor is never blocked (12 pages in a row) (22.2873ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 8086.6253\n"
+      },
+      "vision": {
+        "shots": {
+          "before": [
+            {
+              "name": "home",
+              "path": "evidence\\repair-2026-10-28-20-39\\A-hsts-sub\\shots-before\\home.png"
+            },
+            {
+              "name": "finding",
+              "path": "evidence\\repair-2026-10-28-20-39\\A-hsts-sub\\shots-before\\finding.png"
+            }
+          ],
+          "after": [
+            {
+              "name": "home",
+              "path": "evidence\\repair-2026-10-28-20-39\\A-hsts-sub\\shots-after\\home.png"
+            },
+            {
+              "name": "finding",
+              "path": "evidence\\repair-2026-10-28-20-39\\A-hsts-sub\\shots-after\\finding.png"
+            }
+          ]
+        },
+        "look": {
+          "ok": true,
+          "unreadable": false,
+          "problems": [],
+          "seen": [
+            "navigation with Etre rappele",
+            "IA integration headline",
+            "Jour 1 and Jour 2 cards",
+            "Etre rappele buttons"
+          ]
+        },
+        "sam": {
+          "concept": "text input field",
+          "before": 0,
+          "after": 0
+        }
+      },
+      "review": {
+        "verdict": "cause",
+        "reason": "Patch adds includeSubDomains to HSTS header exactly as recommended.",
+        "missing": ""
+      },
+      "status": "unverified",
+      "why": "journeys pass, but Mission Zero's probe did not see this finding on the untouched copy (the scanners disagree): the rescan cannot confirm the fix; a human verifies before applying",
+      "reservations": [],
+      "attempts": [],
+      "ms": 30952
+    },
+    {
+      "finding": {
+        "id": "A-coep",
+        "severity": "low",
+        "type": "missing-coep",
+        "url": "https://6stem.com/",
+        "evidence": "L'en-tête Cross-Origin-Embedder-Policy est absent : votre page peut être utilisée pour accéder à des ressources protégées d'autres domaines via des attaques mémoire avancées.",
+        "description": "Ajoutez l'en-tête HTTP Cross-Origin-Embedder-Policy: credentialless à votre serveur web. Vérifiez ensuite que vos intégrations tierces (connexion Google, cartes, widgets de paiement) fonctionnent toujours correctement.",
+        "heuristic": false,
+        "points": 3
+      },
+      "recommendation": {
+        "goal": "What is the recommended fix for this web security flaw: missing-coep (Ajoutez l'en-tête HTTP Cross-Origin-Embedder-Policy: credentialless à votre serveur web. Vérifiez ensuite que vos intégrations tierces (connexion Google, cartes, widgets de paiement) fonctionnent toujours correctement. Evidence: L'en-tête Cross-Origin-Embedder-Policy est absent : votre page peut être utilisée pour accéder à des ressources protégées d'autres domaines via des attaques mémoire avancées.). State the concrete fix and cite a primary source (OWASP, MDN, NIST, PCI DSS, IETF RFC, or the vendor's own advisory).",
+        "answer": "Recommended fix: send the response header `Cross-Origin-Embedder-Policy: credentialless` from your web server, then verify third-party integrations (Google login, maps, payment widgets) still work. For third-party iframes that break under COEP, use iframe credentialless to load them in a new ephemeral context where COEP embedding rules can be lifted.",
+        "sources": [
+          {
+            "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cross-Origin-Embedder-Policy",
+            "contribution": "The HTTP Cross-Origin-Embedder-Policy (COEP) response header configures the current document's policy for loading and embedding cross-origin resources that are requested in no-cors mode."
+          },
+          {
+            "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/IFrame_credentialless",
+            "contribution": "IFrame credentialless provides a mechanism for developers to load third-party resources in <iframe>s using a new, ephemeral context."
+          },
+          {
+            "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/IFrame_credentialless",
+            "contribution": "In return, the Cross-Origin-Embedder-Policy (COEP) embedding rules can be lifted, so documents with COEP set can load third-party resources."
+          }
+        ],
+        "score": 10,
+        "green": 3,
+        "red": 0,
+        "verification": [
+          {
+            "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cross-Origin-Embedder-Policy",
+            "claim": "The HTTP Cross-Origin-Embedder-Policy (COEP) response header configures the current document's policy for loading and embedding cross-origin resources that are requested in no-cors mode.",
+            "verdict": "supported",
+            "detail": "The HTTP Cross-Origin-Embedder-Policy (COEP) response header configures the current document's policy for loading and embedding cross-origin resources that are requested in no-cors mode."
+          },
+          {
+            "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/IFrame_credentialless",
+            "claim": "IFrame credentialless provides a mechanism for developers to load third-party resources in <iframe>s using a new, ephemeral context.",
+            "verdict": "supported",
+            "detail": "IFrame credentialless provides a mechanism for developers to load third-party resources in &lt;iframe&gt; s using a new, ephemeral context."
+          },
+          {
+            "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/IFrame_credentialless",
+            "claim": "In return, the Cross-Origin-Embedder-Policy (COEP) embedding rules can be lifted, so documents with COEP set can load third-party resources.",
+            "verdict": "supported",
+            "detail": "In return, the Cross-Origin-Embedder-Policy (COEP) embedding rules can be lifted, so documents with COEP set can embed third-party documents that do not."
+          }
+        ],
+        "savedAt": "2026-10-28T20:29:17.389Z",
+        "cached": true
+      },
+      "fix": {
+        "summary": "Add Cross-Origin-Embedder-Policy: credentialless response header.",
+        "risk": "Third-party subresources requiring credentials could behave differently, but same-origin pages and scripts keep loading.",
+        "secretsMasked": 0,
+        "applied": [
+          {
+            "file": "server.js",
+            "find": "  'cross-origin-opener-policy': 'same-origin-allow-popups',",
+            "replace": "  'cross-origin-opener-policy': 'same-origin-allow-popups',\n  'cross-origin-embedder-policy': 'credentialless',"
+          }
+        ],
+        "refused": []
+      },
+      "journeysBefore": {
+        "ok": true,
+        "pass": 5,
+        "fail": 0,
+        "broken": [],
+        "output": "✔ read the home page (109.7769ms)\n✔ the scripts of the page load (16.2245ms)\n✔ the legal notice and personal data information are present (3.809ms)\n✔ an unknown path shows the site, not an error (4.8351ms)\n✔ a normal visitor is never blocked (12 pages in a row) (15.9127ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 8081.9108\n"
+      },
+      "confirmedOnCopy": true,
+      "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-2htbku",
+      "patch": "diff --git a/server.js b/server.js\nindex d1ca314..7f643ed 100644\n--- a/server.js\n+++ b/server.js\n@@ -16,6 +16,7 @@ const HEADERS = {\n   'referrer-policy': 'strict-origin-when-cross-origin',\n   'permissions-policy': 'geolocation=(), microphone=(), camera=(), interest-cohort=()',\n   'cross-origin-opener-policy': 'same-origin-allow-popups',\n+  'cross-origin-embedder-policy': 'credentialless',\n   'content-security-policy': \"frame-ancestors 'self'; object-src 'none'; base-uri 'self'\",\n   server: 'nginx',\n };\n",
+      "journeysAfter": {
+        "ok": true,
+        "pass": 5,
+        "fail": 0,
+        "broken": [],
+        "output": "✔ read the home page (109.2764ms)\n✔ the scripts of the page load (17.5972ms)\n✔ the legal notice and personal data information are present (4.7604ms)\n✔ an unknown path shows the site, not an error (4.9416ms)\n✔ a normal visitor is never blocked (12 pages in a row) (18.543ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 8086.4142\n"
+      },
+      "rescan": {
+        "target": "http://127.0.0.1:64012",
+        "scanner": "mission-zero scan 0.1",
+        "scannedAt": "2026-10-28T20:43:54.176Z",
+        "findings": []
+      },
+      "vision": {
+        "shots": {
+          "before": [
+            {
+              "name": "home",
+              "path": "evidence\\repair-2026-10-28-20-39\\A-coep\\shots-before\\home.png"
+            },
+            {
+              "name": "finding",
+              "path": "evidence\\repair-2026-10-28-20-39\\A-coep\\shots-before\\finding.png"
+            }
+          ],
+          "after": [
+            {
+              "name": "home",
+              "path": "evidence\\repair-2026-10-28-20-39\\A-coep\\shots-after\\home.png"
+            },
+            {
+              "name": "finding",
+              "path": "evidence\\repair-2026-10-28-20-39\\A-coep\\shots-after\\finding.png"
+            }
+          ]
+        },
+        "look": {
+          "ok": true,
+          "unreadable": false,
+          "problems": [],
+          "seen": [
+            "header navigation",
+            "IA integration hero text",
+            "Jour 1 info card",
+            "Etre rappele buttons"
+          ]
+        },
+        "sam": {
+          "concept": "text input field",
+          "before": 0,
+          "after": 0
+        }
+      },
+      "review": {
+        "verdict": "cause",
+        "reason": "Patch adds Cross-Origin-Embedder-Policy: credentialless header exactly as recommended.",
+        "missing": ""
+      },
+      "status": "proposed",
+      "why": "journeys pass and the flaw is gone on the copy; a human applies it",
+      "reservations": [],
+      "attempts": [],
+      "ms": 31475
+    },
+    {
+      "finding": {
+        "id": "A-auto-throttle",
+        "severity": "low",
+        "type": "no-rate-limiting",
+        "url": "https://6stem.com/",
+        "evidence": "Aucun filtre anti-robot visible devant votre site : un outil automatisé peut tester votre formulaire de connexion des milliers de fois ou scanner vos pages sans être ralenti ni bloqué.",
+        "description": "Placez un WAF ou CDN devant votre site (ex. Cloudflare Free) ou ajoutez un rate-limiting sur les endpoints sensibles (connexion, formulaires, API).",
+        "heuristic": true,
+        "points": 5
+      },
+      "recommendation": {
+        "goal": "What is the recommended fix for this web security flaw: no-rate-limiting (Placez un WAF ou CDN devant votre site (ex. Cloudflare Free) ou ajoutez un rate-limiting sur les endpoints sensibles (connexion, formulaires, API). Evidence: Aucun filtre anti-robot visible devant votre site : un outil automatisé peut tester votre formulaire de connexion des milliers de fois ou scanner vos pages sans être ralenti ni bloqué.). State the concrete fix and cite a primary source (OWASP, MDN, NIST, PCI DSS, IETF RFC, or the vendor's own advisory).",
+        "answer": "Concrete fix for no-rate-limiting on login/forms/API: add server-side rate-limiting, lock out accounts after a defined number of incorrect password attempts, define a maximum ingress data rate limit then drop connections above that rate, and log all failures and alert administrators when credential stuffing/brute force is detected or suspected.",
+        "sources": [
+          {
+            "url": "https://community.owasp.org/controls/Blocking_Brute_Force_Attacks",
+            "contribution": "lock out accounts after a defined number of incorrect password attempts"
+          },
+          {
+            "url": "https://cheatsheetseries.owasp.org/cheatsheets/Denial_of_Service_Cheat_Sheet.html",
+            "contribution": "define a maximum ingress data rate limit then drop all connections above that rate"
+          },
+          {
+            "url": "https://top10.owasp.org/2025/A07_2025-Authentication_Failures/",
+            "contribution": "log all failures and alert administrators when credential stuffing, brute force, or other attacks are detected or suspected"
+          }
+        ],
+        "score": 10,
+        "green": 3,
+        "red": 0,
+        "verification": [
+          {
+            "url": "https://community.owasp.org/controls/Blocking_Brute_Force_Attacks",
+            "claim": "lock out accounts after a defined number of incorrect password attempts",
+            "verdict": "supported",
+            "detail": "lock out accounts after a defined number of incorrect password attempts"
+          },
+          {
+            "url": "https://cheatsheetseries.owasp.org/cheatsheets/Denial_of_Service_Cheat_Sheet.html",
+            "claim": "define a maximum ingress data rate limit then drop all connections above that rate",
+            "verdict": "supported",
+            "detail": "Define a maximum ingress data rate limit then drop all connections above that rate."
+          },
+          {
+            "url": "https://top10.owasp.org/2025/A07_2025-Authentication_Failures/",
+            "claim": "log all failures and alert administrators when credential stuffing, brute force, or other attacks are detected or suspected",
+            "verdict": "supported",
+            "detail": "Log all failures and alert administrators when credential stuffing, brute force, or other attacks are detected or suspected."
+          }
+        ],
+        "savedAt": "2026-10-28T20:30:28.227Z",
+        "cached": true
+      },
+      "fix": {
+        "summary": "Add per-IP sliding-window throttle (30/min) with 429+Retry-After, rate-limit headers and logging.",
+        "risk": "A burst of >30 requests in 60s now gets 429; normal 12-page visits still pass.",
+        "secretsMasked": 0,
+        "applied": [
+          {
+            "file": "server.js",
+            "find": "const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.svg': 'image/svg+xml', '.webp': 'image/webp', '.ico': 'image/x-icon', '.woff2': 'font/woff2', '.json': 'application/json' };",
+            "replace": "const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.svg': 'image/svg+xml', '.webp': 'image/webp', '.ico': 'image/x-icon', '.woff2': 'font/woff2', '.json': 'application/json' };\n// Throttle anti-robots/scans: sliding window per IP, normal browsing allowed, bursts dropped + logged.\nconst RATE_WINDOW_MS = 60 * 1000;\nconst RATE_MAX = 30;\nconst _hits = new Map();\nfunction _check(ip) {\n  const now = Date.now();\n  let a = (_hits.get(ip) || []).filter((t) => now - t < RATE_WINDOW_MS);\n  a.push(now);\n  _hits.set(ip, a);\n  if (_hits.size > 2000) for (const [k, v] of _hits) if (!v.length || now - v[v.length - 1] > RATE_WINDOW_MS) _hits.delete(k);\n  return a.length;\n}"
+          },
+          {
+            "file": "server.js",
+            "find": "  const url = new URL(req.url, 'http://x');\n  if (url.pathname.startsWith('/api/')) { res.writeHead(404, HEADERS); return res.end(); }",
+            "replace": "  const url = new URL(req.url, 'http://x');\n  const _ip = (req.socket && req.socket.remoteAddress) || 'x';\n  const _n = _check(_ip);\n  const _rl = { 'x-ratelimit-limit': String(RATE_MAX), 'x-ratelimit-remaining': String(Math.max(0, RATE_MAX - _n)), ratelimit: 'limit=' + RATE_MAX + ', remaining=' + Math.max(0, RATE_MAX - _n) + ', reset=60' };\n  if (_n > RATE_MAX) { console.warn('throttled suspected brute-force/scan from ' + _ip + ' count=' + _n); res.writeHead(429, { ...HEADERS, ..._rl, 'retry-after': '60', 'content-type': 'text/plain; charset=utf-8' }); return res.end('Too many requests'); }\n  if (url.pathname.startsWith('/api/')) { res.writeHead(404, { ...HEADERS, ..._rl }); return res.end(); }"
+          },
+          {
+            "file": "server.js",
+            "find": "  const body = readFileSync(file);\n  res.writeHead(200, { ...HEADERS, 'content-type': TYPES[extname(file).toLowerCase()] || 'application/octet-stream', 'content-length': body.length });",
+            "replace": "  const body = readFileSync(file);\n  res.writeHead(200, { ...HEADERS, 'x-ratelimit-limit': String(RATE_MAX), 'x-ratelimit-remaining': String(Math.max(0, RATE_MAX - _n)), ratelimit: 'limit=' + RATE_MAX + ', remaining=' + Math.max(0, RATE_MAX - _n) + ', reset=60', 'content-type': TYPES[extname(file).toLowerCase()] || 'application/octet-stream', 'content-length': body.length });"
+          }
+        ],
+        "refused": []
+      },
+      "journeysBefore": {
+        "ok": true,
+        "pass": 5,
+        "fail": 0,
+        "broken": [],
+        "output": "✔ read the home page (111.1729ms)\n✔ the scripts of the page load (16.3117ms)\n✔ the legal notice and personal data information are present (4.8489ms)\n✔ an unknown path shows the site, not an error (5.0265ms)\n✔ a normal visitor is never blocked (12 pages in a row) (17.5497ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 8088.8614\n"
+      },
+      "confirmedOnCopy": true,
+      "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-G4Z8TR",
+      "patch": "diff --git a/server.js b/server.js\nindex d1ca314..7da6a93 100644\n--- a/server.js\n+++ b/server.js\n@@ -8,6 +8,18 @@ import { fileURLToPath } from 'node:url';\n const ROOT = fileURLToPath(new URL('.', import.meta.url));\n const PORT = Number(process.env.PORT) || 8097;\n const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.svg': 'image/svg+xml', '.webp': 'image/webp', '.ico': 'image/x-icon', '.woff2': 'font/woff2', '.json': 'application/json' };\n+// Throttle anti-robots/scans: sliding window per IP, normal browsing allowed, bursts dropped + logged.\n+const RATE_WINDOW_MS = 60 * 1000;\n+const RATE_MAX = 30;\n+const _hits = new Map();\n+function _check(ip) {\n+  const now = Date.now();\n+  let a = (_hits.get(ip) || []).filter((t) => now - t < RATE_WINDOW_MS);\n+  a.push(now);\n+  _hits.set(ip, a);\n+  if (_hits.size > 2000) for (const [k, v] of _hits) if (!v.length || now - v[v.length - 1] > RATE_WINDOW_MS) _hits.delete(k);\n+  return a.length;\n+}\n // The hosting's headers (nginx snippet for client domains), reproduced as served on 28 October 2026.\n const HEADERS = {\n   'strict-transport-security': 'max-age=31536000',\n@@ -22,12 +34,16 @@ const HEADERS = {\n \n createServer((req, res) => {\n   const url = new URL(req.url, 'http://x');\n-  if (url.pathname.startsWith('/api/')) { res.writeHead(404, HEADERS); return res.end(); }\n+  const _ip = (req.socket && req.socket.remoteAddress) || 'x';\n+  const _n = _check(_ip);\n+  const _rl = { 'x-ratelimit-limit': String(RATE_MAX), 'x-ratelimit-remaining': String(Math.max(0, RATE_MAX - _n)), ratelimit: 'limit=' + RATE_MAX + ', remaining=' + Math.max(0, RATE_MAX - _n) + ', reset=60' };\n+  if (_n > RATE_MAX) { console.warn('throttled suspected brute-force/scan from ' + _ip + ' count=' + _n); res.writeHead(429, { ...HEADERS, ..._rl, 'retry-after': '60', 'content-type': 'text/plain; charset=utf-8' }); return res.end('Too many requests'); }\n+  if (url.pathname.startsWith('/api/')) { res.writeHead(404, { ...HEADERS, ..._rl }); return res.end(); }\n   let file = join(ROOT, normalize(decodeURIComponent(url.pathname)).replace(/^(\\.\\.[/\\\\])+/, ''));\n   if (!file.startsWith(ROOT)) { res.writeHead(403, HEADERS); return res.end(); }\n   if (existsSync(file) && statSync(file).isDirectory()) file = join(file, 'index.html');\n   if (!existsSync(file) || file.endsWith('server.js') || file.endsWith('journeys.test.js')) file = join(ROOT, 'index.html'); // try_files $uri $uri/ /index.html\n   const body = readFileSync(file);\n-  res.writeHead(200, { ...HEADERS, 'content-type': TYPES[extname(file).toLowerCase()] || 'application/octet-stream', 'content-length': body.length });\n+  res.writeHead(200, { ...HEADERS, 'x-ratelimit-limit': String(RATE_MAX), 'x-ratelimit-remaining': String(Math.max(0, RATE_MAX - _n)), ratelimit: 'limit=' + RATE_MAX + ', remaining=' + Math.max(0, RATE_MAX - _n) + ', reset=60', 'content-type': TYPES[extname(file).toLowerCase()] || 'application/octet-stream', 'content-length': body.length });\n   res.end(body);\n }).listen(PORT, '127.0.0.1', () => console.log('6stem.com copy on http://127.0.0.1:' + PORT));\n",
+      "journeysAfter": {
+        "ok": true,
+        "pass": 5,
+        "fail": 0,
+        "broken": [],
+        "output": "✔ read the home page (122.3516ms)\n✔ the scripts of the page load (19.692ms)\n✔ the legal notice and personal data information are present (4.0426ms)\n✔ an unknown path shows the site, not an error (5.7713ms)\n✔ a normal visitor is never blocked (12 pages in a row) (20.1112ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 8094.895\n"
+      },
+      "rescan": {
+        "target": "http://127.0.0.1:64927",
+        "scanner": "mission-zero scan 0.1",
+        "scannedAt": "2026-10-28T20:45:02.198Z",
+        "findings": []
+      },
+      "vision": {
+        "shots": {
+          "before": [
+            {
+              "name": "home",
+              "path": "evidence\\repair-2026-10-28-20-39\\A-auto-throttle\\shots-before\\home.png"
+            },
+            {
+              "name": "finding",
+              "path": "evidence\\repair-2026-10-28-20-39\\A-auto-throttle\\shots-before\\finding.png"
+            }
+          ],
+          "after": [
+            {
+              "name": "home",
+              "path": "evidence\\repair-2026-10-28-20-39\\A-auto-throttle\\shots-after\\home.png"
+            },
+            {
+              "name": "finding",
+              "path": "evidence\\repair-2026-10-28-20-39\\A-auto-throttle\\shots-after\\finding.png"
+            }
+          ]
+        },
+        "look": {
+          "ok": true,
+          "unreadable": false,
+          "problems": [],
+          "seen": [
+            "navigation with Être rappelé",
+            "IA integration hero text",
+            "Jour 1 info card",
+            "call-back buttons"
+          ]
+        },
+        "sam": {
+          "concept": "text input field",
+          "before": 0,
+          "after": 0
+        }
+      },
+      "review": {
+        "verdict": "cause",
+        "reason": "Patch adds per-IP sliding-window limit (30/min) returning 429+Retry-After and logging throttled IPs, directly throttling brute-force/scanning.",
+        "missing": ""
+      },
+      "status": "proposed",
+      "why": "journeys pass and the flaw is gone on the copy; a human applies it",
+      "reservations": [],
+      "attempts": [
+        {
+          "status": "ineffective",
+          "why": "journeys pass but the scanner still sees the flaw",
+          "edits": [
+            {
+              "file": "server.js",
+              "find": "  server: 'nginx',\n};",
+              "replace": "  server: 'nginx',\n};\n// Rate limiting (anti brute-force / anti-scan): sliding window per IP.\nconst RATE_WINDOW_MS = 60 * 1000;\nconst RATE_MAX = 100;\nconst _hits = new Map();\nfunction _limited(ip) {\n  const now = Date.now();\n  const arr = (_hits.get(ip) || []).filter((t) => now - t < RATE_WINDOW_MS)"
+            },
+            {
+              "file": "server.js",
+              "find": "createServer((req, res) => {\n  const url = new URL(req.url, 'http://x');",
+              "replace": "createServer((req, res) => {\n  const _ip = (req.socket && req.socket.remoteAddress) || req.headers['x-forwarded-for'] || 'x';\n  if (_limited(_ip)) { console.warn('rate-limited ' + _ip); res.writeHead(429, { ...HEADERS, 'retry-after': '60', 'content-type': 'text/plain; charset=utf-8' }); return res.e"
+            }
+          ],
+          "refused": [],
+          "brokenJourneys": [],
+          "testOutput": "✔ read the home page (127.8495ms)\n✔ the scripts of the page load (17.5346ms)\n✔ the legal notice and personal data information are present (4.2111ms)\n✔ an unknown path shows the site, not an error (6.472ms)\n✔ a normal visitor is never blocked (12 pages in a row) (17.3335ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 8108.128\n",
+          "scannerStillSees": "40 requests in a burst, all answered 200, no 429 and no rate-limit header",
+          "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-JK48n1"
+        }
+      ],
+      "ms": 69580
+    }
+  ],
+  "cost": {
+    "calls": 23,
+    "input": 82241,
+    "output": 26687,
+    "usd": 0.216221,
+    "totalMs": 158678,
+    "byTag": {
+      "fix": {
+        "calls": 9,
+        "input": 57053,
+        "output": 20337,
+        "reasoning": 17984,
+        "truncated": 0
+      },
+      "vision": {
+        "calls": 7,
+        "input": 18767,
+        "output": 3448,
+        "reasoning": 3121,
+        "truncated": 0
+      },
+      "review": {
+        "calls": 7,
+        "input": 6421,
+        "output": 2902,
+        "reasoning": 2603,
+        "truncated": 0
+      }
+    }
+  }
+}

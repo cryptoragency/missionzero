@@ -1,0 +1,141 @@
+{
+  "finding": {
+    "id": "A-corp",
+    "severity": "low",
+    "type": "missing-corp",
+    "url": "https://6stem.com/",
+    "evidence": "En-tête Cross-Origin-Resource-Policy absent : n'importe quel site peut charger vos ressources (images, scripts) et les utiliser à votre insu.",
+    "description": "Ajoutez `Cross-Origin-Resource-Policy: same-origin` dans les en-têtes HTTP de votre serveur.",
+    "heuristic": false,
+    "points": 4
+  },
+  "recommendation": {
+    "goal": "What is the recommended fix for this web security flaw: missing-corp (Ajoutez `Cross-Origin-Resource-Policy: same-origin` dans les en-têtes HTTP de votre serveur. Evidence: En-tête Cross-Origin-Resource-Policy absent : n'importe quel site peut charger vos ressources (images, scripts) et les utiliser à votre insu.). State the concrete fix and cite a primary source (OWASP, MDN, NIST, PCI DSS, IETF RFC, or the vendor's own advisory).",
+    "answer": "Send Cross-Origin-Resource-Policy: same-origin for protected resources. CORP is set by the Cross-Origin-Resource-Policy response header for protection against certain cross-origin <script> and <img> requests, signaling the browser to block no-cors cross-origin/cross-site requests; same-origin only allows same-origin loads.",
+    "sources": [
+      {
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cross-Origin_Resource_Policy",
+        "contribution": "Cross-Origin Resource Policy (CORP) is set by the Cross-Origin-Resource-Policy response header, which lets websites opt in to protection against certain cross-origin requests such as those made by <script> and <img> elements"
+      },
+      {
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cross-Origin_Resource_Policy",
+        "contribution": "same-origin: only the same origin can load the resource with Cross-Origin-Resource-Policy: same-origin"
+      },
+      {
+        "url": "https://http.dev/cross-origin-resource-policy",
+        "contribution": "The HTTP Cross-Origin-Resource-Policy response header signals the browser to block no-cors cross-origin or cross-site requests for the protected resource"
+      }
+    ],
+    "score": 10,
+    "green": 3,
+    "red": 0,
+    "verification": [
+      {
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cross-Origin_Resource_Policy",
+        "claim": "Cross-Origin Resource Policy (CORP) is set by the Cross-Origin-Resource-Policy response header, which lets websites opt in to protection against certain cross-origin requests such as those made by <script> and <img> elements",
+        "verdict": "supported",
+        "detail": "Cross-Origin Resource Policy (CORP) is set by the Cross-Origin-Resource-Policy response header, which lets websites and applications opt in to protection against vulnerabilities related to certain cross-origin requests (such as those made by the"
+      },
+      {
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cross-Origin_Resource_Policy",
+        "claim": "same-origin: only the same origin can load the resource with Cross-Origin-Resource-Policy: same-origin",
+        "verdict": "supported",
+        "detail": "If a resource must not be loaded cross-origin in no-cors mode, the response for the resource should contain: http Cross-Origin-Resource-Policy: same-origin"
+      },
+      {
+        "url": "https://http.dev/cross-origin-resource-policy",
+        "claim": "The HTTP Cross-Origin-Resource-Policy response header signals the browser to block no-cors cross-origin or cross-site requests for the protected resource",
+        "verdict": "supported",
+        "detail": "The HTTP Cross-Origin-Resource-Policy response header defends against this by signaling the browser to block no-cors cross-origin or cross-site requests for the protected resource."
+      }
+    ],
+    "savedAt": "2026-10-28T20:26:40.718Z",
+    "cached": true
+  },
+  "fix": {
+    "summary": "Add Cross-Origin-Resource-Policy: same-origin to all responses via HEADERS.",
+    "risk": "Cross-origin hotlinking or embedding of images/scripts via no-cors would now be blocked by browsers.",
+    "secretsMasked": 0,
+    "applied": [
+      {
+        "file": "server.js",
+        "find": "  'cross-origin-opener-policy': 'same-origin-allow-popups',\n  'content-security-policy'",
+        "replace": "  'cross-origin-opener-policy': 'same-origin-allow-popups',\n  'cross-origin-resource-policy': 'same-origin',\n  'content-security-policy'"
+      }
+    ],
+    "refused": []
+  },
+  "journeysBefore": {
+    "ok": true,
+    "pass": 5,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ read the home page (125.689ms)\n✔ the scripts of the page load (15.9097ms)\n✔ the legal notice and personal data information are present (4.4023ms)\n✔ an unknown path shows the site, not an error (7.2902ms)\n✔ a normal visitor is never blocked (12 pages in a row) (18.3518ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 8112.8902\n"
+  },
+  "confirmedOnCopy": true,
+  "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-kX3u7j",
+  "patch": "diff --git a/server.js b/server.js\nindex d1ca314..d9fd1ff 100644\n--- a/server.js\n+++ b/server.js\n@@ -16,6 +16,7 @@ const HEADERS = {\n   'referrer-policy': 'strict-origin-when-cross-origin',\n   'permissions-policy': 'geolocation=(), microphone=(), camera=(), interest-cohort=()',\n   'cross-origin-opener-policy': 'same-origin-allow-popups',\n+  'cross-origin-resource-policy': 'same-origin',\n   'content-security-policy': \"frame-ancestors 'self'; object-src 'none'; base-uri 'self'\",\n   server: 'nginx',\n };\n",
+  "journeysAfter": {
+    "ok": true,
+    "pass": 5,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ read the home page (129.5222ms)\n✔ the scripts of the page load (17.0694ms)\n✔ the legal notice and personal data information are present (4.9633ms)\n✔ an unknown path shows the site, not an error (5.074ms)\n✔ a normal visitor is never blocked (12 pages in a row) (19.3217ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 8094.0643\n"
+  },
+  "rescan": {
+    "target": "http://127.0.0.1:51886",
+    "scanner": "mission-zero scan 0.1",
+    "scannedAt": "2026-10-28T20:42:52.160Z",
+    "findings": []
+  },
+  "vision": {
+    "shots": {
+      "before": [
+        {
+          "name": "home",
+          "path": "evidence\\repair-2026-10-28-20-39\\A-corp\\shots-before\\home.png"
+        },
+        {
+          "name": "finding",
+          "path": "evidence\\repair-2026-10-28-20-39\\A-corp\\shots-before\\finding.png"
+        }
+      ],
+      "after": [
+        {
+          "name": "home",
+          "path": "evidence\\repair-2026-10-28-20-39\\A-corp\\shots-after\\home.png"
+        },
+        {
+          "name": "finding",
+          "path": "evidence\\repair-2026-10-28-20-39\\A-corp\\shots-after\\finding.png"
+        }
+      ]
+    },
+    "look": {
+      "ok": true,
+      "unreadable": false,
+      "problems": [],
+      "seen": [
+        "navigation 6STEM.COM with Etre rappele",
+        "Integration IA pour les entreprises",
+        "Jour 1 info cards",
+        "Etre rappele buttons"
+      ]
+    },
+    "sam": {
+      "concept": "text input field",
+      "before": 0,
+      "after": 0
+    }
+  },
+  "review": {
+    "verdict": "cause",
+    "reason": "Patch adds Cross-Origin-Resource-Policy: same-origin to responses, directly implementing the recommended browser block on no-cors cross-origin loads.",
+    "missing": ""
+  },
+  "status": "proposed",
+  "why": "journeys pass and the flaw is gone on the copy; a human applies it",
+  "reservations": [],
+  "attempts": [],
+  "ms": 34303
+}

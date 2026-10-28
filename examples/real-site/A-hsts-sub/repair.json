@@ -1,0 +1,125 @@
+{
+  "finding": {
+    "id": "A-hsts-sub",
+    "severity": "low",
+    "type": "missing-hsts",
+    "url": "https://6stem.com/",
+    "evidence": "HSTS ne couvre pas les sous-domaines (includeSubDomains absent).",
+    "description": "Ajoutez includeSubDomains si tous vos sous-domaines sont en HTTPS.",
+    "heuristic": false,
+    "points": 3
+  },
+  "recommendation": {
+    "goal": "What is the recommended fix for this web security flaw: missing-hsts (Ajoutez includeSubDomains si tous vos sous-domaines sont en HTTPS. Evidence: HSTS ne couvre pas les sous-domaines (includeSubDomains absent).). State the concrete fix and cite a primary source (OWASP, MDN, NIST, PCI DSS, IETF RFC, or the vendor's own advisory).",
+    "answer": "Recommended fix for missing includeSubDomains: use the HSTS example implementation `Strict-Transport-Security: max-age=31536000; includeSubDomains`. This single value fixes the reported evidence that HSTS does not cover subdomains.",
+    "sources": [
+      {
+        "url": "https://wstg.owasp.org/v4.2/4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/07-Test_HTTP_Strict_Transport_Security/",
+        "contribution": "Here's an example of the HSTS header implementation: Strict-Transport-Security: max-age=31536000"
+      },
+      {
+        "url": "https://wstg.owasp.org/v4.2/4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/07-Test_HTTP_Strict_Transport_Security/",
+        "contribution": "Here's an example of the HSTS header implementation: Strict-Transport-Security: max-age=31536000; includeSubDomains"
+      }
+    ],
+    "score": 10,
+    "green": 2,
+    "red": 0,
+    "verification": [
+      {
+        "url": "https://wstg.owasp.org/v4.2/4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/07-Test_HTTP_Strict_Transport_Security/",
+        "claim": "Here's an example of the HSTS header implementation: Strict-Transport-Security: max-age=31536000",
+        "verdict": "supported",
+        "detail": "Here’s an example of the HSTS header implementation: Strict-Transport-Security: max-age=31536000; includeSubDomains"
+      },
+      {
+        "url": "https://wstg.owasp.org/v4.2/4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/07-Test_HTTP_Strict_Transport_Security/",
+        "claim": "Here's an example of the HSTS header implementation: Strict-Transport-Security: max-age=31536000; includeSubDomains",
+        "verdict": "supported",
+        "detail": "Here’s an example of the HSTS header implementation: Strict-Transport-Security: max-age=31536000; includeSubDomains"
+      }
+    ],
+    "savedAt": "2026-10-28T20:27:59.726Z",
+    "cached": true
+  },
+  "fix": {
+    "summary": "Add includeSubDomains to HSTS header to cover subdomains.",
+    "risk": "If an HTTP-only subdomain exists it would become forced to HTTPS.",
+    "secretsMasked": 0,
+    "applied": [
+      {
+        "file": "server.js",
+        "find": "  'strict-transport-security': 'max-age=31536000',",
+        "replace": "  'strict-transport-security': 'max-age=31536000; includeSubDomains',"
+      }
+    ],
+    "refused": []
+  },
+  "journeysBefore": {
+    "ok": true,
+    "pass": 5,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ read the home page (109.2267ms)\n✔ the scripts of the page load (16.6531ms)\n✔ the legal notice and personal data information are present (4.9239ms)\n✔ an unknown path shows the site, not an error (4.6956ms)\n✔ a normal visitor is never blocked (12 pages in a row) (17.8196ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 8092.1368\n"
+  },
+  "confirmedOnCopy": false,
+  "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-80TBxD",
+  "patch": "diff --git a/server.js b/server.js\nindex d1ca314..be48d2b 100644\n--- a/server.js\n+++ b/server.js\n@@ -10,7 +10,7 @@ const PORT = Number(process.env.PORT) || 8097;\n const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.svg': 'image/svg+xml', '.webp': 'image/webp', '.ico': 'image/x-icon', '.woff2': 'font/woff2', '.json': 'application/json' };\n // The hosting's headers (nginx snippet for client domains), reproduced as served on 28 October 2026.\n const HEADERS = {\n-  'strict-transport-security': 'max-age=31536000',\n+  'strict-transport-security': 'max-age=31536000; includeSubDomains',\n   'x-frame-options': 'SAMEORIGIN',\n   'x-content-type-options': 'nosniff',\n   'referrer-policy': 'strict-origin-when-cross-origin',\n",
+  "journeysAfter": {
+    "ok": true,
+    "pass": 5,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ read the home page (113.7654ms)\n✔ the scripts of the page load (18.0363ms)\n✔ the legal notice and personal data information are present (4.6123ms)\n✔ an unknown path shows the site, not an error (4.6761ms)\n✔ a normal visitor is never blocked (12 pages in a row) (22.2873ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 8086.6253\n"
+  },
+  "vision": {
+    "shots": {
+      "before": [
+        {
+          "name": "home",
+          "path": "evidence\\repair-2026-10-28-20-39\\A-hsts-sub\\shots-before\\home.png"
+        },
+        {
+          "name": "finding",
+          "path": "evidence\\repair-2026-10-28-20-39\\A-hsts-sub\\shots-before\\finding.png"
+        }
+      ],
+      "after": [
+        {
+          "name": "home",
+          "path": "evidence\\repair-2026-10-28-20-39\\A-hsts-sub\\shots-after\\home.png"
+        },
+        {
+          "name": "finding",
+          "path": "evidence\\repair-2026-10-28-20-39\\A-hsts-sub\\shots-after\\finding.png"
+        }
+      ]
+    },
+    "look": {
+      "ok": true,
+      "unreadable": false,
+      "problems": [],
+      "seen": [
+        "navigation with Etre rappele",
+        "IA integration headline",
+        "Jour 1 and Jour 2 cards",
+        "Etre rappele buttons"
+      ]
+    },
+    "sam": {
+      "concept": "text input field",
+      "before": 0,
+      "after": 0
+    }
+  },
+  "review": {
+    "verdict": "cause",
+    "reason": "Patch adds includeSubDomains to HSTS header exactly as recommended.",
+    "missing": ""
+  },
+  "status": "unverified",
+  "why": "journeys pass, but Mission Zero's probe did not see this finding on the untouched copy (the scanners disagree): the rescan cannot confirm the fix; a human verifies before applying",
+  "reservations": [],
+  "attempts": [],
+  "ms": 30952
+}

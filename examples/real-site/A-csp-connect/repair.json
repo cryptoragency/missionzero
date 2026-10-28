@@ -1,0 +1,141 @@
+{
+  "finding": {
+    "id": "A-csp-connect",
+    "severity": "medium",
+    "type": "weak-csp-connect-src",
+    "url": "https://6stem.com/",
+    "evidence": "Votre site peut envoyer des données vers n'importe quel serveur sur internet : si un code pirate s'exécute sur votre page, il peut transmettre les saisies de vos visiteurs à un serveur inconnu sans laisser de trace.",
+    "description": "Dans votre en-tête Content-Security-Policy, ajoutez une directive connect-src listant uniquement vos propres API et services de confiance (jamais '*' ni un schéma nu comme https:).",
+    "heuristic": true,
+    "points": 8
+  },
+  "recommendation": {
+    "goal": "What is the recommended fix for this web security flaw: weak-csp-connect-src (Dans votre en-tête Content-Security-Policy, ajoutez une directive connect-src listant uniquement vos propres API et services de confiance (jamais '*' ni un schéma nu comme https:). Evidence: Votre site peut envoyer des données vers n'importe quel serveur sur internet : si un code pirate s'exécute sur votre page, il peut transmettre les saisies de vos visiteurs à un serveur inconnu sans laisser de trace.). State the concrete fix and cite a primary source (OWASP, MDN, NIST, PCI DSS, IETF RFC, or the vendor's own advisory).",
+    "answer": "Fix: In your Content-Security-Policy header, add a restrictive connect-src allowlist containing only your own origins and trusted APIs, e.g. Content-Security-Policy: connect-src 'self' https://api.example.com wss://api.example.com. Never use '*' and never use a bare scheme like https:. This blocks exfiltration via fetch(), XMLHttpRequest, WebSocket, EventSource and sendBeacon() to arbitrary servers.",
+    "sources": [
+      {
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy/connect-src",
+        "contribution": "The HTTP Content-Security-Policy (CSP) connect-src directive restricts the URLs which can be loaded using script interfaces."
+      },
+      {
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy/connect-src",
+        "contribution": "The following APIs are controlled by this directive: fetch(), XMLHttpRequest, WebSocket, EventSource, Navigator.sendBeacon()"
+      },
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html",
+        "contribution": "By injecting the Content-Security-Policy (CSP) headers from the server, the browser is aware and capable of protecting the user from dynamic calls that will load content into the page currently being visited."
+      }
+    ],
+    "score": 10,
+    "green": 3,
+    "red": 0,
+    "verification": [
+      {
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy/connect-src",
+        "claim": "The HTTP Content-Security-Policy (CSP) connect-src directive restricts the URLs which can be loaded using script interfaces.",
+        "verdict": "supported",
+        "detail": "The HTTP Content-Security-Policy (CSP) connect-src directive restricts the URLs which can be loaded using script interfaces."
+      },
+      {
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy/connect-src",
+        "claim": "The following APIs are controlled by this directive: fetch(), XMLHttpRequest, WebSocket, EventSource, Navigator.sendBeacon()",
+        "verdict": "supported",
+        "detail": "The following APIs are controlled by this directive: The ping attribute in &lt;a&gt; elements fetch() fetchLater() XMLHttpRequest WebSocket EventSource Navigator.sendBeacon()"
+      },
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html",
+        "claim": "By injecting the Content-Security-Policy (CSP) headers from the server, the browser is aware and capable of protecting the user from dynamic calls that will load content into the page currently being visited.",
+        "verdict": "supported",
+        "detail": "By injecting the Content-Security-Policy (CSP) headers from the server, the browser is aware and capable of protecting the user from dynamic calls that will load content into the page currently being visited."
+      }
+    ],
+    "savedAt": "2026-10-28T20:24:46.829Z",
+    "cached": true
+  },
+  "fix": {
+    "summary": "Added connect-src 'self' to the Content-Security-Policy to block exfiltration to arbitrary servers.",
+    "risk": "Any legitimate cross-origin fetch/XHR/WebSocket/beacon to an external API would now be blocked.",
+    "secretsMasked": 0,
+    "applied": [
+      {
+        "file": "server.js",
+        "find": "  'content-security-policy': \"frame-ancestors 'self'; object-src 'none'; base-uri 'self'\",",
+        "replace": "  'content-security-policy': \"frame-ancestors 'self'; object-src 'none'; base-uri 'self'; connect-src 'self'\","
+      }
+    ],
+    "refused": []
+  },
+  "journeysBefore": {
+    "ok": true,
+    "pass": 5,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ read the home page (112.489ms)\n✔ the scripts of the page load (15.657ms)\n✔ the legal notice and personal data information are present (4.7211ms)\n✔ an unknown path shows the site, not an error (5.3752ms)\n✔ a normal visitor is never blocked (12 pages in a row) (17.9253ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 8085.3578\n"
+  },
+  "confirmedOnCopy": true,
+  "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-ycO5JP",
+  "patch": "diff --git a/server.js b/server.js\nindex d1ca314..7ce4582 100644\n--- a/server.js\n+++ b/server.js\n@@ -16,7 +16,7 @@ const HEADERS = {\n   'referrer-policy': 'strict-origin-when-cross-origin',\n   'permissions-policy': 'geolocation=(), microphone=(), camera=(), interest-cohort=()',\n   'cross-origin-opener-policy': 'same-origin-allow-popups',\n-  'content-security-policy': \"frame-ancestors 'self'; object-src 'none'; base-uri 'self'\",\n+  'content-security-policy': \"frame-ancestors 'self'; object-src 'none'; base-uri 'self'; connect-src 'self'\",\n   server: 'nginx',\n };\n \n",
+  "journeysAfter": {
+    "ok": true,
+    "pass": 5,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ read the home page (120.3745ms)\n✔ the scripts of the page load (16.5417ms)\n✔ the legal notice and personal data information are present (4.9512ms)\n✔ an unknown path shows the site, not an error (5.0176ms)\n✔ a normal visitor is never blocked (12 pages in a row) (17.0173ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 8103.1882\n"
+  },
+  "rescan": {
+    "target": "http://127.0.0.1:61561",
+    "scanner": "mission-zero scan 0.1",
+    "scannedAt": "2026-10-28T20:42:17.197Z",
+    "findings": []
+  },
+  "vision": {
+    "shots": {
+      "before": [
+        {
+          "name": "home",
+          "path": "evidence\\repair-2026-10-28-20-39\\A-csp-connect\\shots-before\\home.png"
+        },
+        {
+          "name": "finding",
+          "path": "evidence\\repair-2026-10-28-20-39\\A-csp-connect\\shots-before\\finding.png"
+        }
+      ],
+      "after": [
+        {
+          "name": "home",
+          "path": "evidence\\repair-2026-10-28-20-39\\A-csp-connect\\shots-after\\home.png"
+        },
+        {
+          "name": "finding",
+          "path": "evidence\\repair-2026-10-28-20-39\\A-csp-connect\\shots-after\\finding.png"
+        }
+      ]
+    },
+    "look": {
+      "ok": true,
+      "unreadable": false,
+      "problems": [],
+      "seen": [
+        "navigation with Etre rappele button",
+        "Integration IA headline",
+        "Jour 1 / Jour 2 cards",
+        "Etre rappele call-to-action buttons"
+      ]
+    },
+    "sam": {
+      "concept": "text input field",
+      "before": 0,
+      "after": 0
+    }
+  },
+  "review": {
+    "verdict": "cause",
+    "reason": "Patch adds connect-src 'self' which restricts fetch/XHR/WebSocket/Beacon to same-origin instead of allowing arbitrary hosts.",
+    "missing": ""
+  },
+  "status": "proposed",
+  "why": "journeys pass and the flaw is gone on the copy; a human applies it",
+  "reservations": [],
+  "attempts": [],
+  "ms": 32770
+}

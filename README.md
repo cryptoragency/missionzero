@@ -10,7 +10,7 @@ Every step is written to an evidence folder you can open: journal, memory, final
 
 Startups track · CRYPTOR.AGENCY · Meta Global AI Developer Hackathon 2026 · built on the Meta Model API (`muse-spark-1.3`)
 
-**What is judged, in one paragraph.** Two things, one loop. (1) A research agent that answers a goal only from primary documents it read, with an exact quote for every figure (5 demo goals at 10/10, 4 to 9 cents each). (2) A repair mode that takes any scanner's findings on a website and returns, for each flaw, a patch applied on a copy and checked five ways (the customer's own tests, a rescan, a look at the pages, the agent's review of its own patch, written reservations), at about ten cents a finding, never touching the site itself. Plus an agent that returns to zero by itself when its memory hurts. Repository: `github.com/cryptoragency/mission0` (public from 4 November 2026). Prerequisites: Node 24, a Meta Model API key; optional: Playwright and ffmpeg for the vision and voice features, a Baseten key for the open weights.
+**What is judged, in one paragraph.** Two things, one loop. (1) A research agent that answers a goal only from primary documents it read, with an exact quote for every figure (5 demo goals at 10/10, 4 to 9 cents each). (2) A repair mode that takes any scanner's findings on a website and returns, for each flaw, a patch applied on a copy and checked five ways (the customer's own tests, a rescan, a look at the pages, the agent's review of its own patch, written reservations), at about ten cents a finding, never touching the site itself. On a real site read by another scanner, 5 of 7 findings got a proposed fix with proof and 2 stayed unverified by design (its own probe could not confirm them), for $0.22. Plus an agent that returns to zero by itself when its memory hurts. Repository: `github.com/cryptoragency/mission0` (public from 4 November 2026). Prerequisites: Node 24, a Meta Model API key; optional: Playwright and ffmpeg for the vision and voice features, a Baseten key for the open weights.
 
 ## What is new in this repository
 
@@ -56,13 +56,13 @@ Every figure is green: confirmed by an exact quote from the primary page. Scores
 
 ## Repair mode: from a scanner's finding to a proven fix, never applied by the agent
 
-The same loop, pointed at code. A scanner (any scanner: the input is a generic JSON file, or a URL) reports the flaws of a website. For each finding, Mission Zero:
+The same loop, pointed at code. A scanner (any scanner: the input is a generic JSON file, or a URL) reports the flaws of a website. The finding is the unit, not the website: a CVE from a dependency scanner, a server misconfiguration from an infrastructure scanner carry the same five fields and go through the same controls; the rescan becomes that scanner's own command. For each finding, Mission Zero:
 
 1. **researches the fix** from primary sources (OWASP, MDN, NIST, PCI DSS, IETF) with the verifier and the judge, and caches the recommendation by flaw type (the second site with the same flaw costs nothing);
 2. **proposes exact edits** to the code (find/replace, each `find` must occur exactly once or the edit is refused);
 3. **applies them to a copy** of the site, never to the site itself;
-4. **replays the vital journeys** on the copy (browse, search, add to cart, check out, log in, follow my own order, legal page): one broken journey = the fix is **rejected**;
-5. **rescans the copy**: the flaw must be gone, or the fix is **ineffective**;
+4. **replays the vital journeys** on the copy (browse, search, add to cart, check out, log in, follow my own order, legal page): one broken journey = the fix is **rejected**; a policy that would block the page's own inline scripts is a broken page too (a control added after the first real site, below);
+5. **rescans the copy** with the probe that matches the finding by id or by type (so a finding from another scanner is rescanned here): the flaw must be gone, or the fix is **ineffective**; no probe for its type, or a probe that does not reproduce it on the untouched copy, and the fix is **unverified**, never proposed;
 6. **reviews its own patch** against the recommendation it researched: cause removed, or symptom hidden? A hiding patch is refused by the agent and retried with that reason; if no better patch comes, the fix is **proposed with reservation**, the reservation written. A recommendation the judge scored under 7 is a reservation too, never a silent « proposed »;
 7. writes the fix as a **patch** for a human to review and apply, plus a readable report.
 
@@ -105,6 +105,35 @@ Reading the « Checks » column: « journeys 7/7 » the customer's tests replaye
 
 The two runs behind this table, with every patch and their hashed journals (32 and 16 records, intact), are in `examples/repair-maison-verde/`, with the merged report page `report.html`. Earlier in the day, before the self-review existed and while a token cap could cut the judge's answer, the same 15 findings had come out « 15 proposed »: that run is not the one shown, because a 0/10 from a cut answer is not a judgement.
 
+### A real site, read by another scanner (28 October 2026)
+
+The second target is real: 6stem.com, CRYPTOR.AGENCY's own showcase site, a static page served by nginx. Its files are the agency's and stay out of this repository; what is here is the run's evidence (`examples/real-site/`: findings, patches, report, replays, hashed journal). The copy Mission Zero works on is the site's folder plus a 40-line `server.js` that reproduces the hosting's headers (it stands for the nginx configuration: a patch on it is a change of that configuration, which a human applies) and 5 vital journeys (home page, scripts load, legal notice present, unknown paths show the site, a visitor is never blocked).
+
+The findings did not come from Mission Zero's scanner. ARGUS, the surface scanner of MYTHOZOR (35 passive checks on the public home page and its headers, a product that predates the hackathon), read the live site and served its result through the generic URL input (`--from=URL`, a bearer key in `.env`): score 81/100, grade A, 7 findings. Mission Zero knows nothing about ARGUS: it reads `{ id, severity, type, url, evidence, description }`.
+
+| Finding (ARGUS) | Mission Zero's answer | What it did | Checks |
+|---|---|---|---|
+| A-csp-strength · CSP without script-src (medium) | **proposed**, 1 attempt refused by itself | first attempt `script-src 'self'`: **rejected, the fix breaks the page** (the policy forbids inline scripts and the page runs 7 of them); second attempt: a per-response nonce with `strict-dynamic`, injected into every script tag | journeys 5/5, rescan clean (F17), look ok, self-review: cause |
+| A-csp-connect · CSP without connect-src (medium) | **proposed** | `connect-src 'self'` added to the policy | journeys 5/5, rescan clean (F22), look ok, self-review: cause |
+| A-corp · no Cross-Origin-Resource-Policy (low) | **proposed** | header `same-origin` on every response | journeys 5/5, rescan clean (F18), look ok, self-review: cause |
+| A-coep · no Cross-Origin-Embedder-Policy (low) | **proposed** | header `credentialless` (the recommendation's choice, so that embedded resources keep working) | journeys 5/5, rescan clean (F19), look ok, self-review: cause |
+| A-auto-throttle · no rate limiting (low) | **proposed**, 1 attempt ineffective | per-IP sliding window, 30 requests a minute, 429 with Retry-After and rate-limit headers; the first attempt left the burst probe unanswered | journeys 5/5 (12 pages in a row still pass), rescan clean (F21), look ok, self-review: cause |
+| A-comments · sensitive HTML comments (medium, heuristic) | **unverified** | strips HTML comments from served pages; Mission Zero has no probe for this type, so it refuses to call the fix proven: « the scanner that found it must rescan once the patch is applied » | journeys 5/5, no rescan, look ok, self-review: cause |
+| A-hsts-sub · HSTS without includeSubDomains (low) | **unverified** | adds `includeSubDomains`; Mission Zero's own HSTS probe accepts a one-year max-age and did not see the finding on the untouched copy: the scanners disagree, so the rescan cannot confirm anything | journeys 5/5, no rescan, look ok, self-review: cause |
+
+5 proposed, 2 unverified · 7 findings · 23 model calls · $0.216 · the look (Muse Spark vision) accepted every repaired page, SAM 3.1 counted 0 text fields before and after (a showcase page has none: evidence, not a gate). The hosting omits `includeSubDomains` on purpose (customers' other subdomains); the unverified status is the right answer, not a failure.
+
+What this run taught us, in the order it happened (the three runs are the same evening; the first two are not versioned, their lessons are):
+
+1. **First run, $0.634, 114 calls.** Vision did not run (the Playwright path was missing from `.env`, recorded as an error in each record, never as a verdict) and one of our new probes had lost a backslash: fixed, two commits.
+2. **Second run, $0.185.** `script-src 'self'` came out « proposed »: 5 journeys green, probe silent, screenshot fine, self-review « cause ». The page runs 7 inline scripts; that policy would have blocked them all. Neither the HTTP journeys nor the look can see a blocked script. We added the control: a policy that forbids the page's own inline scripts is a broken page, **rejected** (`inlineScriptsBlocked` in `src/repair.js`, tested).
+3. **Third run, $0.216.** The same fix was rejected by that control at the first attempt, the reason fed back, and the second attempt proposed the nonce-based policy. The research was paid once: the knowledge of each flaw type was cached by the first run, which is why the third run cost a third of the first.
+
+```bash
+npm run repair -- --site=../my-site --files=server.js,index.html --login=none   # another site: its folder (server.js + journeys.test.js) and the files the model may edit
+npm run repair-replay -- examples/real-site A-csp-strength                     # the refused-then-proposed CSP, control by control
+```
+
 ## Meta tools, each where it earns its place
 
 | Tool | Where | Why there and not elsewhere |
@@ -144,7 +173,9 @@ We would rather list these ourselves.
 5. **The secret filter is pattern-based.** It masks the usual shapes (`.env` lines, `password=`, `define('X_PASSWORD'…)`, Stripe, AWS, GitHub, Google, Slack, JWT, private keys, bearer tokens). A secret that looks like nothing (the demo's static `session=admin-7c9e` cookie value, for instance) goes through. The report says how many were masked, not that none remained.
 6. **The hashed journal proves integrity, not identity.** It shows that no record changed since the run; it does not sign who ran it. A signature (the customer's key) is the next step.
 7. **One model does everything.** Muse Spark plans, writes, verifies, contradicts, judges and repairs; there is no second model and no human until the end. The verifier demands an exact quote from the cited page, which limits what the writer can invent, but the chain is still one model checking itself.
-8. **Costs are measured on `muse-spark-1.3` with reasoning** and, for one mission, on the open weights at Baseten; Baseten documents that the open model gives no reproducible output at temperature 0 and no forced JSON mode (our JSON reader is tolerant).
+8. **Two scanners can disagree, and a finding can have no probe here.** On the real site, ARGUS reported HSTS without `includeSubDomains`; Mission Zero's probe accepts a one-year max-age, so the fix stayed unverified. Sensitive HTML comments have no probe here at all: unverified too. Unverified is never silently upgraded to proposed; the scanner that found the flaw rescans after the human applies.
+9. **A fix can break what no test and no screenshot sees.** A Content-Security-Policy that blocks inline scripts leaves the HTTP journeys green and the screenshot unchanged. We caught that class on the real site and added a control for it; other silent breakages of that kind (a blocked font, a refused connection) are still open.
+10. **Costs are measured on `muse-spark-1.3` with reasoning** and, for one mission, on the open weights at Baseten; Baseten documents that the open model gives no reproducible output at temperature 0 and no forced JSON mode (our JSON reader is tolerant).
 
 ## Trust: built for companies that cannot afford a mistake
 
@@ -215,15 +246,15 @@ The evidence folder (`evidence/<date>/`) holds `journal.jsonl` (every plan, obse
 | `src/meta.js` | Meta Model API client (or Baseten open weights by base URL), reasoning effort per role, daily ledger |
 | `src/run.js`, `src/zero.js` | one mission end to end; the agent's own return to zero (outcomes, rules, archive, rerun, compare) |
 | `src/contradict.js`, `src/compare.js` | contradictor on the plan (kept for the A/B, off by default) and run comparison |
-| `src/scanner.js` | 15 probes, generic findings (any scanner can replace it) |
-| `src/repair.js` | cited recommendation, exact edits on a copy, journeys replayed, rescan, patch |
+| `src/scanner.js` | 15 shop probes and 7 policy probes (F16 to F22), generic findings; a finding is rescanned by id or by type |
+| `src/repair.js` | cited recommendation, exact edits on a copy, journeys replayed, inline-script policy control, rescan, unverified status, patch |
 | `src/secrets.js` | secret filter before every model call, restored in the edits only |
 | `src/chain.js` | hashed evidence journal of a run |
 | `src/voice.js`, `src/vision.js`, `src/sam.js` | spoken goal (muse-voice-transcribe), pages looked at (Muse Spark vision), fields boxed (SAM 3.1) |
 | `demo-site/` | Maison Verde, the flawed shop, its vital journeys and its 15 documented flaws |
 | `bench/` | demo goals, A/B of the contradictor, replay generator, repair runner and report, chain check |
 | `web/` | a side experiment from day one (anonymous community question, no personal data); not part of the judged product |
-| `examples/` | committed real runs, replays, patches, hashed journals, Meta tool outputs, the anonymous scan aggregate |
+| `examples/` | committed real runs, replays, patches, hashed journals, Meta tool outputs, the anonymous scan aggregate, the real site read by another scanner (`real-site/`) |
 
 ## License
 

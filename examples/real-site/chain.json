@@ -1,0 +1,156 @@
+{
+  "entries": [
+    {
+      "n": 1,
+      "file": "findings.json",
+      "fileHash": "009a2e285942dd48cc5314aafd74eb77e68765a91087037b2e0b3d1c35f436e6",
+      "prev": "0000000000000000000000000000000000000000000000000000000000000000",
+      "hash": "31bf57612df69a3b9c4fac4e5935f4f14c4dddcc344d3c5e62f3b4f9107c76fa",
+      "at": "2026-10-28T20:39:57.805Z",
+      "step": "input"
+    },
+    {
+      "n": 2,
+      "file": "A-comments/repair.json",
+      "fileHash": "75c8fadcf566cad16e7d605f77a2fa8ee9cd88e500b0b99e04c2e44114d71b28",
+      "prev": "31bf57612df69a3b9c4fac4e5935f4f14c4dddcc344d3c5e62f3b4f9107c76fa",
+      "hash": "357085a2224e863d81dde67c7cb725d1de2215ef5f24d506136ad907473b3e75",
+      "at": "2026-10-28T20:40:44.731Z",
+      "finding": "A-comments",
+      "status": "unverified"
+    },
+    {
+      "n": 3,
+      "file": "A-comments/fix.patch",
+      "fileHash": "cd60686f1f70302825a933eb887d25694f4ffcb84a934e7bc067ca06e99f2687",
+      "prev": "357085a2224e863d81dde67c7cb725d1de2215ef5f24d506136ad907473b3e75",
+      "hash": "df6d991d1081e96b5a1f5d334076d2ac0d071044f5118ad1902f9db4c506628f",
+      "at": "2026-10-28T20:40:44.733Z",
+      "finding": "A-comments"
+    },
+    {
+      "n": 4,
+      "file": "A-csp-strength/repair.json",
+      "fileHash": "146b151e526f6c276d88a624afdc2fc387bb3ec136dc5318e99c5da873c2ed91",
+      "prev": "df6d991d1081e96b5a1f5d334076d2ac0d071044f5118ad1902f9db4c506628f",
+      "hash": "5ee1e563a281aec0597d8fd03f3d287550afea6d8eb0f7a7da67d3deb562c73c",
+      "at": "2026-10-28T20:41:55.413Z",
+      "finding": "A-csp-strength",
+      "status": "proposed"
+    },
+    {
+      "n": 5,
+      "file": "A-csp-strength/fix.patch",
+      "fileHash": "055895427e5534030e5e584106d206395d94584bee11d8af8909c337aa12f1a3",
+      "prev": "5ee1e563a281aec0597d8fd03f3d287550afea6d8eb0f7a7da67d3deb562c73c",
+      "hash": "d60fc2c0d49862341b759a8b7c32028e4253afaea32d53f6f7883e3b99327188",
+      "at": "2026-10-28T20:41:55.414Z",
+      "finding": "A-csp-strength"
+    },
+    {
+      "n": 6,
+      "file": "A-csp-connect/repair.json",
+      "fileHash": "21c586bc961af36bc027653b71f65e54182c23e127f2b0a521834287e7f1c09a",
+      "prev": "d60fc2c0d49862341b759a8b7c32028e4253afaea32d53f6f7883e3b99327188",
+      "hash": "e22c89665f47187a30338659ac0cc6d7760f2479c876e0721e0de2d322170d31",
+      "at": "2026-10-28T20:42:28.187Z",
+      "finding": "A-csp-connect",
+      "status": "proposed"
+    },
+    {
+      "n": 7,
+      "file": "A-csp-connect/fix.patch",
+      "fileHash": "54856f09d0e2073f487e24e0c1c337f7caa02678d66d9edb4f3bd962324cab35",
+      "prev": "e22c89665f47187a30338659ac0cc6d7760f2479c876e0721e0de2d322170d31",
+      "hash": "34f468e642893eaddea81276df87d7a06d56bcb8e32a59c3f2224e3a0431e8e8",
+      "at": "2026-10-28T20:42:28.189Z",
+      "finding": "A-csp-connect"
+    },
+    {
+      "n": 8,
+      "file": "A-corp/repair.json",
+      "fileHash": "5b31b1ab7c9e0c1e6414dc41f75c3ddaf2c8e69e9129ceba57aca3a9a104aa68",
+      "prev": "34f468e642893eaddea81276df87d7a06d56bcb8e32a59c3f2224e3a0431e8e8",
+      "hash": "a2a827e80ea9708f61df0ec51c407898e8fd5d1f1d5049566990fa4ea6f498c5",
+      "at": "2026-10-28T20:43:02.494Z",
+      "finding": "A-corp",
+      "status": "proposed"
+    },
+    {
+      "n": 9,
+      "file": "A-corp/fix.patch",
+      "fileHash": "1d925eba4d3cb3a1866cf7f79686c8d021ace854b880306b7cbf02470562ad65",
+      "prev": "a2a827e80ea9708f61df0ec51c407898e8fd5d1f1d5049566990fa4ea6f498c5",
+      "hash": "175b1c148773c79fdade3ad3f12df94dd0d8f9b11f077cb68ea591945c9389b5",
+      "at": "2026-10-28T20:43:02.495Z",
+      "finding": "A-corp"
+    },
+    {
+      "n": 10,
+      "file": "A-hsts-sub/repair.json",
+      "fileHash": "aca0c3527e4f7b96572e5800e46a7010d64fc55e009b7674f686d591daea1404",
+      "prev": "175b1c148773c79fdade3ad3f12df94dd0d8f9b11f077cb68ea591945c9389b5",
+      "hash": "19d1e01b437442c73c4a35798d0fe3efd176666beb1187ca880220476424c112",
+      "at": "2026-10-28T20:43:33.450Z",
+      "finding": "A-hsts-sub",
+      "status": "unverified"
+    },
+    {
+      "n": 11,
+      "file": "A-hsts-sub/fix.patch",
+      "fileHash": "7210e0ad3ad3e6f01ec83083be1d4051eb5435089904f81c2b952fd45b236daf",
+      "prev": "19d1e01b437442c73c4a35798d0fe3efd176666beb1187ca880220476424c112",
+      "hash": "48df57bd30cbe0272d8e1e8a738cd79fb7da9109f514e7091c1f47cda69ec328",
+      "at": "2026-10-28T20:43:33.452Z",
+      "finding": "A-hsts-sub"
+    },
+    {
+      "n": 12,
+      "file": "A-coep/repair.json",
+      "fileHash": "0d613195d18dbfbe2fe505f45ed0fb6c6e9a6985eafbd00ce8600e923b17c52d",
+      "prev": "48df57bd30cbe0272d8e1e8a738cd79fb7da9109f514e7091c1f47cda69ec328",
+      "hash": "daa68a3f47569010246697e3e1bcea51d36f3a67a8b619672146f2561e37252c",
+      "at": "2026-10-28T20:44:04.928Z",
+      "finding": "A-coep",
+      "status": "proposed"
+    },
+    {
+      "n": 13,
+      "file": "A-coep/fix.patch",
+      "fileHash": "b1433f5799fbb3932841f323ebc2081e3a3eb34444afde46d5675acd3907460e",
+      "prev": "daa68a3f47569010246697e3e1bcea51d36f3a67a8b619672146f2561e37252c",
+      "hash": "5e174dfcb13c52720d6f9ca82151e18963b759d6d2eaf769574bd80a1f9c876b",
+      "at": "2026-10-28T20:44:04.930Z",
+      "finding": "A-coep"
+    },
+    {
+      "n": 14,
+      "file": "A-auto-throttle/repair.json",
+      "fileHash": "9c5e097dcf596008dd50c1a16edbdd9bdb86a31cd0b18d1a71af83ad4b7e17f3",
+      "prev": "5e174dfcb13c52720d6f9ca82151e18963b759d6d2eaf769574bd80a1f9c876b",
+      "hash": "0d5ef7d2cde8982c9536e072eec27bc632492c3c94c2a59dc829fdce66bf1d98",
+      "at": "2026-10-28T20:45:14.513Z",
+      "finding": "A-auto-throttle",
+      "status": "proposed"
+    },
+    {
+      "n": 15,
+      "file": "A-auto-throttle/fix.patch",
+      "fileHash": "9344019f878a25a1088554af0bb49141745465318437927b87f86d5916575a63",
+      "prev": "0d5ef7d2cde8982c9536e072eec27bc632492c3c94c2a59dc829fdce66bf1d98",
+      "hash": "3effa6d6a9d5048414f65c4d2853edf1441280ed26e6b73f13e650b2c8e387ca",
+      "at": "2026-10-28T20:45:14.514Z",
+      "finding": "A-auto-throttle"
+    },
+    {
+      "n": 16,
+      "file": "report.json",
+      "fileHash": "8a8d7086823d003f25c6c91a49bf32550d04fe9d48c4d92c8a734167d81ee10c",
+      "prev": "3effa6d6a9d5048414f65c4d2853edf1441280ed26e6b73f13e650b2c8e387ca",
+      "hash": "2af4d77902c0c6d0a38affef721dc4b926a34da0a2bbbfadb96f4c8e8177c20b",
+      "at": "2026-10-28T20:45:14.517Z",
+      "step": "report"
+    }
+  ],
+  "head": "2af4d77902c0c6d0a38affef721dc4b926a34da0a2bbbfadb96f4c8e8177c20b"
+}

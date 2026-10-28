@@ -1,0 +1,80 @@
+{
+  "target": "https://6stem.com/",
+  "scanner": "MYTHOZOR ARGUS surface scan (level 1, passive)",
+  "scannedAt": "2026-10-28T20:39:57.758Z",
+  "score": 81,
+  "grade": "A",
+  "checks": 35,
+  "findings": [
+    {
+      "id": "A-corp",
+      "severity": "low",
+      "type": "missing-corp",
+      "url": "https://6stem.com/",
+      "evidence": "En-tête Cross-Origin-Resource-Policy absent : n'importe quel site peut charger vos ressources (images, scripts) et les utiliser à votre insu.",
+      "description": "Ajoutez `Cross-Origin-Resource-Policy: same-origin` dans les en-têtes HTTP de votre serveur.",
+      "heuristic": false,
+      "points": 4
+    },
+    {
+      "id": "A-hsts-sub",
+      "severity": "low",
+      "type": "missing-hsts",
+      "url": "https://6stem.com/",
+      "evidence": "HSTS ne couvre pas les sous-domaines (includeSubDomains absent).",
+      "description": "Ajoutez includeSubDomains si tous vos sous-domaines sont en HTTPS.",
+      "heuristic": false,
+      "points": 3
+    },
+    {
+      "id": "A-comments",
+      "severity": "medium",
+      "type": "sensitive-html-comments",
+      "url": "https://6stem.com/",
+      "evidence": "Des commentaires HTML publics contiennent des indices sensibles (notes internes, identifiants, chemins).",
+      "description": "Retirez les commentaires sensibles du HTML livré en production.",
+      "heuristic": true,
+      "points": 6
+    },
+    {
+      "id": "A-csp-strength",
+      "severity": "medium",
+      "type": "weak-csp-script-src",
+      "url": "https://6stem.com/",
+      "evidence": "Votre site n'empêche pas l'exécution de scripts extérieurs : un code malveillant injecté dans votre page peut capturer silencieusement les saisies de vos visiteurs (mots de passe, coordonnées bancaires), comme dans l'affaire British Airways en 2018.",
+      "description": "Dans la configuration de votre serveur web, retirez 'unsafe-inline' et 'unsafe-eval' de l'en-tête Content-Security-Policy. Passez par des nonces ou 'strict-dynamic'.",
+      "heuristic": true,
+      "points": 10
+    },
+    {
+      "id": "A-csp-connect",
+      "severity": "medium",
+      "type": "weak-csp-connect-src",
+      "url": "https://6stem.com/",
+      "evidence": "Votre site peut envoyer des données vers n'importe quel serveur sur internet : si un code pirate s'exécute sur votre page, il peut transmettre les saisies de vos visiteurs à un serveur inconnu sans laisser de trace.",
+      "description": "Dans votre en-tête Content-Security-Policy, ajoutez une directive connect-src listant uniquement vos propres API et services de confiance (jamais '*' ni un schéma nu comme https:).",
+      "heuristic": true,
+      "points": 8
+    },
+    {
+      "id": "A-coep",
+      "severity": "low",
+      "type": "missing-coep",
+      "url": "https://6stem.com/",
+      "evidence": "L'en-tête Cross-Origin-Embedder-Policy est absent : votre page peut être utilisée pour accéder à des ressources protégées d'autres domaines via des attaques mémoire avancées.",
+      "description": "Ajoutez l'en-tête HTTP Cross-Origin-Embedder-Policy: credentialless à votre serveur web. Vérifiez ensuite que vos intégrations tierces (connexion Google, cartes, widgets de paiement) fonctionnent toujours correctement.",
+      "heuristic": false,
+      "points": 3
+    },
+    {
+      "id": "A-auto-throttle",
+      "severity": "low",
+      "type": "no-rate-limiting",
+      "url": "https://6stem.com/",
+      "evidence": "Aucun filtre anti-robot visible devant votre site : un outil automatisé peut tester votre formulaire de connexion des milliers de fois ou scanner vos pages sans être ralenti ni bloqué.",
+      "description": "Placez un WAF ou CDN devant votre site (ex. Cloudflare Free) ou ajoutez un rate-limiting sur les endpoints sensibles (connexion, formulaires, API).",
+      "heuristic": true,
+      "points": 5
+    }
+  ]
+}

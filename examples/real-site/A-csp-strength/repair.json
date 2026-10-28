@@ -1,0 +1,173 @@
+{
+  "finding": {
+    "id": "A-csp-strength",
+    "severity": "medium",
+    "type": "weak-csp-script-src",
+    "url": "https://6stem.com/",
+    "evidence": "Votre site n'empêche pas l'exécution de scripts extérieurs : un code malveillant injecté dans votre page peut capturer silencieusement les saisies de vos visiteurs (mots de passe, coordonnées bancaires), comme dans l'affaire British Airways en 2018.",
+    "description": "Dans la configuration de votre serveur web, retirez 'unsafe-inline' et 'unsafe-eval' de l'en-tête Content-Security-Policy. Passez par des nonces ou 'strict-dynamic'.",
+    "heuristic": true,
+    "points": 10
+  },
+  "recommendation": {
+    "goal": "What is the recommended fix for this web security flaw: weak-csp-script-src (Dans la configuration de votre serveur web, retirez 'unsafe-inline' et 'unsafe-eval' de l'en-tête Content-Security-Policy. Passez par des nonces ou 'strict-dynamic'. Evidence: Votre site n'empêche pas l'exécution de scripts extérieurs : un code malveillant injecté dans votre page peut capturer silencieusement les saisies de vos visiteurs (mots de passe, coordonnées bancaires), comme dans l'affaire British Airways en 2018.). State the concrete fix and cite a primary source (OWASP, MDN, NIST, PCI DSS, IETF RFC, or the vendor's own advisory).",
+    "answer": "Concrete fix: Deploy Strict CSP with script-src 'nonce-{RANDOM}' 'strict-dynamic'. Nonces are unique one-time-use random values generated for each HTTP response. 'strict-dynamic' trusts those elements without explicitly adding nonces or hashes. When inline scripts are required, script-src hash allows only specific scripts. Preventing the page from executing inline scripts mitigates injecting <script>.",
+    "sources": [
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html",
+        "contribution": "Content-Security-Policy: script-src 'nonce-{RANDOM}'"
+      },
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html",
+        "contribution": "'strict-dynamic' tells the browser to trust those elements as well without having to explicitly add nonces or hashes for each one"
+      },
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html",
+        "contribution": "When inline scripts are required, the script-src 'hash_algo-hash' is another option for allowing only specific scripts to execute"
+      },
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html",
+        "contribution": "By preventing the page from executing inline scripts, attacks like injecting < script > document"
+      }
+    ],
+    "score": 7,
+    "green": 4,
+    "red": 0,
+    "verification": [
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html",
+        "claim": "Content-Security-Policy: script-src 'nonce-{RANDOM}'",
+        "verdict": "supported",
+        "detail": "Content-Security-Policy: script-src 'nonce-{RANDOM}' 'strict-dynamic'; object-src 'none'; base-uri 'none';"
+      },
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html",
+        "claim": "'strict-dynamic' tells the browser to trust those elements as well without having to explicitly add nonces or hashes for each one",
+        "verdict": "supported",
+        "detail": "strict-dynamic tells the browser to trust those elements as well without having to explicitly add nonces or hashes for each one."
+      },
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html",
+        "claim": "When inline scripts are required, the script-src 'hash_algo-hash' is another option for allowing only specific scripts to execute",
+        "verdict": "supported",
+        "detail": "When inline scripts are required, the script-src 'hash_algo-hash' is another option for allowing only specific scripts to execute."
+      },
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html",
+        "claim": "By preventing the page from executing inline scripts, attacks like injecting < script > document",
+        "verdict": "supported",
+        "detail": "By preventing the page from executing inline scripts, attacks like injecting &lt; script &gt; document ."
+      }
+    ],
+    "savedAt": "2026-10-28T20:23:20.731Z",
+    "cached": true
+  },
+  "fix": {
+    "summary": "Deploy per-response nonce CSP with strict-dynamic and inject nonce into all script tags so inline and external scripts stay trusted without unsafe-inline.",
+    "risk": "If a proxy caches HTML with old nonce or a script tag uses uppercase SCRIPT it could be blocked; fetch journeys unaffected.",
+    "secretsMasked": 0,
+    "applied": [
+      {
+        "file": "server.js",
+        "find": "import { join, extname, normalize } from 'node:path';",
+        "replace": "import { join, extname, normalize } from 'node:path';\nimport { randomBytes } from 'node:crypto';"
+      },
+      {
+        "file": "server.js",
+        "find": "  const body = readFileSync(file);\n  res.writeHead(200, { ...HEADERS, 'content-type': TYPES[extname(file).toLowerCase()] || 'application/octet-stream', 'content-length': body.length });\n  res.end(body);",
+        "replace": "  const nonce = randomBytes(16).toString('base64');\n  const csp = \"frame-ancestors 'self'; object-src 'none'; base-uri 'self'; script-src 'nonce-\" + nonce + \"' 'strict-dynamic' 'self'\";\n  let body = readFileSync(file);\n  if ((TYPES[extname(file).toLowerCase()] || '').startsWith('text/html')) { body = Buffer.from(String(body).split('<script').join('<script nonce=\"' + nonce + '\"')); }\n  res.writeHead(200, { ...HEADERS, 'content-security-policy': csp, 'content-type': TYPES[extname(file).toLowerCase()] || 'application/octet-stream', 'content-length': body.length });\n  res.end(body);"
+      }
+    ],
+    "refused": []
+  },
+  "journeysBefore": {
+    "ok": true,
+    "pass": 5,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ read the home page (111.5946ms)\n✔ the scripts of the page load (16.2168ms)\n✔ the legal notice and personal data information are present (4.6203ms)\n✔ an unknown path shows the site, not an error (11.9081ms)\n✔ a normal visitor is never blocked (12 pages in a row) (16.4161ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 8093.0555\n"
+  },
+  "confirmedOnCopy": true,
+  "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-FLCxxz",
+  "patch": "diff --git a/server.js b/server.js\nindex d1ca314..da73c22 100644\n--- a/server.js\n+++ b/server.js\n@@ -3,6 +3,7 @@\n import { createServer } from 'node:http';\n import { readFileSync, existsSync, statSync } from 'node:fs';\n import { join, extname, normalize } from 'node:path';\n+import { randomBytes } from 'node:crypto';\n import { fileURLToPath } from 'node:url';\n \n const ROOT = fileURLToPath(new URL('.', import.meta.url));\n@@ -27,7 +28,10 @@ createServer((req, res) => {\n   if (!file.startsWith(ROOT)) { res.writeHead(403, HEADERS); return res.end(); }\n   if (existsSync(file) && statSync(file).isDirectory()) file = join(file, 'index.html');\n   if (!existsSync(file) || file.endsWith('server.js') || file.endsWith('journeys.test.js')) file = join(ROOT, 'index.html'); // try_files $uri $uri/ /index.html\n-  const body = readFileSync(file);\n-  res.writeHead(200, { ...HEADERS, 'content-type': TYPES[extname(file).toLowerCase()] || 'application/octet-stream', 'content-length': body.length });\n+  const nonce = randomBytes(16).toString('base64');\n+  const csp = \"frame-ancestors 'self'; object-src 'none'; base-uri 'self'; script-src 'nonce-\" + nonce + \"' 'strict-dynamic' 'self'\";\n+  let body = readFileSync(file);\n+  if ((TYPES[extname(file).toLowerCase()] || '').startsWith('text/html')) { body = Buffer.from(String(body).split('<script').join('<script nonce=\"' + nonce + '\"')); }\n+  res.writeHead(200, { ...HEADERS, 'content-security-policy': csp, 'content-type': TYPES[extname(file).toLowerCase()] || 'application/octet-stream', 'content-length': body.length });\n   res.end(body);\n }).listen(PORT, '127.0.0.1', () => console.log('6stem.com copy on http://127.0.0.1:' + PORT));\n",
+  "journeysAfter": {
+    "ok": true,
+    "pass": 5,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ read the home page (119.9227ms)\n✔ the scripts of the page load (16.4125ms)\n✔ the legal notice and personal data information are present (4.2561ms)\n✔ an unknown path shows the site, not an error (5.9443ms)\n✔ a normal visitor is never blocked (12 pages in a row) (27.294ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 8084.3026\n"
+  },
+  "rescan": {
+    "target": "http://127.0.0.1:56935",
+    "scanner": "mission-zero scan 0.1",
+    "scannedAt": "2026-10-28T20:41:44.855Z",
+    "findings": []
+  },
+  "vision": {
+    "shots": {
+      "before": [
+        {
+          "name": "home",
+          "path": "evidence\\repair-2026-10-28-20-39\\A-csp-strength\\shots-before\\home.png"
+        },
+        {
+          "name": "finding",
+          "path": "evidence\\repair-2026-10-28-20-39\\A-csp-strength\\shots-before\\finding.png"
+        }
+      ],
+      "after": [
+        {
+          "name": "home",
+          "path": "evidence\\repair-2026-10-28-20-39\\A-csp-strength\\shots-after\\home.png"
+        },
+        {
+          "name": "finding",
+          "path": "evidence\\repair-2026-10-28-20-39\\A-csp-strength\\shots-after\\finding.png"
+        }
+      ]
+    },
+    "look": {
+      "ok": true,
+      "unreadable": false,
+      "problems": [],
+      "seen": [
+        "header navigation with Etre rappele",
+        "IA integration hero text",
+        "Jour 1 / validation info cards",
+        "call-back buttons"
+      ]
+    },
+    "sam": {
+      "concept": "text input field",
+      "before": 0,
+      "after": 0
+    }
+  },
+  "review": {
+    "verdict": "cause",
+    "reason": "Patch generates per-response random nonce and enforces script-src nonce plus strict-dynamic without unsafe-inline/eval as recommended.",
+    "missing": ""
+  },
+  "status": "proposed",
+  "why": "journeys pass and the flaw is gone on the copy; a human applies it",
+  "reservations": [],
+  "attempts": [
+    {
+      "status": "rejected",
+      "why": "the fix breaks the page: the Content-Security-Policy ('self') forbids inline scripts and the page runs 6 of them: they would be blocked",
+      "edits": [
+        {
+          "file": "server.js",
+          "find": "  'content-security-policy': \"frame-ancestors 'self'; object-src 'none'; base-uri 'self'\",",
+          "replace": "  'content-security-policy': \"frame-ancestors 'self'; object-src 'none'; base-uri 'self'; script-src 'self'\","
+        }
+      ],
+      "refused": [],
+      "brokenJourneys": [],
+      "testOutput": "✔ read the home page (130.3677ms)\n✔ the scripts of the page load (15.4731ms)\n✔ the legal notice and personal data information are present (4.856ms)\n✔ an unknown path shows the site, not an error (4.7466ms)\n✔ a normal visitor is never blocked (12 pages in a row) (16.5301ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 8098.2625\n",
+      "scannerStillSees": null,
+      "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-Du25R2"
+    }
+  ],
+  "ms": 70676
+}

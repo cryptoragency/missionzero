@@ -1,0 +1,12 @@
+diff --git a/server.js b/server.js
+index d1ca314..7f643ed 100644
+--- a/server.js
++++ b/server.js
+@@ -16,6 +16,7 @@ const HEADERS = {
+   'referrer-policy': 'strict-origin-when-cross-origin',
+   'permissions-policy': 'geolocation=(), microphone=(), camera=(), interest-cohort=()',
+   'cross-origin-opener-policy': 'same-origin-allow-popups',
++  'cross-origin-embedder-policy': 'credentialless',
+   'content-security-policy': "frame-ancestors 'self'; object-src 'none'; base-uri 'self'",
+   server: 'nginx',
+ };

@@ -1,0 +1,141 @@
+{
+  "finding": {
+    "id": "A-coep",
+    "severity": "low",
+    "type": "missing-coep",
+    "url": "https://6stem.com/",
+    "evidence": "L'en-tête Cross-Origin-Embedder-Policy est absent : votre page peut être utilisée pour accéder à des ressources protégées d'autres domaines via des attaques mémoire avancées.",
+    "description": "Ajoutez l'en-tête HTTP Cross-Origin-Embedder-Policy: credentialless à votre serveur web. Vérifiez ensuite que vos intégrations tierces (connexion Google, cartes, widgets de paiement) fonctionnent toujours correctement.",
+    "heuristic": false,
+    "points": 3
+  },
+  "recommendation": {
+    "goal": "What is the recommended fix for this web security flaw: missing-coep (Ajoutez l'en-tête HTTP Cross-Origin-Embedder-Policy: credentialless à votre serveur web. Vérifiez ensuite que vos intégrations tierces (connexion Google, cartes, widgets de paiement) fonctionnent toujours correctement. Evidence: L'en-tête Cross-Origin-Embedder-Policy est absent : votre page peut être utilisée pour accéder à des ressources protégées d'autres domaines via des attaques mémoire avancées.). State the concrete fix and cite a primary source (OWASP, MDN, NIST, PCI DSS, IETF RFC, or the vendor's own advisory).",
+    "answer": "Recommended fix: send the response header `Cross-Origin-Embedder-Policy: credentialless` from your web server, then verify third-party integrations (Google login, maps, payment widgets) still work. For third-party iframes that break under COEP, use iframe credentialless to load them in a new ephemeral context where COEP embedding rules can be lifted.",
+    "sources": [
+      {
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cross-Origin-Embedder-Policy",
+        "contribution": "The HTTP Cross-Origin-Embedder-Policy (COEP) response header configures the current document's policy for loading and embedding cross-origin resources that are requested in no-cors mode."
+      },
+      {
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/IFrame_credentialless",
+        "contribution": "IFrame credentialless provides a mechanism for developers to load third-party resources in <iframe>s using a new, ephemeral context."
+      },
+      {
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/IFrame_credentialless",
+        "contribution": "In return, the Cross-Origin-Embedder-Policy (COEP) embedding rules can be lifted, so documents with COEP set can load third-party resources."
+      }
+    ],
+    "score": 10,
+    "green": 3,
+    "red": 0,
+    "verification": [
+      {
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cross-Origin-Embedder-Policy",
+        "claim": "The HTTP Cross-Origin-Embedder-Policy (COEP) response header configures the current document's policy for loading and embedding cross-origin resources that are requested in no-cors mode.",
+        "verdict": "supported",
+        "detail": "The HTTP Cross-Origin-Embedder-Policy (COEP) response header configures the current document's policy for loading and embedding cross-origin resources that are requested in no-cors mode."
+      },
+      {
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/IFrame_credentialless",
+        "claim": "IFrame credentialless provides a mechanism for developers to load third-party resources in <iframe>s using a new, ephemeral context.",
+        "verdict": "supported",
+        "detail": "IFrame credentialless provides a mechanism for developers to load third-party resources in &lt;iframe&gt; s using a new, ephemeral context."
+      },
+      {
+        "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/IFrame_credentialless",
+        "claim": "In return, the Cross-Origin-Embedder-Policy (COEP) embedding rules can be lifted, so documents with COEP set can load third-party resources.",
+        "verdict": "supported",
+        "detail": "In return, the Cross-Origin-Embedder-Policy (COEP) embedding rules can be lifted, so documents with COEP set can embed third-party documents that do not."
+      }
+    ],
+    "savedAt": "2026-10-28T20:29:17.389Z",
+    "cached": true
+  },
+  "fix": {
+    "summary": "Add Cross-Origin-Embedder-Policy: credentialless response header.",
+    "risk": "Third-party subresources requiring credentials could behave differently, but same-origin pages and scripts keep loading.",
+    "secretsMasked": 0,
+    "applied": [
+      {
+        "file": "server.js",
+        "find": "  'cross-origin-opener-policy': 'same-origin-allow-popups',",
+        "replace": "  'cross-origin-opener-policy': 'same-origin-allow-popups',\n  'cross-origin-embedder-policy': 'credentialless',"
+      }
+    ],
+    "refused": []
+  },
+  "journeysBefore": {
+    "ok": true,
+    "pass": 5,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ read the home page (109.7769ms)\n✔ the scripts of the page load (16.2245ms)\n✔ the legal notice and personal data information are present (3.809ms)\n✔ an unknown path shows the site, not an error (4.8351ms)\n✔ a normal visitor is never blocked (12 pages in a row) (15.9127ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 8081.9108\n"
+  },
+  "confirmedOnCopy": true,
+  "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-2htbku",
+  "patch": "diff --git a/server.js b/server.js\nindex d1ca314..7f643ed 100644\n--- a/server.js\n+++ b/server.js\n@@ -16,6 +16,7 @@ const HEADERS = {\n   'referrer-policy': 'strict-origin-when-cross-origin',\n   'permissions-policy': 'geolocation=(), microphone=(), camera=(), interest-cohort=()',\n   'cross-origin-opener-policy': 'same-origin-allow-popups',\n+  'cross-origin-embedder-policy': 'credentialless',\n   'content-security-policy': \"frame-ancestors 'self'; object-src 'none'; base-uri 'self'\",\n   server: 'nginx',\n };\n",
+  "journeysAfter": {
+    "ok": true,
+    "pass": 5,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ read the home page (109.2764ms)\n✔ the scripts of the page load (17.5972ms)\n✔ the legal notice and personal data information are present (4.7604ms)\n✔ an unknown path shows the site, not an error (4.9416ms)\n✔ a normal visitor is never blocked (12 pages in a row) (18.543ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 8086.4142\n"
+  },
+  "rescan": {
+    "target": "http://127.0.0.1:64012",
+    "scanner": "mission-zero scan 0.1",
+    "scannedAt": "2026-10-28T20:43:54.176Z",
+    "findings": []
+  },
+  "vision": {
+    "shots": {
+      "before": [
+        {
+          "name": "home",
+          "path": "evidence\\repair-2026-10-28-20-39\\A-coep\\shots-before\\home.png"
+        },
+        {
+          "name": "finding",
+          "path": "evidence\\repair-2026-10-28-20-39\\A-coep\\shots-before\\finding.png"
+        }
+      ],
+      "after": [
+        {
+          "name": "home",
+          "path": "evidence\\repair-2026-10-28-20-39\\A-coep\\shots-after\\home.png"
+        },
+        {
+          "name": "finding",
+          "path": "evidence\\repair-2026-10-28-20-39\\A-coep\\shots-after\\finding.png"
+        }
+      ]
+    },
+    "look": {
+      "ok": true,
+      "unreadable": false,
+      "problems": [],
+      "seen": [
+        "header navigation",
+        "IA integration hero text",
+        "Jour 1 info card",
+        "Etre rappele buttons"
+      ]
+    },
+    "sam": {
+      "concept": "text input field",
+      "before": 0,
+      "after": 0
+    }
+  },
+  "review": {
+    "verdict": "cause",
+    "reason": "Patch adds Cross-Origin-Embedder-Policy: credentialless header exactly as recommended.",
+    "missing": ""
+  },
+  "status": "proposed",
+  "why": "journeys pass and the flaw is gone on the copy; a human applies it",
+  "reservations": [],
+  "attempts": [],
+  "ms": 31475
+}

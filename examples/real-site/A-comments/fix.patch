@@ -1,0 +1,14 @@
+diff --git a/server.js b/server.js
+index d1ca314..e82fe88 100644
+--- a/server.js
++++ b/server.js
+@@ -27,7 +27,8 @@ createServer((req, res) => {
+   if (!file.startsWith(ROOT)) { res.writeHead(403, HEADERS); return res.end(); }
+   if (existsSync(file) && statSync(file).isDirectory()) file = join(file, 'index.html');
+   if (!existsSync(file) || file.endsWith('server.js') || file.endsWith('journeys.test.js')) file = join(ROOT, 'index.html'); // try_files $uri $uri/ /index.html
+-  const body = readFileSync(file);
++  let body = readFileSync(file);
++  if (file.endsWith('.html')) body = Buffer.from(body.toString().replace(/<!--[\s\S]*?-->/g, ''));
+   res.writeHead(200, { ...HEADERS, 'content-type': TYPES[extname(file).toLowerCase()] || 'application/octet-stream', 'content-length': body.length });
+   res.end(body);
+ }).listen(PORT, '127.0.0.1', () => console.log('6stem.com copy on http://127.0.0.1:' + PORT));

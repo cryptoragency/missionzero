@@ -1,0 +1,173 @@
+{
+  "finding": {
+    "id": "A-auto-throttle",
+    "severity": "low",
+    "type": "no-rate-limiting",
+    "url": "https://6stem.com/",
+    "evidence": "Aucun filtre anti-robot visible devant votre site : un outil automatisé peut tester votre formulaire de connexion des milliers de fois ou scanner vos pages sans être ralenti ni bloqué.",
+    "description": "Placez un WAF ou CDN devant votre site (ex. Cloudflare Free) ou ajoutez un rate-limiting sur les endpoints sensibles (connexion, formulaires, API).",
+    "heuristic": true,
+    "points": 5
+  },
+  "recommendation": {
+    "goal": "What is the recommended fix for this web security flaw: no-rate-limiting (Placez un WAF ou CDN devant votre site (ex. Cloudflare Free) ou ajoutez un rate-limiting sur les endpoints sensibles (connexion, formulaires, API). Evidence: Aucun filtre anti-robot visible devant votre site : un outil automatisé peut tester votre formulaire de connexion des milliers de fois ou scanner vos pages sans être ralenti ni bloqué.). State the concrete fix and cite a primary source (OWASP, MDN, NIST, PCI DSS, IETF RFC, or the vendor's own advisory).",
+    "answer": "Concrete fix for no-rate-limiting on login/forms/API: add server-side rate-limiting, lock out accounts after a defined number of incorrect password attempts, define a maximum ingress data rate limit then drop connections above that rate, and log all failures and alert administrators when credential stuffing/brute force is detected or suspected.",
+    "sources": [
+      {
+        "url": "https://community.owasp.org/controls/Blocking_Brute_Force_Attacks",
+        "contribution": "lock out accounts after a defined number of incorrect password attempts"
+      },
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/Denial_of_Service_Cheat_Sheet.html",
+        "contribution": "define a maximum ingress data rate limit then drop all connections above that rate"
+      },
+      {
+        "url": "https://top10.owasp.org/2025/A07_2025-Authentication_Failures/",
+        "contribution": "log all failures and alert administrators when credential stuffing, brute force, or other attacks are detected or suspected"
+      }
+    ],
+    "score": 10,
+    "green": 3,
+    "red": 0,
+    "verification": [
+      {
+        "url": "https://community.owasp.org/controls/Blocking_Brute_Force_Attacks",
+        "claim": "lock out accounts after a defined number of incorrect password attempts",
+        "verdict": "supported",
+        "detail": "lock out accounts after a defined number of incorrect password attempts"
+      },
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/Denial_of_Service_Cheat_Sheet.html",
+        "claim": "define a maximum ingress data rate limit then drop all connections above that rate",
+        "verdict": "supported",
+        "detail": "Define a maximum ingress data rate limit then drop all connections above that rate."
+      },
+      {
+        "url": "https://top10.owasp.org/2025/A07_2025-Authentication_Failures/",
+        "claim": "log all failures and alert administrators when credential stuffing, brute force, or other attacks are detected or suspected",
+        "verdict": "supported",
+        "detail": "Log all failures and alert administrators when credential stuffing, brute force, or other attacks are detected or suspected."
+      }
+    ],
+    "savedAt": "2026-10-28T20:30:28.227Z",
+    "cached": true
+  },
+  "fix": {
+    "summary": "Add per-IP sliding-window throttle (30/min) with 429+Retry-After, rate-limit headers and logging.",
+    "risk": "A burst of >30 requests in 60s now gets 429; normal 12-page visits still pass.",
+    "secretsMasked": 0,
+    "applied": [
+      {
+        "file": "server.js",
+        "find": "const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.svg': 'image/svg+xml', '.webp': 'image/webp', '.ico': 'image/x-icon', '.woff2': 'font/woff2', '.json': 'application/json' };",
+        "replace": "const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.svg': 'image/svg+xml', '.webp': 'image/webp', '.ico': 'image/x-icon', '.woff2': 'font/woff2', '.json': 'application/json' };\n// Throttle anti-robots/scans: sliding window per IP, normal browsing allowed, bursts dropped + logged.\nconst RATE_WINDOW_MS = 60 * 1000;\nconst RATE_MAX = 30;\nconst _hits = new Map();\nfunction _check(ip) {\n  const now = Date.now();\n  let a = (_hits.get(ip) || []).filter((t) => now - t < RATE_WINDOW_MS);\n  a.push(now);\n  _hits.set(ip, a);\n  if (_hits.size > 2000) for (const [k, v] of _hits) if (!v.length || now - v[v.length - 1] > RATE_WINDOW_MS) _hits.delete(k);\n  return a.length;\n}"
+      },
+      {
+        "file": "server.js",
+        "find": "  const url = new URL(req.url, 'http://x');\n  if (url.pathname.startsWith('/api/')) { res.writeHead(404, HEADERS); return res.end(); }",
+        "replace": "  const url = new URL(req.url, 'http://x');\n  const _ip = (req.socket && req.socket.remoteAddress) || 'x';\n  const _n = _check(_ip);\n  const _rl = { 'x-ratelimit-limit': String(RATE_MAX), 'x-ratelimit-remaining': String(Math.max(0, RATE_MAX - _n)), ratelimit: 'limit=' + RATE_MAX + ', remaining=' + Math.max(0, RATE_MAX - _n) + ', reset=60' };\n  if (_n > RATE_MAX) { console.warn('throttled suspected brute-force/scan from ' + _ip + ' count=' + _n); res.writeHead(429, { ...HEADERS, ..._rl, 'retry-after': '60', 'content-type': 'text/plain; charset=utf-8' }); return res.end('Too many requests'); }\n  if (url.pathname.startsWith('/api/')) { res.writeHead(404, { ...HEADERS, ..._rl }); return res.end(); }"
+      },
+      {
+        "file": "server.js",
+        "find": "  const body = readFileSync(file);\n  res.writeHead(200, { ...HEADERS, 'content-type': TYPES[extname(file).toLowerCase()] || 'application/octet-stream', 'content-length': body.length });",
+        "replace": "  const body = readFileSync(file);\n  res.writeHead(200, { ...HEADERS, 'x-ratelimit-limit': String(RATE_MAX), 'x-ratelimit-remaining': String(Math.max(0, RATE_MAX - _n)), ratelimit: 'limit=' + RATE_MAX + ', remaining=' + Math.max(0, RATE_MAX - _n) + ', reset=60', 'content-type': TYPES[extname(file).toLowerCase()] || 'application/octet-stream', 'content-length': body.length });"
+      }
+    ],
+    "refused": []
+  },
+  "journeysBefore": {
+    "ok": true,
+    "pass": 5,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ read the home page (111.1729ms)\n✔ the scripts of the page load (16.3117ms)\n✔ the legal notice and personal data information are present (4.8489ms)\n✔ an unknown path shows the site, not an error (5.0265ms)\n✔ a normal visitor is never blocked (12 pages in a row) (17.5497ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 8088.8614\n"
+  },
+  "confirmedOnCopy": true,
+  "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-G4Z8TR",
+  "patch": "diff --git a/server.js b/server.js\nindex d1ca314..7da6a93 100644\n--- a/server.js\n+++ b/server.js\n@@ -8,6 +8,18 @@ import { fileURLToPath } from 'node:url';\n const ROOT = fileURLToPath(new URL('.', import.meta.url));\n const PORT = Number(process.env.PORT) || 8097;\n const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.svg': 'image/svg+xml', '.webp': 'image/webp', '.ico': 'image/x-icon', '.woff2': 'font/woff2', '.json': 'application/json' };\n+// Throttle anti-robots/scans: sliding window per IP, normal browsing allowed, bursts dropped + logged.\n+const RATE_WINDOW_MS = 60 * 1000;\n+const RATE_MAX = 30;\n+const _hits = new Map();\n+function _check(ip) {\n+  const now = Date.now();\n+  let a = (_hits.get(ip) || []).filter((t) => now - t < RATE_WINDOW_MS);\n+  a.push(now);\n+  _hits.set(ip, a);\n+  if (_hits.size > 2000) for (const [k, v] of _hits) if (!v.length || now - v[v.length - 1] > RATE_WINDOW_MS) _hits.delete(k);\n+  return a.length;\n+}\n // The hosting's headers (nginx snippet for client domains), reproduced as served on 28 October 2026.\n const HEADERS = {\n   'strict-transport-security': 'max-age=31536000',\n@@ -22,12 +34,16 @@ const HEADERS = {\n \n createServer((req, res) => {\n   const url = new URL(req.url, 'http://x');\n-  if (url.pathname.startsWith('/api/')) { res.writeHead(404, HEADERS); return res.end(); }\n+  const _ip = (req.socket && req.socket.remoteAddress) || 'x';\n+  const _n = _check(_ip);\n+  const _rl = { 'x-ratelimit-limit': String(RATE_MAX), 'x-ratelimit-remaining': String(Math.max(0, RATE_MAX - _n)), ratelimit: 'limit=' + RATE_MAX + ', remaining=' + Math.max(0, RATE_MAX - _n) + ', reset=60' };\n+  if (_n > RATE_MAX) { console.warn('throttled suspected brute-force/scan from ' + _ip + ' count=' + _n); res.writeHead(429, { ...HEADERS, ..._rl, 'retry-after': '60', 'content-type': 'text/plain; charset=utf-8' }); return res.end('Too many requests'); }\n+  if (url.pathname.startsWith('/api/')) { res.writeHead(404, { ...HEADERS, ..._rl }); return res.end(); }\n   let file = join(ROOT, normalize(decodeURIComponent(url.pathname)).replace(/^(\\.\\.[/\\\\])+/, ''));\n   if (!file.startsWith(ROOT)) { res.writeHead(403, HEADERS); return res.end(); }\n   if (existsSync(file) && statSync(file).isDirectory()) file = join(file, 'index.html');\n   if (!existsSync(file) || file.endsWith('server.js') || file.endsWith('journeys.test.js')) file = join(ROOT, 'index.html'); // try_files $uri $uri/ /index.html\n   const body = readFileSync(file);\n-  res.writeHead(200, { ...HEADERS, 'content-type': TYPES[extname(file).toLowerCase()] || 'application/octet-stream', 'content-length': body.length });\n+  res.writeHead(200, { ...HEADERS, 'x-ratelimit-limit': String(RATE_MAX), 'x-ratelimit-remaining': String(Math.max(0, RATE_MAX - _n)), ratelimit: 'limit=' + RATE_MAX + ', remaining=' + Math.max(0, RATE_MAX - _n) + ', reset=60', 'content-type': TYPES[extname(file).toLowerCase()] || 'application/octet-stream', 'content-length': body.length });\n   res.end(body);\n }).listen(PORT, '127.0.0.1', () => console.log('6stem.com copy on http://127.0.0.1:' + PORT));\n",
+  "journeysAfter": {
+    "ok": true,
+    "pass": 5,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ read the home page (122.3516ms)\n✔ the scripts of the page load (19.692ms)\n✔ the legal notice and personal data information are present (4.0426ms)\n✔ an unknown path shows the site, not an error (5.7713ms)\n✔ a normal visitor is never blocked (12 pages in a row) (20.1112ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 8094.895\n"
+  },
+  "rescan": {
+    "target": "http://127.0.0.1:64927",
+    "scanner": "mission-zero scan 0.1",
+    "scannedAt": "2026-10-28T20:45:02.198Z",
+    "findings": []
+  },
+  "vision": {
+    "shots": {
+      "before": [
+        {
+          "name": "home",
+          "path": "evidence\\repair-2026-10-28-20-39\\A-auto-throttle\\shots-before\\home.png"
+        },
+        {
+          "name": "finding",
+          "path": "evidence\\repair-2026-10-28-20-39\\A-auto-throttle\\shots-before\\finding.png"
+        }
+      ],
+      "after": [
+        {
+          "name": "home",
+          "path": "evidence\\repair-2026-10-28-20-39\\A-auto-throttle\\shots-after\\home.png"
+        },
+        {
+          "name": "finding",
+          "path": "evidence\\repair-2026-10-28-20-39\\A-auto-throttle\\shots-after\\finding.png"
+        }
+      ]
+    },
+    "look": {
+      "ok": true,
+      "unreadable": false,
+      "problems": [],
+      "seen": [
+        "navigation with Être rappelé",
+        "IA integration hero text",
+        "Jour 1 info card",
+        "call-back buttons"
+      ]
+    },
+    "sam": {
+      "concept": "text input field",
+      "before": 0,
+      "after": 0
+    }
+  },
+  "review": {
+    "verdict": "cause",
+    "reason": "Patch adds per-IP sliding-window limit (30/min) returning 429+Retry-After and logging throttled IPs, directly throttling brute-force/scanning.",
+    "missing": ""
+  },
+  "status": "proposed",
+  "why": "journeys pass and the flaw is gone on the copy; a human applies it",
+  "reservations": [],
+  "attempts": [
+    {
+      "status": "ineffective",
+      "why": "journeys pass but the scanner still sees the flaw",
+      "edits": [
+        {
+          "file": "server.js",
+          "find": "  server: 'nginx',\n};",
+          "replace": "  server: 'nginx',\n};\n// Rate limiting (anti brute-force / anti-scan): sliding window per IP.\nconst RATE_WINDOW_MS = 60 * 1000;\nconst RATE_MAX = 100;\nconst _hits = new Map();\nfunction _limited(ip) {\n  const now = Date.now();\n  const arr = (_hits.get(ip) || []).filter((t) => now - t < RATE_WINDOW_MS)"
+        },
+        {
+          "file": "server.js",
+          "find": "createServer((req, res) => {\n  const url = new URL(req.url, 'http://x');",
+          "replace": "createServer((req, res) => {\n  const _ip = (req.socket && req.socket.remoteAddress) || req.headers['x-forwarded-for'] || 'x';\n  if (_limited(_ip)) { console.warn('rate-limited ' + _ip); res.writeHead(429, { ...HEADERS, 'retry-after': '60', 'content-type': 'text/plain; charset=utf-8' }); return res.e"
+        }
+      ],
+      "refused": [],
+      "brokenJourneys": [],
+      "testOutput": "✔ read the home page (127.8495ms)\n✔ the scripts of the page load (17.5346ms)\n✔ the legal notice and personal data information are present (4.2111ms)\n✔ an unknown path shows the site, not an error (6.472ms)\n✔ a normal visitor is never blocked (12 pages in a row) (17.3335ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 8108.128\n",
+      "scannerStillSees": "40 requests in a burst, all answered 200, no 429 and no rate-limit header",
+      "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-JK48n1"
+    }
+  ],
+  "ms": 69580
+}
