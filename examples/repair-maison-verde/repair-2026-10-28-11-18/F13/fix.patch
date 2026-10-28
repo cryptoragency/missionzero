@@ -1,0 +1,13 @@
+diff --git a/server.js b/server.js
+index 6f1b3eb..7fb41c6 100644
+--- a/server.js
++++ b/server.js
+@@ -72,7 +72,7 @@ export function handle(method, url, body = '', headers = {}) {
+   if (path === '/.env') return [200, { 'content-type': 'text/plain' }, 'DB_HOST=localhost\nDB_USER=shop\nDB_PASSWORD=Verde2019!\nSMTP_PASSWORD=jardin\nSTRIPE_SECRET=sk_live_EXAMPLE_NOT_REAL\n']; // FLAW 11: secrets served to anyone
+   if (path === '/backup/') return html('<h1>Index of /backup/</h1><ul><li><a href="/backup/wp-config.php.bak">wp-config.php.bak</a></li><li><a href="/backup/shop-2024-03-01.sql">shop-2024-03-01.sql</a></li></ul>'); // FLAW 12: directory listing with backups
+   if (path === '/backup/wp-config.php.bak') return [200, { 'content-type': 'text/plain' }, "<?php\ndefine('DB_PASSWORD', 'Verde2019!');\ndefine('AUTH_KEY', 'example-not-real');\n"];
+-  if (path === '/export/customers.csv') return [200, { 'content-type': 'text/csv' }, 'name,email,phone\nMarie Dupont,marie.dupont@example.org,0600000000\nKarim Benali,k.benali@example.org,0611111111\n']; // FLAW 13: customer export without authentication (GDPR)
++  if (path === '/export/customers.csv') { if (!/session=admin-7c9e/.test(headers.cookie || '')) return [302, { location: '/login' }, '']; return [200, { 'content-type': 'text/csv' }, 'name,email,phone\nMarie Dupont,marie.dupont@example.org,0600000000\nKarim Benali,k.benali@example.org,0611111111\n']; }
+   if (path === '/js/jquery-1.8.3.min.js') return [200, { 'content-type': 'application/javascript' }, '/*! jQuery v1.8.3 jquery.com | jquery.org/license */ window.jQuery=window.$=function(){};']; // FLAW 14: outdated library (CVE-2020-11022, CVE-2020-11023)
+   if (path === '/mentions-legales') return html(page('mentions.html')); // FLAW 15 (compliance): no privacy policy, no cookie notice, personal data collected without information
+   if (path === '/style.css') return [200, { 'content-type': 'text/css' }, page('style.css')];

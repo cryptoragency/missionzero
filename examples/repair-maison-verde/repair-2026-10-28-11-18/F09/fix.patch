@@ -1,0 +1,29 @@
+diff --git a/server.js b/server.js
+index 6f1b3eb..4006551 100644
+--- a/server.js
++++ b/server.js
+@@ -19,6 +19,7 @@ export const ORDERS = {
+   1003: { customer: 'Sophie Marchand', email: 'sophie.m@example.org', address: '8 place Royale, 33000 Bordeaux', total: 210, card: '**** **** **** 0005' },
+ };
+ const cart = []; // one shared cart, in memory
++const sessions = new Set();
+ 
+ export function handle(method, url, body = '', headers = {}) {
+   const [path, qs = ''] = url.split('?');
+@@ -58,14 +59,14 @@ export function handle(method, url, body = '', headers = {}) {
+     if (method === 'POST') {
+       const p = Object.fromEntries(new URLSearchParams(body));
+       // FLAW 7 (authentication): hard-coded password, no rate limit, verbose error that confirms the username.
+-      if (p.user === 'admin' && p.password === 'maisonverde2019') return [302, { location: '/admin', 'set-cookie': 'session=admin-7c9e; Path=/' }, '']; // FLAW 8 (cookie): no HttpOnly, Secure or SameSite
++      if (p.user === 'admin' && p.password === 'maisonverde2019') { const t = crypto.randomUUID(); sessions.add(t); return [302, { location: '/admin', 'set-cookie': 'session=' + t + '; Path=/; HttpOnly; SameSite=Lax' }, '']; }
+       return html(page('login.html').replace('<!--ERR-->', p.user === 'admin' ? '<p class="err">Mot de passe incorrect pour admin.</p>' : '<p class="err">Utilisateur inconnu.</p>'));
+     }
+     return html(page('login.html'));
+   }
+   if (path === '/admin') {
+     // FLAW 9 (access control): the cookie value is trusted as is; whoever sets session=admin-7c9e is admin.
+-    if (/session=admin-7c9e/.test(headers.cookie || '')) return html(page('admin.html'));
++    { const m = /session=([^;\s]+)/.exec(headers.cookie || ''); if (m && sessions.has(m[1])) return html(page('admin.html')); }
+     return [302, { location: '/login' }, ''];
+   }
+   if (path === '/robots.txt') return [200, { 'content-type': 'text/plain' }, 'User-agent: *\nDisallow: /admin\nDisallow: /backup/\nDisallow: /.env\nDisallow: /export/\n']; // FLAW 10: robots.txt advertises the sensitive paths

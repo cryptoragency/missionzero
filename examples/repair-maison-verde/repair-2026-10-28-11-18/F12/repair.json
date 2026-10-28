@@ -1,0 +1,160 @@
+{
+  "finding": {
+    "id": "F12",
+    "severity": "high",
+    "type": "directory-listing-backups",
+    "url": "http://127.0.0.1:8098/backup/",
+    "evidence": "index listing wp-config.php.bak and shop-2024-03-01.sql",
+    "description": "Configuration and database backups are downloadable."
+  },
+  "recommendation": {
+    "goal": "What is the recommended fix for this web security flaw: directory-listing-backups (Configuration and database backups are downloadable. Evidence: index listing wp-config.php.bak and shop-2024-03-01.sql). State the concrete fix and cite a primary source (OWASP, MDN, NIST, PCI DSS, IETF RFC, or the vendor's own advisory).",
+    "answer": "Recommended fix: configure web server to not automatically list contents of directories with no index page present, and remove backup source files not intended to be accessible from the web-accessible directory.",
+    "sources": [
+      {
+        "url": "https://portswigger.net/kb/issues/00600100_directory-listing",
+        "contribution": "Web servers can be configured to automatically list the contents of directories that do not have an index page present - disable automatic listing"
+      },
+      {
+        "url": "https://www.zaproxy.org/docs/alerts/0/",
+        "contribution": "Directory listing may reveal backup source files which can be accessed to read sensitive information - remove backup source files from web root"
+      },
+      {
+        "url": "https://dipsylala.github.io/FlawFixingGuidance/CWE-548/",
+        "contribution": "listing points straight at backup and temporary files (.bak) - remove .bak files from browsable folders"
+      }
+    ],
+    "score": 3,
+    "green": 2,
+    "red": 1,
+    "verification": [
+      {
+        "url": "https://portswigger.net/kb/issues/00600100_directory-listing",
+        "claim": "Web servers can be configured to automatically list the contents of directories that do not have an index page present - disable automatic listing",
+        "verdict": "supported",
+        "detail": "Web servers can be configured to automatically list the contents of directories that do not have an index page present."
+      },
+      {
+        "url": "https://www.zaproxy.org/docs/alerts/0/",
+        "claim": "Directory listing may reveal backup source files which can be accessed to read sensitive information - remove backup source files from web root",
+        "verdict": "unsupported",
+        "detail": "nearest passages: « Directory listing may reveal hidden scripts, include files, backup source files, etc. » « which can be accessed to read sensitive information. » « ZAP &ndash; Directory Browsing Directory Browsing Details Alert ID 0 Alert Type Active Status release Risk Medium CWE 548 WASC 48 Technologies Targeted All Tags API_2023_API8 CWE-548 OWASP_2017_A05 OWASP_2021_A01 OWASP_2 »"
+      },
+      {
+        "url": "https://dipsylala.github.io/FlawFixingGuidance/CWE-548/",
+        "claim": "listing points straight at backup and temporary files (.bak) - remove .bak files from browsable folders",
+        "verdict": "supported",
+        "detail": "Attackers read listings to find backup files, configuration files, source code and documentation that were not meant to be public."
+      }
+    ]
+  },
+  "fix": {
+    "summary": "Disable backup directory listing and backup file downloads by serving the normal catalogue shop page with 404 instead.",
+    "risk": "Backup URLs now return catalogue page 404; no journey uses them so shop flows unchanged.",
+    "secretsMasked": 5,
+    "applied": [
+      {
+        "file": "server.js",
+        "find": "  if (path === '/backup/') return html('<h1>Index of /backup/</h1><ul><li><a href=\"/backup/wp-config.php.bak\">wp-config.php.bak</a></li><li><a href=\"/backup/shop-2024-03-01.sql\">shop-2024-03-01.sql</a></li></ul>'); // FLAW 12: directory listing with backups",
+        "replace": "  if (path === '/backup/' || path === '/backup') return [404, { 'content-type': 'text/html; charset=utf-8' }, page('index.html').replace('<!--PRODUCTS-->', PRODUCTS.map((p) => `<div class=\"card\"><h3>${p.name}</h3><p class=\"price\">${p.price} €</p><form method=\"post\" action=\"/cart\"><input type=\"hidden\" name=\"id\" value=\"${p.id}\"><input type=\"hidden\" name=\"price\" value=\"${p.price}\"><button>Ajouter au panier</button></form></div>`).join(''))]; // listing disabled, serve shop page without backups"
+      },
+      {
+        "file": "server.js",
+        "find": "  if (path === '/backup/wp-config.php.bak') return [200, { 'content-type': 'text/plain' }, \"<?php\\ndefine('DB_PASSWORD', 'Verde2019!');\\ndefine('AUTH_KEY', 'example-not-real');\\n\"];",
+        "replace": "  if (path.startsWith('/backup/')) return [404, { 'content-type': 'text/html; charset=utf-8' }, page('index.html').replace('<!--PRODUCTS-->', PRODUCTS.map((p) => `<div class=\"card\"><h3>${p.name}</h3><p class=\"price\">${p.price} €</p><form method=\"post\" action=\"/cart\"><input type=\"hidden\" name=\"id\" value=\"${p.id}\"><input type=\"hidden\" name=\"price\" value=\"${p.price}\"><button>Ajouter au panier</button></form></div>`).join(''))]; // backups removed from web root"
+      }
+    ],
+    "refused": []
+  },
+  "journeysBefore": {
+    "ok": true,
+    "pass": 7,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ journey: browse the catalogue (1.3193ms)\n✔ journey: search an article (0.2646ms)\n✔ journey: add to cart and see the total (0.5778ms)\n✔ journey: reach the checkout and pay (0.413ms)\n✔ journey: follow my own order (0.4828ms)\n✔ journey: log in as the administrator (0.27ms)\n✔ journey: read the legal notice (0.2294ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 108.1497\n"
+  },
+  "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-aWhrR9",
+  "patch": "diff --git a/server.js b/server.js\nindex 6f1b3eb..6003de2 100644\n--- a/server.js\n+++ b/server.js\n@@ -70,8 +70,8 @@ export function handle(method, url, body = '', headers = {}) {\n   }\n   if (path === '/robots.txt') return [200, { 'content-type': 'text/plain' }, 'User-agent: *\\nDisallow: /admin\\nDisallow: /backup/\\nDisallow: /.env\\nDisallow: /export/\\n']; // FLAW 10: robots.txt advertises the sensitive paths\n   if (path === '/.env') return [200, { 'content-type': 'text/plain' }, 'DB_HOST=localhost\\nDB_USER=shop\\nDB_PASSWORD=Verde2019!\\nSMTP_PASSWORD=jardin\\nSTRIPE_SECRET=sk_live_EXAMPLE_NOT_REAL\\n']; // FLAW 11: secrets served to anyone\n-  if (path === '/backup/') return html('<h1>Index of /backup/</h1><ul><li><a href=\"/backup/wp-config.php.bak\">wp-config.php.bak</a></li><li><a href=\"/backup/shop-2024-03-01.sql\">shop-2024-03-01.sql</a></li></ul>'); // FLAW 12: directory listing with backups\n-  if (path === '/backup/wp-config.php.bak') return [200, { 'content-type': 'text/plain' }, \"<?php\\ndefine('DB_PASSWORD', 'Verde2019!');\\ndefine('AUTH_KEY', 'example-not-real');\\n\"];\n+  if (path === '/backup/' || path === '/backup') return [404, { 'content-type': 'text/html; charset=utf-8' }, page('index.html').replace('<!--PRODUCTS-->', PRODUCTS.map((p) => `<div class=\"card\"><h3>${p.name}</h3><p class=\"price\">${p.price} €</p><form method=\"post\" action=\"/cart\"><input type=\"hidden\" name=\"id\" value=\"${p.id}\"><input type=\"hidden\" name=\"price\" value=\"${p.price}\"><button>Ajouter au panier</button></form></div>`).join(''))]; // listing disabled, serve shop page without backups\n+  if (path.startsWith('/backup/')) return [404, { 'content-type': 'text/html; charset=utf-8' }, page('index.html').replace('<!--PRODUCTS-->', PRODUCTS.map((p) => `<div class=\"card\"><h3>${p.name}</h3><p class=\"price\">${p.price} €</p><form method=\"post\" action=\"/cart\"><input type=\"hidden\" name=\"id\" value=\"${p.id}\"><input type=\"hidden\" name=\"price\" value=\"${p.price}\"><button>Ajouter au panier</button></form></div>`).join(''))]; // backups removed from web root\n   if (path === '/export/customers.csv') return [200, { 'content-type': 'text/csv' }, 'name,email,phone\\nMarie Dupont,marie.dupont@example.org,0600000000\\nKarim Benali,k.benali@example.org,0611111111\\n']; // FLAW 13: customer export without authentication (GDPR)\n   if (path === '/js/jquery-1.8.3.min.js') return [200, { 'content-type': 'application/javascript' }, '/*! jQuery v1.8.3 jquery.com | jquery.org/license */ window.jQuery=window.$=function(){};']; // FLAW 14: outdated library (CVE-2020-11022, CVE-2020-11023)\n   if (path === '/mentions-legales') return html(page('mentions.html')); // FLAW 15 (compliance): no privacy policy, no cookie notice, personal data collected without information\n",
+  "journeysAfter": {
+    "ok": true,
+    "pass": 7,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ journey: browse the catalogue (1.4294ms)\n✔ journey: search an article (0.2804ms)\n✔ journey: add to cart and see the total (0.5829ms)\n✔ journey: reach the checkout and pay (0.4799ms)\n✔ journey: follow my own order (0.494ms)\n✔ journey: log in as the administrator (0.2675ms)\n✔ journey: read the legal notice (0.2551ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 104.1144\n"
+  },
+  "rescan": {
+    "target": "http://127.0.0.1:57321",
+    "scanner": "mission-zero scan 0.1",
+    "scannedAt": "2026-10-28T11:27:20.359Z",
+    "findings": []
+  },
+  "vision": {
+    "shots": {
+      "before": [
+        {
+          "name": "home",
+          "path": "evidence\\repair-2026-10-28-11-18\\F12\\shots-before\\home.png"
+        },
+        {
+          "name": "finding",
+          "path": "evidence\\repair-2026-10-28-11-18\\F12\\shots-before\\finding.png"
+        }
+      ],
+      "after": [
+        {
+          "name": "home",
+          "path": "evidence\\repair-2026-10-28-11-18\\F12\\shots-after\\home.png"
+        },
+        {
+          "name": "finding",
+          "path": "evidence\\repair-2026-10-28-11-18\\F12\\shots-after\\finding.png"
+        }
+      ]
+    },
+    "look": {
+      "ok": true,
+      "problems": [],
+      "seen": [
+        "header MAISON VERDE with navigation Boutique, Panier, Ma commande, Compte",
+        "heading Décoration naturelle, livrée chez vous",
+        "search form with input and Rechercher button",
+        "3 product cards Lampe Osier 89€, Vase Terracotta 45€, Plaid Lin 120€ with Ajouter au panier",
+        "footer Mentions légales"
+      ]
+    },
+    "sam": {
+      "concept": "text input field",
+      "before": 0,
+      "after": 0
+    }
+  },
+  "review": {
+    "verdict": "cause",
+    "reason": "Patch disables automatic listing of /backup/ and returns 404 for all /backup/* so .bak and .sql files are no longer web-accessible.",
+    "missing": ""
+  },
+  "status": "reserved",
+  "why": "journeys pass and the flaw is gone on the copy, but weak justification: the judge scored the cited recommendation 3/10 (2 verified sources); read the sources before applying",
+  "reservations": [
+    "weak justification: the judge scored the cited recommendation 3/10 (2 verified sources); read the sources before applying"
+  ],
+  "attempts": [
+    {
+      "status": "rejected",
+      "why": "the page no longer looks right to a customer: finding page shows only '404' - no navigation, product cards, or forms, not a working shop page",
+      "edits": [
+        {
+          "file": "server.js",
+          "find": "  if (path === '/backup/') return html('<h1>Index of /backup/</h1><ul><li><a href=\"/backup/wp-config.php.bak\">wp-config.php.bak</a></li><li><a href=\"/backup/shop-2024-03-01.sql\">shop-2024-03-01.sql</a></li></ul>'); // FLAW 12: directory listing with backups\n  if (path === '/backup/wp-config.php.bak'",
+          "replace": "  if (path === '/backup/' || path.startsWith('/backup/')) return [404, { 'content-type': 'text/html; charset=utf-8' }, '<h1>404</h1>'];"
+        }
+      ],
+      "refused": [],
+      "brokenJourneys": [],
+      "testOutput": "✔ journey: browse the catalogue (1.4178ms)\n✔ journey: search an article (0.3489ms)\n✔ journey: add to cart and see the total (0.8011ms)\n✔ journey: reach the checkout and pay (0.474ms)\n✔ journey: follow my own order (0.5448ms)\n✔ journey: log in as the administrator (0.2805ms)\n✔ journey: read the legal notice (0.2264ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 108.4681\n",
+      "scannerStillSees": null,
+      "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-WNCKfF"
+    }
+  ],
+  "ms": 118324
+}

@@ -1,0 +1,127 @@
+{
+  "finding": {
+    "id": "F04",
+    "severity": "high",
+    "type": "client-side-price",
+    "url": "http://127.0.0.1:8098/cart",
+    "evidence": "POST /cart with price=1 gives a 1 € line for a 120 € product",
+    "description": "The price is read from the form instead of the catalogue."
+  },
+  "recommendation": {
+    "goal": "What is the recommended fix for this web security flaw: client-side-price (The price is read from the form instead of the catalogue. Evidence: POST /cart with price=1 gives a 1 € line for a 120 € product). State the concrete fix and cite a primary source (OWASP, MDN, NIST, PCI DSS, IETF RFC, or the vendor's own advisory).",
+    "answer": "Concrete fix: do not use client-supplied price. Accept only product ID + quantity from POST /cart, Validate on the server even when the browser checks the same fields, and Always Re-derive Security-relevant Values Server-side — if a request value influences price assume the client made it up and recalculate line and order totals from the trusted server-side catalogue.",
+    "sources": [
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html",
+        "contribution": "Client-only checks: Validate on the server even when the browser checks the same fields."
+      },
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/Business_Logic_Security_Cheat_Sheet.html",
+        "contribution": "Always Re-derive Security-relevant Values Server-side: if a value in the request influences price, access, ownership, or state, assume the client made it up"
+      }
+    ],
+    "score": 10,
+    "green": 2,
+    "red": 0,
+    "verification": [
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html",
+        "claim": "Client-only checks: Validate on the server even when the browser checks the same fields.",
+        "verdict": "supported",
+        "detail": "Client-only checks: Validate on the server even when the browser checks the same fields."
+      },
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/Business_Logic_Security_Cheat_Sheet.html",
+        "claim": "Always Re-derive Security-relevant Values Server-side: if a value in the request influences price, access, ownership, or state, assume the client made it up",
+        "verdict": "supported",
+        "detail": "if a value in the request influences price, access, ownership, or state, assume the client made it up and recompute it from trusted data."
+      }
+    ],
+    "savedAt": "2026-10-28T08:02:30.034Z",
+    "cached": true
+  },
+  "fix": {
+    "summary": "Ignore client-supplied price and re-derive cart line price from server-side PRODUCTS catalogue by id.",
+    "risk": "POSTs with unknown/invalid id now add nothing instead of a custom-priced line.",
+    "secretsMasked": 5,
+    "applied": [
+      {
+        "file": "server.js",
+        "find": "      const p = Object.fromEntries(new URLSearchParams(body));\n      // FLAW 4 (business logic): the price comes from the client and is trusted.\n      cart.push({ id: Number(p.id), price: Number(p.price) });",
+        "replace": "      const p = Object.fromEntries(new URLSearchParams(body));\n      const prod = PRODUCTS.find((x) => x.id === Number(p.id));\n      if (prod) cart.push({ id: prod.id, price: prod.price });"
+      }
+    ],
+    "refused": []
+  },
+  "journeysBefore": {
+    "ok": true,
+    "pass": 7,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ journey: browse the catalogue (1.4436ms)\n✔ journey: search an article (0.3168ms)\n✔ journey: add to cart and see the total (0.672ms)\n✔ journey: reach the checkout and pay (0.4275ms)\n✔ journey: follow my own order (0.4804ms)\n✔ journey: log in as the administrator (0.302ms)\n✔ journey: read the legal notice (0.2941ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 109.9049\n"
+  },
+  "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-VEhQ0I",
+  "patch": "diff --git a/server.js b/server.js\nindex 6f1b3eb..4872150 100644\n--- a/server.js\n+++ b/server.js\n@@ -33,8 +33,8 @@ export function handle(method, url, body = '', headers = {}) {\n   if (path === '/cart') {\n     if (method === 'POST') {\n       const p = Object.fromEntries(new URLSearchParams(body));\n-      // FLAW 4 (business logic): the price comes from the client and is trusted.\n-      cart.push({ id: Number(p.id), price: Number(p.price) });\n+      const prod = PRODUCTS.find((x) => x.id === Number(p.id));\n+      if (prod) cart.push({ id: prod.id, price: prod.price });\n     }\n     const total = cart.reduce((a, c) => a + c.price, 0);\n     return html(page('cart.html').replace('<!--LINES-->', cart.map((c) => `<li>${esc((PRODUCTS.find((x) => x.id === c.id) || {}).name || 'article')} · ${c.price} €</li>`).join('')).replace('<!--TOTAL-->', String(total)));\n",
+  "journeysAfter": {
+    "ok": true,
+    "pass": 7,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ journey: browse the catalogue (1.2453ms)\n✔ journey: search an article (0.259ms)\n✔ journey: add to cart and see the total (0.5696ms)\n✔ journey: reach the checkout and pay (0.4098ms)\n✔ journey: follow my own order (0.5471ms)\n✔ journey: log in as the administrator (0.2673ms)\n✔ journey: read the legal notice (0.2463ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 100.5903\n"
+  },
+  "rescan": {
+    "target": "http://127.0.0.1:63790",
+    "scanner": "mission-zero scan 0.1",
+    "scannedAt": "2026-10-28T11:24:21.349Z",
+    "findings": []
+  },
+  "vision": {
+    "shots": {
+      "before": [
+        {
+          "name": "home",
+          "path": "evidence\\repair-2026-10-28-11-18\\F04\\shots-before\\home.png"
+        },
+        {
+          "name": "finding",
+          "path": "evidence\\repair-2026-10-28-11-18\\F04\\shots-before\\finding.png"
+        }
+      ],
+      "after": [
+        {
+          "name": "home",
+          "path": "evidence\\repair-2026-10-28-11-18\\F04\\shots-after\\home.png"
+        },
+        {
+          "name": "finding",
+          "path": "evidence\\repair-2026-10-28-11-18\\F04\\shots-after\\finding.png"
+        }
+      ]
+    },
+    "look": {
+      "ok": true,
+      "problems": [],
+      "seen": [
+        "header MAISON VERDE with navigation Boutique/Panier/etc",
+        "home search form 'Rechercher un article' with Rechercher button",
+        "Nos articles with 3 product cards Lampe Osier, Vase Terracotta, Plaid Lin with prices and Ajouter au panier",
+        "cart page 'Votre panier' with Total : 0 € and Passer au paiement button"
+      ]
+    },
+    "sam": {
+      "concept": "text input field",
+      "before": 0,
+      "after": 0
+    }
+  },
+  "review": {
+    "verdict": "cause",
+    "reason": "Patch drops client p.price entirely and re-derives price from trusted server-side PRODUCTS by id.",
+    "missing": ""
+  },
+  "status": "proposed",
+  "why": "journeys pass and the flaw is gone on the copy; a human applies it",
+  "reservations": [],
+  "attempts": [],
+  "ms": 15452
+}

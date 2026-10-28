@@ -1,0 +1,148 @@
+{
+  "finding": {
+    "id": "F05",
+    "severity": "critical",
+    "type": "card-data-over-http",
+    "url": "http://127.0.0.1:8098/checkout",
+    "evidence": "form with fields card, exp, cvv posted to http://",
+    "description": "Card numbers travel in clear and are handled by the shop itself."
+  },
+  "recommendation": {
+    "goal": "What is the recommended fix for this web security flaw: card-data-over-http (Card numbers travel in clear and are handled by the shop itself. Evidence: form with fields card, exp, cvv posted to http://). State the concrete fix and cite a primary source (OWASP, MDN, NIST, PCI DSS, IETF RFC, or the vendor's own advisory).",
+    "answer": "Recommended fix: stop posting card, exp, cvv to http://. Serve checkout only over HTTPS with strong cryptography/TLS and trusted certificates, enforce HSTS, never transmit PAN in clear, and descope the shop by using a PCI DSS-compliant processor via redirect/hosted page/iframe/tokenization so the shop itself does not handle card data (SAQ-A model).",
+    "sources": [
+      {
+        "url": "https://pcidssguide.com/pci-dss-requirement-4/",
+        "contribution": "Protect PAN in Transit is PCI DSS Requirement 4"
+      },
+      {
+        "url": "https://www.pcisecuritystandards.org/documents/PCI-DSS-v4-0-SAQ-A.pdf",
+        "contribution": "Self-Assessment Questionnaire A and Attestation of Compliance for use with PCI DSS Version 4.0"
+      },
+      {
+        "url": "https://www.herodevs.com/blog-posts/pci-dss-4-0-requirement-4-how-to-protect-cardholder-data-in-transit",
+        "contribution": "Under PCI DSS 3.2.1, transmission of cardholder data across open, public networks must be encrypted"
+      }
+    ],
+    "score": 3,
+    "green": 3,
+    "red": 0,
+    "verification": [
+      {
+        "url": "https://pcidssguide.com/pci-dss-requirement-4/",
+        "claim": "Protect PAN in Transit is PCI DSS Requirement 4",
+        "verdict": "supported",
+        "detail": "PCI DSS Requirement 4: Protect PAN in Transit (v4.0.1)"
+      },
+      {
+        "url": "https://www.pcisecuritystandards.org/documents/PCI-DSS-v4-0-SAQ-A.pdf",
+        "claim": "Self-Assessment Questionnaire A and Attestation of Compliance for use with PCI DSS Version 4.0",
+        "verdict": "supported",
+        "detail": "Payment Card Industry Data Security Standard Self-Assessment Questionnaire A and Attestation of Compliance For use with PCI DSS Version 4.0 Publication Date: April 2022"
+      },
+      {
+        "url": "https://www.herodevs.com/blog-posts/pci-dss-4-0-requirement-4-how-to-protect-cardholder-data-in-transit",
+        "claim": "Under PCI DSS 3.2.1, transmission of cardholder data across open, public networks must be encrypted",
+        "verdict": "supported",
+        "detail": "Requirement 4 emphasized “Encrypt transmission of cardholder data across open, public networks.”"
+      }
+    ]
+  },
+  "fix": {
+    "summary": "Descope shop to SAQ-A: remove card form, ignore PAN and never store/echo it.",
+    "risk": "Checkout UX changes to PSP model; legacy card/exp/cvv fields are ignored.",
+    "secretsMasked": 5,
+    "applied": [
+      {
+        "file": "server.js",
+        "find": "      const id = 1004; ORDERS[id] = { customer: p.name || '', email: p.email || '', address: p.address || '', total: cart.reduce((a, c) => a + c.price, 0), card: '**** **** **** ' + String(p.card || '').slice(-4) };",
+        "replace": "      const id = 1004; ORDERS[id] = { customer: p.name || '', email: p.email || '', address: p.address || '', total: cart.reduce((a, c) => a + c.price, 0), card: 'PSP-token (descope SAQ-A: no PAN stored)' }; // no card/exp/cvv handled server-side"
+      },
+      {
+        "file": "server.js",
+        "find": "      return html(page('checkout.html').replace('<!--DONE-->', `<p class=\"ok\">Commande n° ${id} enregistrée pour ${p.name || ''}. Carte ${p.card || ''}. <a href=\"/order?id=${id}\">Suivre ma commande</a></p>`), { 'set-cookie': `customer=${encodeURIComponent(p.email || '')}; Path=/` }); // FLAW 3 again, and the card number echoed",
+        "replace": "      return html(page('checkout.html').replace(/<form[\\s\\S]*?<\\/form>/, '<p>Paiement via prestataire PCI DSS (redirection/tokenisation SAQ-A) : aucune donnee carte collectee ici.</p>').replace('<!--DONE-->', `<p class=\"ok\">Commande n° ${id} enregistrée pour ${esc(p.name || '')}. Paiement via PSP externe. <a href=\"/order?id=${id}\">Suivre ma commande</a></p>`), { 'set-cookie': `customer=${encodeURIComponent(p.email || '')}; Path=/` });"
+      },
+      {
+        "file": "server.js",
+        "find": "    return html(page('checkout.html'));",
+        "replace": "    return html(page('checkout.html').replace(/<form[\\s\\S]*?<\\/form>/, '<p>Paiement securise via prestataire PCI DSS (redirection/tokenisation SAQ-A) : aucune donnee carte collectee sur ce site.</p><form method=\"post\" action=\"/checkout\"><input name=\"name\" placeholder=\"Nom\"><input name=\"email\" placeholder=\"Email\"><input type=\"hidden\" name=\"psp-token\" value=\"tok_demo\"><button>Payer via PSP</button></form>'));"
+      }
+    ],
+    "refused": []
+  },
+  "journeysBefore": {
+    "ok": true,
+    "pass": 7,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ journey: browse the catalogue (1.2907ms)\n✔ journey: search an article (0.2625ms)\n✔ journey: add to cart and see the total (0.755ms)\n✔ journey: reach the checkout and pay (0.4206ms)\n✔ journey: follow my own order (0.4828ms)\n✔ journey: log in as the administrator (0.2755ms)\n✔ journey: read the legal notice (0.2238ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 104.8957\n"
+  },
+  "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-K90HJa",
+  "patch": "diff --git a/server.js b/server.js\nindex 6f1b3eb..d7afede 100644\n--- a/server.js\n+++ b/server.js\n@@ -44,10 +44,10 @@ export function handle(method, url, body = '', headers = {}) {\n     if (method === 'POST') {\n       const p = Object.fromEntries(new URLSearchParams(body));\n       // The order is registered to the customer, who gets a cookie and a link to follow it. The cookie is not checked by /order (FLAW 6).\n-      const id = 1004; ORDERS[id] = { customer: p.name || '', email: p.email || '', address: p.address || '', total: cart.reduce((a, c) => a + c.price, 0), card: '**** **** **** ' + String(p.card || '').slice(-4) };\n-      return html(page('checkout.html').replace('<!--DONE-->', `<p class=\"ok\">Commande n° ${id} enregistrée pour ${p.name || ''}. Carte ${p.card || ''}. <a href=\"/order?id=${id}\">Suivre ma commande</a></p>`), { 'set-cookie': `customer=${encodeURIComponent(p.email || '')}; Path=/` }); // FLAW 3 again, and the card number echoed\n+      const id = 1004; ORDERS[id] = { customer: p.name || '', email: p.email || '', address: p.address || '', total: cart.reduce((a, c) => a + c.price, 0), card: 'PSP-token (descope SAQ-A: no PAN stored)' }; // no card/exp/cvv handled server-side\n+      return html(page('checkout.html').replace(/<form[\\s\\S]*?<\\/form>/, '<p>Paiement via prestataire PCI DSS (redirection/tokenisation SAQ-A) : aucune donnee carte collectee ici.</p>').replace('<!--DONE-->', `<p class=\"ok\">Commande n° ${id} enregistrée pour ${esc(p.name || '')}. Paiement via PSP externe. <a href=\"/order?id=${id}\">Suivre ma commande</a></p>`), { 'set-cookie': `customer=${encodeURIComponent(p.email || '')}; Path=/` });\n     }\n-    return html(page('checkout.html'));\n+    return html(page('checkout.html').replace(/<form[\\s\\S]*?<\\/form>/, '<p>Paiement securise via prestataire PCI DSS (redirection/tokenisation SAQ-A) : aucune donnee carte collectee sur ce site.</p><form method=\"post\" action=\"/checkout\"><input name=\"name\" placeholder=\"Nom\"><input name=\"email\" placeholder=\"Email\"><input type=\"hidden\" name=\"psp-token\" value=\"tok_demo\"><button>Payer via PSP</button></form>'));\n   }\n   if (path === '/order') {\n     // FLAW 6 (IDOR): any order is readable by changing its number, no login needed.\n",
+  "journeysAfter": {
+    "ok": true,
+    "pass": 7,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ journey: browse the catalogue (1.2565ms)\n✔ journey: search an article (0.264ms)\n✔ journey: add to cart and see the total (0.5937ms)\n✔ journey: reach the checkout and pay (0.4796ms)\n✔ journey: follow my own order (0.4857ms)\n✔ journey: log in as the administrator (0.2581ms)\n✔ journey: read the legal notice (0.2539ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 100.216\n"
+  },
+  "rescan": {
+    "target": "http://127.0.0.1:53318",
+    "scanner": "mission-zero scan 0.1",
+    "scannedAt": "2026-10-28T11:37:26.088Z",
+    "findings": []
+  },
+  "vision": {
+    "shots": {
+      "before": [
+        {
+          "name": "home",
+          "path": "evidence\\repair-2026-10-28-11-35\\F05\\shots-before\\home.png"
+        },
+        {
+          "name": "finding",
+          "path": "evidence\\repair-2026-10-28-11-35\\F05\\shots-before\\finding.png"
+        }
+      ],
+      "after": [
+        {
+          "name": "home",
+          "path": "evidence\\repair-2026-10-28-11-35\\F05\\shots-after\\home.png"
+        },
+        {
+          "name": "finding",
+          "path": "evidence\\repair-2026-10-28-11-35\\F05\\shots-after\\finding.png"
+        }
+      ]
+    },
+    "look": {
+      "ok": true,
+      "unreadable": false,
+      "problems": [],
+      "seen": [
+        "product cards Lampe/Vase/Plaid",
+        "search form Rechercher",
+        "payment form Nom/Email",
+        "nav Boutique Panier"
+      ]
+    },
+    "sam": {
+      "concept": "text input field",
+      "before": 5,
+      "after": 0
+    }
+  },
+  "review": {
+    "verdict": "cause",
+    "reason": "Removes card/exp/cvv collection, storage, and echo and replaces it with PSP redirect/token flow so no PAN is posted or handled by the shop.",
+    "missing": "Enforce HTTPS-only checkout with strong TLS, trusted certs, and HSTS as defense-in-depth"
+  },
+  "status": "reserved",
+  "why": "journeys pass and the flaw is gone on the copy, but weak justification: the judge scored the cited recommendation 3/10 (3 verified sources); read the sources before applying",
+  "reservations": [
+    "weak justification: the judge scored the cited recommendation 3/10 (3 verified sources); read the sources before applying"
+  ],
+  "attempts": [],
+  "ms": 133347
+}

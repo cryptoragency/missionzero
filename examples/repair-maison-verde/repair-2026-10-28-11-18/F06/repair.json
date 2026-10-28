@@ -1,0 +1,135 @@
+{
+  "finding": {
+    "id": "F06",
+    "severity": "high",
+    "type": "idor",
+    "url": "http://127.0.0.1:8098/order?id=1002",
+    "evidence": "order 1002 (name, e-mail, address, card ending) returned without any session",
+    "description": "Any order is readable by changing the number."
+  },
+  "recommendation": {
+    "goal": "What is the recommended fix for this web security flaw: idor (Any order is readable by changing the number. Evidence: order 1002 (name, e-mail, address, card ending) returned without any session). State the concrete fix and cite a primary source (OWASP, MDN, NIST, PCI DSS, IETF RFC, or the vendor's own advisory).",
+    "answer": "Enforce server-side authorization on every order access: require an authenticated session and implement access control checks for each object that users try to access, verifying the requesting user is authorized to access the referenced object such as database keys, file names, or record IDs before returning data.",
+    "sources": [
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html",
+        "contribution": "To mitigate IDOR, implement access control checks for each object that users try to access."
+      },
+      {
+        "url": "https://community.owasp.org/attacks/insecure_direct_object_reference",
+        "contribution": "IDOR occurs when an application exposes internal object references such as database keys, file names, or record IDs and fails to verify that the requesting user is authorized to access the referenced object."
+      }
+    ],
+    "score": 10,
+    "green": 2,
+    "red": 0,
+    "verification": [
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html",
+        "claim": "To mitigate IDOR, implement access control checks for each object that users try to access.",
+        "verdict": "supported",
+        "detail": "To mitigate IDOR, implement access control checks for each object that users try to access."
+      },
+      {
+        "url": "https://community.owasp.org/attacks/insecure_direct_object_reference",
+        "claim": "IDOR occurs when an application exposes internal object references such as database keys, file names, or record IDs and fails to verify that the requesting user is authorized to access the referenced object.",
+        "verdict": "supported",
+        "detail": "Insecure Direct Object Reference (IDOR) is an access control vulnerability that occurs when an application exposes internal object references — such as database keys, file names, or record IDs — and fails to verify that the requesting user is authorized to access the referenced object."
+      }
+    ],
+    "savedAt": "2026-10-28T08:03:24.647Z",
+    "cached": true
+  },
+  "fix": {
+    "summary": "Require matching customer cookie or admin session before rendering an order, keeping the shop template with 403 on denial.",
+    "risk": "Old bookmarked order links without their customer cookie will now get 403 instead of order details.",
+    "secretsMasked": 5,
+    "applied": [
+      {
+        "file": "server.js",
+        "find": "  if (path === '/order') {\n    // FLAW 6 (IDOR): any order is readable by changing its number, no login needed.\n    const o = ORDERS[q.id];\n    return o ? html(page('order.html').replace('<!--ORDER-->', `<p><b>Commande ${esc(q.id)}</b></p><p>${esc(o.customer)} · ${esc(o.email)}<br>${esc(o.address)}<br>Total ${o.total} € · carte ${o.card}</p>`)) : html('<h1>Commande introuvable</h1>');\n  }",
+        "replace": "  if (path === '/order') {\n    const o = ORDERS[q.id];\n    if (!o) return html(page('order.html').replace('<!--ORDER-->', '<p><b>Commande introuvable</b></p>'));\n    const isAdmin = /session=admin-7c9e/.test(headers.cookie || '');\n    const mc = /(?:^|;\\s*)customer=([^;]*)/.exec(headers.cookie || '');\n    let me = '';\n    try { me = mc ? decodeURIComponent(mc[1].trim()) : ''; } catch { me = ''; }\n    if (!isAdmin && me !== o.email) { const r = html(page('order.html').replace('<!--ORDER-->', `<p><b>Commande ${esc(q.id)}</b></p><p>Acc\\u00e8s refus\\u00e9. Veuillez utiliser le lien de votre commande.</p>`)); r[0] = 403; return r; }\n    return html(page('order.html').replace('<!--ORDER-->', `<p><b>Commande ${esc(q.id)}</b></p><p>${esc(o.customer)} · ${esc(o.email)}<br>${esc(o.address)}<br>Total ${o.total} € · carte ${o.card}</p>`));\n  }"
+      }
+    ],
+    "refused": []
+  },
+  "journeysBefore": {
+    "ok": true,
+    "pass": 7,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ journey: browse the catalogue (1.2547ms)\n✔ journey: search an article (0.2677ms)\n✔ journey: add to cart and see the total (0.5875ms)\n✔ journey: reach the checkout and pay (0.4642ms)\n✔ journey: follow my own order (0.4798ms)\n✔ journey: log in as the administrator (0.316ms)\n✔ journey: read the legal notice (0.249ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 101.1246\n"
+  },
+  "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-MwDMFI",
+  "patch": "diff --git a/server.js b/server.js\nindex 6f1b3eb..1b7ed7a 100644\n--- a/server.js\n+++ b/server.js\n@@ -50,9 +50,14 @@ export function handle(method, url, body = '', headers = {}) {\n     return html(page('checkout.html'));\n   }\n   if (path === '/order') {\n-    // FLAW 6 (IDOR): any order is readable by changing its number, no login needed.\n     const o = ORDERS[q.id];\n-    return o ? html(page('order.html').replace('<!--ORDER-->', `<p><b>Commande ${esc(q.id)}</b></p><p>${esc(o.customer)} · ${esc(o.email)}<br>${esc(o.address)}<br>Total ${o.total} € · carte ${o.card}</p>`)) : html('<h1>Commande introuvable</h1>');\n+    if (!o) return html(page('order.html').replace('<!--ORDER-->', '<p><b>Commande introuvable</b></p>'));\n+    const isAdmin = /session=admin-7c9e/.test(headers.cookie || '');\n+    const mc = /(?:^|;\\s*)customer=([^;]*)/.exec(headers.cookie || '');\n+    let me = '';\n+    try { me = mc ? decodeURIComponent(mc[1].trim()) : ''; } catch { me = ''; }\n+    if (!isAdmin && me !== o.email) { const r = html(page('order.html').replace('<!--ORDER-->', `<p><b>Commande ${esc(q.id)}</b></p><p>Acc\\u00e8s refus\\u00e9. Veuillez utiliser le lien de votre commande.</p>`)); r[0] = 403; return r; }\n+    return html(page('order.html').replace('<!--ORDER-->', `<p><b>Commande ${esc(q.id)}</b></p><p>${esc(o.customer)} · ${esc(o.email)}<br>${esc(o.address)}<br>Total ${o.total} € · carte ${o.card}</p>`));\n   }\n   if (path === '/login') {\n     if (method === 'POST') {\n",
+  "journeysAfter": {
+    "ok": true,
+    "pass": 7,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ journey: browse the catalogue (1.2848ms)\n✔ journey: search an article (0.274ms)\n✔ journey: add to cart and see the total (0.586ms)\n✔ journey: reach the checkout and pay (0.4282ms)\n✔ journey: follow my own order (0.5364ms)\n✔ journey: log in as the administrator (0.2703ms)\n✔ journey: read the legal notice (0.256ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 102.6331\n"
+  },
+  "rescan": {
+    "target": "http://127.0.0.1:64102",
+    "scanner": "mission-zero scan 0.1",
+    "scannedAt": "2026-10-28T11:24:56.392Z",
+    "findings": []
+  },
+  "vision": {
+    "shots": {
+      "before": [
+        {
+          "name": "home",
+          "path": "evidence\\repair-2026-10-28-11-18\\F06\\shots-before\\home.png"
+        },
+        {
+          "name": "finding",
+          "path": "evidence\\repair-2026-10-28-11-18\\F06\\shots-before\\finding.png"
+        }
+      ],
+      "after": [
+        {
+          "name": "home",
+          "path": "evidence\\repair-2026-10-28-11-18\\F06\\shots-after\\home.png"
+        },
+        {
+          "name": "finding",
+          "path": "evidence\\repair-2026-10-28-11-18\\F06\\shots-after\\finding.png"
+        }
+      ]
+    },
+    "look": {
+      "ok": false,
+      "problems": [],
+      "seen": [],
+      "raw": "{\"ok\":true,\"problems\":[],\"seen\":[\"header MAISON VERDE with navigation Boutique Panier Ma commande Compte\",\"home title Décoration naturelle with search input and Rechercher button\",\"3 product cards Lampe Osier 89€, Vase Terracotta 45€"
+    },
+    "sam": {
+      "concept": "text input field",
+      "before": 0,
+      "after": 0
+    }
+  },
+  "status": "rejected",
+  "why": "the page no longer looks right to a customer: ",
+  "reservations": [],
+  "attempts": [
+    {
+      "status": "rejected",
+      "why": "the page no longer looks right to a customer: finding page shows only 'Accès refusé' with no navigation, product cards, forms, or shop content",
+      "edits": [
+        {
+          "file": "server.js",
+          "find": "  if (path === '/order') {\n    // FLAW 6 (IDOR): any order is readable by changing its number, no login needed.\n    const o = ORDERS[q.id];\n    return o ? html(page('order.html').replace('<!--ORDER-->', `<p><b>Commande ${esc(q.id)}</b></p><p>${esc(o.customer)} · ${esc(o.email)}<br>${esc(o.address)}<",
+          "replace": "  if (path === '/order') {\n    const o = ORDERS[q.id];\n    if (!o) return html('<h1>Commande introuvable</h1>');\n    const mc = /customer=([^;]*)/.exec(headers.cookie || '');\n    let me = '';\n    try { me = mc ? decodeURIComponent(mc[1].trim()) : ''; } catch { me = mc ? mc[1].trim() : ''; }\n    cons"
+        }
+      ],
+      "refused": [],
+      "brokenJourneys": [],
+      "testOutput": "✔ journey: browse the catalogue (1.2883ms)\n✔ journey: search an article (0.2632ms)\n✔ journey: add to cart and see the total (0.5856ms)\n✔ journey: reach the checkout and pay (0.4249ms)\n✔ journey: follow my own order (0.5189ms)\n✔ journey: log in as the administrator (0.6165ms)\n✔ journey: read the legal notice (0.2638ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 103.8644\n",
+      "scannerStillSees": null,
+      "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-4at9id"
+    }
+  ],
+  "ms": 34389
+}

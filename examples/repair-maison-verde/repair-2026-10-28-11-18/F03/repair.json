@@ -1,0 +1,109 @@
+{
+  "finding": {
+    "id": "F03",
+    "severity": "high",
+    "type": "reflected-xss",
+    "url": "http://127.0.0.1:8098/search?q=%3Cscript%3Ealert(1)%3C/script%3E",
+    "evidence": "the query is echoed unescaped inside <h1>",
+    "description": "A crafted link runs script in the visitor's browser."
+  },
+  "recommendation": {
+    "goal": "What is the recommended fix for this web security flaw: reflected-xss (A crafted link runs script in the visitor's browser. Evidence: the query is echoed unescaped inside <h1>). State the concrete fix and cite a primary source (OWASP, MDN, NIST, PCI DSS, IETF RFC, or the vendor's own advisory).",
+    "answer": "For reflected XSS echoed unescaped inside <h1>: prevent XSS using output escaping/encoding properly - HTML-entity encode untrusted query data on output (confidence 9/10, 10=certain).",
+    "sources": [
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html",
+        "contribution": "preventing XSS using output escaping / encoding properly"
+      }
+    ],
+    "score": 10,
+    "green": 1,
+    "red": 0,
+    "savedAt": "2026-10-27T21:48:03.540Z",
+    "cached": true
+  },
+  "fix": {
+    "summary": "Escape search query with esc() before echoing into HTML to prevent reflected XSS.",
+    "risk": "Search terms containing <>&\" will now display entity-encoded rather than as raw characters.",
+    "secretsMasked": 5,
+    "applied": [
+      {
+        "file": "server.js",
+        "find": "  if (path === '/search') return html(page('search.html').replace('<!--Q-->', q.q || '')); // FLAW 3 (reflected XSS): the query is echoed raw",
+        "replace": "  if (path === '/search') return html(page('search.html').replace('<!--Q-->', esc(q.q || '')));"
+      }
+    ],
+    "refused": []
+  },
+  "journeysBefore": {
+    "ok": true,
+    "pass": 7,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ journey: browse the catalogue (1.4467ms)\n✔ journey: search an article (0.3199ms)\n✔ journey: add to cart and see the total (0.6699ms)\n✔ journey: reach the checkout and pay (0.4614ms)\n✔ journey: follow my own order (0.532ms)\n✔ journey: log in as the administrator (0.4356ms)\n✔ journey: read the legal notice (0.252ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 114.97\n"
+  },
+  "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-Wv3Pgp",
+  "patch": "diff --git a/server.js b/server.js\nindex 6f1b3eb..97d0b22 100644\n--- a/server.js\n+++ b/server.js\n@@ -29,7 +29,7 @@ export function handle(method, url, body = '', headers = {}) {\n   const esc = (s) => String(s).replace(/[&<>\"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;' }[c]));\n \n   if (path === '/') return html(page('index.html').replace('<!--PRODUCTS-->', PRODUCTS.map((p) => `<div class=\"card\"><h3>${p.name}</h3><p class=\"price\">${p.price} €</p><form method=\"post\" action=\"/cart\"><input type=\"hidden\" name=\"id\" value=\"${p.id}\"><input type=\"hidden\" name=\"price\" value=\"${p.price}\"><button>Ajouter au panier</button></form></div>`).join('')));\n-  if (path === '/search') return html(page('search.html').replace('<!--Q-->', q.q || '')); // FLAW 3 (reflected XSS): the query is echoed raw\n+  if (path === '/search') return html(page('search.html').replace('<!--Q-->', esc(q.q || '')));\n   if (path === '/cart') {\n     if (method === 'POST') {\n       const p = Object.fromEntries(new URLSearchParams(body));\n",
+  "journeysAfter": {
+    "ok": true,
+    "pass": 7,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ journey: browse the catalogue (1.268ms)\n✔ journey: search an article (0.3237ms)\n✔ journey: add to cart and see the total (0.5754ms)\n✔ journey: reach the checkout and pay (0.4181ms)\n✔ journey: follow my own order (0.4891ms)\n✔ journey: log in as the administrator (0.2668ms)\n✔ journey: read the legal notice (0.2489ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 104.4782\n"
+  },
+  "rescan": {
+    "target": "http://127.0.0.1:54926",
+    "scanner": "mission-zero scan 0.1",
+    "scannedAt": "2026-10-28T11:24:05.699Z",
+    "findings": []
+  },
+  "vision": {
+    "shots": {
+      "before": [
+        {
+          "name": "home",
+          "path": "evidence\\repair-2026-10-28-11-18\\F03\\shots-before\\home.png"
+        },
+        {
+          "name": "finding",
+          "path": "evidence\\repair-2026-10-28-11-18\\F03\\shots-before\\finding.png"
+        }
+      ],
+      "after": [
+        {
+          "name": "home",
+          "path": "evidence\\repair-2026-10-28-11-18\\F03\\shots-after\\home.png"
+        },
+        {
+          "name": "finding",
+          "path": "evidence\\repair-2026-10-28-11-18\\F03\\shots-after\\finding.png"
+        }
+      ]
+    },
+    "look": {
+      "ok": true,
+      "problems": [],
+      "seen": [
+        "home: MAISON VERDE header with Boutique/Panier/Ma commande/Compte navigation",
+        "home: search form 'Rechercher un article' with Rechercher button",
+        "home: 'Nos articles' with 3 product cards Lampe Osier 89€, Vase Terracotta 45€, Plaid Lin 120€ each with Ajouter au panier",
+        "finding: header with Boutique/Panier, title 'Résultats pour : <script>alert(1)</script>' shown as text, message 'Aucun article ne correspond'"
+      ]
+    },
+    "sam": {
+      "concept": "text input field",
+      "before": 0,
+      "after": 0
+    }
+  },
+  "review": {
+    "verdict": "cause",
+    "reason": "Patch HTML-entity encodes the untrusted query with esc() on output exactly as the recommendation describes.",
+    "missing": ""
+  },
+  "status": "proposed",
+  "why": "journeys pass and the flaw is gone on the copy; a human applies it",
+  "reservations": [],
+  "attempts": [],
+  "ms": 15933
+}

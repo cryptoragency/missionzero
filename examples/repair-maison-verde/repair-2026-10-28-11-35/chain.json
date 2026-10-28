@@ -1,0 +1,156 @@
+{
+  "entries": [
+    {
+      "n": 1,
+      "file": "findings.json",
+      "fileHash": "0e4d14c3f39f422d3f343787d776ee20de9d82335e366556b322528b1dc8558d",
+      "prev": "0000000000000000000000000000000000000000000000000000000000000000",
+      "hash": "245c355c3cec1395c206ee848a73433febf0816cf65cbe3b333e3782cd5a5042",
+      "at": "2026-10-28T11:35:23.935Z",
+      "step": "input"
+    },
+    {
+      "n": 2,
+      "file": "F05/repair.json",
+      "fileHash": "fcdbc66a618816ef70a6df268431e825131dab1cbd177c21597e87e23356edbc",
+      "prev": "245c355c3cec1395c206ee848a73433febf0816cf65cbe3b333e3782cd5a5042",
+      "hash": "e7d9badc5c5414ed0144482f9051c53e766835dd1cc41da65c52a80db48475c3",
+      "at": "2026-10-28T11:37:37.285Z",
+      "finding": "F05",
+      "status": "reserved"
+    },
+    {
+      "n": 3,
+      "file": "F05/fix.patch",
+      "fileHash": "7fb3267e4c924631332c276aff0ecae54e9200cc875da8e08d002bd21240346d",
+      "prev": "e7d9badc5c5414ed0144482f9051c53e766835dd1cc41da65c52a80db48475c3",
+      "hash": "1cdec5cd60f9d1f7ddfccd81b133475c60529b9fdbad0d493508871551252c80",
+      "at": "2026-10-28T11:37:37.286Z",
+      "finding": "F05"
+    },
+    {
+      "n": 4,
+      "file": "F09/repair.json",
+      "fileHash": "b0d20b2a77af1426a3a31804adf5b85ea0164e6ef94f3b8800765257bc4b3613",
+      "prev": "1cdec5cd60f9d1f7ddfccd81b133475c60529b9fdbad0d493508871551252c80",
+      "hash": "9769739f8f73a0833e16f48c5adfc14eed1f2c56203c5e5cffd94d490d88bf02",
+      "at": "2026-10-28T11:38:51.555Z",
+      "finding": "F09",
+      "status": "reserved"
+    },
+    {
+      "n": 5,
+      "file": "F09/fix.patch",
+      "fileHash": "b149ad781b66a19d3bd1e9a7deae35d62fbfa1434726df3b04e90ab97c3cb453",
+      "prev": "9769739f8f73a0833e16f48c5adfc14eed1f2c56203c5e5cffd94d490d88bf02",
+      "hash": "a41ff8573ff6a056e2a638d24ea515e59e701ad239fe5af66021f8fd618348da",
+      "at": "2026-10-28T11:38:51.556Z",
+      "finding": "F09"
+    },
+    {
+      "n": 6,
+      "file": "F11/repair.json",
+      "fileHash": "db395304d493bc08f1bf3f60cb4453b0ecd177fd92a0f8f0a35e1789a3a5ad3e",
+      "prev": "a41ff8573ff6a056e2a638d24ea515e59e701ad239fe5af66021f8fd618348da",
+      "hash": "1670dcc4e6cec58eaa5262a15068566675d2ca4ec298fbb3114fbafb95b36f22",
+      "at": "2026-10-28T11:40:28.065Z",
+      "finding": "F11",
+      "status": "proposed"
+    },
+    {
+      "n": 7,
+      "file": "F11/fix.patch",
+      "fileHash": "33d4816f2f5fbb8b584dcd61e44cbcc08c004b20406c384e5e9a1b38860c9306",
+      "prev": "1670dcc4e6cec58eaa5262a15068566675d2ca4ec298fbb3114fbafb95b36f22",
+      "hash": "95d4d1ef76038220cffcba86ce99937ad38757ececeb9f2a71b26eed1449c903",
+      "at": "2026-10-28T11:40:28.066Z",
+      "finding": "F11"
+    },
+    {
+      "n": 8,
+      "file": "F06/repair.json",
+      "fileHash": "95de2ed63fd742f236a56b1e64bfeb632530b312429693b40e6e587f825e27da",
+      "prev": "95d4d1ef76038220cffcba86ce99937ad38757ececeb9f2a71b26eed1449c903",
+      "hash": "f7e32843a66b41237440c8a2624b4a4f2bb5d6952a7315892d4bdb1b8b608967",
+      "at": "2026-10-28T11:40:52.958Z",
+      "finding": "F06",
+      "status": "proposed"
+    },
+    {
+      "n": 9,
+      "file": "F06/fix.patch",
+      "fileHash": "6890081b79314e360097f08992fd588515b7593e19cd14350d15bece2e29fffa",
+      "prev": "f7e32843a66b41237440c8a2624b4a4f2bb5d6952a7315892d4bdb1b8b608967",
+      "hash": "1770a0a3a1098e251358e3b81f56ea5acad927a0c9bbfd24c7f620e8a24c86a9",
+      "at": "2026-10-28T11:40:52.961Z",
+      "finding": "F06"
+    },
+    {
+      "n": 10,
+      "file": "F12/repair.json",
+      "fileHash": "644d0577fe85db4aa057ec02745e23e2f6c829628d6ba914a0b8e9c6ce9c847e",
+      "prev": "1770a0a3a1098e251358e3b81f56ea5acad927a0c9bbfd24c7f620e8a24c86a9",
+      "hash": "3f56f796a7d6746ee95587c1805b5427bec974c4067de45520c0268567d4153d",
+      "at": "2026-10-28T11:42:40.182Z",
+      "finding": "F12",
+      "status": "reserved"
+    },
+    {
+      "n": 11,
+      "file": "F12/fix.patch",
+      "fileHash": "c5528c571d0ee6654d7f9a00beb85631c02e238d8b558b41c087e1541468d6c2",
+      "prev": "3f56f796a7d6746ee95587c1805b5427bec974c4067de45520c0268567d4153d",
+      "hash": "cbda1a694d36c964ca33a2f4a90ed1ea8710dd4f5bc53e10c486e2c299da4d84",
+      "at": "2026-10-28T11:42:40.184Z",
+      "finding": "F12"
+    },
+    {
+      "n": 12,
+      "file": "F15/repair.json",
+      "fileHash": "958f05a249086c078c0c402f868677a6e1495a3c1d25fe189d92cd43d03bb50e",
+      "prev": "cbda1a694d36c964ca33a2f4a90ed1ea8710dd4f5bc53e10c486e2c299da4d84",
+      "hash": "f703a3fa7ccdb1894aa02adc4d353615346ce9b6d6e75a61ccf53894c01b5cad",
+      "at": "2026-10-28T11:44:09.227Z",
+      "finding": "F15",
+      "status": "proposed"
+    },
+    {
+      "n": 13,
+      "file": "F15/fix.patch",
+      "fileHash": "0cc15b2c1e48dbbb9375454aafa7e000c98b743fbe002ce6d6314940a08ecf63",
+      "prev": "f703a3fa7ccdb1894aa02adc4d353615346ce9b6d6e75a61ccf53894c01b5cad",
+      "hash": "caa169f41e2c5a36a3cca5fc9ae28a4486a3c125860c1bc229002615e76aec86",
+      "at": "2026-10-28T11:44:09.229Z",
+      "finding": "F15"
+    },
+    {
+      "n": 14,
+      "file": "F02/repair.json",
+      "fileHash": "957273d3a08b983300d7f22d44deef3de48dd6b483fa31b42d1dd74454248266",
+      "prev": "caa169f41e2c5a36a3cca5fc9ae28a4486a3c125860c1bc229002615e76aec86",
+      "hash": "c8db5f9259bffb2b355878b48de832a76adf365c0566d89982f900fcf4630281",
+      "at": "2026-10-28T11:45:44.118Z",
+      "finding": "F02",
+      "status": "reserved"
+    },
+    {
+      "n": 15,
+      "file": "F02/fix.patch",
+      "fileHash": "dfd619313be5d9cc8ce5548d511eac76823fe9656a46c01bdc2d09962b26d517",
+      "prev": "c8db5f9259bffb2b355878b48de832a76adf365c0566d89982f900fcf4630281",
+      "hash": "bd2935ef9c83ec5884e5981e45f2541d194cd6befbb9ede3650622561d555d10",
+      "at": "2026-10-28T11:45:44.119Z",
+      "finding": "F02"
+    },
+    {
+      "n": 16,
+      "file": "report.json",
+      "fileHash": "9934f68d61568c96df95a46676b462715081c591cdfa9aba14130af0def25c8a",
+      "prev": "bd2935ef9c83ec5884e5981e45f2541d194cd6befbb9ede3650622561d555d10",
+      "hash": "a018e0f5a85a5bc3b9977166c4bace97862128960a6e8d152d8732b4059a07ca",
+      "at": "2026-10-28T11:45:44.124Z",
+      "step": "report"
+    }
+  ],
+  "head": "a018e0f5a85a5bc3b9977166c4bace97862128960a6e8d152d8732b4059a07ca"
+}

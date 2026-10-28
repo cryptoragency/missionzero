@@ -1,0 +1,138 @@
+{
+  "finding": {
+    "id": "F08",
+    "severity": "medium",
+    "type": "insecure-cookie",
+    "url": "http://127.0.0.1:8098/login",
+    "evidence": "Set-Cookie: session=admin-7c9e; Path=/ (no HttpOnly, Secure, SameSite)",
+    "description": "The session cookie can be read by script and sent cross-site."
+  },
+  "recommendation": {
+    "goal": "What is the recommended fix for this web security flaw: insecure-cookie (The session cookie can be read by script and sent cross-site. Evidence: Set-Cookie: session=admin-7c9e; Path=/ (no HttpOnly, Secure, SameSite)). State the concrete fix and cite a primary source (OWASP, MDN, NIST, PCI DSS, IETF RFC, or the vendor's own advisory).",
+    "answer": "Concrete fix: change session Set-Cookie to include all three attributes and serve only over HTTPS: Set-Cookie: session=<value>; Path=/; Secure; HttpOnly; SameSite=Strict (use SameSite=Lax only if Strict breaks top-level navigation). OWASP WSTG defines the most secure form as __Host-SID with path=/; Secure; HttpOnly; SameSite=Strict.",
+    "sources": [
+      {
+        "url": "https://community.owasp.org/HttpOnly",
+        "contribution": "HttpOnly is an extra attribute that can be added to the Set-Cookie HTTP response header"
+      },
+      {
+        "url": "https://community.owasp.org/controls/SecureCookieAttribute",
+        "contribution": "The purpose of the secure attribute is to prevent cookies from being observed by unauthorized parties due to the transmission of the cookie in clear text"
+      },
+      {
+        "url": "https://wstg.owasp.org/v4.2/4-Web_Application_Security_Testing/06-Session_Management_Testing/02-Testing_for_Cookies_Attributes/",
+        "contribution": "the most secure cookie attribute configuration includes SameSite=Strict"
+      }
+    ],
+    "score": 8,
+    "green": 3,
+    "red": 0,
+    "verification": [
+      {
+        "url": "https://community.owasp.org/HttpOnly",
+        "claim": "HttpOnly is an extra attribute that can be added to the Set-Cookie HTTP response header",
+        "verdict": "supported",
+        "detail": "HttpOnly is an extra attribute that can be added to the Set-Cookie HTTP response header."
+      },
+      {
+        "url": "https://community.owasp.org/controls/SecureCookieAttribute",
+        "claim": "The purpose of the secure attribute is to prevent cookies from being observed by unauthorized parties due to the transmission of the cookie in clear text",
+        "verdict": "supported",
+        "detail": "The purpose of the secure attribute is to prevent cookies from being observed by unauthorized parties due to the transmission of the cookie in clear text."
+      },
+      {
+        "url": "https://wstg.owasp.org/v4.2/4-Web_Application_Security_Testing/06-Session_Management_Testing/02-Testing_for_Cookies_Attributes/",
+        "claim": "the most secure cookie attribute configuration includes SameSite=Strict",
+        "verdict": "supported",
+        "detail": "Putting all this together, we can define the most secure cookie attribute configuration as: Set-Cookie: __Host-SID=&lt;session token&gt;; path=/; Secure; HttpOnly; SameSite=Strict ."
+      }
+    ],
+    "savedAt": "2026-10-28T08:06:38.145Z",
+    "cached": true
+  },
+  "fix": {
+    "summary": "Add HttpOnly, Secure and SameSite=Strict to the session cookie.",
+    "risk": "Secure cookies need HTTPS to be sent by browsers and Strict may block top-level cross-site navigation.",
+    "secretsMasked": 5,
+    "applied": [
+      {
+        "file": "server.js",
+        "find": "'set-cookie': 'session=admin-7c9e; Path=/'",
+        "replace": "'set-cookie': 'session=admin-7c9e; Path=/; HttpOnly; Secure; SameSite=Strict'"
+      }
+    ],
+    "refused": []
+  },
+  "journeysBefore": {
+    "ok": true,
+    "pass": 7,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ journey: browse the catalogue (1.3428ms)\n✔ journey: search an article (0.2766ms)\n✔ journey: add to cart and see the total (0.6094ms)\n✔ journey: reach the checkout and pay (0.437ms)\n✔ journey: follow my own order (0.5197ms)\n✔ journey: log in as the administrator (0.2874ms)\n✔ journey: read the legal notice (0.233ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 110.4423\n"
+  },
+  "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-zwjsg9",
+  "patch": "diff --git a/server.js b/server.js\nindex 6f1b3eb..3e17d93 100644\n--- a/server.js\n+++ b/server.js\n@@ -58,7 +58,7 @@ export function handle(method, url, body = '', headers = {}) {\n     if (method === 'POST') {\n       const p = Object.fromEntries(new URLSearchParams(body));\n       // FLAW 7 (authentication): hard-coded password, no rate limit, verbose error that confirms the username.\n-      if (p.user === 'admin' && p.password === 'maisonverde2019') return [302, { location: '/admin', 'set-cookie': 'session=admin-7c9e; Path=/' }, '']; // FLAW 8 (cookie): no HttpOnly, Secure or SameSite\n+      if (p.user === 'admin' && p.password === 'maisonverde2019') return [302, { location: '/admin', 'set-cookie': 'session=admin-7c9e; Path=/; HttpOnly; Secure; SameSite=Strict' }, '']; // FLAW 8 (cookie): no HttpOnly, Secure or SameSite\n       return html(page('login.html').replace('<!--ERR-->', p.user === 'admin' ? '<p class=\"err\">Mot de passe incorrect pour admin.</p>' : '<p class=\"err\">Utilisateur inconnu.</p>'));\n     }\n     return html(page('login.html'));\n",
+  "journeysAfter": {
+    "ok": true,
+    "pass": 7,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ journey: browse the catalogue (1.3622ms)\n✔ journey: search an article (0.2799ms)\n✔ journey: add to cart and see the total (0.6235ms)\n✔ journey: reach the checkout and pay (0.4406ms)\n✔ journey: follow my own order (0.6944ms)\n✔ journey: log in as the administrator (0.3313ms)\n✔ journey: read the legal notice (0.2809ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 107.0359\n"
+  },
+  "rescan": {
+    "target": "http://127.0.0.1:64305",
+    "scanner": "mission-zero scan 0.1",
+    "scannedAt": "2026-10-28T11:28:03.560Z",
+    "findings": []
+  },
+  "vision": {
+    "shots": {
+      "before": [
+        {
+          "name": "home",
+          "path": "evidence\\repair-2026-10-28-11-18\\F08\\shots-before\\home.png"
+        },
+        {
+          "name": "finding",
+          "path": "evidence\\repair-2026-10-28-11-18\\F08\\shots-before\\finding.png"
+        }
+      ],
+      "after": [
+        {
+          "name": "home",
+          "path": "evidence\\repair-2026-10-28-11-18\\F08\\shots-after\\home.png"
+        },
+        {
+          "name": "finding",
+          "path": "evidence\\repair-2026-10-28-11-18\\F08\\shots-after\\finding.png"
+        }
+      ]
+    },
+    "look": {
+      "ok": true,
+      "problems": [],
+      "seen": [
+        "header MAISON VERDE with navigation Boutique/Panier/Ma commande/Compte on home, Boutique on login",
+        "home headline Décoration naturelle with search input and Rechercher button",
+        "Nos articles with 3 product cards Lampe Osier 89€, Vase Terracotta 45€, Plaid Lin 120€ each with Ajouter au panier",
+        "Connexion page with Utilisateur and Mot de passe inputs and Se connecter button",
+        "no blank, error, stack trace or raw code visible"
+      ]
+    },
+    "sam": {
+      "concept": "text input field",
+      "before": 2,
+      "after": 2
+    }
+  },
+  "review": {
+    "verdict": "cause",
+    "reason": "Patch adds HttpOnly; Secure; SameSite=Strict to session Set-Cookie exactly as recommended.",
+    "missing": ""
+  },
+  "status": "proposed",
+  "why": "journeys pass and the flaw is gone on the copy; a human applies it",
+  "reservations": [],
+  "attempts": [],
+  "ms": 22137
+}

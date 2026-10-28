@@ -1,0 +1,22 @@
+diff --git a/server.js b/server.js
+index 6f1b3eb..c4fb709 100644
+--- a/server.js
++++ b/server.js
+@@ -47,7 +47,7 @@ export function handle(method, url, body = '', headers = {}) {
+       const id = 1004; ORDERS[id] = { customer: p.name || '', email: p.email || '', address: p.address || '', total: cart.reduce((a, c) => a + c.price, 0), card: '**** **** **** ' + String(p.card || '').slice(-4) };
+       return html(page('checkout.html').replace('<!--DONE-->', `<p class="ok">Commande n° ${id} enregistrée pour ${p.name || ''}. Carte ${p.card || ''}. <a href="/order?id=${id}">Suivre ma commande</a></p>`), { 'set-cookie': `customer=${encodeURIComponent(p.email || '')}; Path=/` }); // FLAW 3 again, and the card number echoed
+     }
+-    return html(page('checkout.html'));
++    return html(page('checkout.html') + `<p class="privacy-notice">Données collectées : nom, e-mail, adresse et carte bancaire pour traiter votre commande (exécution du contrat). Conservation 3 ans. Vos droits : accès, rectification, effacement via privacy@example.org. <a href="/mentions-legales#confidentialite">Politique de confidentialité</a></p>`);
+   }
+   if (path === '/order') {
+     // FLAW 6 (IDOR): any order is readable by changing its number, no login needed.
+@@ -74,7 +74,7 @@ export function handle(method, url, body = '', headers = {}) {
+   if (path === '/backup/wp-config.php.bak') return [200, { 'content-type': 'text/plain' }, "<?php\ndefine('DB_PASSWORD', 'Verde2019!');\ndefine('AUTH_KEY', 'example-not-real');\n"];
+   if (path === '/export/customers.csv') return [200, { 'content-type': 'text/csv' }, 'name,email,phone\nMarie Dupont,marie.dupont@example.org,0600000000\nKarim Benali,k.benali@example.org,0611111111\n']; // FLAW 13: customer export without authentication (GDPR)
+   if (path === '/js/jquery-1.8.3.min.js') return [200, { 'content-type': 'application/javascript' }, '/*! jQuery v1.8.3 jquery.com | jquery.org/license */ window.jQuery=window.$=function(){};']; // FLAW 14: outdated library (CVE-2020-11022, CVE-2020-11023)
+-  if (path === '/mentions-legales') return html(page('mentions.html')); // FLAW 15 (compliance): no privacy policy, no cookie notice, personal data collected without information
++  if (path === '/mentions-legales') return html(page('mentions.html') + `<section id="confidentialite"><h2>Politique de confidentialité</h2><p>Données collectées au moment de la commande : nom, adresse e-mail, adresse postale et informations de paiement (carte masquée).</p><p>Finalités et base légale : traitement de la commande et livraison (exécution du contrat), facturation (obligation légale).</p><p>Conservation : 3 ans pour les commandes, puis archivage légal.</p><p>Partage : aucun tiers sauf prestataires de livraison et de paiement.</p><p>Vos droits : accès, rectification, effacement, opposition et portabilité. Contact : privacy@example.org.</p><p><a href="/mentions-legales#confidentialite">Politique de confidentialité</a></p></section>`);
+   if (path === '/style.css') return [200, { 'content-type': 'text/css' }, page('style.css')];
+   return [404, { 'content-type': 'text/html; charset=utf-8' }, '<h1>404</h1><p>Page introuvable : ' + path + '</p>']; // FLAW 3 again: the path is reflected
+ }

@@ -1,0 +1,22 @@
+diff --git a/server.js b/server.js
+index 6f1b3eb..83194ef 100644
+--- a/server.js
++++ b/server.js
+@@ -47,7 +47,7 @@ export function handle(method, url, body = '', headers = {}) {
+       const id = 1004; ORDERS[id] = { customer: p.name || '', email: p.email || '', address: p.address || '', total: cart.reduce((a, c) => a + c.price, 0), card: '**** **** **** ' + String(p.card || '').slice(-4) };
+       return html(page('checkout.html').replace('<!--DONE-->', `<p class="ok">Commande n° ${id} enregistrée pour ${p.name || ''}. Carte ${p.card || ''}. <a href="/order?id=${id}">Suivre ma commande</a></p>`), { 'set-cookie': `customer=${encodeURIComponent(p.email || '')}; Path=/` }); // FLAW 3 again, and the card number echoed
+     }
+-    return html(page('checkout.html'));
++    return html(page('checkout.html') + `<p class="privacy-notice">Donnees personnelles : nom, email, adresse et carte collectes uniquement pour traiter et suivre votre commande. Conservation limitee a la gestion des commandes, sans partage.</p>`);
+   }
+   if (path === '/order') {
+     // FLAW 6 (IDOR): any order is readable by changing its number, no login needed.
+@@ -74,7 +74,7 @@ export function handle(method, url, body = '', headers = {}) {
+   if (path === '/backup/wp-config.php.bak') return [200, { 'content-type': 'text/plain' }, "<?php\ndefine('DB_PASSWORD', 'Verde2019!');\ndefine('AUTH_KEY', 'example-not-real');\n"];
+   if (path === '/export/customers.csv') return [200, { 'content-type': 'text/csv' }, 'name,email,phone\nMarie Dupont,marie.dupont@example.org,0600000000\nKarim Benali,k.benali@example.org,0611111111\n']; // FLAW 13: customer export without authentication (GDPR)
+   if (path === '/js/jquery-1.8.3.min.js') return [200, { 'content-type': 'application/javascript' }, '/*! jQuery v1.8.3 jquery.com | jquery.org/license */ window.jQuery=window.$=function(){};']; // FLAW 14: outdated library (CVE-2020-11022, CVE-2020-11023)
+-  if (path === '/mentions-legales') return html(page('mentions.html')); // FLAW 15 (compliance): no privacy policy, no cookie notice, personal data collected without information
++  if (path === '/mentions-legales') return html(page('mentions.html') + `<section><h2>Politique de confidentialite</h2><p>Donnees collectees via le formulaire de commande : nom, email, adresse et carte (4 derniers chiffres). Finalite : traitement et suivi de votre commande. Utilisation : gestion des commandes uniquement.</p></section>`); // privacy policy added
+   if (path === '/style.css') return [200, { 'content-type': 'text/css' }, page('style.css')];
+   return [404, { 'content-type': 'text/html; charset=utf-8' }, '<h1>404</h1><p>Page introuvable : ' + path + '</p>']; // FLAW 3 again: the path is reflected
+ }

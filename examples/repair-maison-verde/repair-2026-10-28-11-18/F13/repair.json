@@ -1,0 +1,91 @@
+{
+  "finding": {
+    "id": "F13",
+    "severity": "critical",
+    "type": "personal-data-exposed",
+    "url": "http://127.0.0.1:8098/export/customers.csv",
+    "evidence": "names, e-mails and phone numbers returned without authentication",
+    "description": "Customer personal data is public: a GDPR breach."
+  },
+  "recommendation": {
+    "goal": "What is the recommended fix for this web security flaw: personal-data-exposed (Customer personal data is public: a GDPR breach. Evidence: names, e-mails and phone numbers returned without authentication). State the concrete fix and cite a primary source (OWASP, MDN, NIST, PCI DSS, IETF RFC, or the vendor's own advisory).",
+    "answer": "Recommended fix: Require authentication (a valid authenticated session) before exposing private account data such as names, e-mails and phone numbers, and perform access control at each API endpoint using user authentication, authorization logic and session management. Unauthenticated requests must not return customer PII.",
+    "sources": [
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html",
+        "contribution": "Require authentication or a valid authenticated session before exposing private account data"
+      },
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/REST_Security_Cheat_Sheet.html",
+        "contribution": "Non-public REST services must perform access control at each API endpoint"
+      }
+    ],
+    "score": 10,
+    "green": 2,
+    "red": 0,
+    "verification": [
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html",
+        "claim": "Require authentication or a valid authenticated session before exposing private account data",
+        "verdict": "supported",
+        "detail": "Require authentication or a valid authenticated session before exposing private account data."
+      },
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/REST_Security_Cheat_Sheet.html",
+        "claim": "Non-public REST services must perform access control at each API endpoint",
+        "verdict": "supported",
+        "detail": "Non-public REST services must perform access control at each API endpoint."
+      }
+    ],
+    "savedAt": "2026-10-28T08:01:40.552Z",
+    "cached": true
+  },
+  "fix": {
+    "summary": "Require valid admin session before serving customers.csv, redirecting unauthenticated requests to login.",
+    "risk": "Unauthenticated export requests now redirect instead of returning CSV; no journey uses this endpoint.",
+    "secretsMasked": 5,
+    "applied": [
+      {
+        "file": "server.js",
+        "find": "  if (path === '/export/customers.csv') return [200, { 'content-type': 'text/csv' }, 'name,email,phone\\nMarie Dupont,marie.dupont@example.org,0600000000\\nKarim Benali,k.benali@example.org,0611111111\\n']; // FLAW 13: customer export without authentication (GDPR)",
+        "replace": "  if (path === '/export/customers.csv') { if (!/session=admin-7c9e/.test(headers.cookie || '')) return [302, { location: '/login' }, '']; return [200, { 'content-type': 'text/csv' }, 'name,email,phone\\nMarie Dupont,marie.dupont@example.org,0600000000\\nKarim Benali,k.benali@example.org,0611111111\\n']; }"
+      }
+    ],
+    "refused": []
+  },
+  "journeysBefore": {
+    "ok": true,
+    "pass": 7,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ journey: browse the catalogue (1.3704ms)\n✔ journey: search an article (0.289ms)\n✔ journey: add to cart and see the total (0.6034ms)\n✔ journey: reach the checkout and pay (0.4852ms)\n✔ journey: follow my own order (0.5043ms)\n✔ journey: log in as the administrator (0.296ms)\n✔ journey: read the legal notice (0.2323ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 116.0169\n"
+  },
+  "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-JWSY8m",
+  "patch": "diff --git a/server.js b/server.js\nindex 6f1b3eb..7fb41c6 100644\n--- a/server.js\n+++ b/server.js\n@@ -72,7 +72,7 @@ export function handle(method, url, body = '', headers = {}) {\n   if (path === '/.env') return [200, { 'content-type': 'text/plain' }, 'DB_HOST=localhost\\nDB_USER=shop\\nDB_PASSWORD=Verde2019!\\nSMTP_PASSWORD=jardin\\nSTRIPE_SECRET=sk_live_EXAMPLE_NOT_REAL\\n']; // FLAW 11: secrets served to anyone\n   if (path === '/backup/') return html('<h1>Index of /backup/</h1><ul><li><a href=\"/backup/wp-config.php.bak\">wp-config.php.bak</a></li><li><a href=\"/backup/shop-2024-03-01.sql\">shop-2024-03-01.sql</a></li></ul>'); // FLAW 12: directory listing with backups\n   if (path === '/backup/wp-config.php.bak') return [200, { 'content-type': 'text/plain' }, \"<?php\\ndefine('DB_PASSWORD', 'Verde2019!');\\ndefine('AUTH_KEY', 'example-not-real');\\n\"];\n-  if (path === '/export/customers.csv') return [200, { 'content-type': 'text/csv' }, 'name,email,phone\\nMarie Dupont,marie.dupont@example.org,0600000000\\nKarim Benali,k.benali@example.org,0611111111\\n']; // FLAW 13: customer export without authentication (GDPR)\n+  if (path === '/export/customers.csv') { if (!/session=admin-7c9e/.test(headers.cookie || '')) return [302, { location: '/login' }, '']; return [200, { 'content-type': 'text/csv' }, 'name,email,phone\\nMarie Dupont,marie.dupont@example.org,0600000000\\nKarim Benali,k.benali@example.org,0611111111\\n']; }\n   if (path === '/js/jquery-1.8.3.min.js') return [200, { 'content-type': 'application/javascript' }, '/*! jQuery v1.8.3 jquery.com | jquery.org/license */ window.jQuery=window.$=function(){};']; // FLAW 14: outdated library (CVE-2020-11022, CVE-2020-11023)\n   if (path === '/mentions-legales') return html(page('mentions.html')); // FLAW 15 (compliance): no privacy policy, no cookie notice, personal data collected without information\n   if (path === '/style.css') return [200, { 'content-type': 'text/css' }, page('style.css')];\n",
+  "journeysAfter": {
+    "ok": true,
+    "pass": 7,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ journey: browse the catalogue (1.8952ms)\n✔ journey: search an article (0.3935ms)\n✔ journey: add to cart and see the total (0.8286ms)\n✔ journey: reach the checkout and pay (0.7582ms)\n✔ journey: follow my own order (0.5438ms)\n✔ journey: log in as the administrator (0.3679ms)\n✔ journey: read the legal notice (0.2826ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 115.2391\n"
+  },
+  "rescan": {
+    "target": "http://127.0.0.1:52880",
+    "scanner": "mission-zero scan 0.1",
+    "scannedAt": "2026-10-28T11:23:57.195Z",
+    "findings": []
+  },
+  "vision": {
+    "error": "page.goto: Download is starting\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:52882/export/customers.csv\", waiting until \"load\"\u001b[22m\n"
+  },
+  "review": {
+    "verdict": "cause",
+    "reason": "Patch requires valid admin session cookie and redirects unauthenticated requests to login instead of returning PII.",
+    "missing": ""
+  },
+  "status": "proposed",
+  "why": "journeys pass and the flaw is gone on the copy; a human applies it",
+  "reservations": [],
+  "attempts": [],
+  "ms": 8540
+}

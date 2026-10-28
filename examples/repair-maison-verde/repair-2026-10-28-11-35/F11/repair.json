@@ -1,0 +1,136 @@
+{
+  "finding": {
+    "id": "F11",
+    "severity": "critical",
+    "type": "exposed-secrets",
+    "url": "http://127.0.0.1:8098/.env",
+    "evidence": "DB_PASSWORD, SMTP_PASSWORD and STRIPE_SECRET returned with HTTP 200",
+    "description": "Database, mail and payment secrets are public."
+  },
+  "recommendation": {
+    "goal": "What is the recommended fix for this web security flaw: exposed-secrets (Database, mail and payment secrets are public. Evidence: DB_PASSWORD, SMTP_PASSWORD and STRIPE_SECRET returned with HTTP 200). State the concrete fix and cite a primary source (OWASP, MDN, NIST, PCI DSS, IETF RFC, or the vendor's own advisory).",
+    "answer": "Recommended fix for exposed DB_PASSWORD, SMTP_PASSWORD and STRIPE_SECRET returned with HTTP 200: immediately stop returning secrets in API responses. Remove those fields from the response body, enforce server-side field selection to control data exposure, keep Database, mail and payment secrets server-side only in env/vault, and rotate all exposed credentials. Per OWASP WSTG, APIs must not rely on client-side filtering.",
+    "sources": [
+      {
+        "url": "https://wstg.owasp.org/latest/4-Web_Application_Security_Testing/12-API_Testing/03-Excessive_Data_Exposure/",
+        "contribution": "Detect sensitive fields returned in API responses such as password hashes, authentication tokens, internal object IDs, PII, or infrastructure details."
+      },
+      {
+        "url": "https://wstg.owasp.org/latest/4-Web_Application_Security_Testing/12-API_Testing/03-Excessive_Data_Exposure/",
+        "contribution": "Determine whether the API relies on client-side filtering rather than server-side field selection to control data exposure."
+      },
+      {
+        "url": "https://devguide.owasp.org/en/04-design/02-web-app-checklist/08-protect-data/",
+        "contribution": "Protect Data Everywhere"
+      }
+    ],
+    "score": 7,
+    "green": 3,
+    "red": 0,
+    "verification": [
+      {
+        "url": "https://wstg.owasp.org/latest/4-Web_Application_Security_Testing/12-API_Testing/03-Excessive_Data_Exposure/",
+        "claim": "Detect sensitive fields returned in API responses such as password hashes, authentication tokens, internal object IDs, PII, or infrastructure details.",
+        "verdict": "supported",
+        "detail": "Detect sensitive fields returned in API responses such as password hashes, authentication tokens, internal object IDs, PII, or infrastructure details."
+      },
+      {
+        "url": "https://wstg.owasp.org/latest/4-Web_Application_Security_Testing/12-API_Testing/03-Excessive_Data_Exposure/",
+        "claim": "Determine whether the API relies on client-side filtering rather than server-side field selection to control data exposure.",
+        "verdict": "supported",
+        "detail": "This commonly happens when developers implement API endpoints by serializing entire backend objects (such as database models or internal data structures) directly into API responses, relying on the client-side code to filter out sensitive fields before presenting them to the user."
+      },
+      {
+        "url": "https://devguide.owasp.org/en/04-design/02-web-app-checklist/08-protect-data/",
+        "claim": "Protect Data Everywhere",
+        "verdict": "supported",
+        "detail": "Protect Data Everywhere - OWASP Developer Guide Skip to content Requirements Design Web application checklist Implement Security Logging and Monitoring Handle all Errors and Exceptions MAS checklist Implementation Dependencies Secure Libraries MASWE Static Analysis Verification Tools Frameworks Vulnerability management Training and Education Secure Coding Dojo SKF SamuraiWTF OWASP Top 10 Mobile To"
+      }
+    ]
+  },
+  "fix": {
+    "summary": "Blocked /.env to return 404 instead of secrets.",
+    "risk": "Requests to /.env now get 404; no journey uses that path.",
+    "secretsMasked": 5,
+    "applied": [
+      {
+        "file": "server.js",
+        "find": "if (path === '/.env')",
+        "replace": "if (path === '/.env') return [404, { 'content-type': 'text/plain' }, 'Not found']; //"
+      }
+    ],
+    "refused": []
+  },
+  "journeysBefore": {
+    "ok": true,
+    "pass": 7,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ journey: browse the catalogue (1.2648ms)\n✔ journey: search an article (0.2658ms)\n✔ journey: add to cart and see the total (0.589ms)\n✔ journey: reach the checkout and pay (0.4379ms)\n✔ journey: follow my own order (0.4786ms)\n✔ journey: log in as the administrator (0.2749ms)\n✔ journey: read the legal notice (0.2191ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 106.0449\n"
+  },
+  "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-kRr4rL",
+  "patch": "diff --git a/server.js b/server.js\nindex 6f1b3eb..3db8e9b 100644\n--- a/server.js\n+++ b/server.js\n@@ -69,7 +69,7 @@ export function handle(method, url, body = '', headers = {}) {\n     return [302, { location: '/login' }, ''];\n   }\n   if (path === '/robots.txt') return [200, { 'content-type': 'text/plain' }, 'User-agent: *\\nDisallow: /admin\\nDisallow: /backup/\\nDisallow: /.env\\nDisallow: /export/\\n']; // FLAW 10: robots.txt advertises the sensitive paths\n-  if (path === '/.env') return [200, { 'content-type': 'text/plain' }, 'DB_HOST=localhost\\nDB_USER=shop\\nDB_PASSWORD=Verde2019!\\nSMTP_PASSWORD=jardin\\nSTRIPE_SECRET=sk_live_EXAMPLE_NOT_REAL\\n']; // FLAW 11: secrets served to anyone\n+  if (path === '/.env') return [404, { 'content-type': 'text/plain' }, 'Not found']; // return [200, { 'content-type': 'text/plain' }, 'DB_HOST=localhost\\nDB_USER=shop\\nDB_PASSWORD=Verde2019!\\nSMTP_PASSWORD=jardin\\nSTRIPE_SECRET=sk_live_EXAMPLE_NOT_REAL\\n']; // FLAW 11: secrets served to anyone\n   if (path === '/backup/') return html('<h1>Index of /backup/</h1><ul><li><a href=\"/backup/wp-config.php.bak\">wp-config.php.bak</a></li><li><a href=\"/backup/shop-2024-03-01.sql\">shop-2024-03-01.sql</a></li></ul>'); // FLAW 12: directory listing with backups\n   if (path === '/backup/wp-config.php.bak') return [200, { 'content-type': 'text/plain' }, \"<?php\\ndefine('DB_PASSWORD', 'Verde2019!');\\ndefine('AUTH_KEY', 'example-not-real');\\n\"];\n   if (path === '/export/customers.csv') return [200, { 'content-type': 'text/csv' }, 'name,email,phone\\nMarie Dupont,marie.dupont@example.org,0600000000\\nKarim Benali,k.benali@example.org,0611111111\\n']; // FLAW 13: customer export without authentication (GDPR)\n",
+  "journeysAfter": {
+    "ok": true,
+    "pass": 7,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ journey: browse the catalogue (1.2445ms)\n✔ journey: search an article (0.4069ms)\n✔ journey: add to cart and see the total (0.6292ms)\n✔ journey: reach the checkout and pay (0.4255ms)\n✔ journey: follow my own order (0.4821ms)\n✔ journey: log in as the administrator (0.271ms)\n✔ journey: read the legal notice (0.2217ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 106.2846\n"
+  },
+  "rescan": {
+    "target": "http://127.0.0.1:55626",
+    "scanner": "mission-zero scan 0.1",
+    "scannedAt": "2026-10-28T11:40:13.494Z",
+    "findings": []
+  },
+  "vision": {
+    "shots": {
+      "before": [
+        {
+          "name": "home",
+          "path": "evidence\\repair-2026-10-28-11-35\\F11\\shots-before\\home.png"
+        },
+        {
+          "name": "finding",
+          "path": "evidence\\repair-2026-10-28-11-35\\F11\\shots-before\\finding.png"
+        }
+      ],
+      "after": [
+        {
+          "name": "home",
+          "path": "evidence\\repair-2026-10-28-11-35\\F11\\shots-after\\home.png"
+        },
+        {
+          "name": "finding",
+          "path": "evidence\\repair-2026-10-28-11-35\\F11\\shots-after\\finding.png"
+        }
+      ]
+    },
+    "look": {
+      "ok": true,
+      "unreadable": false,
+      "problems": [],
+      "seen": [
+        "MAISON VERDE nav",
+        "search form",
+        "3 product cards",
+        "finding says Not found"
+      ]
+    },
+    "sam": {
+      "concept": "text input field",
+      "before": 0,
+      "after": 0
+    }
+  },
+  "review": {
+    "verdict": "cause",
+    "reason": "Patch stops serving secrets at /.env by returning 404 instead of 200 with passwords, removing server-side exposure.",
+    "missing": ""
+  },
+  "status": "proposed",
+  "why": "journeys pass and the flaw is gone on the copy; a human applies it",
+  "reservations": [],
+  "attempts": [],
+  "ms": 96506
+}

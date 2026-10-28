@@ -71,14 +71,14 @@
     "cached": true
   },
   "fix": {
-    "summary": "Add HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy and CSP frame-ancestors headers to HTML responses.",
-    "risk": "Overly restrictive CSP could block legitimate inline scripts or styles in browsers if the pages rely on them.",
+    "summary": "Wrap handle to add HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy and CSP frame-ancestors headers to every response.",
+    "risk": "Strict CSP default-src 'self' could block inline scripts/styles if pages rely on them.",
     "secretsMasked": 5,
     "applied": [
       {
         "file": "server.js",
-        "find": "  const html = (b, extra = {}) => [200, { 'content-type': 'text/html; charset=utf-8', server: 'Apache/2.4.29 (Ubuntu) PHP/7.2.24', 'x-powered-by': 'PHP/7.2.24 WooCommerce/3.5.1', ...extra }, b];",
-        "replace": "  const html = (b, extra = {}) => [200, { 'content-type': 'text/html; charset=utf-8', server: 'Apache/2.4.29 (Ubuntu) PHP/7.2.24', 'x-powered-by': 'PHP/7.2.24 WooCommerce/3.5.1', ...extra, 'strict-transport-security': 'max-age=63072000; includeSubDomains; preload', 'x-frame-options': 'DENY', 'x-content-type-options': 'nosniff', 'referrer-policy': 'strict-origin-when-cross-origin', 'content-security-policy': \"default-src 'self'; frame-ancestors 'none'\" }, b];"
+        "find": "export function handle(method, url, body = '', headers = {}) {\n  const [path, qs = ''] = url.split('?');",
+        "replace": "const SEC = { 'strict-transport-security': 'max-age=63072000; includeSubDomains; preload', 'x-frame-options': 'DENY', 'x-content-type-options': 'nosniff', 'referrer-policy': 'strict-origin-when-cross-origin', 'content-security-policy': \"default-src 'self'; frame-ancestors 'none'\" };\nexport function handle(method, url, body = '', headers = {}) {\n  const [code, h, b] = handleInner(method, url, body, headers);\n  return [code, { ...SEC, ...h }, b];\n}\nexport function handleInner(method, url, body = '', headers = {}) {\n  const [path, qs = ''] = url.split('?');"
       }
     ],
     "refused": []
@@ -88,25 +88,70 @@
     "pass": 7,
     "fail": 0,
     "broken": [],
-    "output": "✔ journey: browse the catalogue (1.2443ms)\n✔ journey: search an article (0.2645ms)\n✔ journey: add to cart and see the total (0.5724ms)\n✔ journey: reach the checkout and pay (0.4289ms)\n✔ journey: follow my own order (0.4779ms)\n✔ journey: log in as the administrator (0.2725ms)\n✔ journey: read the legal notice (0.251ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 99.9545\n"
+    "output": "✔ journey: browse the catalogue (1.2648ms)\n✔ journey: search an article (0.2621ms)\n✔ journey: add to cart and see the total (0.611ms)\n✔ journey: reach the checkout and pay (0.4288ms)\n✔ journey: follow my own order (0.4747ms)\n✔ journey: log in as the administrator (0.2999ms)\n✔ journey: read the legal notice (0.2486ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 101.189\n"
   },
-  "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-ACG7lq",
-  "patch": "diff --git a/server.js b/server.js\nindex 6f1b3eb..89af07a 100644\n--- a/server.js\n+++ b/server.js\n@@ -25,7 +25,7 @@ export function handle(method, url, body = '', headers = {}) {\n   const q = Object.fromEntries(new URLSearchParams(qs));\n   // FLAW 1 (headers): no Content-Security-Policy, X-Frame-Options, X-Content-Type-Options, Referrer-Policy or HSTS.\n   // FLAW 2 (information disclosure): Server and X-Powered-By reveal an old stack.\n-  const html = (b, extra = {}) => [200, { 'content-type': 'text/html; charset=utf-8', server: 'Apache/2.4.29 (Ubuntu) PHP/7.2.24', 'x-powered-by': 'PHP/7.2.24 WooCommerce/3.5.1', ...extra }, b];\n+  const html = (b, extra = {}) => [200, { 'content-type': 'text/html; charset=utf-8', server: 'Apache/2.4.29 (Ubuntu) PHP/7.2.24', 'x-powered-by': 'PHP/7.2.24 WooCommerce/3.5.1', ...extra, 'strict-transport-security': 'max-age=63072000; includeSubDomains; preload', 'x-frame-options': 'DENY', 'x-content-type-options': 'nosniff', 'referrer-policy': 'strict-origin-when-cross-origin', 'content-security-policy': \"default-src 'self'; frame-ancestors 'none'\" }, b];\n   const esc = (s) => String(s).replace(/[&<>\"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;' }[c]));\n \n   if (path === '/') return html(page('index.html').replace('<!--PRODUCTS-->', PRODUCTS.map((p) => `<div class=\"card\"><h3>${p.name}</h3><p class=\"price\">${p.price} €</p><form method=\"post\" action=\"/cart\"><input type=\"hidden\" name=\"id\" value=\"${p.id}\"><input type=\"hidden\" name=\"price\" value=\"${p.price}\"><button>Ajouter au panier</button></form></div>`).join('')));\n",
+  "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-s7UW48",
+  "patch": "diff --git a/server.js b/server.js\nindex 6f1b3eb..1a70c20 100644\n--- a/server.js\n+++ b/server.js\n@@ -20,7 +20,12 @@ export const ORDERS = {\n };\n const cart = []; // one shared cart, in memory\n \n+const SEC = { 'strict-transport-security': 'max-age=63072000; includeSubDomains; preload', 'x-frame-options': 'DENY', 'x-content-type-options': 'nosniff', 'referrer-policy': 'strict-origin-when-cross-origin', 'content-security-policy': \"default-src 'self'; frame-ancestors 'none'\" };\n export function handle(method, url, body = '', headers = {}) {\n+  const [code, h, b] = handleInner(method, url, body, headers);\n+  return [code, { ...SEC, ...h }, b];\n+}\n+export function handleInner(method, url, body = '', headers = {}) {\n   const [path, qs = ''] = url.split('?');\n   const q = Object.fromEntries(new URLSearchParams(qs));\n   // FLAW 1 (headers): no Content-Security-Policy, X-Frame-Options, X-Content-Type-Options, Referrer-Policy or HSTS.\n",
   "journeysAfter": {
     "ok": true,
     "pass": 7,
     "fail": 0,
     "broken": [],
-    "output": "✔ journey: browse the catalogue (1.3301ms)\n✔ journey: search an article (0.2784ms)\n✔ journey: add to cart and see the total (0.6126ms)\n✔ journey: reach the checkout and pay (0.4536ms)\n✔ journey: follow my own order (0.5035ms)\n✔ journey: log in as the administrator (0.4004ms)\n✔ journey: read the legal notice (0.2423ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 107.4194\n"
+    "output": "✔ journey: browse the catalogue (1.3229ms)\n✔ journey: search an article (0.2752ms)\n✔ journey: add to cart and see the total (0.8673ms)\n✔ journey: reach the checkout and pay (0.6511ms)\n✔ journey: follow my own order (0.6493ms)\n✔ journey: log in as the administrator (0.3297ms)\n✔ journey: read the legal notice (0.2303ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 107.9646\n"
   },
   "rescan": {
-    "target": "http://127.0.0.1:57220",
+    "target": "http://127.0.0.1:51177",
     "scanner": "mission-zero scan 0.1",
-    "scannedAt": "2026-10-28T08:11:50.369Z",
+    "scannedAt": "2026-10-28T11:27:46.096Z",
     "findings": []
+  },
+  "vision": {
+    "shots": {
+      "before": [
+        {
+          "name": "home",
+          "path": "evidence\\repair-2026-10-28-11-18\\F01\\shots-before\\home.png"
+        },
+        {
+          "name": "finding",
+          "path": "evidence\\repair-2026-10-28-11-18\\F01\\shots-before\\finding.png"
+        }
+      ],
+      "after": [
+        {
+          "name": "home",
+          "path": "evidence\\repair-2026-10-28-11-18\\F01\\shots-after\\home.png"
+        },
+        {
+          "name": "finding",
+          "path": "evidence\\repair-2026-10-28-11-18\\F01\\shots-after\\finding.png"
+        }
+      ]
+    },
+    "look": {
+      "ok": true,
+      "problems": [],
+      "seen": [
+        "header MAISON VERDE with navigation Boutique, Panier, Ma commande, Compte",
+        "search form Rechercher un article with input and Rechercher button",
+        "3 product cards Lampe Osier 89€, Vase Terracotta 45€, Plaid Lin 120€ with Ajouter au panier buttons",
+        "footer Maison Verde Mentions légales"
+      ]
+    },
+    "sam": {
+      "concept": "text input field",
+      "before": 0,
+      "after": 0
+    }
+  },
+  "review": {
+    "verdict": "cause",
+    "reason": "Patch merges all five recommended headers into every response via handle wrapper.",
+    "missing": ""
   },
   "status": "proposed",
   "why": "journeys pass and the flaw is gone on the copy; a human applies it",
+  "reservations": [],
   "attempts": [],
-  "ms": 8013
+  "ms": 24428
 }

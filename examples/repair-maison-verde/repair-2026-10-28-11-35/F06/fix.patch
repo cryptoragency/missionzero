@@ -1,0 +1,22 @@
+diff --git a/server.js b/server.js
+index 6f1b3eb..efdc491 100644
+--- a/server.js
++++ b/server.js
+@@ -50,9 +50,15 @@ export function handle(method, url, body = '', headers = {}) {
+     return html(page('checkout.html'));
+   }
+   if (path === '/order') {
+-    // FLAW 6 (IDOR): any order is readable by changing its number, no login needed.
+     const o = ORDERS[q.id];
+-    return o ? html(page('order.html').replace('<!--ORDER-->', `<p><b>Commande ${esc(q.id)}</b></p><p>${esc(o.customer)} · ${esc(o.email)}<br>${esc(o.address)}<br>Total ${o.total} € · carte ${o.card}</p>`)) : html('<h1>Commande introuvable</h1>');
++    if (!o) return html('<h1>Commande introuvable</h1>');
++    const cookieHdr = headers.cookie || '';
++    if (/session=admin-7c9e/.test(cookieHdr)) return html(page('order.html').replace('<!--ORDER-->', `<p><b>Commande ${esc(q.id)}</b></p><p>${esc(o.customer)} · ${esc(o.email)}<br>${esc(o.address)}<br>Total ${o.total} € · carte ${o.card}</p>`));
++    const m = cookieHdr.match(/(?:^|;\s*)customer=([^;]*)/);
++    let cust = '';
++    try { cust = decodeURIComponent((m && m[1] || '').trim()); } catch { cust = (m && m[1] || '').trim(); }
++    if (!cust || cust !== o.email) return [403, { 'content-type': 'text/html; charset=utf-8' }, '<h1>Accès refusé</h1>'];
++    return html(page('order.html').replace('<!--ORDER-->', `<p><b>Commande ${esc(q.id)}</b></p><p>${esc(o.customer)} · ${esc(o.email)}<br>${esc(o.address)}<br>Total ${o.total} € · carte ${o.card}</p>`));
+   }
+   if (path === '/login') {
+     if (method === 'POST') {

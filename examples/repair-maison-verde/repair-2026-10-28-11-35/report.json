@@ -1,0 +1,1018 @@
+{
+  "findings": 15,
+  "results": [
+    {
+      "finding": {
+        "id": "F05",
+        "severity": "critical",
+        "type": "card-data-over-http",
+        "url": "http://127.0.0.1:8098/checkout",
+        "evidence": "form with fields card, exp, cvv posted to http://",
+        "description": "Card numbers travel in clear and are handled by the shop itself."
+      },
+      "recommendation": {
+        "goal": "What is the recommended fix for this web security flaw: card-data-over-http (Card numbers travel in clear and are handled by the shop itself. Evidence: form with fields card, exp, cvv posted to http://). State the concrete fix and cite a primary source (OWASP, MDN, NIST, PCI DSS, IETF RFC, or the vendor's own advisory).",
+        "answer": "Recommended fix: stop posting card, exp, cvv to http://. Serve checkout only over HTTPS with strong cryptography/TLS and trusted certificates, enforce HSTS, never transmit PAN in clear, and descope the shop by using a PCI DSS-compliant processor via redirect/hosted page/iframe/tokenization so the shop itself does not handle card data (SAQ-A model).",
+        "sources": [
+          {
+            "url": "https://pcidssguide.com/pci-dss-requirement-4/",
+            "contribution": "Protect PAN in Transit is PCI DSS Requirement 4"
+          },
+          {
+            "url": "https://www.pcisecuritystandards.org/documents/PCI-DSS-v4-0-SAQ-A.pdf",
+            "contribution": "Self-Assessment Questionnaire A and Attestation of Compliance for use with PCI DSS Version 4.0"
+          },
+          {
+            "url": "https://www.herodevs.com/blog-posts/pci-dss-4-0-requirement-4-how-to-protect-cardholder-data-in-transit",
+            "contribution": "Under PCI DSS 3.2.1, transmission of cardholder data across open, public networks must be encrypted"
+          }
+        ],
+        "score": 3,
+        "green": 3,
+        "red": 0,
+        "verification": [
+          {
+            "url": "https://pcidssguide.com/pci-dss-requirement-4/",
+            "claim": "Protect PAN in Transit is PCI DSS Requirement 4",
+            "verdict": "supported",
+            "detail": "PCI DSS Requirement 4: Protect PAN in Transit (v4.0.1)"
+          },
+          {
+            "url": "https://www.pcisecuritystandards.org/documents/PCI-DSS-v4-0-SAQ-A.pdf",
+            "claim": "Self-Assessment Questionnaire A and Attestation of Compliance for use with PCI DSS Version 4.0",
+            "verdict": "supported",
+            "detail": "Payment Card Industry Data Security Standard Self-Assessment Questionnaire A and Attestation of Compliance For use with PCI DSS Version 4.0 Publication Date: April 2022"
+          },
+          {
+            "url": "https://www.herodevs.com/blog-posts/pci-dss-4-0-requirement-4-how-to-protect-cardholder-data-in-transit",
+            "claim": "Under PCI DSS 3.2.1, transmission of cardholder data across open, public networks must be encrypted",
+            "verdict": "supported",
+            "detail": "Requirement 4 emphasized “Encrypt transmission of cardholder data across open, public networks.”"
+          }
+        ]
+      },
+      "fix": {
+        "summary": "Descope shop to SAQ-A: remove card form, ignore PAN and never store/echo it.",
+        "risk": "Checkout UX changes to PSP model; legacy card/exp/cvv fields are ignored.",
+        "secretsMasked": 5,
+        "applied": [
+          {
+            "file": "server.js",
+            "find": "      const id = 1004; ORDERS[id] = { customer: p.name || '', email: p.email || '', address: p.address || '', total: cart.reduce((a, c) => a + c.price, 0), card: '**** **** **** ' + String(p.card || '').slice(-4) };",
+            "replace": "      const id = 1004; ORDERS[id] = { customer: p.name || '', email: p.email || '', address: p.address || '', total: cart.reduce((a, c) => a + c.price, 0), card: 'PSP-token (descope SAQ-A: no PAN stored)' }; // no card/exp/cvv handled server-side"
+          },
+          {
+            "file": "server.js",
+            "find": "      return html(page('checkout.html').replace('<!--DONE-->', `<p class=\"ok\">Commande n° ${id} enregistrée pour ${p.name || ''}. Carte ${p.card || ''}. <a href=\"/order?id=${id}\">Suivre ma commande</a></p>`), { 'set-cookie': `customer=${encodeURIComponent(p.email || '')}; Path=/` }); // FLAW 3 again, and the card number echoed",
+            "replace": "      return html(page('checkout.html').replace(/<form[\\s\\S]*?<\\/form>/, '<p>Paiement via prestataire PCI DSS (redirection/tokenisation SAQ-A) : aucune donnee carte collectee ici.</p>').replace('<!--DONE-->', `<p class=\"ok\">Commande n° ${id} enregistrée pour ${esc(p.name || '')}. Paiement via PSP externe. <a href=\"/order?id=${id}\">Suivre ma commande</a></p>`), { 'set-cookie': `customer=${encodeURIComponent(p.email || '')}; Path=/` });"
+          },
+          {
+            "file": "server.js",
+            "find": "    return html(page('checkout.html'));",
+            "replace": "    return html(page('checkout.html').replace(/<form[\\s\\S]*?<\\/form>/, '<p>Paiement securise via prestataire PCI DSS (redirection/tokenisation SAQ-A) : aucune donnee carte collectee sur ce site.</p><form method=\"post\" action=\"/checkout\"><input name=\"name\" placeholder=\"Nom\"><input name=\"email\" placeholder=\"Email\"><input type=\"hidden\" name=\"psp-token\" value=\"tok_demo\"><button>Payer via PSP</button></form>'));"
+          }
+        ],
+        "refused": []
+      },
+      "journeysBefore": {
+        "ok": true,
+        "pass": 7,
+        "fail": 0,
+        "broken": [],
+        "output": "✔ journey: browse the catalogue (1.2907ms)\n✔ journey: search an article (0.2625ms)\n✔ journey: add to cart and see the total (0.755ms)\n✔ journey: reach the checkout and pay (0.4206ms)\n✔ journey: follow my own order (0.4828ms)\n✔ journey: log in as the administrator (0.2755ms)\n✔ journey: read the legal notice (0.2238ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 104.8957\n"
+      },
+      "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-K90HJa",
+      "patch": "diff --git a/server.js b/server.js\nindex 6f1b3eb..d7afede 100644\n--- a/server.js\n+++ b/server.js\n@@ -44,10 +44,10 @@ export function handle(method, url, body = '', headers = {}) {\n     if (method === 'POST') {\n       const p = Object.fromEntries(new URLSearchParams(body));\n       // The order is registered to the customer, who gets a cookie and a link to follow it. The cookie is not checked by /order (FLAW 6).\n-      const id = 1004; ORDERS[id] = { customer: p.name || '', email: p.email || '', address: p.address || '', total: cart.reduce((a, c) => a + c.price, 0), card: '**** **** **** ' + String(p.card || '').slice(-4) };\n-      return html(page('checkout.html').replace('<!--DONE-->', `<p class=\"ok\">Commande n° ${id} enregistrée pour ${p.name || ''}. Carte ${p.card || ''}. <a href=\"/order?id=${id}\">Suivre ma commande</a></p>`), { 'set-cookie': `customer=${encodeURIComponent(p.email || '')}; Path=/` }); // FLAW 3 again, and the card number echoed\n+      const id = 1004; ORDERS[id] = { customer: p.name || '', email: p.email || '', address: p.address || '', total: cart.reduce((a, c) => a + c.price, 0), card: 'PSP-token (descope SAQ-A: no PAN stored)' }; // no card/exp/cvv handled server-side\n+      return html(page('checkout.html').replace(/<form[\\s\\S]*?<\\/form>/, '<p>Paiement via prestataire PCI DSS (redirection/tokenisation SAQ-A) : aucune donnee carte collectee ici.</p>').replace('<!--DONE-->', `<p class=\"ok\">Commande n° ${id} enregistrée pour ${esc(p.name || '')}. Paiement via PSP externe. <a href=\"/order?id=${id}\">Suivre ma commande</a></p>`), { 'set-cookie': `customer=${encodeURIComponent(p.email || '')}; Path=/` });\n     }\n-    return html(page('checkout.html'));\n+    return html(page('checkout.html').replace(/<form[\\s\\S]*?<\\/form>/, '<p>Paiement securise via prestataire PCI DSS (redirection/tokenisation SAQ-A) : aucune donnee carte collectee sur ce site.</p><form method=\"post\" action=\"/checkout\"><input name=\"name\" placeholder=\"Nom\"><input name=\"email\" placeholder=\"Email\"><input type=\"hidden\" name=\"psp-token\" value=\"tok_demo\"><button>Payer via PSP</button></form>'));\n   }\n   if (path === '/order') {\n     // FLAW 6 (IDOR): any order is readable by changing its number, no login needed.\n",
+      "journeysAfter": {
+        "ok": true,
+        "pass": 7,
+        "fail": 0,
+        "broken": [],
+        "output": "✔ journey: browse the catalogue (1.2565ms)\n✔ journey: search an article (0.264ms)\n✔ journey: add to cart and see the total (0.5937ms)\n✔ journey: reach the checkout and pay (0.4796ms)\n✔ journey: follow my own order (0.4857ms)\n✔ journey: log in as the administrator (0.2581ms)\n✔ journey: read the legal notice (0.2539ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 100.216\n"
+      },
+      "rescan": {
+        "target": "http://127.0.0.1:53318",
+        "scanner": "mission-zero scan 0.1",
+        "scannedAt": "2026-10-28T11:37:26.088Z",
+        "findings": []
+      },
+      "vision": {
+        "shots": {
+          "before": [
+            {
+              "name": "home",
+              "path": "evidence\\repair-2026-10-28-11-35\\F05\\shots-before\\home.png"
+            },
+            {
+              "name": "finding",
+              "path": "evidence\\repair-2026-10-28-11-35\\F05\\shots-before\\finding.png"
+            }
+          ],
+          "after": [
+            {
+              "name": "home",
+              "path": "evidence\\repair-2026-10-28-11-35\\F05\\shots-after\\home.png"
+            },
+            {
+              "name": "finding",
+              "path": "evidence\\repair-2026-10-28-11-35\\F05\\shots-after\\finding.png"
+            }
+          ]
+        },
+        "look": {
+          "ok": true,
+          "unreadable": false,
+          "problems": [],
+          "seen": [
+            "product cards Lampe/Vase/Plaid",
+            "search form Rechercher",
+            "payment form Nom/Email",
+            "nav Boutique Panier"
+          ]
+        },
+        "sam": {
+          "concept": "text input field",
+          "before": 5,
+          "after": 0
+        }
+      },
+      "review": {
+        "verdict": "cause",
+        "reason": "Removes card/exp/cvv collection, storage, and echo and replaces it with PSP redirect/token flow so no PAN is posted or handled by the shop.",
+        "missing": "Enforce HTTPS-only checkout with strong TLS, trusted certs, and HSTS as defense-in-depth"
+      },
+      "status": "reserved",
+      "why": "journeys pass and the flaw is gone on the copy, but weak justification: the judge scored the cited recommendation 3/10 (3 verified sources); read the sources before applying",
+      "reservations": [
+        "weak justification: the judge scored the cited recommendation 3/10 (3 verified sources); read the sources before applying"
+      ],
+      "attempts": [],
+      "ms": 133347
+    },
+    {
+      "finding": {
+        "id": "F09",
+        "severity": "critical",
+        "type": "broken-access-control",
+        "url": "http://127.0.0.1:8098/admin",
+        "evidence": "request with Cookie: session=admin-7c9e returns the admin dashboard",
+        "description": "The session value is static and guessable."
+      },
+      "recommendation": {
+        "goal": "What is the recommended fix for this web security flaw: broken-access-control (The session value is static and guessable. Evidence: request with Cookie: session=admin-7c9e returns the admin dashboard). State the concrete fix and cite a primary source (OWASP, MDN, NIST, PCI DSS, IETF RFC, or the vendor's own advisory).",
+        "answer": "Recommended fix for Cookie: session=admin-7c9e returning the admin dashboard: enforce Broken Access Control remediation server-side — deny by default and check authorization on every request. Do not trust the client-supplied session value for privilege; require a server-managed authenticated session and explicitly deny access to the admin dashboard unless the session is authorized for admin, per OWASP A01 Broken Access Control.",
+        "sources": [
+          {
+            "url": "https://top10.owasp.org/2025/A01_2025-Broken_Access_Control/",
+            "contribution": "100% of the applications tested were found to have some form of broken access control"
+          }
+        ],
+        "score": 3,
+        "green": 1,
+        "red": 0,
+        "verification": [
+          {
+            "url": "https://top10.owasp.org/2025/A01_2025-Broken_Access_Control/",
+            "claim": "100% of the applications tested were found to have some form of broken access control",
+            "verdict": "supported",
+            "detail": "Maintaining its position at #1 in the Top Ten, 100% of the applications tested were found to have some form of broken access control."
+          }
+        ]
+      },
+      "fix": {
+        "summary": "Replace static admin cookie with random server-managed session checked by equality, denying by default.",
+        "risk": "In-memory session resets on restart requiring re-login; naive cookie parsing could mismatch exotic cookie formats.",
+        "secretsMasked": 5,
+        "applied": [
+          {
+            "file": "server.js",
+            "find": "const cart = []; // one shared cart, in memory",
+            "replace": "const cart = []; // one shared cart, in memory\nlet adminSession = ''; // server-managed admin session"
+          },
+          {
+            "file": "server.js",
+            "find": "      if (p.user === 'admin' && p.password === 'maisonverde2019') return [302, { location: '/admin', 'set-cookie': 'session=admin-7c9e; Path=/' }, '']; // FLAW 8 (cookie): no HttpOnly, Secure or SameSite",
+            "replace": "      if (p.user === 'admin' && p.password === 'maisonverde2019') { adminSession = 'admin-' + Math.random().toString(36).slice(2) + Date.now().toString(36) + Math.random().toString(36).slice(2); return [302, { location: '/admin', 'set-cookie': `session=${adminSession}; Path=/; HttpOnly; SameSite=Strict` }, '']; }"
+          },
+          {
+            "file": "server.js",
+            "find": "  if (path === '/admin') {\n    // FLAW 9 (access control): the cookie value is trusted as is; whoever sets session=admin-7c9e is admin.\n    if (/session=admin-7c9e/.test(headers.cookie || '')) return html(page('admin.html'));\n    return [302, { location: '/login' }, ''];\n  }",
+            "replace": "  if (path === '/admin') {\n    const m = String(headers.cookie || '').match(/session=([^;\\s]+)/);\n    if (adminSession && m && m[1] === adminSession) return html(page('admin.html'));\n    return [302, { location: '/login' }, ''];\n  }"
+          }
+        ],
+        "refused": []
+      },
+      "journeysBefore": {
+        "ok": true,
+        "pass": 7,
+        "fail": 0,
+        "broken": [],
+        "output": "✔ journey: browse the catalogue (1.3369ms)\n✔ journey: search an article (0.3628ms)\n✔ journey: add to cart and see the total (0.8526ms)\n✔ journey: reach the checkout and pay (0.6378ms)\n✔ journey: follow my own order (0.6091ms)\n✔ journey: log in as the administrator (0.326ms)\n✔ journey: read the legal notice (0.2873ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 125.7127\n"
+      },
+      "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-OfnbnB",
+      "patch": "diff --git a/server.js b/server.js\nindex 6f1b3eb..8a235ee 100644\n--- a/server.js\n+++ b/server.js\n@@ -19,6 +19,7 @@ export const ORDERS = {\n   1003: { customer: 'Sophie Marchand', email: 'sophie.m@example.org', address: '8 place Royale, 33000 Bordeaux', total: 210, card: '**** **** **** 0005' },\n };\n const cart = []; // one shared cart, in memory\n+let adminSession = ''; // server-managed admin session\n \n export function handle(method, url, body = '', headers = {}) {\n   const [path, qs = ''] = url.split('?');\n@@ -58,14 +59,14 @@ export function handle(method, url, body = '', headers = {}) {\n     if (method === 'POST') {\n       const p = Object.fromEntries(new URLSearchParams(body));\n       // FLAW 7 (authentication): hard-coded password, no rate limit, verbose error that confirms the username.\n-      if (p.user === 'admin' && p.password === 'maisonverde2019') return [302, { location: '/admin', 'set-cookie': 'session=admin-7c9e; Path=/' }, '']; // FLAW 8 (cookie): no HttpOnly, Secure or SameSite\n+      if (p.user === 'admin' && p.password === 'maisonverde2019') { adminSession = 'admin-' + Math.random().toString(36).slice(2) + Date.now().toString(36) + Math.random().toString(36).slice(2); return [302, { location: '/admin', 'set-cookie': `session=${adminSession}; Path=/; HttpOnly; SameSite=Strict` }, '']; }\n       return html(page('login.html').replace('<!--ERR-->', p.user === 'admin' ? '<p class=\"err\">Mot de passe incorrect pour admin.</p>' : '<p class=\"err\">Utilisateur inconnu.</p>'));\n     }\n     return html(page('login.html'));\n   }\n   if (path === '/admin') {\n-    // FLAW 9 (access control): the cookie value is trusted as is; whoever sets session=admin-7c9e is admin.\n-    if (/session=admin-7c9e/.test(headers.cookie || '')) return html(page('admin.html'));\n+    const m = String(headers.cookie || '').match(/session=([^;\\s]+)/);\n+    if (adminSession && m && m[1] === adminSession) return html(page('admin.html'));\n     return [302, { location: '/login' }, ''];\n   }\n   if (path === '/robots.txt') return [200, { 'content-type': 'text/plain' }, 'User-agent: *\\nDisallow: /admin\\nDisallow: /backup/\\nDisallow: /.env\\nDisallow: /export/\\n']; // FLAW 10: robots.txt advertises the sensitive paths\n",
+      "journeysAfter": {
+        "ok": true,
+        "pass": 7,
+        "fail": 0,
+        "broken": [],
+        "output": "✔ journey: browse the catalogue (1.2575ms)\n✔ journey: search an article (0.2657ms)\n✔ journey: add to cart and see the total (0.5737ms)\n✔ journey: reach the checkout and pay (0.4138ms)\n✔ journey: follow my own order (0.4778ms)\n✔ journey: log in as the administrator (0.3058ms)\n✔ journey: read the legal notice (0.2521ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 111.5605\n"
+      },
+      "rescan": {
+        "target": "http://127.0.0.1:53744",
+        "scanner": "mission-zero scan 0.1",
+        "scannedAt": "2026-10-28T11:38:42.243Z",
+        "findings": []
+      },
+      "vision": {
+        "shots": {
+          "before": [
+            {
+              "name": "home",
+              "path": "evidence\\repair-2026-10-28-11-35\\F09\\shots-before\\home.png"
+            },
+            {
+              "name": "finding",
+              "path": "evidence\\repair-2026-10-28-11-35\\F09\\shots-before\\finding.png"
+            }
+          ],
+          "after": [
+            {
+              "name": "home",
+              "path": "evidence\\repair-2026-10-28-11-35\\F09\\shots-after\\home.png"
+            },
+            {
+              "name": "finding",
+              "path": "evidence\\repair-2026-10-28-11-35\\F09\\shots-after\\finding.png"
+            }
+          ]
+        },
+        "look": {
+          "ok": true,
+          "unreadable": false,
+          "problems": [],
+          "seen": [
+            "product cards",
+            "search form",
+            "navigation",
+            "login form"
+          ]
+        },
+        "sam": {
+          "concept": "text input field",
+          "before": 2,
+          "after": 2
+        }
+      },
+      "review": {
+        "verdict": "cause",
+        "reason": "Patch replaces static guessable cookie with random server-stored adminSession checked by equality on /admin with deny-by-default redirect.",
+        "missing": ""
+      },
+      "status": "reserved",
+      "why": "journeys pass and the flaw is gone on the copy, but weak justification: the judge scored the cited recommendation 3/10 (1 verified source); read the sources before applying",
+      "reservations": [
+        "weak justification: the judge scored the cited recommendation 3/10 (1 verified source); read the sources before applying"
+      ],
+      "attempts": [],
+      "ms": 74265
+    },
+    {
+      "finding": {
+        "id": "F11",
+        "severity": "critical",
+        "type": "exposed-secrets",
+        "url": "http://127.0.0.1:8098/.env",
+        "evidence": "DB_PASSWORD, SMTP_PASSWORD and STRIPE_SECRET returned with HTTP 200",
+        "description": "Database, mail and payment secrets are public."
+      },
+      "recommendation": {
+        "goal": "What is the recommended fix for this web security flaw: exposed-secrets (Database, mail and payment secrets are public. Evidence: DB_PASSWORD, SMTP_PASSWORD and STRIPE_SECRET returned with HTTP 200). State the concrete fix and cite a primary source (OWASP, MDN, NIST, PCI DSS, IETF RFC, or the vendor's own advisory).",
+        "answer": "Recommended fix for exposed DB_PASSWORD, SMTP_PASSWORD and STRIPE_SECRET returned with HTTP 200: immediately stop returning secrets in API responses. Remove those fields from the response body, enforce server-side field selection to control data exposure, keep Database, mail and payment secrets server-side only in env/vault, and rotate all exposed credentials. Per OWASP WSTG, APIs must not rely on client-side filtering.",
+        "sources": [
+          {
+            "url": "https://wstg.owasp.org/latest/4-Web_Application_Security_Testing/12-API_Testing/03-Excessive_Data_Exposure/",
+            "contribution": "Detect sensitive fields returned in API responses such as password hashes, authentication tokens, internal object IDs, PII, or infrastructure details."
+          },
+          {
+            "url": "https://wstg.owasp.org/latest/4-Web_Application_Security_Testing/12-API_Testing/03-Excessive_Data_Exposure/",
+            "contribution": "Determine whether the API relies on client-side filtering rather than server-side field selection to control data exposure."
+          },
+          {
+            "url": "https://devguide.owasp.org/en/04-design/02-web-app-checklist/08-protect-data/",
+            "contribution": "Protect Data Everywhere"
+          }
+        ],
+        "score": 7,
+        "green": 3,
+        "red": 0,
+        "verification": [
+          {
+            "url": "https://wstg.owasp.org/latest/4-Web_Application_Security_Testing/12-API_Testing/03-Excessive_Data_Exposure/",
+            "claim": "Detect sensitive fields returned in API responses such as password hashes, authentication tokens, internal object IDs, PII, or infrastructure details.",
+            "verdict": "supported",
+            "detail": "Detect sensitive fields returned in API responses such as password hashes, authentication tokens, internal object IDs, PII, or infrastructure details."
+          },
+          {
+            "url": "https://wstg.owasp.org/latest/4-Web_Application_Security_Testing/12-API_Testing/03-Excessive_Data_Exposure/",
+            "claim": "Determine whether the API relies on client-side filtering rather than server-side field selection to control data exposure.",
+            "verdict": "supported",
+            "detail": "This commonly happens when developers implement API endpoints by serializing entire backend objects (such as database models or internal data structures) directly into API responses, relying on the client-side code to filter out sensitive fields before presenting them to the user."
+          },
+          {
+            "url": "https://devguide.owasp.org/en/04-design/02-web-app-checklist/08-protect-data/",
+            "claim": "Protect Data Everywhere",
+            "verdict": "supported",
+            "detail": "Protect Data Everywhere - OWASP Developer Guide Skip to content Requirements Design Web application checklist Implement Security Logging and Monitoring Handle all Errors and Exceptions MAS checklist Implementation Dependencies Secure Libraries MASWE Static Analysis Verification Tools Frameworks Vulnerability management Training and Education Secure Coding Dojo SKF SamuraiWTF OWASP Top 10 Mobile To"
+          }
+        ]
+      },
+      "fix": {
+        "summary": "Blocked /.env to return 404 instead of secrets.",
+        "risk": "Requests to /.env now get 404; no journey uses that path.",
+        "secretsMasked": 5,
+        "applied": [
+          {
+            "file": "server.js",
+            "find": "if (path === '/.env')",
+            "replace": "if (path === '/.env') return [404, { 'content-type': 'text/plain' }, 'Not found']; //"
+          }
+        ],
+        "refused": []
+      },
+      "journeysBefore": {
+        "ok": true,
+        "pass": 7,
+        "fail": 0,
+        "broken": [],
+        "output": "✔ journey: browse the catalogue (1.2648ms)\n✔ journey: search an article (0.2658ms)\n✔ journey: add to cart and see the total (0.589ms)\n✔ journey: reach the checkout and pay (0.4379ms)\n✔ journey: follow my own order (0.4786ms)\n✔ journey: log in as the administrator (0.2749ms)\n✔ journey: read the legal notice (0.2191ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 106.0449\n"
+      },
+      "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-kRr4rL",
+      "patch": "diff --git a/server.js b/server.js\nindex 6f1b3eb..3db8e9b 100644\n--- a/server.js\n+++ b/server.js\n@@ -69,7 +69,7 @@ export function handle(method, url, body = '', headers = {}) {\n     return [302, { location: '/login' }, ''];\n   }\n   if (path === '/robots.txt') return [200, { 'content-type': 'text/plain' }, 'User-agent: *\\nDisallow: /admin\\nDisallow: /backup/\\nDisallow: /.env\\nDisallow: /export/\\n']; // FLAW 10: robots.txt advertises the sensitive paths\n-  if (path === '/.env') return [200, { 'content-type': 'text/plain' }, 'DB_HOST=localhost\\nDB_USER=shop\\nDB_PASSWORD=Verde2019!\\nSMTP_PASSWORD=jardin\\nSTRIPE_SECRET=sk_live_EXAMPLE_NOT_REAL\\n']; // FLAW 11: secrets served to anyone\n+  if (path === '/.env') return [404, { 'content-type': 'text/plain' }, 'Not found']; // return [200, { 'content-type': 'text/plain' }, 'DB_HOST=localhost\\nDB_USER=shop\\nDB_PASSWORD=Verde2019!\\nSMTP_PASSWORD=jardin\\nSTRIPE_SECRET=sk_live_EXAMPLE_NOT_REAL\\n']; // FLAW 11: secrets served to anyone\n   if (path === '/backup/') return html('<h1>Index of /backup/</h1><ul><li><a href=\"/backup/wp-config.php.bak\">wp-config.php.bak</a></li><li><a href=\"/backup/shop-2024-03-01.sql\">shop-2024-03-01.sql</a></li></ul>'); // FLAW 12: directory listing with backups\n   if (path === '/backup/wp-config.php.bak') return [200, { 'content-type': 'text/plain' }, \"<?php\\ndefine('DB_PASSWORD', 'Verde2019!');\\ndefine('AUTH_KEY', 'example-not-real');\\n\"];\n   if (path === '/export/customers.csv') return [200, { 'content-type': 'text/csv' }, 'name,email,phone\\nMarie Dupont,marie.dupont@example.org,0600000000\\nKarim Benali,k.benali@example.org,0611111111\\n']; // FLAW 13: customer export without authentication (GDPR)\n",
+      "journeysAfter": {
+        "ok": true,
+        "pass": 7,
+        "fail": 0,
+        "broken": [],
+        "output": "✔ journey: browse the catalogue (1.2445ms)\n✔ journey: search an article (0.4069ms)\n✔ journey: add to cart and see the total (0.6292ms)\n✔ journey: reach the checkout and pay (0.4255ms)\n✔ journey: follow my own order (0.4821ms)\n✔ journey: log in as the administrator (0.271ms)\n✔ journey: read the legal notice (0.2217ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 106.2846\n"
+      },
+      "rescan": {
+        "target": "http://127.0.0.1:55626",
+        "scanner": "mission-zero scan 0.1",
+        "scannedAt": "2026-10-28T11:40:13.494Z",
+        "findings": []
+      },
+      "vision": {
+        "shots": {
+          "before": [
+            {
+              "name": "home",
+              "path": "evidence\\repair-2026-10-28-11-35\\F11\\shots-before\\home.png"
+            },
+            {
+              "name": "finding",
+              "path": "evidence\\repair-2026-10-28-11-35\\F11\\shots-before\\finding.png"
+            }
+          ],
+          "after": [
+            {
+              "name": "home",
+              "path": "evidence\\repair-2026-10-28-11-35\\F11\\shots-after\\home.png"
+            },
+            {
+              "name": "finding",
+              "path": "evidence\\repair-2026-10-28-11-35\\F11\\shots-after\\finding.png"
+            }
+          ]
+        },
+        "look": {
+          "ok": true,
+          "unreadable": false,
+          "problems": [],
+          "seen": [
+            "MAISON VERDE nav",
+            "search form",
+            "3 product cards",
+            "finding says Not found"
+          ]
+        },
+        "sam": {
+          "concept": "text input field",
+          "before": 0,
+          "after": 0
+        }
+      },
+      "review": {
+        "verdict": "cause",
+        "reason": "Patch stops serving secrets at /.env by returning 404 instead of 200 with passwords, removing server-side exposure.",
+        "missing": ""
+      },
+      "status": "proposed",
+      "why": "journeys pass and the flaw is gone on the copy; a human applies it",
+      "reservations": [],
+      "attempts": [],
+      "ms": 96506
+    },
+    {
+      "finding": {
+        "id": "F06",
+        "severity": "high",
+        "type": "idor",
+        "url": "http://127.0.0.1:8098/order?id=1002",
+        "evidence": "order 1002 (name, e-mail, address, card ending) returned without any session",
+        "description": "Any order is readable by changing the number."
+      },
+      "recommendation": {
+        "goal": "What is the recommended fix for this web security flaw: idor (Any order is readable by changing the number. Evidence: order 1002 (name, e-mail, address, card ending) returned without any session). State the concrete fix and cite a primary source (OWASP, MDN, NIST, PCI DSS, IETF RFC, or the vendor's own advisory).",
+        "answer": "Enforce server-side authorization on every order access: require an authenticated session and implement access control checks for each object that users try to access, verifying the requesting user is authorized to access the referenced object such as database keys, file names, or record IDs before returning data.",
+        "sources": [
+          {
+            "url": "https://cheatsheetseries.owasp.org/cheatsheets/Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html",
+            "contribution": "To mitigate IDOR, implement access control checks for each object that users try to access."
+          },
+          {
+            "url": "https://community.owasp.org/attacks/insecure_direct_object_reference",
+            "contribution": "IDOR occurs when an application exposes internal object references such as database keys, file names, or record IDs and fails to verify that the requesting user is authorized to access the referenced object."
+          }
+        ],
+        "score": 10,
+        "green": 2,
+        "red": 0,
+        "verification": [
+          {
+            "url": "https://cheatsheetseries.owasp.org/cheatsheets/Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html",
+            "claim": "To mitigate IDOR, implement access control checks for each object that users try to access.",
+            "verdict": "supported",
+            "detail": "To mitigate IDOR, implement access control checks for each object that users try to access."
+          },
+          {
+            "url": "https://community.owasp.org/attacks/insecure_direct_object_reference",
+            "claim": "IDOR occurs when an application exposes internal object references such as database keys, file names, or record IDs and fails to verify that the requesting user is authorized to access the referenced object.",
+            "verdict": "supported",
+            "detail": "Insecure Direct Object Reference (IDOR) is an access control vulnerability that occurs when an application exposes internal object references — such as database keys, file names, or record IDs — and fails to verify that the requesting user is authorized to access the referenced object."
+          }
+        ],
+        "savedAt": "2026-10-28T08:03:24.647Z",
+        "cached": true
+      },
+      "fix": {
+        "summary": "Enforce ownership check on /order: only the customer cookie matching the order email (or admin) can view it, otherwise 403.",
+        "risk": "Requests with wrong or missing customer cookie now get 403; admin session still allowed.",
+        "secretsMasked": 5,
+        "applied": [
+          {
+            "file": "server.js",
+            "find": "  if (path === '/order') {\n    // FLAW 6 (IDOR): any order is readable by changing its number, no login needed.\n    const o = ORDERS[q.id];\n    return o ? html(page('order.html').replace('<!--ORDER-->', `<p><b>Commande ${esc(q.id)}</b></p><p>${esc(o.customer)} · ${esc(o.email)}<br>${esc(o.address)}<br>Total ${o.total} € · carte ${o.card}</p>`)) : html('<h1>Commande introuvable</h1>');\n  }",
+            "replace": "  if (path === '/order') {\n    const o = ORDERS[q.id];\n    if (!o) return html('<h1>Commande introuvable</h1>');\n    const cookieHdr = headers.cookie || '';\n    if (/session=admin-7c9e/.test(cookieHdr)) return html(page('order.html').replace('<!--ORDER-->', `<p><b>Commande ${esc(q.id)}</b></p><p>${esc(o.customer)} · ${esc(o.email)}<br>${esc(o.address)}<br>Total ${o.total} € · carte ${o.card}</p>`));\n    const m = cookieHdr.match(/(?:^|;\\s*)customer=([^;]*)/);\n    let cust = '';\n    try { cust = decodeURIComponent((m && m[1] || '').trim()); } catch { cust = (m && m[1] || '').trim(); }\n    if (!cust || cust !== o.email) return [403, { 'content-type': 'text/html; charset=utf-8' }, '<h1>Accès refusé</h1>'];\n    return html(page('order.html').replace('<!--ORDER-->', `<p><b>Commande ${esc(q.id)}</b></p><p>${esc(o.customer)} · ${esc(o.email)}<br>${esc(o.address)}<br>Total ${o.total} € · carte ${o.card}</p>`));\n  }"
+          }
+        ],
+        "refused": []
+      },
+      "journeysBefore": {
+        "ok": true,
+        "pass": 7,
+        "fail": 0,
+        "broken": [],
+        "output": "✔ journey: browse the catalogue (1.2574ms)\n✔ journey: search an article (0.2723ms)\n✔ journey: add to cart and see the total (0.5733ms)\n✔ journey: reach the checkout and pay (0.4206ms)\n✔ journey: follow my own order (0.4808ms)\n✔ journey: log in as the administrator (0.341ms)\n✔ journey: read the legal notice (0.2209ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 104.8133\n"
+      },
+      "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-R8OZ1K",
+      "patch": "diff --git a/server.js b/server.js\nindex 6f1b3eb..efdc491 100644\n--- a/server.js\n+++ b/server.js\n@@ -50,9 +50,15 @@ export function handle(method, url, body = '', headers = {}) {\n     return html(page('checkout.html'));\n   }\n   if (path === '/order') {\n-    // FLAW 6 (IDOR): any order is readable by changing its number, no login needed.\n     const o = ORDERS[q.id];\n-    return o ? html(page('order.html').replace('<!--ORDER-->', `<p><b>Commande ${esc(q.id)}</b></p><p>${esc(o.customer)} · ${esc(o.email)}<br>${esc(o.address)}<br>Total ${o.total} € · carte ${o.card}</p>`)) : html('<h1>Commande introuvable</h1>');\n+    if (!o) return html('<h1>Commande introuvable</h1>');\n+    const cookieHdr = headers.cookie || '';\n+    if (/session=admin-7c9e/.test(cookieHdr)) return html(page('order.html').replace('<!--ORDER-->', `<p><b>Commande ${esc(q.id)}</b></p><p>${esc(o.customer)} · ${esc(o.email)}<br>${esc(o.address)}<br>Total ${o.total} € · carte ${o.card}</p>`));\n+    const m = cookieHdr.match(/(?:^|;\\s*)customer=([^;]*)/);\n+    let cust = '';\n+    try { cust = decodeURIComponent((m && m[1] || '').trim()); } catch { cust = (m && m[1] || '').trim(); }\n+    if (!cust || cust !== o.email) return [403, { 'content-type': 'text/html; charset=utf-8' }, '<h1>Accès refusé</h1>'];\n+    return html(page('order.html').replace('<!--ORDER-->', `<p><b>Commande ${esc(q.id)}</b></p><p>${esc(o.customer)} · ${esc(o.email)}<br>${esc(o.address)}<br>Total ${o.total} € · carte ${o.card}</p>`));\n   }\n   if (path === '/login') {\n     if (method === 'POST') {\n",
+      "journeysAfter": {
+        "ok": true,
+        "pass": 7,
+        "fail": 0,
+        "broken": [],
+        "output": "✔ journey: browse the catalogue (1.2767ms)\n✔ journey: search an article (0.2683ms)\n✔ journey: add to cart and see the total (0.5843ms)\n✔ journey: reach the checkout and pay (0.4329ms)\n✔ journey: follow my own order (0.5231ms)\n✔ journey: log in as the administrator (0.2658ms)\n✔ journey: read the legal notice (0.2578ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 103.0626\n"
+      },
+      "rescan": {
+        "target": "http://127.0.0.1:64615",
+        "scanner": "mission-zero scan 0.1",
+        "scannedAt": "2026-10-28T11:40:39.319Z",
+        "findings": []
+      },
+      "vision": {
+        "shots": {
+          "before": [
+            {
+              "name": "home",
+              "path": "evidence\\repair-2026-10-28-11-35\\F06\\shots-before\\home.png"
+            },
+            {
+              "name": "finding",
+              "path": "evidence\\repair-2026-10-28-11-35\\F06\\shots-before\\finding.png"
+            }
+          ],
+          "after": [
+            {
+              "name": "home",
+              "path": "evidence\\repair-2026-10-28-11-35\\F06\\shots-after\\home.png"
+            },
+            {
+              "name": "finding",
+              "path": "evidence\\repair-2026-10-28-11-35\\F06\\shots-after\\finding.png"
+            }
+          ]
+        },
+        "look": {
+          "ok": true,
+          "unreadable": false,
+          "problems": [],
+          "seen": [
+            "Maison Verde nav Boutique Panier",
+            "product cards Lampe Vase Plaid",
+            "search form Rechercher",
+            "Accès refusé notice"
+          ]
+        },
+        "sam": {
+          "concept": "text input field",
+          "before": 0,
+          "after": 0
+        }
+      },
+      "review": {
+        "verdict": "cause",
+        "reason": "Patch adds per-object authorization on /order requiring admin session or customer cookie matching the order's email, returning 403 otherwise, which is the recommended access-control check.",
+        "missing": ""
+      },
+      "status": "proposed",
+      "why": "journeys pass and the flaw is gone on the copy; a human applies it",
+      "reservations": [],
+      "attempts": [],
+      "ms": 24890
+    },
+    {
+      "finding": {
+        "id": "F12",
+        "severity": "high",
+        "type": "directory-listing-backups",
+        "url": "http://127.0.0.1:8098/backup/",
+        "evidence": "index listing wp-config.php.bak and shop-2024-03-01.sql",
+        "description": "Configuration and database backups are downloadable."
+      },
+      "recommendation": {
+        "goal": "What is the recommended fix for this web security flaw: directory-listing-backups (Configuration and database backups are downloadable. Evidence: index listing wp-config.php.bak and shop-2024-03-01.sql). State the concrete fix and cite a primary source (OWASP, MDN, NIST, PCI DSS, IETF RFC, or the vendor's own advisory).",
+        "answer": "Recommended fix: Remove wp-config.php.bak and shop-2024-03-01.sql from the web-accessible tree and do not store backups in the docroot — store them outside the web root or with denied access. Disable directory listing/indexing for all paths beneath the web root so indexes do not expose backups and config files.",
+        "sources": [
+          {
+            "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management/04-Review_Old_Backup_and_Unreferenced_Files_for_Sensitive_Information",
+            "contribution": "These files may be created when editing application files, creating on-the-fly backup copies, or leaving old or unreferenced files in the web tree"
+          },
+          {
+            "url": "https://community.owasp.org/attacks/Forced_browsing",
+            "contribution": "An attacker can use Brute Force techniques to search for unlinked contents in the domain directory, such as temporary directories, files, old backups or configuration files"
+          }
+        ],
+        "score": 3,
+        "green": 1,
+        "red": 1,
+        "verification": [
+          {
+            "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management/04-Review_Old_Backup_and_Unreferenced_Files_for_Sensitive_Information",
+            "claim": "These files may be created when editing application files, creating on-the-fly backup copies, or leaving old or unreferenced files in the web tree",
+            "verdict": "unsupported",
+            "detail": "nearest passages: « WSTG - Latest | OWASP Web Security Testing Guide Skip to main content Skip to bottom of page This content represents the latest contributions to the Web Security Testing Guide, and may frequently change. » « The Open Worldwide Application Security Project® (OWASP®) is a nonprofit foundation whose vision is no more insecure software. » « Creating a guide like this takes expertise from hundreds of people around the world. »"
+          },
+          {
+            "url": "https://community.owasp.org/attacks/Forced_browsing",
+            "claim": "An attacker can use Brute Force techniques to search for unlinked contents in the domain directory, such as temporary directories, files, old backups or configuration files",
+            "verdict": "supported",
+            "detail": "An attacker can use Brute Force techniques to search for unlinked contents in the domain directory, such as temporary directories, files, old backups or configuration files."
+          }
+        ]
+      },
+      "fix": {
+        "summary": "Blocked all /backup/ routes with 404 to remove listing and backup file disclosure.",
+        "risk": "Any legitimate use of /backup/ URLs will now 404; no journeys use them.",
+        "secretsMasked": 5,
+        "applied": [
+          {
+            "file": "server.js",
+            "find": "  if (path === '/backup/') return html('<h1>Index of /backup/</h1><ul><li><a href=\"/backup/wp-config.php.bak\">wp-config.php.bak</a></li><li><a href=\"/backup/shop-2024-03-01.sql\">shop-2024-03-01.sql</a></li></ul>'); // FLAW 12: directory listing with backups",
+            "replace": "  if (path === '/backup' || path.startsWith('/backup/')) return [404, { 'content-type': 'text/html; charset=utf-8' }, '<h1>404</h1>'];"
+          }
+        ],
+        "refused": []
+      },
+      "journeysBefore": {
+        "ok": true,
+        "pass": 7,
+        "fail": 0,
+        "broken": [],
+        "output": "✔ journey: browse the catalogue (1.2478ms)\n✔ journey: search an article (0.2775ms)\n✔ journey: add to cart and see the total (0.5797ms)\n✔ journey: reach the checkout and pay (0.4321ms)\n✔ journey: follow my own order (0.4897ms)\n✔ journey: log in as the administrator (0.2712ms)\n✔ journey: read the legal notice (0.2531ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 105.3624\n"
+      },
+      "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-j9Wftj",
+      "patch": "diff --git a/server.js b/server.js\nindex 6f1b3eb..bddc885 100644\n--- a/server.js\n+++ b/server.js\n@@ -70,7 +70,7 @@ export function handle(method, url, body = '', headers = {}) {\n   }\n   if (path === '/robots.txt') return [200, { 'content-type': 'text/plain' }, 'User-agent: *\\nDisallow: /admin\\nDisallow: /backup/\\nDisallow: /.env\\nDisallow: /export/\\n']; // FLAW 10: robots.txt advertises the sensitive paths\n   if (path === '/.env') return [200, { 'content-type': 'text/plain' }, 'DB_HOST=localhost\\nDB_USER=shop\\nDB_PASSWORD=Verde2019!\\nSMTP_PASSWORD=jardin\\nSTRIPE_SECRET=sk_live_EXAMPLE_NOT_REAL\\n']; // FLAW 11: secrets served to anyone\n-  if (path === '/backup/') return html('<h1>Index of /backup/</h1><ul><li><a href=\"/backup/wp-config.php.bak\">wp-config.php.bak</a></li><li><a href=\"/backup/shop-2024-03-01.sql\">shop-2024-03-01.sql</a></li></ul>'); // FLAW 12: directory listing with backups\n+  if (path === '/backup' || path.startsWith('/backup/')) return [404, { 'content-type': 'text/html; charset=utf-8' }, '<h1>404</h1>'];\n   if (path === '/backup/wp-config.php.bak') return [200, { 'content-type': 'text/plain' }, \"<?php\\ndefine('DB_PASSWORD', 'Verde2019!');\\ndefine('AUTH_KEY', 'example-not-real');\\n\"];\n   if (path === '/export/customers.csv') return [200, { 'content-type': 'text/csv' }, 'name,email,phone\\nMarie Dupont,marie.dupont@example.org,0600000000\\nKarim Benali,k.benali@example.org,0611111111\\n']; // FLAW 13: customer export without authentication (GDPR)\n   if (path === '/js/jquery-1.8.3.min.js') return [200, { 'content-type': 'application/javascript' }, '/*! jQuery v1.8.3 jquery.com | jquery.org/license */ window.jQuery=window.$=function(){};']; // FLAW 14: outdated library (CVE-2020-11022, CVE-2020-11023)\n",
+      "journeysAfter": {
+        "ok": true,
+        "pass": 7,
+        "fail": 0,
+        "broken": [],
+        "output": "✔ journey: browse the catalogue (1.2649ms)\n✔ journey: search an article (0.2694ms)\n✔ journey: add to cart and see the total (0.7975ms)\n✔ journey: reach the checkout and pay (0.4165ms)\n✔ journey: follow my own order (0.5178ms)\n✔ journey: log in as the administrator (0.2787ms)\n✔ journey: read the legal notice (0.2224ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 104.662\n"
+      },
+      "rescan": {
+        "target": "http://127.0.0.1:50338",
+        "scanner": "mission-zero scan 0.1",
+        "scannedAt": "2026-10-28T11:42:28.987Z",
+        "findings": []
+      },
+      "vision": {
+        "shots": {
+          "before": [
+            {
+              "name": "home",
+              "path": "evidence\\repair-2026-10-28-11-35\\F12\\shots-before\\home.png"
+            },
+            {
+              "name": "finding",
+              "path": "evidence\\repair-2026-10-28-11-35\\F12\\shots-before\\finding.png"
+            }
+          ],
+          "after": [
+            {
+              "name": "home",
+              "path": "evidence\\repair-2026-10-28-11-35\\F12\\shots-after\\home.png"
+            },
+            {
+              "name": "finding",
+              "path": "evidence\\repair-2026-10-28-11-35\\F12\\shots-after\\finding.png"
+            }
+          ]
+        },
+        "look": {
+          "ok": true,
+          "unreadable": false,
+          "problems": [],
+          "seen": [
+            "MAISON VERDE navigation",
+            "Lampe Osier 89€",
+            "Vase Terracotta 45€",
+            "Plaid Lin 120€"
+          ]
+        },
+        "sam": {
+          "concept": "text input field",
+          "before": 0,
+          "after": 0
+        }
+      },
+      "review": {
+        "verdict": "cause",
+        "reason": "404 for all /backup/* stops both index listing and direct download of .bak/.sql, which is the denied-access fix recommended.",
+        "missing": ""
+      },
+      "status": "reserved",
+      "why": "journeys pass and the flaw is gone on the copy, but weak justification: the judge scored the cited recommendation 3/10 (1 verified source); read the sources before applying",
+      "reservations": [
+        "weak justification: the judge scored the cited recommendation 3/10 (1 verified source); read the sources before applying"
+      ],
+      "attempts": [],
+      "ms": 107219
+    },
+    {
+      "finding": {
+        "id": "F15",
+        "severity": "medium",
+        "type": "missing-privacy-policy",
+        "url": "http://127.0.0.1:8098/mentions-legales",
+        "evidence": "no privacy policy, no information on the data collected by the checkout form",
+        "description": "Personal data is collected without the information the law requires."
+      },
+      "recommendation": {
+        "goal": "What is the recommended fix for this web security flaw: missing-privacy-policy (Personal data is collected without the information the law requires. Evidence: no privacy policy, no information on the data collected by the checkout form). State the concrete fix and cite a primary source (OWASP, MDN, NIST, PCI DSS, IETF RFC, or the vendor's own advisory).",
+        "answer": "Fix: At collection, tell the user why the personal data is needed and how it is used. Encrypt stored private data with sufficient key lengths under strict technical and procedural access conditions. Dropped as unsupported in verified passages: footer-linked policy page, third-party/sharing/retention notice, consent, minimization, hashing.",
+        "sources": [
+          {
+            "url": "https://mas.owasp.org/MASTG/0x04i-Testing-User-Privacy-Protection/",
+            "contribution": "When an app requests personal information from a user, the user needs to know why the app needs that data and how it is used by the app."
+          },
+          {
+            "url": "https://cheatsheetseries.owasp.org/cheatsheets/User_Privacy_Protection_Cheat_Sheet.html",
+            "contribution": "Private data must be encrypted in storage using keys with sufficient lengths and under strict access conditions, both technical and procedural."
+          }
+        ],
+        "score": 7,
+        "green": 2,
+        "red": 0,
+        "verification": [
+          {
+            "url": "https://mas.owasp.org/MASTG/0x04i-Testing-User-Privacy-Protection/",
+            "claim": "When an app requests personal information from a user, the user needs to know why the app needs that data and how it is used by the app.",
+            "verdict": "supported",
+            "detail": "When an app requests personal information from a user, the user needs to know why the app needs that data and how it is used by the app."
+          },
+          {
+            "url": "https://cheatsheetseries.owasp.org/cheatsheets/User_Privacy_Protection_Cheat_Sheet.html",
+            "claim": "Private data must be encrypted in storage using keys with sufficient lengths and under strict access conditions, both technical and procedural.",
+            "verdict": "supported",
+            "detail": "Private data must be encrypted in storage using keys with sufficient lengths and under strict access conditions, both technical and procedural."
+          }
+        ]
+      },
+      "fix": {
+        "summary": "Add privacy notice at checkout and privacy policy on legal notice explaining purpose and use of collected data.",
+        "risk": "Extra informational HTML could alter page layout but no journey logic changed.",
+        "secretsMasked": 5,
+        "applied": [
+          {
+            "file": "server.js",
+            "find": "    return html(page('checkout.html'));",
+            "replace": "    return html(page('checkout.html') + `<p class=\"privacy-notice\">Donnees personnelles : nom, email, adresse et carte collectes uniquement pour traiter et suivre votre commande. Conservation limitee a la gestion des commandes, sans partage.</p>`);"
+          },
+          {
+            "file": "server.js",
+            "find": "  if (path === '/mentions-legales') return html(page('mentions.html')); // FLAW 15 (compliance): no privacy policy, no cookie notice, personal data collected without information",
+            "replace": "  if (path === '/mentions-legales') return html(page('mentions.html') + `<section><h2>Politique de confidentialite</h2><p>Donnees collectees via le formulaire de commande : nom, email, adresse et carte (4 derniers chiffres). Finalite : traitement et suivi de votre commande. Utilisation : gestion des commandes uniquement.</p></section>`); // privacy policy added"
+          }
+        ],
+        "refused": []
+      },
+      "journeysBefore": {
+        "ok": true,
+        "pass": 7,
+        "fail": 0,
+        "broken": [],
+        "output": "✔ journey: browse the catalogue (1.2587ms)\n✔ journey: search an article (0.2635ms)\n✔ journey: add to cart and see the total (0.573ms)\n✔ journey: reach the checkout and pay (0.4113ms)\n✔ journey: follow my own order (0.4756ms)\n✔ journey: log in as the administrator (0.2709ms)\n✔ journey: read the legal notice (0.218ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 104.4938\n"
+      },
+      "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-atfWHt",
+      "patch": "diff --git a/server.js b/server.js\nindex 6f1b3eb..83194ef 100644\n--- a/server.js\n+++ b/server.js\n@@ -47,7 +47,7 @@ export function handle(method, url, body = '', headers = {}) {\n       const id = 1004; ORDERS[id] = { customer: p.name || '', email: p.email || '', address: p.address || '', total: cart.reduce((a, c) => a + c.price, 0), card: '**** **** **** ' + String(p.card || '').slice(-4) };\n       return html(page('checkout.html').replace('<!--DONE-->', `<p class=\"ok\">Commande n° ${id} enregistrée pour ${p.name || ''}. Carte ${p.card || ''}. <a href=\"/order?id=${id}\">Suivre ma commande</a></p>`), { 'set-cookie': `customer=${encodeURIComponent(p.email || '')}; Path=/` }); // FLAW 3 again, and the card number echoed\n     }\n-    return html(page('checkout.html'));\n+    return html(page('checkout.html') + `<p class=\"privacy-notice\">Donnees personnelles : nom, email, adresse et carte collectes uniquement pour traiter et suivre votre commande. Conservation limitee a la gestion des commandes, sans partage.</p>`);\n   }\n   if (path === '/order') {\n     // FLAW 6 (IDOR): any order is readable by changing its number, no login needed.\n@@ -74,7 +74,7 @@ export function handle(method, url, body = '', headers = {}) {\n   if (path === '/backup/wp-config.php.bak') return [200, { 'content-type': 'text/plain' }, \"<?php\\ndefine('DB_PASSWORD', 'Verde2019!');\\ndefine('AUTH_KEY', 'example-not-real');\\n\"];\n   if (path === '/export/customers.csv') return [200, { 'content-type': 'text/csv' }, 'name,email,phone\\nMarie Dupont,marie.dupont@example.org,0600000000\\nKarim Benali,k.benali@example.org,0611111111\\n']; // FLAW 13: customer export without authentication (GDPR)\n   if (path === '/js/jquery-1.8.3.min.js') return [200, { 'content-type': 'application/javascript' }, '/*! jQuery v1.8.3 jquery.com | jquery.org/license */ window.jQuery=window.$=function(){};']; // FLAW 14: outdated library (CVE-2020-11022, CVE-2020-11023)\n-  if (path === '/mentions-legales') return html(page('mentions.html')); // FLAW 15 (compliance): no privacy policy, no cookie notice, personal data collected without information\n+  if (path === '/mentions-legales') return html(page('mentions.html') + `<section><h2>Politique de confidentialite</h2><p>Donnees collectees via le formulaire de commande : nom, email, adresse et carte (4 derniers chiffres). Finalite : traitement et suivi de votre commande. Utilisation : gestion des commandes uniquement.</p></section>`); // privacy policy added\n   if (path === '/style.css') return [200, { 'content-type': 'text/css' }, page('style.css')];\n   return [404, { 'content-type': 'text/html; charset=utf-8' }, '<h1>404</h1><p>Page introuvable : ' + path + '</p>']; // FLAW 3 again: the path is reflected\n }\n",
+      "journeysAfter": {
+        "ok": true,
+        "pass": 7,
+        "fail": 0,
+        "broken": [],
+        "output": "✔ journey: browse the catalogue (1.2773ms)\n✔ journey: search an article (0.2696ms)\n✔ journey: add to cart and see the total (0.7127ms)\n✔ journey: reach the checkout and pay (0.4454ms)\n✔ journey: follow my own order (0.4951ms)\n✔ journey: log in as the administrator (0.2695ms)\n✔ journey: read the legal notice (0.2293ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 107.5913\n"
+      },
+      "rescan": {
+        "target": "http://127.0.0.1:52356",
+        "scanner": "mission-zero scan 0.1",
+        "scannedAt": "2026-10-28T11:43:55.814Z",
+        "findings": []
+      },
+      "vision": {
+        "shots": {
+          "before": [
+            {
+              "name": "home",
+              "path": "evidence\\repair-2026-10-28-11-35\\F15\\shots-before\\home.png"
+            },
+            {
+              "name": "finding",
+              "path": "evidence\\repair-2026-10-28-11-35\\F15\\shots-before\\finding.png"
+            }
+          ],
+          "after": [
+            {
+              "name": "home",
+              "path": "evidence\\repair-2026-10-28-11-35\\F15\\shots-after\\home.png"
+            },
+            {
+              "name": "finding",
+              "path": "evidence\\repair-2026-10-28-11-35\\F15\\shots-after\\finding.png"
+            }
+          ]
+        },
+        "look": {
+          "ok": true,
+          "unreadable": false,
+          "problems": [],
+          "seen": [
+            "nav MAISON VERDE Boutique Panier",
+            "search Rechercher un article",
+            "product cards Lampe Vase Plaid",
+            "Mentions legales text"
+          ]
+        },
+        "sam": {
+          "concept": "text input field",
+          "before": 0,
+          "after": 0
+        }
+      },
+      "review": {
+        "verdict": "partial",
+        "reason": "Patch adds purpose/use notice at checkout and policy section but does not encrypt stored private data.",
+        "missing": "Encrypt stored private data with sufficient key lengths under strict technical and procedural access conditions."
+      },
+      "status": "proposed",
+      "why": "journeys pass and the flaw is gone on the copy; a human applies it",
+      "reservations": [],
+      "attempts": [],
+      "ms": 89040
+    },
+    {
+      "finding": {
+        "id": "F02",
+        "severity": "low",
+        "type": "version-disclosure",
+        "url": "http://127.0.0.1:8098/",
+        "evidence": "Server: Apache/2.4.29 (Ubuntu) PHP/7.2.24; X-Powered-By: PHP/7.2.24 WooCommerce/3.5.1",
+        "description": "The stack and its versions are announced to anyone."
+      },
+      "recommendation": {
+        "goal": "What is the recommended fix for this web security flaw: version-disclosure (The stack and its versions are announced to anyone. Evidence: Server: Apache/2.4.29 (Ubuntu) PHP/7.2.24; X-Powered-By: PHP/7.2.24 WooCommerce/3.5.1). State the concrete fix and cite a primary source (OWASP, MDN, NIST, PCI DSS, IETF RFC, or the vendor's own advisory).",
+        "answer": "Recommended fix for version-disclosure supported by cited OWASP page: Remove all X-Powered-By headers. The verified page text does not include ServerTokens Prod, ServerSignature Off, expose_php = off, or a generic Server value, so those specific directives are omitted from this fix.",
+        "sources": [
+          {
+            "url": "https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html",
+            "contribution": "Remove all X-Powered-By headers."
+          }
+        ],
+        "score": 4,
+        "green": 1,
+        "red": 0,
+        "verification": [
+          {
+            "url": "https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html",
+            "claim": "Remove all X-Powered-By headers.",
+            "verdict": "supported",
+            "detail": "Remove all X-Powered-By headers."
+          }
+        ]
+      },
+      "fix": {
+        "summary": "Remove Server and X-Powered-By version disclosure headers from HTML responses.",
+        "risk": "Clients relying on Server or X-Powered-By headers for diagnostics would no longer see them.",
+        "secretsMasked": 5,
+        "applied": [
+          {
+            "file": "server.js",
+            "find": "  const html = (b, extra = {}) => [200, { 'content-type': 'text/html; charset=utf-8', server: 'Apache/2.4.29 (Ubuntu) PHP/7.2.24', 'x-powered-by': 'PHP/7.2.24 WooCommerce/3.5.1', ...extra }, b];",
+            "replace": "  const html = (b, extra = {}) => [200, { 'content-type': 'text/html; charset=utf-8', ...extra }, b];"
+          }
+        ],
+        "refused": []
+      },
+      "journeysBefore": {
+        "ok": true,
+        "pass": 7,
+        "fail": 0,
+        "broken": [],
+        "output": "✔ journey: browse the catalogue (1.2524ms)\n✔ journey: search an article (0.2721ms)\n✔ journey: add to cart and see the total (0.5913ms)\n✔ journey: reach the checkout and pay (0.4323ms)\n✔ journey: follow my own order (0.4818ms)\n✔ journey: log in as the administrator (0.2963ms)\n✔ journey: read the legal notice (0.2512ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 106.8949\n"
+      },
+      "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-itMSXM",
+      "patch": "diff --git a/server.js b/server.js\nindex 6f1b3eb..cc739a5 100644\n--- a/server.js\n+++ b/server.js\n@@ -25,7 +25,7 @@ export function handle(method, url, body = '', headers = {}) {\n   const q = Object.fromEntries(new URLSearchParams(qs));\n   // FLAW 1 (headers): no Content-Security-Policy, X-Frame-Options, X-Content-Type-Options, Referrer-Policy or HSTS.\n   // FLAW 2 (information disclosure): Server and X-Powered-By reveal an old stack.\n-  const html = (b, extra = {}) => [200, { 'content-type': 'text/html; charset=utf-8', server: 'Apache/2.4.29 (Ubuntu) PHP/7.2.24', 'x-powered-by': 'PHP/7.2.24 WooCommerce/3.5.1', ...extra }, b];\n+  const html = (b, extra = {}) => [200, { 'content-type': 'text/html; charset=utf-8', ...extra }, b];\n   const esc = (s) => String(s).replace(/[&<>\"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;' }[c]));\n \n   if (path === '/') return html(page('index.html').replace('<!--PRODUCTS-->', PRODUCTS.map((p) => `<div class=\"card\"><h3>${p.name}</h3><p class=\"price\">${p.price} €</p><form method=\"post\" action=\"/cart\"><input type=\"hidden\" name=\"id\" value=\"${p.id}\"><input type=\"hidden\" name=\"price\" value=\"${p.price}\"><button>Ajouter au panier</button></form></div>`).join('')));\n",
+      "journeysAfter": {
+        "ok": true,
+        "pass": 7,
+        "fail": 0,
+        "broken": [],
+        "output": "✔ journey: browse the catalogue (1.3035ms)\n✔ journey: search an article (0.271ms)\n✔ journey: add to cart and see the total (0.5859ms)\n✔ journey: reach the checkout and pay (0.4253ms)\n✔ journey: follow my own order (0.4855ms)\n✔ journey: log in as the administrator (0.2667ms)\n✔ journey: read the legal notice (0.2503ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 102.9328\n"
+      },
+      "rescan": {
+        "target": "http://127.0.0.1:50241",
+        "scanner": "mission-zero scan 0.1",
+        "scannedAt": "2026-10-28T11:45:33.798Z",
+        "findings": []
+      },
+      "vision": {
+        "shots": {
+          "before": [
+            {
+              "name": "home",
+              "path": "evidence\\repair-2026-10-28-11-35\\F02\\shots-before\\home.png"
+            },
+            {
+              "name": "finding",
+              "path": "evidence\\repair-2026-10-28-11-35\\F02\\shots-before\\finding.png"
+            }
+          ],
+          "after": [
+            {
+              "name": "home",
+              "path": "evidence\\repair-2026-10-28-11-35\\F02\\shots-after\\home.png"
+            },
+            {
+              "name": "finding",
+              "path": "evidence\\repair-2026-10-28-11-35\\F02\\shots-after\\finding.png"
+            }
+          ]
+        },
+        "look": {
+          "ok": true,
+          "unreadable": false,
+          "problems": [],
+          "seen": [
+            "navigation Boutique/Panier",
+            "search form",
+            "3 product cards",
+            "add to cart buttons"
+          ]
+        },
+        "sam": {
+          "concept": "text input field",
+          "before": 0,
+          "after": 0
+        }
+      },
+      "review": {
+        "verdict": "cause",
+        "reason": "Patch deletes the Server and X-Powered-By headers that the recommendation cites as the disclosure cause.",
+        "missing": ""
+      },
+      "status": "reserved",
+      "why": "journeys pass and the flaw is gone on the copy, but weak justification: the judge scored the cited recommendation 4/10 (1 verified source); read the sources before applying",
+      "reservations": [
+        "weak justification: the judge scored the cited recommendation 4/10 (1 verified source); read the sources before applying"
+      ],
+      "attempts": [
+        {
+          "status": "ineffective",
+          "why": "journeys pass but the scanner still sees the flaw",
+          "edits": [
+            {
+              "file": "server.js",
+              "find": "  const html = (b, extra = {}) => [200, { 'content-type': 'text/html; charset=utf-8', server: 'Apache/2.4.29 (Ubuntu) PHP/7.2.24', 'x-powered-by': 'PHP/7.2.24 WooCommerce/3.5.1', ...extra }, b];",
+              "replace": "  const html = (b, extra = {}) => [200, { 'content-type': 'text/html; charset=utf-8', server: 'Apache/2.4.29 (Ubuntu) PHP/7.2.24', ...extra }, b];"
+            }
+          ],
+          "refused": [],
+          "brokenJourneys": [],
+          "testOutput": "✔ journey: browse the catalogue (1.3829ms)\n✔ journey: search an article (0.3127ms)\n✔ journey: add to cart and see the total (0.696ms)\n✔ journey: reach the checkout and pay (0.5327ms)\n✔ journey: follow my own order (0.6194ms)\n✔ journey: log in as the administrator (0.3451ms)\n✔ journey: read the legal notice (0.2627ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 104.5944\n",
+          "scannerStillSees": "server: Apache/2.4.29 (Ubuntu) PHP/7.2.24",
+          "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-mMUZ80"
+        }
+      ],
+      "ms": 94887
+    }
+  ],
+  "cost": {
+    "calls": 100,
+    "input": 126766,
+    "output": 99698,
+    "usd": 0.582174,
+    "totalMs": 580296,
+    "byTag": {
+      "plan": {
+        "calls": 12,
+        "input": 19991,
+        "output": 4882,
+        "reasoning": 3330,
+        "truncated": 0
+      },
+      "evaluate": {
+        "calls": 12,
+        "input": 11835,
+        "output": 7745,
+        "reasoning": 6710,
+        "truncated": 0
+      },
+      "synthesize": {
+        "calls": 6,
+        "input": 7603,
+        "output": 17690,
+        "reasoning": 15973,
+        "truncated": 0
+      },
+      "verify": {
+        "calls": 24,
+        "input": 8103,
+        "output": 6900,
+        "reasoning": 6071,
+        "truncated": 0
+      },
+      "judge": {
+        "calls": 12,
+        "input": 6767,
+        "output": 10191,
+        "reasoning": 9735,
+        "truncated": 0
+      },
+      "contradict": {
+        "calls": 6,
+        "input": 4456,
+        "output": 5948,
+        "reasoning": 5351,
+        "truncated": 0
+      },
+      "rewrite": {
+        "calls": 6,
+        "input": 11471,
+        "output": 19350,
+        "reasoning": 17880,
+        "truncated": 0
+      },
+      "fix": {
+        "calls": 8,
+        "input": 30435,
+        "output": 18055,
+        "reasoning": 15494,
+        "truncated": 0
+      },
+      "vision": {
+        "calls": 7,
+        "input": 18767,
+        "output": 3415,
+        "reasoning": 3102,
+        "truncated": 0
+      },
+      "review": {
+        "calls": 7,
+        "input": 7338,
+        "output": 5522,
+        "reasoning": 5169,
+        "truncated": 0
+      }
+    }
+  }
+}

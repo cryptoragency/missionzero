@@ -1,0 +1,105 @@
+{
+  "finding": {
+    "id": "F02",
+    "severity": "low",
+    "type": "version-disclosure",
+    "url": "http://127.0.0.1:8098/",
+    "evidence": "Server: Apache/2.4.29 (Ubuntu) PHP/7.2.24; X-Powered-By: PHP/7.2.24 WooCommerce/3.5.1",
+    "description": "The stack and its versions are announced to anyone."
+  },
+  "recommendation": {
+    "goal": "What is the recommended fix for this web security flaw: version-disclosure (The stack and its versions are announced to anyone. Evidence: Server: Apache/2.4.29 (Ubuntu) PHP/7.2.24; X-Powered-By: PHP/7.2.24 WooCommerce/3.5.1). State the concrete fix and cite a primary source (OWASP, MDN, NIST, PCI DSS, IETF RFC, or the vendor's own advisory).",
+    "answer": "",
+    "sources": [],
+    "score": 0,
+    "green": 0,
+    "red": 0,
+    "verification": []
+  },
+  "fix": {
+    "summary": "Removed version-disclosing Server and X-Powered-By headers from responses.",
+    "risk": "None for journeys; only informational headers removed.",
+    "secretsMasked": 5,
+    "applied": [
+      {
+        "file": "server.js",
+        "find": "  const html = (b, extra = {}) => [200, { 'content-type': 'text/html; charset=utf-8', server: 'Apache/2.4.29 (Ubuntu) PHP/7.2.24', 'x-powered-by': 'PHP/7.2.24 WooCommerce/3.5.1', ...extra }, b];",
+        "replace": "  const html = (b, extra = {}) => [200, { 'content-type': 'text/html; charset=utf-8', ...extra }, b];"
+      }
+    ],
+    "refused": []
+  },
+  "journeysBefore": {
+    "ok": true,
+    "pass": 7,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ journey: browse the catalogue (1.2592ms)\n✔ journey: search an article (0.2625ms)\n✔ journey: add to cart and see the total (0.594ms)\n✔ journey: reach the checkout and pay (0.4156ms)\n✔ journey: follow my own order (0.4788ms)\n✔ journey: log in as the administrator (0.2758ms)\n✔ journey: read the legal notice (0.2171ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 100.4734\n"
+  },
+  "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-5ryABL",
+  "patch": "diff --git a/server.js b/server.js\nindex 6f1b3eb..cc739a5 100644\n--- a/server.js\n+++ b/server.js\n@@ -25,7 +25,7 @@ export function handle(method, url, body = '', headers = {}) {\n   const q = Object.fromEntries(new URLSearchParams(qs));\n   // FLAW 1 (headers): no Content-Security-Policy, X-Frame-Options, X-Content-Type-Options, Referrer-Policy or HSTS.\n   // FLAW 2 (information disclosure): Server and X-Powered-By reveal an old stack.\n-  const html = (b, extra = {}) => [200, { 'content-type': 'text/html; charset=utf-8', server: 'Apache/2.4.29 (Ubuntu) PHP/7.2.24', 'x-powered-by': 'PHP/7.2.24 WooCommerce/3.5.1', ...extra }, b];\n+  const html = (b, extra = {}) => [200, { 'content-type': 'text/html; charset=utf-8', ...extra }, b];\n   const esc = (s) => String(s).replace(/[&<>\"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;' }[c]));\n \n   if (path === '/') return html(page('index.html').replace('<!--PRODUCTS-->', PRODUCTS.map((p) => `<div class=\"card\"><h3>${p.name}</h3><p class=\"price\">${p.price} €</p><form method=\"post\" action=\"/cart\"><input type=\"hidden\" name=\"id\" value=\"${p.id}\"><input type=\"hidden\" name=\"price\" value=\"${p.price}\"><button>Ajouter au panier</button></form></div>`).join('')));\n",
+  "journeysAfter": {
+    "ok": true,
+    "pass": 7,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ journey: browse the catalogue (1.3925ms)\n✔ journey: search an article (0.2724ms)\n✔ journey: add to cart and see the total (0.58ms)\n✔ journey: reach the checkout and pay (0.4233ms)\n✔ journey: follow my own order (0.4731ms)\n✔ journey: log in as the administrator (0.2677ms)\n✔ journey: read the legal notice (0.2859ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 102.8841\n"
+  },
+  "rescan": {
+    "target": "http://127.0.0.1:63376",
+    "scanner": "mission-zero scan 0.1",
+    "scannedAt": "2026-10-28T11:31:37.286Z",
+    "findings": []
+  },
+  "vision": {
+    "shots": {
+      "before": [
+        {
+          "name": "home",
+          "path": "evidence\\repair-2026-10-28-11-18\\F02\\shots-before\\home.png"
+        },
+        {
+          "name": "finding",
+          "path": "evidence\\repair-2026-10-28-11-18\\F02\\shots-before\\finding.png"
+        }
+      ],
+      "after": [
+        {
+          "name": "home",
+          "path": "evidence\\repair-2026-10-28-11-18\\F02\\shots-after\\home.png"
+        },
+        {
+          "name": "finding",
+          "path": "evidence\\repair-2026-10-28-11-18\\F02\\shots-after\\finding.png"
+        }
+      ]
+    },
+    "look": {
+      "ok": true,
+      "problems": [],
+      "seen": [
+        "header MAISON VERDE with nav Boutique Panier Ma commande Compte",
+        "search form Rechercher un article with Rechercher button",
+        "3 product cards Lampe Osier 89€, Vase Terracotta 45€, Plaid Lin 120€ with Ajouter au panier buttons",
+        "footer Maison Verde Mentions légales Paiement sécurisé"
+      ]
+    },
+    "sam": {
+      "concept": "text input field",
+      "before": 0,
+      "after": 0
+    }
+  },
+  "review": {
+    "verdict": "cause",
+    "reason": "Patch eliminates the Server and X-Powered-By version banners that constitute the disclosure.",
+    "missing": ""
+  },
+  "status": "reserved",
+  "why": "journeys pass and the flaw is gone on the copy, but weak justification: the judge scored the cited recommendation 0/10 (0 verified sources); read the sources before applying",
+  "reservations": [
+    "weak justification: the judge scored the cited recommendation 0/10 (0 verified sources); read the sources before applying"
+  ],
+  "attempts": [],
+  "ms": 79123
+}

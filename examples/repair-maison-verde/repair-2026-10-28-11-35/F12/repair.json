@@ -1,0 +1,128 @@
+{
+  "finding": {
+    "id": "F12",
+    "severity": "high",
+    "type": "directory-listing-backups",
+    "url": "http://127.0.0.1:8098/backup/",
+    "evidence": "index listing wp-config.php.bak and shop-2024-03-01.sql",
+    "description": "Configuration and database backups are downloadable."
+  },
+  "recommendation": {
+    "goal": "What is the recommended fix for this web security flaw: directory-listing-backups (Configuration and database backups are downloadable. Evidence: index listing wp-config.php.bak and shop-2024-03-01.sql). State the concrete fix and cite a primary source (OWASP, MDN, NIST, PCI DSS, IETF RFC, or the vendor's own advisory).",
+    "answer": "Recommended fix: Remove wp-config.php.bak and shop-2024-03-01.sql from the web-accessible tree and do not store backups in the docroot — store them outside the web root or with denied access. Disable directory listing/indexing for all paths beneath the web root so indexes do not expose backups and config files.",
+    "sources": [
+      {
+        "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management/04-Review_Old_Backup_and_Unreferenced_Files_for_Sensitive_Information",
+        "contribution": "These files may be created when editing application files, creating on-the-fly backup copies, or leaving old or unreferenced files in the web tree"
+      },
+      {
+        "url": "https://community.owasp.org/attacks/Forced_browsing",
+        "contribution": "An attacker can use Brute Force techniques to search for unlinked contents in the domain directory, such as temporary directories, files, old backups or configuration files"
+      }
+    ],
+    "score": 3,
+    "green": 1,
+    "red": 1,
+    "verification": [
+      {
+        "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management/04-Review_Old_Backup_and_Unreferenced_Files_for_Sensitive_Information",
+        "claim": "These files may be created when editing application files, creating on-the-fly backup copies, or leaving old or unreferenced files in the web tree",
+        "verdict": "unsupported",
+        "detail": "nearest passages: « WSTG - Latest | OWASP Web Security Testing Guide Skip to main content Skip to bottom of page This content represents the latest contributions to the Web Security Testing Guide, and may frequently change. » « The Open Worldwide Application Security Project® (OWASP®) is a nonprofit foundation whose vision is no more insecure software. » « Creating a guide like this takes expertise from hundreds of people around the world. »"
+      },
+      {
+        "url": "https://community.owasp.org/attacks/Forced_browsing",
+        "claim": "An attacker can use Brute Force techniques to search for unlinked contents in the domain directory, such as temporary directories, files, old backups or configuration files",
+        "verdict": "supported",
+        "detail": "An attacker can use Brute Force techniques to search for unlinked contents in the domain directory, such as temporary directories, files, old backups or configuration files."
+      }
+    ]
+  },
+  "fix": {
+    "summary": "Blocked all /backup/ routes with 404 to remove listing and backup file disclosure.",
+    "risk": "Any legitimate use of /backup/ URLs will now 404; no journeys use them.",
+    "secretsMasked": 5,
+    "applied": [
+      {
+        "file": "server.js",
+        "find": "  if (path === '/backup/') return html('<h1>Index of /backup/</h1><ul><li><a href=\"/backup/wp-config.php.bak\">wp-config.php.bak</a></li><li><a href=\"/backup/shop-2024-03-01.sql\">shop-2024-03-01.sql</a></li></ul>'); // FLAW 12: directory listing with backups",
+        "replace": "  if (path === '/backup' || path.startsWith('/backup/')) return [404, { 'content-type': 'text/html; charset=utf-8' }, '<h1>404</h1>'];"
+      }
+    ],
+    "refused": []
+  },
+  "journeysBefore": {
+    "ok": true,
+    "pass": 7,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ journey: browse the catalogue (1.2478ms)\n✔ journey: search an article (0.2775ms)\n✔ journey: add to cart and see the total (0.5797ms)\n✔ journey: reach the checkout and pay (0.4321ms)\n✔ journey: follow my own order (0.4897ms)\n✔ journey: log in as the administrator (0.2712ms)\n✔ journey: read the legal notice (0.2531ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 105.3624\n"
+  },
+  "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-j9Wftj",
+  "patch": "diff --git a/server.js b/server.js\nindex 6f1b3eb..bddc885 100644\n--- a/server.js\n+++ b/server.js\n@@ -70,7 +70,7 @@ export function handle(method, url, body = '', headers = {}) {\n   }\n   if (path === '/robots.txt') return [200, { 'content-type': 'text/plain' }, 'User-agent: *\\nDisallow: /admin\\nDisallow: /backup/\\nDisallow: /.env\\nDisallow: /export/\\n']; // FLAW 10: robots.txt advertises the sensitive paths\n   if (path === '/.env') return [200, { 'content-type': 'text/plain' }, 'DB_HOST=localhost\\nDB_USER=shop\\nDB_PASSWORD=Verde2019!\\nSMTP_PASSWORD=jardin\\nSTRIPE_SECRET=sk_live_EXAMPLE_NOT_REAL\\n']; // FLAW 11: secrets served to anyone\n-  if (path === '/backup/') return html('<h1>Index of /backup/</h1><ul><li><a href=\"/backup/wp-config.php.bak\">wp-config.php.bak</a></li><li><a href=\"/backup/shop-2024-03-01.sql\">shop-2024-03-01.sql</a></li></ul>'); // FLAW 12: directory listing with backups\n+  if (path === '/backup' || path.startsWith('/backup/')) return [404, { 'content-type': 'text/html; charset=utf-8' }, '<h1>404</h1>'];\n   if (path === '/backup/wp-config.php.bak') return [200, { 'content-type': 'text/plain' }, \"<?php\\ndefine('DB_PASSWORD', 'Verde2019!');\\ndefine('AUTH_KEY', 'example-not-real');\\n\"];\n   if (path === '/export/customers.csv') return [200, { 'content-type': 'text/csv' }, 'name,email,phone\\nMarie Dupont,marie.dupont@example.org,0600000000\\nKarim Benali,k.benali@example.org,0611111111\\n']; // FLAW 13: customer export without authentication (GDPR)\n   if (path === '/js/jquery-1.8.3.min.js') return [200, { 'content-type': 'application/javascript' }, '/*! jQuery v1.8.3 jquery.com | jquery.org/license */ window.jQuery=window.$=function(){};']; // FLAW 14: outdated library (CVE-2020-11022, CVE-2020-11023)\n",
+  "journeysAfter": {
+    "ok": true,
+    "pass": 7,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ journey: browse the catalogue (1.2649ms)\n✔ journey: search an article (0.2694ms)\n✔ journey: add to cart and see the total (0.7975ms)\n✔ journey: reach the checkout and pay (0.4165ms)\n✔ journey: follow my own order (0.5178ms)\n✔ journey: log in as the administrator (0.2787ms)\n✔ journey: read the legal notice (0.2224ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 104.662\n"
+  },
+  "rescan": {
+    "target": "http://127.0.0.1:50338",
+    "scanner": "mission-zero scan 0.1",
+    "scannedAt": "2026-10-28T11:42:28.987Z",
+    "findings": []
+  },
+  "vision": {
+    "shots": {
+      "before": [
+        {
+          "name": "home",
+          "path": "evidence\\repair-2026-10-28-11-35\\F12\\shots-before\\home.png"
+        },
+        {
+          "name": "finding",
+          "path": "evidence\\repair-2026-10-28-11-35\\F12\\shots-before\\finding.png"
+        }
+      ],
+      "after": [
+        {
+          "name": "home",
+          "path": "evidence\\repair-2026-10-28-11-35\\F12\\shots-after\\home.png"
+        },
+        {
+          "name": "finding",
+          "path": "evidence\\repair-2026-10-28-11-35\\F12\\shots-after\\finding.png"
+        }
+      ]
+    },
+    "look": {
+      "ok": true,
+      "unreadable": false,
+      "problems": [],
+      "seen": [
+        "MAISON VERDE navigation",
+        "Lampe Osier 89€",
+        "Vase Terracotta 45€",
+        "Plaid Lin 120€"
+      ]
+    },
+    "sam": {
+      "concept": "text input field",
+      "before": 0,
+      "after": 0
+    }
+  },
+  "review": {
+    "verdict": "cause",
+    "reason": "404 for all /backup/* stops both index listing and direct download of .bak/.sql, which is the denied-access fix recommended.",
+    "missing": ""
+  },
+  "status": "reserved",
+  "why": "journeys pass and the flaw is gone on the copy, but weak justification: the judge scored the cited recommendation 3/10 (1 verified source); read the sources before applying",
+  "reservations": [
+    "weak justification: the judge scored the cited recommendation 3/10 (1 verified source); read the sources before applying"
+  ],
+  "attempts": [],
+  "ms": 107219
+}

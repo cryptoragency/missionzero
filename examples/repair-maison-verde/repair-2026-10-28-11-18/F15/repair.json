@@ -1,0 +1,122 @@
+{
+  "finding": {
+    "id": "F15",
+    "severity": "medium",
+    "type": "missing-privacy-policy",
+    "url": "http://127.0.0.1:8098/mentions-legales",
+    "evidence": "no privacy policy, no information on the data collected by the checkout form",
+    "description": "Personal data is collected without the information the law requires."
+  },
+  "recommendation": {
+    "goal": "What is the recommended fix for this web security flaw: missing-privacy-policy (Personal data is collected without the information the law requires. Evidence: no privacy policy, no information on the data collected by the checkout form). State the concrete fix and cite a primary source (OWASP, MDN, NIST, PCI DSS, IETF RFC, or the vendor's own advisory).",
+    "answer": "Recommended fix: Publish a clear, easily accessible privacy policy and provide information at the point of collection on the checkout form. Concretely: add a footer link to the privacy policy plus a just-in-time notice at the checkout explaining what personal data is collected (e.g. name, address, payment details), for what purposes and legal basis, retention, third-party sharing, user rights and contact details, and obtain consent where required before collecting/submitting the data. This implements OWASP User Privacy Protection guidance to be transparent about collection and use of user data and to meet privacy obligations for personal data.",
+    "sources": [
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/User_Privacy_Protection_Cheat_Sheet.html",
+        "contribution": "Web developers should provide transparency about what user data is collected and how it is used"
+      }
+    ],
+    "score": 2,
+    "green": 0,
+    "red": 1,
+    "verification": [
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/User_Privacy_Protection_Cheat_Sheet.html",
+        "claim": "Web developers should provide transparency about what user data is collected and how it is used",
+        "verdict": "unsupported",
+        "detail": "nearest passages: « Honesty & Transparency &para; If the web application cannot provide enough legal or political protections to the user, or if the web application cannot prevent misuse or disclosure of sensitive information such as logs,  » « Digital Certificate Pinning &para; Certificate Pinning is the practice of hardcoding or storing a predefined set of information (usually hashes) for digital certificates/public keys in the user agent (be it web browser,  » « Many web applications need user content to operate, and this is completely acceptable as a business process; however web developers are advised to consider giving users the option of blocking external content as a precau »"
+      }
+    ]
+  },
+  "fix": {
+    "summary": "Add privacy policy to legal notice and just-in-time notice with link on checkout without blocking submission.",
+    "risk": "Static informational HTML only; checkout still accepts posts without consent so no journey breaks.",
+    "secretsMasked": 5,
+    "applied": [
+      {
+        "file": "server.js",
+        "find": "  if (path === '/mentions-legales') return html(page('mentions.html')); // FLAW 15 (compliance): no privacy policy, no cookie notice, personal data collected without information",
+        "replace": "  if (path === '/mentions-legales') return html(page('mentions.html') + `<section id=\"confidentialite\"><h2>Politique de confidentialité</h2><p>Données collectées au moment de la commande : nom, adresse e-mail, adresse postale et informations de paiement (carte masquée).</p><p>Finalités et base légale : traitement de la commande et livraison (exécution du contrat), facturation (obligation légale).</p><p>Conservation : 3 ans pour les commandes, puis archivage légal.</p><p>Partage : aucun tiers sauf prestataires de livraison et de paiement.</p><p>Vos droits : accès, rectification, effacement, opposition et portabilité. Contact : privacy@example.org.</p><p><a href=\"/mentions-legales#confidentialite\">Politique de confidentialité</a></p></section>`);"
+      },
+      {
+        "file": "server.js",
+        "find": "    return html(page('checkout.html'));",
+        "replace": "    return html(page('checkout.html') + `<p class=\"privacy-notice\">Données collectées : nom, e-mail, adresse et carte bancaire pour traiter votre commande (exécution du contrat). Conservation 3 ans. Vos droits : accès, rectification, effacement via privacy@example.org. <a href=\"/mentions-legales#confidentialite\">Politique de confidentialité</a></p>`);"
+      }
+    ],
+    "refused": []
+  },
+  "journeysBefore": {
+    "ok": true,
+    "pass": 7,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ journey: browse the catalogue (1.5723ms)\n✔ journey: search an article (0.3287ms)\n✔ journey: add to cart and see the total (0.7272ms)\n✔ journey: reach the checkout and pay (0.4473ms)\n✔ journey: follow my own order (0.5408ms)\n✔ journey: log in as the administrator (0.3197ms)\n✔ journey: read the legal notice (0.2351ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 109.1548\n"
+  },
+  "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-mtAknA",
+  "patch": "diff --git a/server.js b/server.js\nindex 6f1b3eb..c4fb709 100644\n--- a/server.js\n+++ b/server.js\n@@ -47,7 +47,7 @@ export function handle(method, url, body = '', headers = {}) {\n       const id = 1004; ORDERS[id] = { customer: p.name || '', email: p.email || '', address: p.address || '', total: cart.reduce((a, c) => a + c.price, 0), card: '**** **** **** ' + String(p.card || '').slice(-4) };\n       return html(page('checkout.html').replace('<!--DONE-->', `<p class=\"ok\">Commande n° ${id} enregistrée pour ${p.name || ''}. Carte ${p.card || ''}. <a href=\"/order?id=${id}\">Suivre ma commande</a></p>`), { 'set-cookie': `customer=${encodeURIComponent(p.email || '')}; Path=/` }); // FLAW 3 again, and the card number echoed\n     }\n-    return html(page('checkout.html'));\n+    return html(page('checkout.html') + `<p class=\"privacy-notice\">Données collectées : nom, e-mail, adresse et carte bancaire pour traiter votre commande (exécution du contrat). Conservation 3 ans. Vos droits : accès, rectification, effacement via privacy@example.org. <a href=\"/mentions-legales#confidentialite\">Politique de confidentialité</a></p>`);\n   }\n   if (path === '/order') {\n     // FLAW 6 (IDOR): any order is readable by changing its number, no login needed.\n@@ -74,7 +74,7 @@ export function handle(method, url, body = '', headers = {}) {\n   if (path === '/backup/wp-config.php.bak') return [200, { 'content-type': 'text/plain' }, \"<?php\\ndefine('DB_PASSWORD', 'Verde2019!');\\ndefine('AUTH_KEY', 'example-not-real');\\n\"];\n   if (path === '/export/customers.csv') return [200, { 'content-type': 'text/csv' }, 'name,email,phone\\nMarie Dupont,marie.dupont@example.org,0600000000\\nKarim Benali,k.benali@example.org,0611111111\\n']; // FLAW 13: customer export without authentication (GDPR)\n   if (path === '/js/jquery-1.8.3.min.js') return [200, { 'content-type': 'application/javascript' }, '/*! jQuery v1.8.3 jquery.com | jquery.org/license */ window.jQuery=window.$=function(){};']; // FLAW 14: outdated library (CVE-2020-11022, CVE-2020-11023)\n-  if (path === '/mentions-legales') return html(page('mentions.html')); // FLAW 15 (compliance): no privacy policy, no cookie notice, personal data collected without information\n+  if (path === '/mentions-legales') return html(page('mentions.html') + `<section id=\"confidentialite\"><h2>Politique de confidentialité</h2><p>Données collectées au moment de la commande : nom, adresse e-mail, adresse postale et informations de paiement (carte masquée).</p><p>Finalités et base légale : traitement de la commande et livraison (exécution du contrat), facturation (obligation légale).</p><p>Conservation : 3 ans pour les commandes, puis archivage légal.</p><p>Partage : aucun tiers sauf prestataires de livraison et de paiement.</p><p>Vos droits : accès, rectification, effacement, opposition et portabilité. Contact : privacy@example.org.</p><p><a href=\"/mentions-legales#confidentialite\">Politique de confidentialité</a></p></section>`);\n   if (path === '/style.css') return [200, { 'content-type': 'text/css' }, page('style.css')];\n   return [404, { 'content-type': 'text/html; charset=utf-8' }, '<h1>404</h1><p>Page introuvable : ' + path + '</p>']; // FLAW 3 again: the path is reflected\n }\n",
+  "journeysAfter": {
+    "ok": true,
+    "pass": 7,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ journey: browse the catalogue (1.797ms)\n✔ journey: search an article (0.3ms)\n✔ journey: add to cart and see the total (0.6288ms)\n✔ journey: reach the checkout and pay (0.4449ms)\n✔ journey: follow my own order (0.5169ms)\n✔ journey: log in as the administrator (0.301ms)\n✔ journey: read the legal notice (0.2357ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 109.0246\n"
+  },
+  "rescan": {
+    "target": "http://127.0.0.1:56853",
+    "scanner": "mission-zero scan 0.1",
+    "scannedAt": "2026-10-28T11:30:19.206Z",
+    "findings": []
+  },
+  "vision": {
+    "shots": {
+      "before": [
+        {
+          "name": "home",
+          "path": "evidence\\repair-2026-10-28-11-18\\F15\\shots-before\\home.png"
+        },
+        {
+          "name": "finding",
+          "path": "evidence\\repair-2026-10-28-11-18\\F15\\shots-before\\finding.png"
+        }
+      ],
+      "after": [
+        {
+          "name": "home",
+          "path": "evidence\\repair-2026-10-28-11-18\\F15\\shots-after\\home.png"
+        },
+        {
+          "name": "finding",
+          "path": "evidence\\repair-2026-10-28-11-18\\F15\\shots-after\\finding.png"
+        }
+      ]
+    },
+    "look": {
+      "ok": true,
+      "problems": [],
+      "seen": [
+        "header MAISON VERDE with Boutique/Panier/Mon compte navigation",
+        "search form with Rechercher button",
+        "3 product cards Lampe Osier, Vase Terracotta, Plaid Lin with prices and Ajouter au panier",
+        "Mentions légales page with boutique description and Politique de confidentialité text"
+      ]
+    },
+    "sam": {
+      "concept": "text input field",
+      "before": 0,
+      "after": 0
+    }
+  },
+  "review": {
+    "verdict": "cause",
+    "reason": "Patch adds both a privacy policy section and a just-in-time checkout notice detailing data, purposes, retention, sharing and rights.",
+    "missing": ""
+  },
+  "status": "reserved",
+  "why": "journeys pass and the flaw is gone on the copy, but weak justification: the judge scored the cited recommendation 2/10 (0 verified sources); read the sources before applying",
+  "reservations": [
+    "weak justification: the judge scored the cited recommendation 2/10 (0 verified sources); read the sources before applying"
+  ],
+  "attempts": [],
+  "ms": 79887
+}

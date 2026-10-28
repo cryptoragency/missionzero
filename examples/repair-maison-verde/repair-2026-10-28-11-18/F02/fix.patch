@@ -1,5 +1,5 @@
 diff --git a/server.js b/server.js
-index 6f1b3eb..89af07a 100644
+index 6f1b3eb..cc739a5 100644
 --- a/server.js
 +++ b/server.js
 @@ -25,7 +25,7 @@ export function handle(method, url, body = '', headers = {}) {
@@ -7,7 +7,7 @@ index 6f1b3eb..89af07a 100644
    // FLAW 1 (headers): no Content-Security-Policy, X-Frame-Options, X-Content-Type-Options, Referrer-Policy or HSTS.
    // FLAW 2 (information disclosure): Server and X-Powered-By reveal an old stack.
 -  const html = (b, extra = {}) => [200, { 'content-type': 'text/html; charset=utf-8', server: 'Apache/2.4.29 (Ubuntu) PHP/7.2.24', 'x-powered-by': 'PHP/7.2.24 WooCommerce/3.5.1', ...extra }, b];
-+  const html = (b, extra = {}) => [200, { 'content-type': 'text/html; charset=utf-8', server: 'Apache/2.4.29 (Ubuntu) PHP/7.2.24', 'x-powered-by': 'PHP/7.2.24 WooCommerce/3.5.1', ...extra, 'strict-transport-security': 'max-age=63072000; includeSubDomains; preload', 'x-frame-options': 'DENY', 'x-content-type-options': 'nosniff', 'referrer-policy': 'strict-origin-when-cross-origin', 'content-security-policy': "default-src 'self'; frame-ancestors 'none'" }, b];
++  const html = (b, extra = {}) => [200, { 'content-type': 'text/html; charset=utf-8', ...extra }, b];
    const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
  
    if (path === '/') return html(page('index.html').replace('<!--PRODUCTS-->', PRODUCTS.map((p) => `<div class="card"><h3>${p.name}</h3><p class="price">${p.price} €</p><form method="post" action="/cart"><input type="hidden" name="id" value="${p.id}"><input type="hidden" name="price" value="${p.price}"><button>Ajouter au panier</button></form></div>`).join('')));

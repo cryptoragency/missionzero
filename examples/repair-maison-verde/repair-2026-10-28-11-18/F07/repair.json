@@ -1,0 +1,142 @@
+{
+  "finding": {
+    "id": "F07",
+    "severity": "high",
+    "type": "weak-authentication",
+    "url": "http://127.0.0.1:8098/login",
+    "evidence": "error text differs for a valid username; 50 attempts in 10 s accepted",
+    "description": "Usernames can be enumerated and passwords brute-forced."
+  },
+  "recommendation": {
+    "goal": "What is the recommended fix for this web security flaw: weak-authentication (Usernames can be enumerated and passwords brute-forced. Evidence: error text differs for a valid username; 50 attempts in 10 s accepted). State the concrete fix and cite a primary source (OWASP, MDN, NIST, PCI DSS, IETF RFC, or the vendor's own advisory).",
+    "answer": "Fix: return same generic 'invalid username or password' for all failures to prevent enumeration; enforce rate limiting plus account lockout to restrict excessive authentication attempts and mitigate brute-force/password-guessing; log all authentication failures and alert administrators when credential stuffing or brute force is detected.",
+    "sources": [
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html",
+        "contribution": "Use generic Authentication and Error Messages that do not reveal valid usernames"
+      },
+      {
+        "url": "https://wstg.owasp.org/latest/4-Web_Application_Security_Testing/04-Authentication/03-Weak_Lock_Out_Mechanism/",
+        "contribution": "Account lockout mechanisms are used to mitigate brute force attacks"
+      },
+      {
+        "url": "https://top10.owasp.org/2025/A07_2025-Authentication_Failures/",
+        "contribution": "Log all failures and alert administrators when credential stuffing, brute force, or other attacks are detected or suspected"
+      }
+    ],
+    "score": 8,
+    "green": 3,
+    "red": 0,
+    "verification": [
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html",
+        "claim": "Use generic Authentication and Error Messages that do not reveal valid usernames",
+        "verdict": "supported",
+        "detail": "Using any of the authentication mechanisms (login, password reset, or password recovery), an application must respond with a generic error message regardless of whether:"
+      },
+      {
+        "url": "https://wstg.owasp.org/latest/4-Web_Application_Security_Testing/04-Authentication/03-Weak_Lock_Out_Mechanism/",
+        "claim": "Account lockout mechanisms are used to mitigate brute force attacks",
+        "verdict": "supported",
+        "detail": "Account lockout mechanisms are used to mitigate brute force attacks."
+      },
+      {
+        "url": "https://top10.owasp.org/2025/A07_2025-Authentication_Failures/",
+        "claim": "Log all failures and alert administrators when credential stuffing, brute force, or other attacks are detected or suspected",
+        "verdict": "supported",
+        "detail": "Log all failures and alert administrators when credential stuffing, brute force, or other attacks are detected or suspected."
+      }
+    ],
+    "savedAt": "2026-10-28T08:04:13.538Z",
+    "cached": true
+  },
+  "fix": {
+    "summary": "Return generic login error and enforce 5-failures-per-minute lockout with failure logging.",
+    "risk": "Legitimate admin is locked out for 10 minutes after 5 failed attempts.",
+    "secretsMasked": 5,
+    "applied": [
+      {
+        "file": "server.js",
+        "find": "const cart = []; // one shared cart, in memory",
+        "replace": "const cart = []; // one shared cart, in memory\nconst loginAttempts = []; // timestamps of recent failed logins\nlet loginLockUntil = 0;"
+      },
+      {
+        "file": "server.js",
+        "find": "  if (path === '/login') {\n    if (method === 'POST') {\n      const p = Object.fromEntries(new URLSearchParams(body));\n      // FLAW 7 (authentication): hard-coded password, no rate limit, verbose error that confirms the username.\n      if (p.user === 'admin' && p.password === 'maisonverde2019') return [302, { location: '/admin', 'set-cookie': 'session=admin-7c9e; Path=/' }, '']; // FLAW 8 (cookie): no HttpOnly, Secure or SameSite\n      return html(page('login.html').replace('<!--ERR-->', p.user === 'admin' ? '<p class=\"err\">Mot de passe incorrect pour admin.</p>' : '<p class=\"err\">Utilisateur inconnu.</p>'));\n    }\n    return html(page('login.html'));\n  }",
+        "replace": "  if (path === '/login') {\n    if (method === 'POST') {\n      const p = Object.fromEntries(new URLSearchParams(body));\n      const now = Date.now();\n      while (loginAttempts.length && now - loginAttempts[0] > 60000) loginAttempts.shift();\n      if (now < loginLockUntil || loginAttempts.length >= 5) { loginLockUntil = now + 600000; console.warn('login blocked (rate limit) user=' + String(p.user || '').slice(0, 32)); return html(page('login.html').replace('<!--ERR-->', '<p class=\"err\">Invalid username or password.</p>')); }\n      if (p.user === 'admin' && p.password === 'maisonverde2019') { loginAttempts.length = 0; loginLockUntil = 0; return [302, { location: '/admin', 'set-cookie': 'session=admin-7c9e; Path=/' }, '']; }\n      loginAttempts.push(now);\n      if (loginAttempts.length >= 5) loginLockUntil = now + 600000;\n      console.warn('login failed user=' + String(p.user || '').slice(0, 32));\n      return html(page('login.html').replace('<!--ERR-->', '<p class=\"err\">Invalid username or password.</p>'));\n    }\n    return html(page('login.html'));\n  }"
+      }
+    ],
+    "refused": []
+  },
+  "journeysBefore": {
+    "ok": true,
+    "pass": 7,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ journey: browse the catalogue (1.2605ms)\n✔ journey: search an article (0.2628ms)\n✔ journey: add to cart and see the total (0.5737ms)\n✔ journey: reach the checkout and pay (0.4199ms)\n✔ journey: follow my own order (0.4769ms)\n✔ journey: log in as the administrator (0.2727ms)\n✔ journey: read the legal notice (0.2492ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 104.2662\n"
+  },
+  "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-56iFeO",
+  "patch": "diff --git a/server.js b/server.js\nindex 6f1b3eb..1591478 100644\n--- a/server.js\n+++ b/server.js\n@@ -19,6 +19,8 @@ export const ORDERS = {\n   1003: { customer: 'Sophie Marchand', email: 'sophie.m@example.org', address: '8 place Royale, 33000 Bordeaux', total: 210, card: '**** **** **** 0005' },\n };\n const cart = []; // one shared cart, in memory\n+const loginAttempts = []; // timestamps of recent failed logins\n+let loginLockUntil = 0;\n \n export function handle(method, url, body = '', headers = {}) {\n   const [path, qs = ''] = url.split('?');\n@@ -57,9 +59,14 @@ export function handle(method, url, body = '', headers = {}) {\n   if (path === '/login') {\n     if (method === 'POST') {\n       const p = Object.fromEntries(new URLSearchParams(body));\n-      // FLAW 7 (authentication): hard-coded password, no rate limit, verbose error that confirms the username.\n-      if (p.user === 'admin' && p.password === 'maisonverde2019') return [302, { location: '/admin', 'set-cookie': 'session=admin-7c9e; Path=/' }, '']; // FLAW 8 (cookie): no HttpOnly, Secure or SameSite\n-      return html(page('login.html').replace('<!--ERR-->', p.user === 'admin' ? '<p class=\"err\">Mot de passe incorrect pour admin.</p>' : '<p class=\"err\">Utilisateur inconnu.</p>'));\n+      const now = Date.now();\n+      while (loginAttempts.length && now - loginAttempts[0] > 60000) loginAttempts.shift();\n+      if (now < loginLockUntil || loginAttempts.length >= 5) { loginLockUntil = now + 600000; console.warn('login blocked (rate limit) user=' + String(p.user || '').slice(0, 32)); return html(page('login.html').replace('<!--ERR-->', '<p class=\"err\">Invalid username or password.</p>')); }\n+      if (p.user === 'admin' && p.password === 'maisonverde2019') { loginAttempts.length = 0; loginLockUntil = 0; return [302, { location: '/admin', 'set-cookie': 'session=admin-7c9e; Path=/' }, '']; }\n+      loginAttempts.push(now);\n+      if (loginAttempts.length >= 5) loginLockUntil = now + 600000;\n+      console.warn('login failed user=' + String(p.user || '').slice(0, 32));\n+      return html(page('login.html').replace('<!--ERR-->', '<p class=\"err\">Invalid username or password.</p>'));\n     }\n     return html(page('login.html'));\n   }\n",
+  "journeysAfter": {
+    "ok": true,
+    "pass": 7,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ journey: browse the catalogue (1.3078ms)\n✔ journey: search an article (0.265ms)\n✔ journey: add to cart and see the total (0.5936ms)\n✔ journey: reach the checkout and pay (0.4315ms)\n✔ journey: follow my own order (0.4901ms)\n✔ journey: log in as the administrator (0.2695ms)\n✔ journey: read the legal notice (0.2283ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 103.5407\n"
+  },
+  "rescan": {
+    "target": "http://127.0.0.1:62294",
+    "scanner": "mission-zero scan 0.1",
+    "scannedAt": "2026-10-28T11:25:17.289Z",
+    "findings": []
+  },
+  "vision": {
+    "shots": {
+      "before": [
+        {
+          "name": "home",
+          "path": "evidence\\repair-2026-10-28-11-18\\F07\\shots-before\\home.png"
+        },
+        {
+          "name": "finding",
+          "path": "evidence\\repair-2026-10-28-11-18\\F07\\shots-before\\finding.png"
+        }
+      ],
+      "after": [
+        {
+          "name": "home",
+          "path": "evidence\\repair-2026-10-28-11-18\\F07\\shots-after\\home.png"
+        },
+        {
+          "name": "finding",
+          "path": "evidence\\repair-2026-10-28-11-18\\F07\\shots-after\\finding.png"
+        }
+      ]
+    },
+    "look": {
+      "ok": true,
+      "problems": [],
+      "seen": [
+        "header MAISON VERDE with navigation Boutique Panier Ma commande Compte",
+        "home title search input Rechercher",
+        "3 product cards Lampe Osier 89, Vase Terracotta 45, Plaid Lin 120 with Ajouter au panier",
+        "Connexion page with Utilisateur and Mot de passe form and Se connecter button"
+      ]
+    },
+    "sam": {
+      "concept": "text input field",
+      "before": 2,
+      "after": 2
+    }
+  },
+  "review": {
+    "verdict": "cause",
+    "reason": "Patch replaces username-differentiating errors with generic message and adds 5/min lockout with failure logging, directly removing enumeration and brute-force causes.",
+    "missing": ""
+  },
+  "status": "proposed",
+  "why": "journeys pass and the flaw is gone on the copy; a human applies it",
+  "reservations": [],
+  "attempts": [],
+  "ms": 26912
+}

@@ -1,0 +1,158 @@
+{
+  "finding": {
+    "id": "F09",
+    "severity": "critical",
+    "type": "broken-access-control",
+    "url": "http://127.0.0.1:8098/admin",
+    "evidence": "request with Cookie: session=admin-7c9e returns the admin dashboard",
+    "description": "The session value is static and guessable."
+  },
+  "recommendation": {
+    "goal": "What is the recommended fix for this web security flaw: broken-access-control (The session value is static and guessable. Evidence: request with Cookie: session=admin-7c9e returns the admin dashboard). State the concrete fix and cite a primary source (OWASP, MDN, NIST, PCI DSS, IETF RFC, or the vendor's own advisory).",
+    "answer": "Fix for Cookie: session=admin-7c9e returning admin dashboard: enforce access-control policy server-side such that users cannot act outside of their intended permissions. The Access Control cheatsheet has been deprecated — visit the Authorization cheatsheet instead. Context in OWASP Top 10:2025 A01:2025: maintaining #1; 100% of applications tested had some form of broken access control — prevalence only, not the fix.",
+    "sources": [
+      {
+        "url": "https://cornucopia.owasp.org/taxonomy/owasp-top-10/01-broken-access-controls",
+        "contribution": "Access control enforces policy such that users cannot act outside of their intended permissions"
+      },
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/Access_Control_Cheat_Sheet.html",
+        "contribution": "The Access Control cheatsheet has been deprecated. Please visit the Authorization Cheatsheet instead."
+      },
+      {
+        "url": "https://top10.owasp.org/2025/A01_2025-Broken_Access_Control/",
+        "contribution": "Maintaining its position at #1 in the Top Ten"
+      },
+      {
+        "url": "https://top10.owasp.org/2025/A01_2025-Broken_Access_Control/",
+        "contribution": "100% of the applications tested were found to have some form of broken access control"
+      }
+    ],
+    "score": 2,
+    "green": 4,
+    "red": 0,
+    "verification": [
+      {
+        "url": "https://cornucopia.owasp.org/taxonomy/owasp-top-10/01-broken-access-controls",
+        "claim": "Access control enforces policy such that users cannot act outside of their intended permissions",
+        "verdict": "supported",
+        "detail": "Access control enforces policy such that users cannot act outside of their intended permissions."
+      },
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/Access_Control_Cheat_Sheet.html",
+        "claim": "The Access Control cheatsheet has been deprecated. Please visit the Authorization Cheatsheet instead.",
+        "verdict": "supported",
+        "detail": "The Access Control cheatsheet has been deprecated."
+      },
+      {
+        "url": "https://top10.owasp.org/2025/A01_2025-Broken_Access_Control/",
+        "claim": "Maintaining its position at #1 in the Top Ten",
+        "verdict": "supported",
+        "detail": "Maintaining its position at #1 in the Top Ten"
+      },
+      {
+        "url": "https://top10.owasp.org/2025/A01_2025-Broken_Access_Control/",
+        "claim": "100% of the applications tested were found to have some form of broken access control",
+        "verdict": "supported",
+        "detail": "Maintaining its position at #1 in the Top Ten, 100% of the applications tested were found to have some form of broken access control."
+      }
+    ]
+  },
+  "fix": {
+    "summary": "Replace static admin cookie with random server-side session issued only on valid login and validated on /admin.",
+    "risk": "Admin sessions are in-memory only and reset on restart; older Node without global crypto would fail login.",
+    "secretsMasked": 5,
+    "applied": [
+      {
+        "file": "server.js",
+        "find": "const cart = []; // one shared cart, in memory",
+        "replace": "const cart = []; // one shared cart, in memory\nconst sessions = new Set();"
+      },
+      {
+        "file": "server.js",
+        "find": "      if (p.user === 'admin' && p.password === 'maisonverde2019') return [302, { location: '/admin', 'set-cookie': 'session=admin-7c9e; Path=/' }, '']; // FLAW 8 (cookie): no HttpOnly, Secure or SameSite",
+        "replace": "      if (p.user === 'admin' && p.password === 'maisonverde2019') { const t = crypto.randomUUID(); sessions.add(t); return [302, { location: '/admin', 'set-cookie': 'session=' + t + '; Path=/; HttpOnly; SameSite=Lax' }, '']; }"
+      },
+      {
+        "file": "server.js",
+        "find": "    if (/session=admin-7c9e/.test(headers.cookie || '')) return html(page('admin.html'));",
+        "replace": "    { const m = /session=([^;\\s]+)/.exec(headers.cookie || ''); if (m && sessions.has(m[1])) return html(page('admin.html')); }"
+      }
+    ],
+    "refused": []
+  },
+  "journeysBefore": {
+    "ok": true,
+    "pass": 7,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ journey: browse the catalogue (1.3689ms)\n✔ journey: search an article (0.316ms)\n✔ journey: add to cart and see the total (0.7291ms)\n✔ journey: reach the checkout and pay (0.5768ms)\n✔ journey: follow my own order (0.5559ms)\n✔ journey: log in as the administrator (0.319ms)\n✔ journey: read the legal notice (0.2478ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 104.6868\n"
+  },
+  "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-a4rFHm",
+  "patch": "diff --git a/server.js b/server.js\nindex 6f1b3eb..4006551 100644\n--- a/server.js\n+++ b/server.js\n@@ -19,6 +19,7 @@ export const ORDERS = {\n   1003: { customer: 'Sophie Marchand', email: 'sophie.m@example.org', address: '8 place Royale, 33000 Bordeaux', total: 210, card: '**** **** **** 0005' },\n };\n const cart = []; // one shared cart, in memory\n+const sessions = new Set();\n \n export function handle(method, url, body = '', headers = {}) {\n   const [path, qs = ''] = url.split('?');\n@@ -58,14 +59,14 @@ export function handle(method, url, body = '', headers = {}) {\n     if (method === 'POST') {\n       const p = Object.fromEntries(new URLSearchParams(body));\n       // FLAW 7 (authentication): hard-coded password, no rate limit, verbose error that confirms the username.\n-      if (p.user === 'admin' && p.password === 'maisonverde2019') return [302, { location: '/admin', 'set-cookie': 'session=admin-7c9e; Path=/' }, '']; // FLAW 8 (cookie): no HttpOnly, Secure or SameSite\n+      if (p.user === 'admin' && p.password === 'maisonverde2019') { const t = crypto.randomUUID(); sessions.add(t); return [302, { location: '/admin', 'set-cookie': 'session=' + t + '; Path=/; HttpOnly; SameSite=Lax' }, '']; }\n       return html(page('login.html').replace('<!--ERR-->', p.user === 'admin' ? '<p class=\"err\">Mot de passe incorrect pour admin.</p>' : '<p class=\"err\">Utilisateur inconnu.</p>'));\n     }\n     return html(page('login.html'));\n   }\n   if (path === '/admin') {\n     // FLAW 9 (access control): the cookie value is trusted as is; whoever sets session=admin-7c9e is admin.\n-    if (/session=admin-7c9e/.test(headers.cookie || '')) return html(page('admin.html'));\n+    { const m = /session=([^;\\s]+)/.exec(headers.cookie || ''); if (m && sessions.has(m[1])) return html(page('admin.html')); }\n     return [302, { location: '/login' }, ''];\n   }\n   if (path === '/robots.txt') return [200, { 'content-type': 'text/plain' }, 'User-agent: *\\nDisallow: /admin\\nDisallow: /backup/\\nDisallow: /.env\\nDisallow: /export/\\n']; // FLAW 10: robots.txt advertises the sensitive paths\n",
+  "journeysAfter": {
+    "ok": true,
+    "pass": 7,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ journey: browse the catalogue (1.2913ms)\n✔ journey: search an article (0.2669ms)\n✔ journey: add to cart and see the total (0.5933ms)\n✔ journey: reach the checkout and pay (0.421ms)\n✔ journey: follow my own order (0.4814ms)\n✔ journey: log in as the administrator (0.7221ms)\n✔ journey: read the legal notice (0.262ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 104.7657\n"
+  },
+  "rescan": {
+    "target": "http://127.0.0.1:59481",
+    "scanner": "mission-zero scan 0.1",
+    "scannedAt": "2026-10-28T11:21:57.615Z",
+    "findings": []
+  },
+  "vision": {
+    "shots": {
+      "before": [
+        {
+          "name": "home",
+          "path": "evidence\\repair-2026-10-28-11-18\\F09\\shots-before\\home.png"
+        },
+        {
+          "name": "finding",
+          "path": "evidence\\repair-2026-10-28-11-18\\F09\\shots-before\\finding.png"
+        }
+      ],
+      "after": [
+        {
+          "name": "home",
+          "path": "evidence\\repair-2026-10-28-11-18\\F09\\shots-after\\home.png"
+        },
+        {
+          "name": "finding",
+          "path": "evidence\\repair-2026-10-28-11-18\\F09\\shots-after\\finding.png"
+        }
+      ]
+    },
+    "look": {
+      "ok": true,
+      "problems": [],
+      "seen": [
+        "MAISON VERDE header with navigation Boutique/Panier/Ma commande/Compte on home, Boutique on login",
+        "home headline Décoration naturelle with search input and Rechercher button",
+        "3 product cards Lampe Osier 89€, Vase Terracotta 45€, Plaid Lin 120€ with Ajouter au panier buttons",
+        "Connexion page with Utilisateur and Mot de passe inputs and Se connecter button",
+        "footer mentions Maison Verde"
+      ]
+    },
+    "sam": {
+      "concept": "text input field",
+      "before": 2,
+      "after": 2
+    }
+  },
+  "review": {
+    "verdict": "cause",
+    "reason": "Patch replaces guessable static cookie with random server-side session issued only after valid login and checked on /admin.",
+    "missing": ""
+  },
+  "status": "reserved",
+  "why": "journeys pass and the flaw is gone on the copy, but weak justification: the judge scored the cited recommendation 2/10 (4 verified sources); read the sources before applying",
+  "reservations": [
+    "weak justification: the judge scored the cited recommendation 2/10 (4 verified sources); read the sources before applying"
+  ],
+  "attempts": [],
+  "ms": 89687
+}

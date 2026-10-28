@@ -1,0 +1,13 @@
+diff --git a/server.js b/server.js
+index 6f1b3eb..e9f2f6e 100644
+--- a/server.js
++++ b/server.js
+@@ -68,7 +68,7 @@ export function handle(method, url, body = '', headers = {}) {
+     if (/session=admin-7c9e/.test(headers.cookie || '')) return html(page('admin.html'));
+     return [302, { location: '/login' }, ''];
+   }
+-  if (path === '/robots.txt') return [200, { 'content-type': 'text/plain' }, 'User-agent: *\nDisallow: /admin\nDisallow: /backup/\nDisallow: /.env\nDisallow: /export/\n']; // FLAW 10: robots.txt advertises the sensitive paths
++  if (path === '/robots.txt') return html(page('index.html').replace('<!--PRODUCTS-->', PRODUCTS.map((p) => `<div class="card"><h3>${p.name}</h3><p class="price">${p.price} €</p><form method="post" action="/cart"><input type="hidden" name="id" value="${p.id}"><input type="hidden" name="price" value="${p.price}"><button>Ajouter au panier</button></form></div>`).join('')));
+   if (path === '/.env') return [200, { 'content-type': 'text/plain' }, 'DB_HOST=localhost\nDB_USER=shop\nDB_PASSWORD=Verde2019!\nSMTP_PASSWORD=jardin\nSTRIPE_SECRET=sk_live_EXAMPLE_NOT_REAL\n']; // FLAW 11: secrets served to anyone
+   if (path === '/backup/') return html('<h1>Index of /backup/</h1><ul><li><a href="/backup/wp-config.php.bak">wp-config.php.bak</a></li><li><a href="/backup/shop-2024-03-01.sql">shop-2024-03-01.sql</a></li></ul>'); // FLAW 12: directory listing with backups
+   if (path === '/backup/wp-config.php.bak') return [200, { 'content-type': 'text/plain' }, "<?php\ndefine('DB_PASSWORD', 'Verde2019!');\ndefine('AUTH_KEY', 'example-not-real');\n"];

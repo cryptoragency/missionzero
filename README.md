@@ -74,27 +74,31 @@ npm run repair-report -- evidence/repair-<date>            # one readable page p
 npm run verify-chain -- evidence/repair-<date>             # recompute the hashed evidence journal
 ```
 
-### Results on Maison Verde (28 October 2026, 2 research turns, 1 contradiction round, 1 retry)
+### Results on Maison Verde (28 October 2026, final run: 2 research turns, 1 contradiction round, 1 retry, vision on, self-review on)
 
-| # | Flaw | Status | Fix proposed (the model's own summary) | Sources verified |
-|---|------|--------|----------------------------------------|------------------|
-| F11 | .env served with secrets | proposed | deny dotfiles, rotate every secret | 2 green |
-| F05 | card data over HTTP | proposed | no card form in the shop, payment delegated to a certified provider | 4 green |
-| F09 | admin trusts a guessable cookie | proposed | random server-side session issued after login, validated on /admin | 2 green |
-| F13 | customer export without auth | proposed | admin session required on /export/customers.csv | 2 green |
-| F03 | reflected XSS | proposed | output escaped on search, checkout echo and 404 | 1 green |
-| F04 | price trusted from the client | proposed | price looked up server-side by product id | 2 green |
-| F06 | IDOR on /order | **rejected, then proposed** | 1st fix required an admin session and broke « follow my own order »; 2nd fix: ownership (customer cookie matching the order's e-mail) or admin, else 403 | 2 green |
-| F07 | weak authentication | proposed | generic error, rate limit with 429, failures logged | 3 green |
-| F12 | backups listed | proposed | directory listing off, backup files 404 | 2 green |
-| F01 | no security headers | **cut, then proposed** | 1st answer was truncated by the token cap (raised); 2nd: HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, CSP frame-ancestors | 5 green |
-| F08 | insecure session cookie | proposed | Secure, HttpOnly, SameSite=Strict | 3 green |
-| F14 | jQuery 1.8.3 | **proposed, but see limits** | the vulnerable file is no longer served: a removal, not an update. The scanner cannot tell the difference, a reviewer can | 2 green |
-| F15 | no privacy policy | proposed | privacy notice on the legal page, linked from the checkout | 3 green |
-| F02 | versions disclosed | proposed, weak justification | Server and X-Powered-By removed | 0 green, 2 red |
-| F10 | robots.txt lists sensitive paths | proposed | sensitive Disallow entries removed | 3 green |
+Every status below was decided by the system, not edited by hand: the table is generated from the evidence folders (`node bench/make-results-table.js <run> [<run>]`). « Proposed with reservation » means every mechanical check is green but the agent wrote a reservation: a cited recommendation the judge scored under 7, or a patch the agent itself judges to hide the symptom.
 
-15 findings, 15 fixes proposed, 7/7 vital journeys green after every proposed fix, every copy rescanned clean. 17 attempts, 194 model calls, **$1.10 in total** (about 7 cents per finding). Every proposed fix is a patch in its evidence folder. The merged report page of the 15 findings and the last run (F01, F06) with its patches and its hashed journal are in `examples/repair-maison-verde/`: open `report.html`, and check the journal with `npm run verify-chain -- examples/repair-maison-verde` (6 records, intact).
+| # | Flaw | Status | What the agent did (its own words) | Judge | Checks |
+|---|------|--------|------------------------------------|-------|--------|
+| F05 | card data over HTTP | **proposed with reservation** | Descope shop to SAQ-A: remove card form, ignore PAN and never store/echo it. Reservation: weak justification: the judge scored the cited recommendation 3/10 (3 verified sources); read the sources before applying | 3/10, 3 green | journeys 7/7, rescan clean, look ok, fields 5→0, self-review: cause |
+| F09 | admin trusts a guessable cookie | **proposed with reservation** | Replace static admin cookie with random server-managed session checked by equality, denying by default. Reservation: weak justification: the judge scored the cited recommendation 3/10 (1 verified source); read the sources before applying | 3/10, 1 green | journeys 7/7, rescan clean, look ok, fields 2→2, self-review: cause |
+| F11 | .env served with secrets | proposed | Blocked /.env to return 404 instead of secrets. | 7/10, 3 green | journeys 7/7, rescan clean, look ok, fields 0→0, self-review: cause |
+| F13 | customer export without auth | proposed | Require valid admin session before serving customers.csv, redirecting unauthenticated requests to login. | 10/10, 2 green | journeys 7/7, rescan clean, self-review: cause |
+| F03 | reflected XSS | proposed | Escape search query with esc() before echoing into HTML to prevent reflected XSS. | 10/10, 1 green | journeys 7/7, rescan clean, look ok, fields 0→0, self-review: cause |
+| F04 | price trusted from the client | proposed | Ignore client-supplied price and re-derive cart line price from server-side PRODUCTS catalogue by id. | 10/10, 2 green | journeys 7/7, rescan clean, look ok, fields 0→0, self-review: cause |
+| F06 | IDOR on /order | proposed | Enforce ownership check on /order: only the customer cookie matching the order email (or admin) can view it, otherwise 403. | 10/10, 2 green | journeys 7/7, rescan clean, look ok, fields 0→0, self-review: cause |
+| F07 | weak authentication | proposed | Return generic login error and enforce 5-failures-per-minute lockout with failure logging. | 8/10, 3 green | journeys 7/7, rescan clean, look ok, fields 2→2, self-review: cause |
+| F12 | backups listed | **proposed with reservation** | Blocked all /backup/ routes with 404 to remove listing and backup file disclosure. Reservation: weak justification: the judge scored the cited recommendation 3/10 (1 verified source); read the sources before applying | 3/10, 1 green, 1 red | journeys 7/7, rescan clean, look ok, fields 0→0, self-review: cause |
+| F01 | no security headers | proposed | Wrap handle to add HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy and CSP frame-ancestors headers to every response. | 9/10, 5 green | journeys 7/7, rescan clean, look ok, fields 0→0, self-review: cause |
+| F08 | insecure session cookie | proposed | Add HttpOnly, Secure and SameSite=Strict to the session cookie. | 8/10, 3 green | journeys 7/7, rescan clean, look ok, fields 2→2, self-review: cause |
+| F14 | jQuery 1.8.3 | **proposed with reservation** | 1 attempt refused by itself (rejected), then: Remove the vulnerable jQuery 1.8.3 endpoint by redirecting it to the catalogue. Reservation: the agent judges its own patch hides the symptom instead of removing the cause: Patch redirects /js/jquery-1.8.3.min.js to '/' instead of updating to a non-vuln | 8/10, 2 green | journeys 7/7, rescan clean, look ok, fields 0→0, self-review: hides |
+| F15 | no privacy policy | proposed | Add privacy notice at checkout and privacy policy on legal notice explaining purpose and use of collected data. | 7/10, 2 green | journeys 7/7, rescan clean, look ok, fields 0→0, self-review: partial |
+| F02 | versions disclosed | **proposed with reservation** | 1 attempt refused by itself (ineffective), then: Remove Server and X-Powered-By version disclosure headers from HTML responses. Reservation: weak justification: the judge scored the cited recommendation 4/10 (1 verified source); read the sources before applying | 4/10, 1 green | journeys 7/7, rescan clean, look ok, fields 0→0, self-review: cause |
+| F10 | robots.txt lists sensitive paths | proposed | 1 attempt refused by itself (rejected), then: Serve the normal catalogue page at /robots.txt so no sensitive Disallow entries are disclosed. | 9/10, 3 green | journeys 7/7, rescan clean, look ok, fields 0→0, self-review: cause |
+
+5 reserved, 10 proposed · 15 findings · 237 model calls · $1.49 (about 10 cents per finding, vision and self-review included)
+
+The two runs behind this table, with every patch and their hashed journals (32 and 16 records, intact), are in `examples/repair-maison-verde/`, with the merged report page `report.html`. Earlier in the day, before the self-review existed and while a token cap could cut the judge's answer, the same 15 findings had come out « 15 proposed »: that run is not the one shown, because a 0/10 from a cut answer is not a judgement.
 
 ## Meta tools, each where it earns its place
 
@@ -128,8 +132,8 @@ First real run (28 October, forced for the experiment, DBIR 2025 goal, 3 turns, 
 
 We would rather list these ourselves.
 
-1. **The scanner judges the symptom, not the cause.** « Flaw gone » means the probe no longer fires. For F14 the model stopped serving jQuery 1.8.3 instead of updating it; the probe is satisfied, the shop lost its library. Since 28 October (afternoon) the agent reviews its own patch against the cited recommendation (« cause » or « hides »): a hiding patch is refused and retried, and if it persists the fix is « proposed with reservation », the reservation written in the report. The scanner alone still cannot tell; the agent can, and says so.
-2. **The justification is not always strong.** « Proposed » proves that the journeys pass and the probe is silent on the copy; it says nothing about the quality of the cited fix. The judge scores each recommendation out of 10 and the report shows it: on the 28 October run, 6 of the 15 recommendations scored under 7 (F02: 0 verified source, 2 contradicted; F05: secondary sources, because the PCI DSS standard itself sits behind a registration form; F15: one contradicted source; F09, F10, F12: thin). Since 28 October (afternoon) such a fix is « proposed with reservation », never « proposed »: the reservation names the score and the number of verified sources. Read the sources before applying.
+1. **The scanner judges the symptom, not the cause.** « Flaw gone » means the probe no longer fires. For F14 the model stopped serving jQuery 1.8.3 instead of updating it; the probe is satisfied, the shop lost its library. Since 28 October (afternoon) the agent reviews its own patch against the cited recommendation (« cause » or « hides »): a hiding patch is refused and retried, and if it persists the fix is « proposed with reservation », the reservation written in the report. The scanner alone still cannot tell; the agent can, and says so. It is not infallible: on the final run it accepted « serve the catalogue page at /robots.txt » (F10) as a cause fix, which removes the disclosure but is an odd robots file; a reviewer would ask for a plain robots.txt without the sensitive paths.
+2. **The justification is not always strong.** « Proposed » proves that the journeys pass and the probe is silent on the copy; it says nothing about the quality of the cited fix. The judge scores each recommendation out of 10 and the report shows it: on the final 28 October run, 4 of the 15 recommendations scored under 7 (F02, F05, F09, F12: one to three verified sources but thin or secondary ones; the PCI DSS standard itself sits behind a registration form). Since 28 October (afternoon) such a fix is « proposed with reservation », never « proposed »: the reservation names the score and the number of verified sources. Read the sources before applying.
 3. **The vital journeys are the customer's.** A journey that is not written cannot protect anything. Maison Verde has 7; a fix that broke something outside them would pass. In a real deployment the customer's test suite is the journeys file.
 4. **The demo shop is small and fictional.** One `server.js`, 14 000 characters sent to the model per file. A real site needs the files chosen (`files` option) and the edits reviewed in context; the exact-string rule refuses ambiguous edits but cannot judge design.
 5. **The secret filter is pattern-based.** It masks the usual shapes (`.env` lines, `password=`, `define('X_PASSWORD'…)`, Stripe, AWS, GitHub, Google, Slack, JWT, private keys, bearer tokens). A secret that looks like nothing (the demo's static `session=admin-7c9e` cookie value, for instance) goes through. The report says how many were masked, not that none remained.
@@ -161,7 +165,7 @@ Who pays: online shops and the agencies and hosts that run them, where the same 
 cp .env.example .env            # add your MODEL_API_KEY (Meta Model API)
 npm install
 npm run check-key
-npm test                        # 62 tests, no network, no model calls
+npm test                        # 65 tests, no network, no model calls
 node --env-file=.env src/run.js "your goal" 4 3     # 4 turns, 3 contradiction rounds
 npm run demo                    # the 5 goals above, table + evidence
 node bench/make-replay.js evidence/<folder>         # animated replay of a mission (one HTML file)

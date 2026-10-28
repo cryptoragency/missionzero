@@ -1,0 +1,31 @@
+diff --git a/server.js b/server.js
+index 6f1b3eb..1591478 100644
+--- a/server.js
++++ b/server.js
+@@ -19,6 +19,8 @@ export const ORDERS = {
+   1003: { customer: 'Sophie Marchand', email: 'sophie.m@example.org', address: '8 place Royale, 33000 Bordeaux', total: 210, card: '**** **** **** 0005' },
+ };
+ const cart = []; // one shared cart, in memory
++const loginAttempts = []; // timestamps of recent failed logins
++let loginLockUntil = 0;
+ 
+ export function handle(method, url, body = '', headers = {}) {
+   const [path, qs = ''] = url.split('?');
+@@ -57,9 +59,14 @@ export function handle(method, url, body = '', headers = {}) {
+   if (path === '/login') {
+     if (method === 'POST') {
+       const p = Object.fromEntries(new URLSearchParams(body));
+-      // FLAW 7 (authentication): hard-coded password, no rate limit, verbose error that confirms the username.
+-      if (p.user === 'admin' && p.password === 'maisonverde2019') return [302, { location: '/admin', 'set-cookie': 'session=admin-7c9e; Path=/' }, '']; // FLAW 8 (cookie): no HttpOnly, Secure or SameSite
+-      return html(page('login.html').replace('<!--ERR-->', p.user === 'admin' ? '<p class="err">Mot de passe incorrect pour admin.</p>' : '<p class="err">Utilisateur inconnu.</p>'));
++      const now = Date.now();
++      while (loginAttempts.length && now - loginAttempts[0] > 60000) loginAttempts.shift();
++      if (now < loginLockUntil || loginAttempts.length >= 5) { loginLockUntil = now + 600000; console.warn('login blocked (rate limit) user=' + String(p.user || '').slice(0, 32)); return html(page('login.html').replace('<!--ERR-->', '<p class="err">Invalid username or password.</p>')); }
++      if (p.user === 'admin' && p.password === 'maisonverde2019') { loginAttempts.length = 0; loginLockUntil = 0; return [302, { location: '/admin', 'set-cookie': 'session=admin-7c9e; Path=/' }, '']; }
++      loginAttempts.push(now);
++      if (loginAttempts.length >= 5) loginLockUntil = now + 600000;
++      console.warn('login failed user=' + String(p.user || '').slice(0, 32));
++      return html(page('login.html').replace('<!--ERR-->', '<p class="err">Invalid username or password.</p>'));
+     }
+     return html(page('login.html'));
+   }

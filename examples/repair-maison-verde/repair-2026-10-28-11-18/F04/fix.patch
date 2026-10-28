@@ -1,0 +1,15 @@
+diff --git a/server.js b/server.js
+index 6f1b3eb..4872150 100644
+--- a/server.js
++++ b/server.js
+@@ -33,8 +33,8 @@ export function handle(method, url, body = '', headers = {}) {
+   if (path === '/cart') {
+     if (method === 'POST') {
+       const p = Object.fromEntries(new URLSearchParams(body));
+-      // FLAW 4 (business logic): the price comes from the client and is trusted.
+-      cart.push({ id: Number(p.id), price: Number(p.price) });
++      const prod = PRODUCTS.find((x) => x.id === Number(p.id));
++      if (prod) cart.push({ id: prod.id, price: prod.price });
+     }
+     const total = cart.reduce((a, c) => a + c.price, 0);
+     return html(page('cart.html').replace('<!--LINES-->', cart.map((c) => `<li>${esc((PRODUCTS.find((x) => x.id === c.id) || {}).name || 'article')} · ${c.price} €</li>`).join('')).replace('<!--TOTAL-->', String(total)));

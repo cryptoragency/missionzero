@@ -1,0 +1,17 @@
+diff --git a/server.js b/server.js
+index 6f1b3eb..1a70c20 100644
+--- a/server.js
++++ b/server.js
+@@ -20,7 +20,12 @@ export const ORDERS = {
+ };
+ const cart = []; // one shared cart, in memory
+ 
++const SEC = { 'strict-transport-security': 'max-age=63072000; includeSubDomains; preload', 'x-frame-options': 'DENY', 'x-content-type-options': 'nosniff', 'referrer-policy': 'strict-origin-when-cross-origin', 'content-security-policy': "default-src 'self'; frame-ancestors 'none'" };
+ export function handle(method, url, body = '', headers = {}) {
++  const [code, h, b] = handleInner(method, url, body, headers);
++  return [code, { ...SEC, ...h }, b];
++}
++export function handleInner(method, url, body = '', headers = {}) {
+   const [path, qs = ''] = url.split('?');
+   const q = Object.fromEntries(new URLSearchParams(qs));
+   // FLAW 1 (headers): no Content-Security-Policy, X-Frame-Options, X-Content-Type-Options, Referrer-Policy or HSTS.

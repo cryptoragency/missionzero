@@ -1,0 +1,13 @@
+diff --git a/server.js b/server.js
+index 6f1b3eb..3e17d93 100644
+--- a/server.js
++++ b/server.js
+@@ -58,7 +58,7 @@ export function handle(method, url, body = '', headers = {}) {
+     if (method === 'POST') {
+       const p = Object.fromEntries(new URLSearchParams(body));
+       // FLAW 7 (authentication): hard-coded password, no rate limit, verbose error that confirms the username.
+-      if (p.user === 'admin' && p.password === 'maisonverde2019') return [302, { location: '/admin', 'set-cookie': 'session=admin-7c9e; Path=/' }, '']; // FLAW 8 (cookie): no HttpOnly, Secure or SameSite
++      if (p.user === 'admin' && p.password === 'maisonverde2019') return [302, { location: '/admin', 'set-cookie': 'session=admin-7c9e; Path=/; HttpOnly; Secure; SameSite=Strict' }, '']; // FLAW 8 (cookie): no HttpOnly, Secure or SameSite
+       return html(page('login.html').replace('<!--ERR-->', p.user === 'admin' ? '<p class="err">Mot de passe incorrect pour admin.</p>' : '<p class="err">Utilisateur inconnu.</p>'));
+     }
+     return html(page('login.html'));

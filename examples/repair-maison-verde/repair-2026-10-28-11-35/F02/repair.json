@@ -1,0 +1,135 @@
+{
+  "finding": {
+    "id": "F02",
+    "severity": "low",
+    "type": "version-disclosure",
+    "url": "http://127.0.0.1:8098/",
+    "evidence": "Server: Apache/2.4.29 (Ubuntu) PHP/7.2.24; X-Powered-By: PHP/7.2.24 WooCommerce/3.5.1",
+    "description": "The stack and its versions are announced to anyone."
+  },
+  "recommendation": {
+    "goal": "What is the recommended fix for this web security flaw: version-disclosure (The stack and its versions are announced to anyone. Evidence: Server: Apache/2.4.29 (Ubuntu) PHP/7.2.24; X-Powered-By: PHP/7.2.24 WooCommerce/3.5.1). State the concrete fix and cite a primary source (OWASP, MDN, NIST, PCI DSS, IETF RFC, or the vendor's own advisory).",
+    "answer": "Recommended fix for version-disclosure supported by cited OWASP page: Remove all X-Powered-By headers. The verified page text does not include ServerTokens Prod, ServerSignature Off, expose_php = off, or a generic Server value, so those specific directives are omitted from this fix.",
+    "sources": [
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html",
+        "contribution": "Remove all X-Powered-By headers."
+      }
+    ],
+    "score": 4,
+    "green": 1,
+    "red": 0,
+    "verification": [
+      {
+        "url": "https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html",
+        "claim": "Remove all X-Powered-By headers.",
+        "verdict": "supported",
+        "detail": "Remove all X-Powered-By headers."
+      }
+    ]
+  },
+  "fix": {
+    "summary": "Remove Server and X-Powered-By version disclosure headers from HTML responses.",
+    "risk": "Clients relying on Server or X-Powered-By headers for diagnostics would no longer see them.",
+    "secretsMasked": 5,
+    "applied": [
+      {
+        "file": "server.js",
+        "find": "  const html = (b, extra = {}) => [200, { 'content-type': 'text/html; charset=utf-8', server: 'Apache/2.4.29 (Ubuntu) PHP/7.2.24', 'x-powered-by': 'PHP/7.2.24 WooCommerce/3.5.1', ...extra }, b];",
+        "replace": "  const html = (b, extra = {}) => [200, { 'content-type': 'text/html; charset=utf-8', ...extra }, b];"
+      }
+    ],
+    "refused": []
+  },
+  "journeysBefore": {
+    "ok": true,
+    "pass": 7,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ journey: browse the catalogue (1.2524ms)\n✔ journey: search an article (0.2721ms)\n✔ journey: add to cart and see the total (0.5913ms)\n✔ journey: reach the checkout and pay (0.4323ms)\n✔ journey: follow my own order (0.4818ms)\n✔ journey: log in as the administrator (0.2963ms)\n✔ journey: read the legal notice (0.2512ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 106.8949\n"
+  },
+  "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-itMSXM",
+  "patch": "diff --git a/server.js b/server.js\nindex 6f1b3eb..cc739a5 100644\n--- a/server.js\n+++ b/server.js\n@@ -25,7 +25,7 @@ export function handle(method, url, body = '', headers = {}) {\n   const q = Object.fromEntries(new URLSearchParams(qs));\n   // FLAW 1 (headers): no Content-Security-Policy, X-Frame-Options, X-Content-Type-Options, Referrer-Policy or HSTS.\n   // FLAW 2 (information disclosure): Server and X-Powered-By reveal an old stack.\n-  const html = (b, extra = {}) => [200, { 'content-type': 'text/html; charset=utf-8', server: 'Apache/2.4.29 (Ubuntu) PHP/7.2.24', 'x-powered-by': 'PHP/7.2.24 WooCommerce/3.5.1', ...extra }, b];\n+  const html = (b, extra = {}) => [200, { 'content-type': 'text/html; charset=utf-8', ...extra }, b];\n   const esc = (s) => String(s).replace(/[&<>\"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;' }[c]));\n \n   if (path === '/') return html(page('index.html').replace('<!--PRODUCTS-->', PRODUCTS.map((p) => `<div class=\"card\"><h3>${p.name}</h3><p class=\"price\">${p.price} €</p><form method=\"post\" action=\"/cart\"><input type=\"hidden\" name=\"id\" value=\"${p.id}\"><input type=\"hidden\" name=\"price\" value=\"${p.price}\"><button>Ajouter au panier</button></form></div>`).join('')));\n",
+  "journeysAfter": {
+    "ok": true,
+    "pass": 7,
+    "fail": 0,
+    "broken": [],
+    "output": "✔ journey: browse the catalogue (1.3035ms)\n✔ journey: search an article (0.271ms)\n✔ journey: add to cart and see the total (0.5859ms)\n✔ journey: reach the checkout and pay (0.4253ms)\n✔ journey: follow my own order (0.4855ms)\n✔ journey: log in as the administrator (0.2667ms)\n✔ journey: read the legal notice (0.2503ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 102.9328\n"
+  },
+  "rescan": {
+    "target": "http://127.0.0.1:50241",
+    "scanner": "mission-zero scan 0.1",
+    "scannedAt": "2026-10-28T11:45:33.798Z",
+    "findings": []
+  },
+  "vision": {
+    "shots": {
+      "before": [
+        {
+          "name": "home",
+          "path": "evidence\\repair-2026-10-28-11-35\\F02\\shots-before\\home.png"
+        },
+        {
+          "name": "finding",
+          "path": "evidence\\repair-2026-10-28-11-35\\F02\\shots-before\\finding.png"
+        }
+      ],
+      "after": [
+        {
+          "name": "home",
+          "path": "evidence\\repair-2026-10-28-11-35\\F02\\shots-after\\home.png"
+        },
+        {
+          "name": "finding",
+          "path": "evidence\\repair-2026-10-28-11-35\\F02\\shots-after\\finding.png"
+        }
+      ]
+    },
+    "look": {
+      "ok": true,
+      "unreadable": false,
+      "problems": [],
+      "seen": [
+        "navigation Boutique/Panier",
+        "search form",
+        "3 product cards",
+        "add to cart buttons"
+      ]
+    },
+    "sam": {
+      "concept": "text input field",
+      "before": 0,
+      "after": 0
+    }
+  },
+  "review": {
+    "verdict": "cause",
+    "reason": "Patch deletes the Server and X-Powered-By headers that the recommendation cites as the disclosure cause.",
+    "missing": ""
+  },
+  "status": "reserved",
+  "why": "journeys pass and the flaw is gone on the copy, but weak justification: the judge scored the cited recommendation 4/10 (1 verified source); read the sources before applying",
+  "reservations": [
+    "weak justification: the judge scored the cited recommendation 4/10 (1 verified source); read the sources before applying"
+  ],
+  "attempts": [
+    {
+      "status": "ineffective",
+      "why": "journeys pass but the scanner still sees the flaw",
+      "edits": [
+        {
+          "file": "server.js",
+          "find": "  const html = (b, extra = {}) => [200, { 'content-type': 'text/html; charset=utf-8', server: 'Apache/2.4.29 (Ubuntu) PHP/7.2.24', 'x-powered-by': 'PHP/7.2.24 WooCommerce/3.5.1', ...extra }, b];",
+          "replace": "  const html = (b, extra = {}) => [200, { 'content-type': 'text/html; charset=utf-8', server: 'Apache/2.4.29 (Ubuntu) PHP/7.2.24', ...extra }, b];"
+        }
+      ],
+      "refused": [],
+      "brokenJourneys": [],
+      "testOutput": "✔ journey: browse the catalogue (1.3829ms)\n✔ journey: search an article (0.3127ms)\n✔ journey: add to cart and see the total (0.696ms)\n✔ journey: reach the checkout and pay (0.5327ms)\n✔ journey: follow my own order (0.6194ms)\n✔ journey: log in as the administrator (0.3451ms)\n✔ journey: read the legal notice (0.2627ms)\nℹ tests 7\nℹ suites 0\nℹ pass 7\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 104.5944\n",
+      "scannerStillSees": "server: Apache/2.4.29 (Ubuntu) PHP/7.2.24",
+      "copy": "C:\\Users\\GAME\\AppData\\Local\\Temp\\mz-repair-mMUZ80"
+    }
+  ],
+  "ms": 94887
+}

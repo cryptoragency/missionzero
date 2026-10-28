@@ -1,0 +1,13 @@
+diff --git a/server.js b/server.js
+index 6f1b3eb..97d0b22 100644
+--- a/server.js
++++ b/server.js
+@@ -29,7 +29,7 @@ export function handle(method, url, body = '', headers = {}) {
+   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+ 
+   if (path === '/') return html(page('index.html').replace('<!--PRODUCTS-->', PRODUCTS.map((p) => `<div class="card"><h3>${p.name}</h3><p class="price">${p.price} €</p><form method="post" action="/cart"><input type="hidden" name="id" value="${p.id}"><input type="hidden" name="price" value="${p.price}"><button>Ajouter au panier</button></form></div>`).join('')));
+-  if (path === '/search') return html(page('search.html').replace('<!--Q-->', q.q || '')); // FLAW 3 (reflected XSS): the query is echoed raw
++  if (path === '/search') return html(page('search.html').replace('<!--Q-->', esc(q.q || '')));
+   if (path === '/cart') {
+     if (method === 'POST') {
+       const p = Object.fromEntries(new URLSearchParams(body));

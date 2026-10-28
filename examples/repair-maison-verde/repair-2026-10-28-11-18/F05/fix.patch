@@ -1,0 +1,16 @@
+diff --git a/server.js b/server.js
+index 6f1b3eb..e86cf93 100644
+--- a/server.js
++++ b/server.js
+@@ -45,9 +45,9 @@ export function handle(method, url, body = '', headers = {}) {
+       const p = Object.fromEntries(new URLSearchParams(body));
+       // The order is registered to the customer, who gets a cookie and a link to follow it. The cookie is not checked by /order (FLAW 6).
+       const id = 1004; ORDERS[id] = { customer: p.name || '', email: p.email || '', address: p.address || '', total: cart.reduce((a, c) => a + c.price, 0), card: '**** **** **** ' + String(p.card || '').slice(-4) };
+-      return html(page('checkout.html').replace('<!--DONE-->', `<p class="ok">Commande n° ${id} enregistrée pour ${p.name || ''}. Carte ${p.card || ''}. <a href="/order?id=${id}">Suivre ma commande</a></p>`), { 'set-cookie': `customer=${encodeURIComponent(p.email || '')}; Path=/` }); // FLAW 3 again, and the card number echoed
++      return html(page('checkout.html').replace(/name\s*=\s*["']?card["']?/g, 'name="psp_token"').replace(/name\s*=\s*["']?exp["']?/g, 'name="psp_exp"').replace(/name\s*=\s*["']?cvv["']?/g, 'name="psp_cvc"').replace('<!--DONE-->', `<p class="ok">Commande n° ${id} enregistrée pour ${esc(p.name || '')}. <a href="/order?id=${id}">Suivre ma commande</a></p>`), { 'set-cookie': `customer=${encodeURIComponent(p.email || '')}; Path=/`, 'strict-transport-security': 'max-age=31536000; includeSubDomains' });
+     }
+-    return html(page('checkout.html'));
++    return html(page('checkout.html').replace(/name\s*=\s*["']?card["']?/g, 'name="psp_token"').replace(/name\s*=\s*["']?exp["']?/g, 'name="psp_exp"').replace(/name\s*=\s*["']?cvv["']?/g, 'name="psp_cvc"').replace(/action\s*=\s*["']\/checkout["']/, 'action="https://payments.example-psp.com/pay"'), { 'strict-transport-security': 'max-age=31536000; includeSubDomains' });
+   }
+   if (path === '/order') {
+     // FLAW 6 (IDOR): any order is readable by changing its number, no login needed.
