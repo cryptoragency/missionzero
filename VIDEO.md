@@ -28,3 +28,20 @@ The narration text is in `video/narration.json`; replace the synthetic voice by 
 - **Meta tools**: Meta Model API, `muse-spark-1.3`, `reasoning_effort` per role (the cost finding).
 - **Technical depth**: self-evaluation loop, goal-targeted PDF reading, verifier with mandatory quote, contradictor and judge, daily budget ledger, 24 tests.
 - **Demo**: a real run, replayed from its own evidence.
+
+## Final video (2 or 3 November, on the final version): the repair mode and the trust scenes
+
+Decided on 28 October. The final video is NOT the research replay above alone: it must show the repair mode on the
+flawed shop and the four trust points that let a large company run it, in this order, as live footage of real runs.
+
+| Scene | On screen | Point made |
+|---|---|---|
+| Scan | the scanner's 15 findings on Maison Verde | any scanner can feed it (generic findings file, `--from=URL`) |
+| Fix in under a minute | one finding → recommended fix with its verified primary source (green dots) → exact edits | proof, not a guess |
+| Journeys | the 7 vital journeys replayed on the copy, all green, rescan: flaw gone | the service is never broken |
+| The refusal | a fix that breaks the checkout journey → REJECTED by Mission Zero itself, nothing applied | an AI that says no to itself |
+| Runs at the client | the open-weight model, the repository, the network calls (OWASP, NIST, MDN, nothing else) | their data never leaves their premises |
+| Secrets and proof | the secret filter masking a key before the model call; the hashed evidence journal | nothing stolen, everything traceable |
+| Patch out | the proposed fix as a patch for their own review and deployment | a human applies it |
+
+Narration by the founder (own voice), 3 minutes. Build only on his word.
