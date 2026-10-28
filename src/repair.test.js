@@ -111,3 +111,33 @@ test('with retries=0 a broken fix is rejected at once; the journeys code reaches
   assert.ok(sent.journeysCode.includes("name: 'follow my own order'"));
   assert.equal(sent.previous.why, 'breaks');
 });
+
+const HEADER_FIX = { file: 'server.js', find: "server: 'Apache/2.4.29 (Ubuntu) PHP/7.2.24', 'x-powered-by': 'PHP/7.2.24 WooCommerce/3.5.1', ", replace: '' };
+
+test('the agent reviews its own patch: a "hides" verdict is refused, the retry sees why, a "cause" patch is proposed', async () => {
+  const seen = [];
+  const propose = async ({ previous }) => { seen.push(previous); return { edits: [HEADER_FIX], summary: previous ? 'second' : 'first', risk: '' }; };
+  let n = 0;
+  const review = async () => (n++ === 0 ? { verdict: 'hides', reason: 'the header is hidden, the software is not updated', missing: 'update PHP' } : { verdict: 'cause', reason: 'ok', missing: '' });
+  const r = await repairOne({ finding: F02, siteDir: SITE, ask: null, know, propose, review });
+  assert.equal(r.status, 'proposed', r.why);
+  assert.equal(seen.length, 2); assert.equal(seen[1].status, 'hides'); assert.match(seen[1].why, /hides the symptom/);
+  assert.equal(r.attempts.length, 1); assert.deepEqual(r.reservations, []);
+});
+
+test('a patch the agent still judges to hide the symptom after the retry is PROPOSED WITH RESERVATION, never silently proposed', async () => {
+  const propose = async () => ({ edits: [HEADER_FIX], summary: 'hide', risk: '' });
+  const review = async () => ({ verdict: 'hides', reason: 'removal, not an update', missing: 'update the library' });
+  const r = await repairOne({ finding: F02, siteDir: SITE, ask: null, know, propose, review });
+  assert.equal(r.status, 'reserved');
+  assert.equal(r.reservations.length, 1); assert.match(r.reservations[0], /removal, not an update/);
+  assert.ok(r.journeysAfter.ok); assert.equal(r.rescan.findings.length, 0);
+});
+
+test('a weak justification (judge under 7) turns "proposed" into "reserved" with the reason written', async () => {
+  const weak = async () => ({ answer: 'x', sources: [], score: 3, green: 0, red: 2 });
+  const propose = async () => ({ edits: [HEADER_FIX], summary: 'ok', risk: '' });
+  const r = await repairOne({ finding: F02, siteDir: SITE, ask: null, know: weak, propose, review: async () => ({ verdict: 'cause', reason: 'ok', missing: '' }) });
+  assert.equal(r.status, 'reserved');
+  assert.match(r.reservations[0], /weak justification: the judge scored the cited recommendation 3\/10 \(0 verified sources\)/);
+});

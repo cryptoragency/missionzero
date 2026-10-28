@@ -116,7 +116,7 @@ export function makePatch(original, copy, files) {
 export const journeyNames = (dir) => [...(readFileSync(join(dir, 'journeys.test.js'), 'utf8').matchAll(/name: '([^']+)'/g)).map((m) => m[1])];
 
 // One attempt: propose, apply to a fresh copy, replay the journeys, rescan. Returns the record with its status.
-async function attemptFix({ finding, rec, siteDir, journeys, before, previous, propose, ask, login, vision = null }) {
+async function attemptFix({ finding, rec, siteDir, journeys, before, previous, propose, ask, login, vision = null, review = null }) {
   const copy = copySite(siteDir);
   const fix = await propose({ finding, recommendation: rec, siteDir: copy, journeys, previous, ask });
   const { applied, refused } = applyEdits(copy, fix.edits);
@@ -142,7 +142,29 @@ async function attemptFix({ finding, rec, siteDir, journeys, before, previous, p
       if (!record.vision.look.ok) return { ...record, status: 'rejected', why: 'the page no longer looks right to a customer: ' + record.vision.look.problems.join('; ') };
     } catch (e) { record.vision = { error: String(e.message || e).slice(0, 200) }; }
   }
+  // The agent judges its own patch: does it remove the cause the cited recommendation describes, or hide the symptom?
+  // Mechanically green either way; a "hides" verdict is refused by the agent itself (retried with that reason), and
+  // becomes a reservation when no better patch is found.
+  if (review) {
+    try {
+      record.review = await review({ finding, recommendation: rec, patch: record.patch || '', summary: fix.summary, ask });
+      if (record.review.verdict === 'hides') return { ...record, status: 'hides', why: 'the agent judges its own patch hides the symptom instead of removing the cause: ' + record.review.reason };
+    } catch (e) { record.review = { verdict: 'unknown', reason: String(e.message || e).slice(0, 200) }; }
+  }
   return { ...record, status: 'proposed', why: 'journeys pass and the flaw is gone on the copy; a human applies it' };
+}
+
+const REVIEW_PROMPT = 'You review a security patch you did not write. You get the scanner finding, the recommended fix with its cited sources, and the patch. '
+  + 'Answer ONE question: does the patch remove the CAUSE the recommendation describes, or does it HIDE the symptom so that a scanner stops seeing it (removing a feature instead of fixing it, hiding a header instead of updating the software, special-casing the probe, blocking a path instead of protecting it)? '
+  + 'A partial fix that removes the cause for the reported case is "cause". Be concrete and short. JSON: {"verdict":"cause|hides|partial","reason":"one sentence","missing":"what a complete fix would add, or empty"}.';
+
+// The agent's review of its own patch, against the recommendation it researched. Secrets are masked like everywhere else.
+export async function reviewPatch({ finding, recommendation, patch, summary, ask }) {
+  const { value, restore } = maskDeep({ finding, recommendation: { fix: recommendation.answer, sources: recommendation.sources }, patch: String(patch).slice(0, 8000), summary });
+  const r = await ask([{ role: 'system', content: REVIEW_PROMPT }, { role: 'user', content: JSON.stringify(value) }], { max_tokens: 1500, tag: 'review' });
+  const j = readJson(r.text) || {};
+  const verdict = ['cause', 'hides', 'partial'].includes(j.verdict) ? j.verdict : 'unknown';
+  return { verdict, reason: restore(String(j.reason || '')), missing: restore(String(j.missing || '')) };
 }
 
 const pathOf = (url) => { try { return new URL(url).pathname + (new URL(url).search || ''); } catch { return '/'; } };
@@ -172,7 +194,10 @@ const feedback = (r) => ({ status: r.status, why: r.why, edits: (r.fix?.applied 
 // The whole thing for one finding. `know` and `propose` can be replaced (tests, other models).
 // A refused attempt (no edit, rejected, ineffective) is retried `retries` times with the reason fed back: the agent says no to
 // its own fix, reads why, and proposes another one. Earlier attempts stay in `attempts` for the report.
-export async function repairOne({ finding, siteDir, ask, folder = null, login = null, know = knowledge, propose = proposeFix, turns = 2, rounds = 1, retries = 1, lessons = [], vision = null }) {
+// `review` (default: the agent reviewing its own patch) can be replaced or set to null. WEAK_JUSTIFICATION: a recommendation
+// the judge scored under this is not hidden behind "proposed": the status becomes "reserved", with the reservation written.
+export const WEAK_JUSTIFICATION = 7;
+export async function repairOne({ finding, siteDir, ask, folder = null, login = null, know = knowledge, propose = proposeFix, review = reviewPatch, turns = 2, rounds = 1, retries = 1, lessons = [], vision = null }) {
   if (vision && !vision.folder && folder) vision = { ...vision, folder };
   const t0 = Date.now();
   const rec = await know({ finding, ask, folder, turns, rounds, lessons });
@@ -181,13 +206,17 @@ export async function repairOne({ finding, siteDir, ask, folder = null, login = 
   const attempts = [];
   let previous = null; let r;
   for (let n = 0; n <= retries; n += 1) {
-    r = await attemptFix({ finding, rec, siteDir, journeys, before, previous, propose, ask, login, vision });
+    r = await attemptFix({ finding, rec, siteDir, journeys, before, previous, propose, ask, login, vision, review });
     if (r.status === 'proposed') break;
     previous = feedback(r);
     attempts.push({ ...previous, copy: r.copy });
     if (n === retries) attempts.pop(); // the last attempt is the record itself, not a previous one
   }
-  return { ...r, attempts, ms: Date.now() - t0 };
+  // Reservations: a mechanically green patch the agent judges to hide the symptom, or a recommendation with a weak justification.
+  const reservations = [];
+  if (r.status === 'hides') { reservations.push(r.why); r = { ...r, status: 'reserved', why: 'journeys pass and the flaw is gone on the copy, but ' + r.why }; }
+  if (r.status === 'proposed' && Number(rec.score) < WEAK_JUSTIFICATION) { reservations.push(`weak justification: the judge scored the cited recommendation ${rec.score}/10 (${rec.green || 0} verified source${rec.green === 1 ? '' : 's'}); read the sources before applying`); r = { ...r, status: 'reserved', why: 'journeys pass and the flaw is gone on the copy, but ' + reservations[reservations.length - 1] }; }
+  return { ...r, reservations, attempts, ms: Date.now() - t0 };
 }
 
 const ORDER = { critical: 0, high: 1, medium: 2, low: 3 };

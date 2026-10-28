@@ -7,7 +7,7 @@ import { dirname } from 'node:path';
 const BASE = (process.env.MZ_BASE_URL || 'https://api.meta.ai/v1').replace(/\/$/, '');
 const PRICE = { input: Number(process.env.MZ_PRICE_IN) || 1.25, output: Number(process.env.MZ_PRICE_OUT) || 4.25 };
 // Reasoning effort by role: checks and scores need little, planning and writing a bit more.
-const EFFORT = { verify: 'minimal', judge: 'low', contradict: 'low', research: 'low', evaluate: 'low', distill: 'minimal', plan: 'medium', synthesize: 'medium', rewrite: 'medium', fix: 'medium', other: 'low' };
+const EFFORT = { verify: 'minimal', judge: 'low', contradict: 'low', research: 'low', evaluate: 'low', distill: 'minimal', plan: 'medium', synthesize: 'medium', rewrite: 'medium', fix: 'medium', review: 'low', vision: 'low', other: 'low' };
 
 // The key follows the provider: BASETEN_API_KEY when the base URL is Baseten's, MODEL_API_KEY (Meta) otherwise; MZ_API_KEY overrides.
 const KEY = process.env.MZ_API_KEY || (/baseten/i.test(BASE) ? process.env.BASETEN_API_KEY : process.env.MODEL_API_KEY);

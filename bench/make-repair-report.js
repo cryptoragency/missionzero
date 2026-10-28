@@ -11,6 +11,7 @@ const money = (n) => '$' + (Number(n) || 0).toFixed(3);
 const ORDER = { critical: 0, high: 1, medium: 2, low: 3 };
 const STATUS = {
   proposed: ['ok', 'Proposed', 'journeys pass, flaw gone on the copy: a human applies it'],
+  reserved: ['warn', 'Proposed with reservation', 'mechanically green, but the agent has a reservation written below'],
   rejected: ['red', 'Rejected', 'the fix broke a vital journey or the site'],
   ineffective: ['warn', 'Ineffective', 'journeys pass but the scanner still sees the flaw'],
   'no-edit': ['mut', 'No edit', 'the model proposed nothing usable'],
@@ -51,6 +52,8 @@ export function renderReport(run, { title = 'Mission Zero · repair report' } = 
 <header><span class="sev ${esc(f.severity)}">${esc(f.severity)}</span><b>${esc(f.id)}</b> <span class="type">${esc(f.type)}</span><span class="status ${st[0]}">${esc(st[1])}</span></header>
 <p class="desc">${esc(f.description)} <span class="mut">Evidence: ${esc(f.evidence)}</span><br><a href="${esc(f.url)}" rel="noopener" class="mut">${esc(f.url)}</a></p>
 <p class="why"><b>Verdict.</b> ${esc(r.why || st[2])}${r.ms ? ` <span class="mut">(${(r.ms / 1000).toFixed(0)} s)</span>` : ''}</p>
+${(r.reservations || []).map((x) => `<p class="attempt"><b>Reservation, written by the agent.</b> ${esc(x)}</p>`).join('')}
+${r.review && r.review.verdict && r.review.verdict !== 'unknown' ? `<p class="mut">The agent reviewed its own patch: <b>${esc(r.review.verdict)}</b>. ${esc(r.review.reason)}${r.review.missing ? ' Missing for a complete fix: ' + esc(r.review.missing) : ''}</p>` : ''}
 ${(r.attempts || []).map((a, i) => `<p class="attempt"><b>Attempt ${i + 1}, refused by Mission Zero itself.</b> ${esc(a.why)}${a.brokenJourneys?.length ? ` <span class="mut">Broken: ${esc(a.brokenJourneys.join(', '))}.</span>` : ''} ${a.edits?.length ? `<span class="mut">It had proposed: ${esc(a.edits.map((e) => e.replace.slice(0, 120)).join(' | '))}</span>` : ''}</p>`).join('')}
 ${rec ? `<details open><summary>Recommended fix <span class="mut">${rec.cached ? 'from cache · ' : ''}judge ${esc(rec.score ?? '?')}/10 · ${rec.green ?? 0} green, ${rec.red ?? 0} red</span>${Number(rec.score) < 7 ? ' <span class="status warn">weak justification: read the sources before applying</span>' : ''}</summary><p class="answer">${esc(rec.answer)}</p>${sourcesHtml(rec)}</details>` : ''}
 ${r.fix ? `<details open><summary>Edits <span class="mut">${esc(r.fix.summary)}${r.fix.secretsMasked ? ` · ${r.fix.secretsMasked} secret${r.fix.secretsMasked > 1 ? 's' : ''} masked before the model call` : ''}</span></summary>${editsHtml(r.fix)}${r.fix.risk ? `<p class="mut">Risk: ${esc(r.fix.risk)}</p>` : ''}${r.patch ? `<p class="mut">Patch for review: <a href="${esc(f.id)}/fix.patch">${esc(f.id)}/fix.patch</a> (apply with <code>git apply</code>)</p>` : ''}</details>` : ''}
