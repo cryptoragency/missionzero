@@ -69,7 +69,7 @@ export async function knowledge({ finding, ask, folder, turns = 2, rounds = 1, l
   const verifyCache = new Map();
   const verify = (sources) => verifyReport({ items: sources.map((s) => ({ claim: s.contribution, url: s.url })), ask, cache: verifyCache });
   const refined = await refineAnswer({ goal, answer: draft, seen: [...seenUrls(result.evidence).values()], ask, verify, rounds, escalate: false });
-  const rec = { goal, answer: refined.answer.answer, sources: refined.answer.sources, score: refined.score, green: refined.green, red: refined.red };
+  const rec = { goal, answer: refined.answer.answer, sources: refined.answer.sources, score: refined.score, green: refined.green, red: refined.red, verification: refined.verification || [] };
   if (cache && rec.green > 0 && rec.score >= 7) saveFix(finding.type, rec);
   return rec;
 }

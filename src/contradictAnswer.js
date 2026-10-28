@@ -55,7 +55,7 @@ export async function refineAnswer({ goal, answer, seen, ask, verify, research =
   let best = versions[0];
   let last = versions[0]; // the version just graded: its verification (verdicts and nearest passages) guides the next round
   // Every version keeps its verification: the evidence folder shows which claim was confirmed by which passage.
-  const done = () => ({ answer: best.answer, score: best.score, green: best.green, red: best.red, rounds: versions.length - 1, versions: versions.map(({ answer: _a, ...r }) => r) });
+  const done = () => ({ answer: best.answer, score: best.score, green: best.green, red: best.red, verification: best.verification, rounds: versions.length - 1, versions: versions.map(({ answer: _a, ...r }) => r) });
   if (base === 0) return done();
 
   let flat = 0; // rounds in a row without a better note
