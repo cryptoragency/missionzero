@@ -19,5 +19,6 @@
   },
   "dependencies": {
     "pdfjs-dist": "^6.4.299"
-  }
+  },
+  "license": "PolyForm-Noncommercial-1.0.0"
 }
