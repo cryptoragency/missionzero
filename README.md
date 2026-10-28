@@ -156,6 +156,26 @@ Mission Zero does not ask to be trusted. It is built so that it cannot steal, ca
 
 What this repository does not claim: certifications (ISO 27001, SOC 2), a third-party pentest of the tool, contracts. Those come with the first large customer, not with a hackathon.
 
+## Impact: the flaws of Maison Verde are the flaws we see in the wild
+
+The fictional shop was not built at random. CRYPTOR.AGENCY's surface scanner (ARGUS, a passive read of a site's public home page and headers, nothing intrusive) has scanned 26 French business sites. It is a small sample, not a study, and no site is named here; the figures are shares of those 26 sites, read in aggregate on 28 October 2026.
+
+| Share of the 26 sites | Failing control | Maison Verde flaw it maps to |
+|---|---|---|
+| 81 % | no Content-Security-Policy | F01, security headers |
+| 73 % | no anti-clickjacking header | F01 |
+| 65 % | no X-Content-Type-Options | F01 |
+| 62 % | no HSTS | F01 |
+| 58 % | no resistance to automated attacks (rate limiting) | F07, weak authentication |
+| 46 % | server reveals itself (Server, X-Powered-By) | F02, versions disclosed |
+| 42 % | application version disclosed in the page | F02 |
+| 27 % | no privacy policy | F15 |
+| 23 % | mixed content over HTTP | F05, data over HTTP |
+| 23 % | session cookies without Secure or HttpOnly | F08, insecure cookie |
+| 19 % | cookies without SameSite | F08 |
+
+Average score 56/100; 19 of the 26 sites scored C, D or F. Each of these flaws has a proposed, checked fix in the table above, at about ten cents a finding. That is the gap Mission Zero is built for: the fixes are known, cited and cheap; what is missing on most sites is someone who proposes them with proof and never breaks the shop.
+
 ## Business
 
 Who pays: online shops and the agencies and hosts that run them, where the same 15 flaws come back site after site, and where a wrong fix costs more than the flaw. What they buy: a proven fix per finding, or the tool installed on their side, fed by the scanner they already have. The loop behind it is already deployed in production on two sites by CRYPTOR.AGENCY; Mission Zero is the public, from-scratch version built for this hackathon. We are open to a seed round and to a strategic partnership or acquisition by a platform player.
