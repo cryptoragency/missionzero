@@ -228,3 +228,5 @@ The evidence folder (`evidence/<date>/`) holds `journal.jsonl` (every plan, obse
 ## License
 
 PolyForm Noncommercial 1.0.0: the code is readable and usable for research, study and evaluation (hackathon judging included). Any commercial use requires a license from CRYPTOR.AGENCY. Copyright (c) 2026 CRYPTOR.AGENCY.
+
+The Official Rules of the Meta Global AI Developer Hackathon do not require an open-source license; they require a public repository during judging and grant Meta and its partners a perpetual, royalty-free license on the submission, which CRYPTOR.AGENCY accepted when it entered. That grant stands whatever the license above says. Third-party code and models are listed in `package.json` with their own licenses; no code from any earlier project of the company is in this repository.
