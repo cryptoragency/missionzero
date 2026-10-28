@@ -88,12 +88,25 @@ npm run verify-chain -- evidence/repair-<date>             # recompute the hashe
 | F12 | backups listed | proposed | directory listing off, backup files 404 | 2 green |
 | F01 | no security headers | **cut, then proposed** | 1st answer was truncated by the token cap (raised); 2nd: HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, CSP frame-ancestors | 5 green |
 | F08 | insecure session cookie | proposed | Secure, HttpOnly, SameSite=Strict | 3 green |
-| F14 | jQuery 1.8.3 | proposed | the vulnerable file is no longer served (removal, not an update: the scanner cannot tell the difference, a reviewer can) | 2 green |
+| F14 | jQuery 1.8.3 | **proposed, but see limits** | the vulnerable file is no longer served: a removal, not an update. The scanner cannot tell the difference, a reviewer can | 2 green |
 | F15 | no privacy policy | proposed | privacy notice on the legal page, linked from the checkout | 3 green |
-| F02 | versions disclosed | proposed | Server and X-Powered-By removed | 0 green |
+| F02 | versions disclosed | proposed, weak justification | Server and X-Powered-By removed | 0 green, 2 red |
 | F10 | robots.txt lists sensitive paths | proposed | sensitive Disallow entries removed | 3 green |
 
 15 findings, 15 fixes proposed, 7/7 vital journeys green after every proposed fix, every copy rescanned clean. 17 attempts, 194 model calls, **$1.10 in total** (about 7 cents per finding). Every proposed fix is a patch in its evidence folder. The merged report page of the 15 findings and the last run (F01, F06) with its patches and its hashed journal are in `examples/repair-maison-verde/`: open `report.html`, and check the journal with `npm run verify-chain -- examples/repair-maison-verde` (6 records, intact).
+
+## Known limits (read before trusting a « proposed » fix)
+
+We would rather list these ourselves.
+
+1. **The scanner judges the symptom, not the cause.** « Flaw gone » means the probe no longer fires. For F14 the model stopped serving jQuery 1.8.3 instead of updating it; the probe is satisfied, the shop lost its library. The patch and the model's own summary are in the report so a reviewer sees it; the prompt asks for the cause over hiding, and this is the first thing to harden.
+2. **The justification is not always strong.** « Proposed » proves that the journeys pass and the probe is silent on the copy; it says nothing about the quality of the cited fix. The judge scores each recommendation out of 10 and the report shows it: on the 28 October run, 6 of the 15 recommendations scored under 7 (F02: 0 verified source, 2 contradicted; F05: secondary sources, because the PCI DSS standard itself sits behind a registration form; F15: one contradicted source; F09, F10, F12: thin). The report flags them « weak justification ». Read the sources before applying.
+3. **The vital journeys are the customer's.** A journey that is not written cannot protect anything. Maison Verde has 7; a fix that broke something outside them would pass. In a real deployment the customer's test suite is the journeys file.
+4. **The demo shop is small and fictional.** One `server.js`, 14 000 characters sent to the model per file. A real site needs the files chosen (`files` option) and the edits reviewed in context; the exact-string rule refuses ambiguous edits but cannot judge design.
+5. **The secret filter is pattern-based.** It masks the usual shapes (`.env` lines, `password=`, `define('X_PASSWORD'…)`, Stripe, AWS, GitHub, Google, Slack, JWT, private keys, bearer tokens). A secret that looks like nothing (the demo's static `session=admin-7c9e` cookie value, for instance) goes through. The report says how many were masked, not that none remained.
+6. **The hashed journal proves integrity, not identity.** It shows that no record changed since the run; it does not sign who ran it. A signature (the customer's key) is the next step.
+7. **One model does everything.** Muse Spark plans, writes, verifies, contradicts, judges and repairs; there is no second model and no human until the end. The verifier demands an exact quote from the cited page, which limits what the writer can invent, but the chain is still one model checking itself.
+8. **Costs are measured on `muse-spark-1.3` with reasoning**; the open-weight variant has not been benchmarked yet.
 
 ## Trust: built for companies that cannot afford a mistake
 
