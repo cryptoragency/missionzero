@@ -38,7 +38,7 @@ Ordre : la boucle → les choix → la médecine (ça sert) → les choix → la
 
 | À l'écran | Narration (FR) | Sous-titre (EN) |
 |---|---|---|
-| Titre | Une IA vous dit un chiffre. Mission Zero vous montre la page. | An AI tells you a number. Mission Zero shows you the page. |
+| Titre | Une IA vous sort un chiffre. Mission Zero vous le démontre. | An AI gives you a number. Mission Zero proves it to you. |
 | Sous-titre | La tuberculose. Une maladie vieille comme l'humanité. On sait la soigner depuis 1950. | Tuberculosis. As old as mankind. Curable since 1950. |
 | Le fil devient un électrocardiogramme | Suivez le point. C'est un battement de cœur. | Follow the dot. It is a heartbeat. |
 | 1er battement, 10,8 millions | Dix millions huit cent mille personnes tombées malades en 2023. Mission Zero l'a lu dans le rapport de l'OMS, et le cite mot pour mot. | 10.8 million people fell ill in 2023. Mission Zero read it in the WHO report, and quotes it word for word. |
@@ -72,9 +72,27 @@ l'automatique qui applique.
 
 ## Chapitre 6 · L'espace : on va quelque part (≈ 50 s) · missions réelles du 29 octobre (juge 3 à 5/10 : sources secondaires, chaque citation affichée est vérifiée)
 
+### Scène 6a · La même question, posée deux fois (≈ 35 s) · `examples/film-2026-10-29/avec-et-sans.md`
+
 | À l'écran | Narration (FR) | Sous-titre (EN) |
 |---|---|---|
-| Les étoiles défilent, le compteur à 0 | Une IA vous dit un chiffre. Mission Zero vous montre la page. La question d'un enfant : on va quelque part ? | An AI tells you a number. Mission Zero shows you the page. A child's question: are we going somewhere? |
+| Titre, le fil monte entre deux panneaux | La même question, posée deux fois. « On va quelque part ? » | The same question, asked twice. "Are we going somewhere?" |
+| Panneau gauche, rouge | À gauche, le modèle seul : vingt secondes, un centime, douze chiffres, huit références. Brillant. | On the left, the model alone: twenty seconds, one cent, twelve figures, eight references. Brilliant. |
+| Ligne 1, « sans adresse » | Hercule à 19,7 km/s : la source est un manuel de 1981, page 362. Pas d'adresse. | Hercules at 19.7 km/s: the source is a 1981 textbook, page 362. No address. |
+| Ligne 2, « injoignable » | Trois vitesses au centième : l'article est derrière un péage. Injoignable. | Three speeds to the hundredth: the paper is behind a paywall. Unreachable. |
+| Ligne 3, vert | Le rayon et la vitesse de la galaxie : l'article s'ouvre, le chiffre y est. Vert. | The galaxy's radius and speed: the paper opens, the figure is there. Green. |
+| Ligne 4, « injoignable » | Six cents kilomètres par seconde : derrière un péage. Injoignable. | Six hundred kilometres per second: behind a paywall. Unreachable. |
+| Ligne 5, « injoignable » | Le fond du ciel au centième : derrière un péage. Quatre sources sur cinq, personne ne peut les ouvrir. | The sky's background to the hundredth: behind a paywall. Four sources out of five, no one can open them. |
+| Panneau droit, vert | À droite, Mission Zero : vingt minutes, un dollar, quatre chiffres. | On the right, Mission Zero: twenty minutes, one dollar, four figures. |
+| Quatre lignes vertes | Hercule, la citation exacte. Deux cent trente, la NASA mot pour mot. Trois cent soixante-neuf, Cambridge mot pour mot. Six cent trente et un, Tully 2014 mot pour mot. Moins de chiffres. Chacun avec sa page. | Hercules, the exact quote. 230, NASA word for word. 369, Cambridge word for word. 631, Tully 2014 word for word. Fewer figures. Each with its page. |
+| Phrase clé | Une IA vous sort un chiffre. Mission Zero vous le démontre. | An AI gives you a number. Mission Zero proves it to you. |
+| Les panneaux s'effacent, le fil continue | Le point continue. Maintenant, la sensation. | The dot goes on. Now, the feeling. |
+
+### Scène 6b · On va quelque part (≈ 50 s)
+
+| À l'écran | Narration (FR) | Sous-titre (EN) |
+|---|---|---|
+| Les étoiles défilent, le compteur à 0 | La question d'un enfant : on va quelque part ? Suivez le point : chaque chiffre arrive avec sa page. | A child's question: are we going somewhere? Follow the dot: every figure comes with its page. |
 | Boîte 1, compteur 20 | Oui. Le Soleil fonce vers la constellation d'Hercule, à vingt kilomètres par seconde. | Yes. The Sun is rushing toward the constellation Hercules, at 20 kilometres per second. |
 | Boîte 2, compteur 230 | Et il tourne autour du centre de la galaxie, à deux cent trente kilomètres par seconde. Un tour : deux cent trente millions d'années. La NASA le dit, mot pour mot. | And it orbits the centre of the galaxy at 230 kilometres per second. One lap: 230 million years. NASA says so, word for word. |
 | Boîte 3, compteur 369 | Par rapport au fond du ciel, la lumière la plus vieille de l'univers : trois cent soixante-neuf kilomètres par seconde, vers le Lion et la Coupe. Mesuré par Planck, cité par Cambridge. | Relative to the oldest light in the universe: 369 kilometres per second, toward Leo and Crater. Measured by Planck, quoted by Cambridge. |
@@ -91,6 +109,14 @@ l'automatique qui applique.
 |---|---|---|
 | Le fil dessine un cercle, le point se pose au centre : le zéro | (silence, deux secondes) | |
 | « Preuves, pas promesses. » puis CRYPTOR.AGENCY, et dessous MISSION ZERO | Preuves, pas promesses. CRYPTOR.AGENCY. Mission Zero. | Proof, not promises. CRYPTOR.AGENCY. Mission Zero. |
+
+## Qui fait la vidéo
+
+Nous. Au hackathon Meta, l'équipe fournit sa vidéo de démonstration (3 minutes au plus) avec le dépôt ; Meta fournit le modèle
+et le jury regarde. Elle se fabrique à partir de cette page : capture d'écran du film (`video/schemas.html`, bouton « Lancer le
+film », enregistrement headless par `video/shots.cjs` ou capture d'écran directe), voix française du fondateur enregistrée sur ce
+script, sous-titres anglais incrustés, montage par `video/make-video.cjs` (ffmpeg). Rien n'est généré par une IA vidéo : tout ce
+qui est à l'écran est le produit lui-même et ses vraies missions.
 
 ## Les émotions, dans l'ordre
 
