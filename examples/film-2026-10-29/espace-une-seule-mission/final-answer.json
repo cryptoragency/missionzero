@@ -1,0 +1,203 @@
+{
+  "answer": "Yes — the solar system is heading somewhere, on several levels at once. Like being on a moving walkway inside a train inside a moving ship:\n\n(1) Solar apex — motion relative to nearby stars. The request was for constellation + km/s from a primary source. No primary-source page in the provided list gives a verbatim quotable figure for this. Secondary pages in the list say Hercules near Vega and ~12 miles/s, ~19.7 km/s, ~20 km/s, ~13.4 km/s, but these do NOT satisfy the primary-source-only requirement, so I do not report them as answered.\n\n(2) Sun's orbit around the Galactic centre — orbital speed + direction constellation + orbital period. No primary-source page in the provided list gives a verbatim quotable figure for orbital speed, direction, or period. I do not report them as answered.\n\n(3) Milky Way / Local Group motion toward Great Attractor and Shapley concentration inside Laniakea (Tully et al. Nature 2014) and Dipole Repeller (Hoffman et al. Nature Astronomy 2017) — speed + direction. No Tully 2014 or Hoffman 2017 primary-source pages are in the provided list, and no other provided page gives verbatim quotable figures for these motions. I do not report them as answered. In particular, what is still debated — e.g. whether the Great Attractor or Shapley dominates the local flow — cannot be resolved from the provided list alone.\n\n(4) Motion relative to the Cosmic Microwave Background — Planck dipole — MEASURED:\n\n- What is measured: the largest CMB temperature anisotropy is the dipole, interpreted as Doppler boosting of the monopole by our motion. Exact quotes from primary pages:\n  \"one infers a velocity v (369 0.9) km s-1\" and direction \"(l,b) (263.99 0.14; 48.26 ...\"\n  \"has an accepted amplitude of v/c = 1.23 x 10-3, or v = 369 km s-1\"\n  \"we find that the velocity should be |v| = 369 km/s\" assuming \"the whole dipole to be just Doppler\"\n  independent check by aberration/modulation: \"finding a component in the known dipole direction, (l,b) = (264deg,48deg), of 384 km s-1 +/- 78 km s-1 (stat.) +/- 115 km s-1 (syst.)\"\n  confirmation: \"consistent with the canonical value v=369 km/s inferred from the CMB dipole\"\n\nIn plain words: about 369 km/s toward galactic longitude ~264 deg, latitude ~48 deg. The translation of that (l,b) into constellation Crater near Leo appears only in a secondary page in the list, not in the primary Planck pages above, so I do not count it as primary-sourced.\n\nWhat is measured vs still debated: The CMB dipole amplitude/direction itself is well measured. What is still debated and NOT answered from this list is how much of the ~369 km/s CMB motion comes from Great Attractor vs Shapley vs larger-scale flows inside Laniakea, and the push from the Dipole Repeller, because those primary papers are absent from the list.",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/1303.5087v3",
+      "contribution": "one infers a velocity v (369 0.9) km s-1 in the direction (l,b) (263.99 0.14; 48.26"
+    },
+    {
+      "url": "https://www.academia.edu/12686293/Planck_2013_results_XXVII_Doppler_boosting_of_the_CMB_Eppur_si_muove",
+      "contribution": "has an accepted amplitude of v/c = 1.23 x 10-3, or v = 369 km s-1"
+    },
+    {
+      "url": "http://www.ictp-saifr.org/wp-content/uploads/2014/05/cmb.dipole.ICTP-SAIFR-2014.pdf",
+      "contribution": "we find that the velocity should be |v| = 369 km/s"
+    },
+    {
+      "url": "https://www.aanda.org/articles/aa/full_html/2014/11/aa21556-13/aa21556-13.html",
+      "contribution": "finding a component in the known dipole direction, (l,b) = (264°,48°), of 384 km s-1 ± 78 km s-1 (stat.) ± 115 km s-1 (syst.)"
+    },
+    {
+      "url": "https://cosmology.unige.ch/content/bayesian-estimation-our-local-motion-planck-2018-cmb-temperature-map",
+      "contribution": "consistent with the canonical value v=369 km/s inferred from the CMB dipole"
+    },
+    {
+      "url": "https://ui.adsabs.harvard.edu/abs/2014A%26A...571A..27P/abstract",
+      "contribution": "has an accepted amplitude of v/c = 1.23 x 10-3, or v = 369"
+    }
+  ],
+  "confidence": 4,
+  "uncertainties": [
+    "No primary-source page in provided list gives exact quotable solar-apex direction/speed; secondary pages mention Hercules/Vega and 13.4-20 km/s but do not meet primary-source requirement.",
+    "No primary-source page in provided list gives exact quotable Sun Galactic orbital speed, direction constellation, or orbital period.",
+    "No Tully et al. Nature 2014 Laniakea or Hoffman et al. Nature Astronomy 2017 Dipole Repeller primary pages in provided list; speeds/directions toward Great Attractor/Shapley cannot be quoted.",
+    "Whether Great Attractor or Shapley dominates cannot be resolved from provided list.",
+    "CMB-dipole constellation name Crater/Leo appears only in secondary page, not in primary Planck pages in list; primary pages give (l,b) coordinates only."
+  ],
+  "rejectedSources": 0,
+  "seenSources": 30,
+  "judge": {
+    "score": 3,
+    "green": 2,
+    "red": 4,
+    "rounds": 2,
+    "versions": [
+      {
+        "round": 0,
+        "score": 3,
+        "green": 2,
+        "red": 4,
+        "reason": "Missing 1-3 entirely; part 4 partially verified but 4/6 citations unsupported/unreachable, failing exact-quote primary-source rule.",
+        "verification": [
+          {
+            "url": "https://arxiv.org/pdf/1303.5087v3",
+            "claim": "one infers a velocity v (369 0.9) km s-1 in the direction (l,b) (263.99 0.14; 48.26",
+            "verdict": "unsupported",
+            "detail": "nearest passages: « Assuming that the observed tempera- ture dipole is due entirely to Doppler boosting of the CMB monopole, one infers a velocity v = (369 ± 0 . » « Here we report a first measurement of this velocity signature using the aberration and modulation e ff ects on the CMB temperature anisotropies, finding a component in the known dipole direction, ( l , b ) = (264 ◦ , 48  » « 9) km s − 1 in the direction ( l , b ) = (263. »"
+          },
+          {
+            "url": "https://www.academia.edu/12686293/Planck_2013_results_XXVII_Doppler_boosting_of_the_CMB_Eppur_si_muove",
+            "claim": "has an accepted amplitude of v/c = 1.23 x 10-3, or v = 369 km s-1",
+            "verdict": "source-unreachable",
+            "detail": "blocked: bot challenge (http 403), a browser would be needed"
+          },
+          {
+            "url": "http://www.ictp-saifr.org/wp-content/uploads/2014/05/cmb.dipole.ICTP-SAIFR-2014.pdf",
+            "claim": "we find that the velocity should be |v| = 369 km/s",
+            "verdict": "supported",
+            "detail": "velocity should be | velocity should be | v v | = 369 km/s | = 369 km/s"
+          },
+          {
+            "url": "https://www.aanda.org/articles/aa/full_html/2014/11/aa21556-13/aa21556-13.html",
+            "claim": "finding a component in the known dipole direction, (l,b) = (264°,48°), of 384 km s-1 ± 78 km s-1 (stat.) ± 115 km s-1 (syst.)",
+            "verdict": "source-unreachable",
+            "detail": "blocked: bot challenge (http 403), a browser would be needed"
+          },
+          {
+            "url": "https://cosmology.unige.ch/content/bayesian-estimation-our-local-motion-planck-2018-cmb-temperature-map",
+            "claim": "consistent with the canonical value v=369 km/s inferred from the CMB dipole",
+            "verdict": "supported",
+            "detail": "We detect the amplitude and direction of the local motion consistent with the canonical value v=369 km/s inferred from the CMB dipole with a sinal to noise ratio (SNR) of ~5, confirming the common origin of both signals."
+          },
+          {
+            "url": "https://ui.adsabs.harvard.edu/abs/2014A%26A...571A..27P/abstract",
+            "claim": "has an accepted amplitude of v/c = 1.23 x 10-3, or v = 369",
+            "verdict": "source-unreachable",
+            "detail": "http 405"
+          }
+        ],
+        "objections": []
+      },
+      {
+        "round": 1,
+        "score": 2,
+        "green": 7,
+        "red": 3,
+        "reason": "Fails primary-source requirement; misses Galactic orbit and Laniakea figures; key Planck quotes unsupported; relies on secondary pages.",
+        "verification": [
+          {
+            "url": "https://en.wikipedia.org/wiki/Solar_apex",
+            "claim": "solar apex is in the constellation of Hercules near the star Vega",
+            "verdict": "supported",
+            "detail": "Direction [ edit ] The solar apex is in the constellation of Hercules near the star Vega ."
+          },
+          {
+            "url": "https://en.wikipedia.org/wiki/Solar_apex",
+            "claim": "reducing overall speed to about 13.4 km/s",
+            "verdict": "supported",
+            "detail": "reducing overall speed to about 13.4 km/s."
+          },
+          {
+            "url": "http://csep10.phys.utk.edu/OJTA2dev/ojta/c2c/ordinary_stars/distances/motion_tl.html",
+            "claim": "relative to the nearby stars at a net speed of about 19.7 km/s",
+            "verdict": "supported",
+            "detail": "the Sun is moving toward it (relative to the nearby stars) at a net speed of about 19.7 km/s."
+          },
+          {
+            "url": "https://www.britannica.com/science/solar-apex",
+            "claim": "moving at approximately 12 miles per second relative to nearby stars",
+            "verdict": "source-unreachable",
+            "detail": "blocked: bot challenge (http 403), a browser would be needed"
+          },
+          {
+            "url": "https://arxiv.org/pdf/1303.5087v3",
+            "claim": "one infers a velocity v = (369 +/- 0.9) km s-1",
+            "verdict": "unsupported",
+            "detail": "nearest passages: « Assuming that the observed tempera- ture dipole is due entirely to Doppler boosting of the CMB monopole, one infers a velocity v = (369 ± 0 . » « Exaggerated illustration of the aberration and Doppler modulation e ff ects, in orthographic projection, for a velocity v = 260 000 km s − 1 = 0 . » « (4) and dropping terms of order β 2 and ( δ T ′ ) 2 , we find δ I ν ( ν, ˆ n ) = dI ν dT ∣ ∣ ∣ ∣ ∣ T 0 [ T 0 ˆ n · β + δ T ′ ( ˆ n ′ )(1 + b ν ˆ n · β ) ] , (7) ‡ Note that in both stellar and cosmological cases, the abe »"
+          },
+          {
+            "url": "https://arxiv.org/pdf/1303.5087v3",
+            "claim": "in the direction (l,b) = (263.99, 48.26)",
+            "verdict": "unsupported",
+            "detail": "nearest passages: « Here we report a first measurement of this velocity signature using the aberration and modulation e ff ects on the CMB temperature anisotropies, finding a component in the known dipole direction, ( l , b ) = (264 ◦ , 48  » « 9) km s − 1 in the direction ( l , b ) = (263. » « The CMB dipole direction ( l , b ) = (263. »"
+          },
+          {
+            "url": "http://www.ictp-saifr.org/wp-content/uploads/2014/05/cmb.dipole.ICTP-SAIFR-2014.pdf",
+            "claim": "we find that the velocity should be |v| = 369 km/s",
+            "verdict": "supported",
+            "detail": "velocity should be | velocity should be | v v | = 369 km/s | = 369 km/s"
+          },
+          {
+            "url": "https://cosmology.unige.ch/content/bayesian-estimation-our-local-motion-planck-2018-cmb-temperature-map",
+            "claim": "consistent with the canonical value v=369 km/s inferred from the CMB dipole",
+            "verdict": "supported",
+            "detail": "We detect the amplitude and direction of the local motion consistent with the canonical value v=369 km/s inferred from the CMB dipole with a sinal to noise ratio (SNR) of ~5, confirming the common origin of both signals."
+          },
+          {
+            "url": "https://en.wikipedia.org/wiki/Cosmic_microwave_background",
+            "claim": "moves at 369.82 +/- 0.11 km/s",
+            "verdict": "supported",
+            "detail": "moves at 369.82 ± 0.11 km/s"
+          },
+          {
+            "url": "https://en.wikipedia.org/wiki/Cosmic_microwave_background",
+            "claim": "towards the constellation Crater near its boundary with Leo",
+            "verdict": "supported",
+            "detail": "towards the constellation Crater near its boundary with the constellation Leo"
+          }
+        ],
+        "objections": [
+          "Fails to provide (1) solar apex constellation and speed from a primary source despite the goal requiring figures from primary sources only.",
+          "Fails to provide (2) Sun's Galactic orbital speed, direction constellation, and orbital period from a primary source despite the goal requiring them.",
+          "Fails to provide (3) Milky Way/Local Group speed and direction toward Great Attractor/Shapley inside Laniakea and Dipole Repeller from Tully et al. 2014 and Hoffman et al. 2017 despite the goal requiring them.",
+          "Reports Planck dipole 369 km/s figures with truncated garbled quotes and three citations marked source-unreachable/unsupported in verification, violating the every-figure-with-exact-quote rule."
+        ],
+        "fetched": 0
+      },
+      {
+        "round": 2,
+        "score": 2,
+        "green": 1,
+        "red": 2,
+        "reason": "Missing 1-3 figures, 384 and direction unreachable, only 369 km/s supported; fails primary-source exact-quote requirement.",
+        "verification": [
+          {
+            "url": "https://www.aanda.org/articles/aa/full_html/2014/11/aa21556-13/aa21556-13.html",
+            "claim": "known dipole direction, (l,b) = (264°,48°)",
+            "verdict": "source-unreachable",
+            "detail": "blocked: bot challenge (http 403), a browser would be needed"
+          },
+          {
+            "url": "https://www.aanda.org/articles/aa/full_html/2014/11/aa21556-13/aa21556-13.html",
+            "claim": "of 384 km s-1 ± 78 km s-1 (stat.) ± 115 km s-1 (syst.)",
+            "verdict": "source-unreachable",
+            "detail": "blocked: bot challenge (http 403), a browser would be needed"
+          },
+          {
+            "url": "https://cosmology.unige.ch/content/bayesian-estimation-our-local-motion-planck-2018-cmb-temperature-map",
+            "claim": "consistent with the canonical value v=369 km/s inferred from the CMB dipole",
+            "verdict": "supported",
+            "detail": "We detect the amplitude and direction of the local motion consistent with the canonical value v=369 km/s inferred from the CMB dipole with a sinal to noise ratio (SNR) of ~5, confirming the common origin of both signals."
+          }
+        ],
+        "objections": [
+          "Solar apex direction and 13.4 km/s / 19.7 km/s / 12 miles/s figures rest only on Wikipedia, UTK course page and Britannica secondary sources, violating primary-sources-only requirement.",
+          "Sun's Galactic orbital speed, motion direction constellation, and orbital period are entirely missing with no quotable primary figure.",
+          "Laniakea (Tully et al. Nature 2014) and Dipole Repeller (Hoffman et al. Nature Astronomy 2017) speed and direction figures toward Great Attractor/Shapley are entirely missing.",
+          "Planck dipole claims v=(369 +/-0.9) km/s and (l,b)=(263.99,48.26) from arxiv pdf 1303.5087v3 are marked unsupported in verification."
+        ],
+        "fetched": 0
+      }
+    ]
+  }
+}

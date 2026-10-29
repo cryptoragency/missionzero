@@ -1,0 +1,110 @@
+{
+  "goal": "At what speed in km/s does the Local Group of galaxies move toward the Great Attractor / Shapley concentration, and what did Tully, Courtois, Hoffman & Pomarede (Nature 2014, the Laniakea supercluster, arXiv 1409.0880) and Hoffman, Pomarede, Tully & Courtois (Nature Astronomy 2017, the Dipole Repeller, arXiv 1702.02483) measure? Use the arXiv versions as primary sources. Give the exact quote with each figure, and say what is still debated.",
+  "provider": "meta",
+  "model": "muse-spark-1.3",
+  "reached": true,
+  "turns": 1,
+  "best": {
+    "score": 9,
+    "turn": 1,
+    "action": {
+      "type": "web_search",
+      "query": "arXiv 1409.0880 Laniakea velocity",
+      "url": "",
+      "find": "",
+      "name": "",
+      "content": "",
+      "costUsd": 0,
+      "real": false
+    }
+  },
+  "confidence": 9,
+  "judgeScore": 5,
+  "verifiedGreen": 4,
+  "verifiedRed": 0,
+  "contradictionRounds": 4,
+  "verifiedSources": 4,
+  "rejectedSources": 0,
+  "cost": {
+    "calls": 50,
+    "input": 52487,
+    "output": 49050,
+    "usd": 0.27407125,
+    "totalMs": 286172,
+    "byTag": {
+      "plan": {
+        "calls": 6,
+        "input": 9052,
+        "output": 2593,
+        "reasoning": 1718,
+        "truncated": 0
+      },
+      "evaluate": {
+        "calls": 6,
+        "input": 7049,
+        "output": 3863,
+        "reasoning": 3223,
+        "truncated": 0
+      },
+      "synthesize": {
+        "calls": 2,
+        "input": 3575,
+        "output": 7747,
+        "reasoning": 6437,
+        "truncated": 0
+      },
+      "verify": {
+        "calls": 12,
+        "input": 3496,
+        "output": 2747,
+        "reasoning": 2185,
+        "truncated": 0
+      },
+      "judge": {
+        "calls": 8,
+        "input": 6064,
+        "output": 5646,
+        "reasoning": 5312,
+        "truncated": 0
+      },
+      "contradict": {
+        "calls": 6,
+        "input": 6067,
+        "output": 4783,
+        "reasoning": 4070,
+        "truncated": 0
+      },
+      "research": {
+        "calls": 3,
+        "input": 2618,
+        "output": 2268,
+        "reasoning": 1949,
+        "truncated": 0
+      },
+      "rewrite": {
+        "calls": 6,
+        "input": 14322,
+        "output": 19001,
+        "reasoning": 16958,
+        "truncated": 0
+      },
+      "distill": {
+        "calls": 1,
+        "input": 244,
+        "output": 402,
+        "reasoning": 273,
+        "truncated": 0
+      }
+    }
+  },
+  "verificationsCached": 8,
+  "lessonsUsed": 0,
+  "lessonsLearned": 3,
+  "zero": {
+    "rule": "C",
+    "reason": "the note drifts: 4.0 on the last 3 missions against 7.7 on the 3 before",
+    "kept": "from-zero",
+    "withMemory": 5,
+    "fromZero": 5
+  }
+}

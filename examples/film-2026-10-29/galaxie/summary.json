@@ -1,0 +1,110 @@
+{
+  "goal": "What is the Sun's orbital speed around the centre of the Milky Way in km/s, toward which constellation does it move on that orbit, and how many years does one orbit take? Answer from primary sources: a peer-reviewed paper (arXiv is fine, e.g. Reid et al. 2019 on Galactic parameters, or the GRAVITY collaboration) or NASA/ESA pages. Give the exact quote with each figure.",
+  "provider": "meta",
+  "model": "muse-spark-1.3",
+  "reached": false,
+  "turns": 4,
+  "best": {
+    "score": 4,
+    "turn": 1,
+    "action": {
+      "type": "web_search",
+      "query": "Sun orbital speed Milky Way NASA",
+      "url": "",
+      "find": "",
+      "name": "",
+      "content": "",
+      "costUsd": 0,
+      "real": false
+    }
+  },
+  "confidence": 7,
+  "judgeScore": 5,
+  "verifiedGreen": 4,
+  "verifiedRed": 2,
+  "contradictionRounds": 2,
+  "verifiedSources": 6,
+  "rejectedSources": 0,
+  "cost": {
+    "calls": 48,
+    "input": 59644,
+    "output": 41522,
+    "usd": 0.2510235,
+    "totalMs": 301484,
+    "byTag": {
+      "plan": {
+        "calls": 8,
+        "input": 14307,
+        "output": 5596,
+        "reasoning": 4431,
+        "truncated": 0
+      },
+      "evaluate": {
+        "calls": 8,
+        "input": 9239,
+        "output": 4609,
+        "reasoning": 3828,
+        "truncated": 0
+      },
+      "synthesize": {
+        "calls": 2,
+        "input": 6058,
+        "output": 6184,
+        "reasoning": 4976,
+        "truncated": 0
+      },
+      "verify": {
+        "calls": 12,
+        "input": 3477,
+        "output": 2816,
+        "reasoning": 2319,
+        "truncated": 0
+      },
+      "judge": {
+        "calls": 6,
+        "input": 3669,
+        "output": 4670,
+        "reasoning": 4425,
+        "truncated": 0
+      },
+      "contradict": {
+        "calls": 4,
+        "input": 3550,
+        "output": 3894,
+        "reasoning": 3352,
+        "truncated": 0
+      },
+      "research": {
+        "calls": 3,
+        "input": 3836,
+        "output": 3000,
+        "reasoning": 2963,
+        "truncated": 3
+      },
+      "rewrite": {
+        "calls": 4,
+        "input": 15172,
+        "output": 10292,
+        "reasoning": 9367,
+        "truncated": 0
+      },
+      "distill": {
+        "calls": 1,
+        "input": 336,
+        "output": 461,
+        "reasoning": 314,
+        "truncated": 0
+      }
+    }
+  },
+  "verificationsCached": 12,
+  "lessonsUsed": 0,
+  "lessonsLearned": 3,
+  "zero": {
+    "rule": "C",
+    "reason": "the note drifts: 3.3 on the last 3 missions against 10.0 on the 3 before",
+    "kept": "from-zero",
+    "withMemory": 3,
+    "fromZero": 5
+  }
+}

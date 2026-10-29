@@ -1,0 +1,186 @@
+{
+  "answer": "Only verified figure is 631 km/s: \"sources of the motion of the Local Group of 631 km s-1 reflected in the cosmic microwave background dipole\". No km/s split toward Great Attractor/Shapley in passages, only local flows converge toward Norma and Centaurus in good approximation to 'Great Attractor' and coherent flow just reaching Shapley, with Wiener Filter local vs tidal split unnumbered. No arXiv:1702.02483 URL in seenSources so no Dipole Repeller quote. Still debated: local pull vs external tidal/push share of 631.",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/1409.0880.pdf",
+      "contribution": "sources of the motion of the Local Group of 631 km s − 1 reflected in the cosmic microwave background dipole"
+    },
+    {
+      "url": "https://arxiv.org/pdf/1409.0880.pdf",
+      "contribution": "Local flows within the region converge toward the Norma and Centaurus clusters in good approximation to the location of what has been called the ‘Great Attractor’"
+    },
+    {
+      "url": "https://arxiv.org/pdf/1409.0880.pdf",
+      "contribution": "coherent flow extends across the full extent of the region that we can map, just reaching the Shapley Concentration"
+    },
+    {
+      "url": "https://arxiv.org/pdf/1409.0880.pdf",
+      "contribution": "The Wiener Filter provides a straightforward way of decomposing the velocity field into a local component that is induced by the distribution within a zone and a tidal residual"
+    }
+  ],
+  "confidence": 9,
+  "uncertainties": [
+    "no km/s decomposition toward Great Attractor/Shapley in provided passages",
+    "no arXiv:1702.02483 URL in seenSources so Dipole Repeller cannot be quoted",
+    "local pull vs external tidal/push share of 631 km/s remains debated"
+  ],
+  "rejectedSources": 0,
+  "judge": {
+    "score": 5,
+    "green": 4,
+    "red": 0,
+    "rounds": 4,
+    "versions": [
+      {
+        "round": 0,
+        "score": 3,
+        "green": 1,
+        "red": 2,
+        "reason": "Only 631 total supported; 304 and 382 figures unsupported; second paper unquoted; debate claims unsourced.",
+        "verification": [
+          {
+            "url": "https://arxiv.org/pdf/1409.0880.pdf",
+            "claim": "total velocity at the Local Group is 631 km/s with respect to the cosmic microwave background",
+            "verdict": "supported",
+            "detail": "sources of the motion of the Local Group of 631 km s − 1 reflected in the cosmic microwave background dipole 11"
+          },
+          {
+            "url": "https://arxiv.org/pdf/1409.0880.pdf",
+            "claim": "local velocity component at the Local Group is 304 km/s toward the Virgo / Great Attractor flow",
+            "verdict": "unsupported",
+            "detail": "nearest passages: « Local flows within the region converge toward the Norma and Centaurus clusters in good approximation to the location of what has been called the ‘Great Attractor’ 17 . » « An ultimate goal is to map the velocity field to a radius that completely encompasses the sources of the motion of the Local Group of 631 km s − 1 reflected in the cosmic microwave background dipole 11 . » « The Wiener Filter provides a straightforward way of decomposing the velocity field into a local component that is induced by the distribution within a zone and a tidal residual 13 . »"
+          },
+          {
+            "url": "https://arxiv.org/pdf/1409.0880.pdf",
+            "claim": "tidal residual component at the Local Group is 382 km/s directed toward the Shapley concentration",
+            "verdict": "unsupported",
+            "detail": "nearest passages: « The Wiener Filter provides a straightforward way of decomposing the velocity field into a local component that is induced by the distribution within a zone and a tidal residual 13 . » « An ultimate goal is to map the velocity field to a radius that completely encompasses the sources of the motion of the Local Group of 631 km s − 1 reflected in the cosmic microwave background dipole 11 . » « Our analysis of the Cosmicflows-2 data tells us that a coherent flow extends across the full extent of the region that we can map, just reaching the Shapley Concentration 12 . »"
+          }
+        ],
+        "objections": []
+      },
+      {
+        "round": 1,
+        "score": 3,
+        "green": 4,
+        "red": 0,
+        "reason": "Only 631 figure quoted; omits 2017 paper entirely and debate, failing goal despite supported quotes.",
+        "verification": [
+          {
+            "url": "https://arxiv.org/pdf/1409.0880.pdf",
+            "claim": "sources of the motion of the Local Group of 631 km s − 1 reflected in the cosmic microwave background dipole",
+            "verdict": "supported",
+            "detail": "An ultimate goal is to map the velocity field to a radius that completely encompasses the sources of the motion of the Local Group of 631 km s − 1 reflected in the cosmic microwave background dipole 11 ."
+          },
+          {
+            "url": "https://arxiv.org/pdf/1409.0880.pdf",
+            "claim": "Local flows within the region converge toward the Norma and Centaurus clusters in good approximation to the location of what has been called the ‘Great Attractor’",
+            "verdict": "supported",
+            "detail": "Local flows within the region converge toward the Norma and Centaurus clusters in good approximation to the location of what has been called the ‘Great Attractor’ 17 ."
+          },
+          {
+            "url": "https://arxiv.org/pdf/1409.0880.pdf",
+            "claim": "coherent flow extends across the full extent of the region that we can map, just reaching the Shapley Concentration",
+            "verdict": "supported",
+            "detail": "Our analysis of the Cosmicflows-2 data tells us that a coherent flow extends across the full extent of the region that we can map, just reaching the Shapley Concentration 12 ."
+          },
+          {
+            "url": "https://arxiv.org/pdf/1409.0880.pdf",
+            "claim": "The Wiener Filter provides a straightforward way of decomposing the velocity field into a local component that is induced by the distribution within a zone and a tidal residual",
+            "verdict": "supported",
+            "detail": "The Wiener Filter provides a straightforward way of decomposing the velocity field into a local component that is induced by the distribution within a zone and a tidal residual 13 ."
+          }
+        ],
+        "objections": [
+          "The answer states a 304 km/s local component toward Virgo/Great Attractor that verification finds unsupported in arXiv:1409.0880.",
+          "The answer states a 382 km/s tidal residual toward Shapley that verification finds unsupported in arXiv:1409.0880.",
+          "The answer admits no exact quote from arXiv:1702.02483 and substitutes memory despite the goal requiring arXiv versions as primary sources.",
+          "The answer offers a generic Wiener-filter sentence as the exact quote but it contains none of the claimed velocity figures."
+        ],
+        "fetched": 0
+      },
+      {
+        "round": 2,
+        "score": 5,
+        "green": 4,
+        "red": 0,
+        "reason": "Correct 631 quote verified, avoids hallucinated split, but missing 2017 paper and debated claim unbacked.",
+        "verification": [
+          {
+            "url": "https://arxiv.org/pdf/1409.0880.pdf",
+            "claim": "sources of the motion of the Local Group of 631 km s − 1 reflected in the cosmic microwave background dipole",
+            "verdict": "supported",
+            "detail": "An ultimate goal is to map the velocity field to a radius that completely encompasses the sources of the motion of the Local Group of 631 km s − 1 reflected in the cosmic microwave background dipole 11 ."
+          },
+          {
+            "url": "https://arxiv.org/pdf/1409.0880.pdf",
+            "claim": "Local flows within the region converge toward the Norma and Centaurus clusters in good approximation to the location of what has been called the ‘Great Attractor’",
+            "verdict": "supported",
+            "detail": "Local flows within the region converge toward the Norma and Centaurus clusters in good approximation to the location of what has been called the ‘Great Attractor’ 17 ."
+          },
+          {
+            "url": "https://arxiv.org/pdf/1409.0880.pdf",
+            "claim": "coherent flow extends across the full extent of the region that we can map, just reaching the Shapley Concentration",
+            "verdict": "supported",
+            "detail": "Our analysis of the Cosmicflows-2 data tells us that a coherent flow extends across the full extent of the region that we can map, just reaching the Shapley Concentration 12 ."
+          },
+          {
+            "url": "https://arxiv.org/pdf/1409.0880.pdf",
+            "claim": "The Wiener Filter provides a straightforward way of decomposing the velocity field into a local component that is induced by the distribution within a zone and a tidal residual",
+            "verdict": "supported",
+            "detail": "The Wiener Filter provides a straightforward way of decomposing the velocity field into a local component that is induced by the distribution within a zone and a tidal residual 13 ."
+          }
+        ],
+        "objections": [
+          "Answer reports only the 631 km/s total CMB dipole and supplies no decomposed speed toward the Great Attractor/Shapley concentration requested by the goal.",
+          "Answer quotes nothing from Hoffman et al 2017 arXiv:1702.02483 despite the goal explicitly requiring that primary source.",
+          "Answer declares the push/pull split unverified here instead of explaining what is still debated as required."
+        ],
+        "fetched": 0
+      },
+      {
+        "round": 3,
+        "score": 3,
+        "green": 1,
+        "red": 0,
+        "reason": "Only 631 figure quoted and supported; missing 2017 paper figures, GA/Shapley split, debate; extra convergence claims unsourced.",
+        "verification": [
+          {
+            "url": "https://arxiv.org/pdf/1409.0880.pdf",
+            "claim": "motion of the Local Group of 631 km s-1 reflected in the cosmic microwave background dipole",
+            "verdict": "supported",
+            "detail": "motion of the Local Group of 631 km s − 1 reflected in the cosmic microwave background dipole"
+          }
+        ],
+        "objections": [
+          "Goal requires a measured km/s figure with exact quote from Hoffman et al 2017 / arXiv:1702.02483 but answer provides none.",
+          "Claim about what 'is still debated' on local pull vs external tidal/push share of 631 km/s has no primary-source quote or verification entry supporting debate status.",
+          "Answer does not deliver the asked speed toward Great Attractor/Shapley, only qualitative convergence language without a km/s split."
+        ],
+        "fetched": 0
+      },
+      {
+        "round": 4,
+        "score": 2,
+        "green": 1,
+        "red": 0,
+        "reason": "Only CMB dipole 631 km/s given; missing Great Attractor/Shapley speed, missing 2017 paper quotes, missing debate discussion.",
+        "verification": [
+          {
+            "url": "https://arxiv.org/pdf/1409.0880.pdf",
+            "claim": "motion of the Local Group of 631 km s-1 reflected in the cosmic microwave background dipole",
+            "verdict": "supported",
+            "detail": "motion of the Local Group of 631 km s − 1 reflected in the cosmic microwave background dipole"
+          }
+        ],
+        "objections": [
+          "Answer claims convergence toward Norma/Centaurus and flow reaching Shapley Concentration with no verification entry supporting that wording.",
+          "Answer fails to provide any exact quote or km/s figure from Hoffman et al 2017 despite the goal requiring both 2014 and 2017 arXiv primary sources.",
+          "Answer fails to give the requested speed toward the Great Attractor/Shapley, offering only the 631 km/s total CMB-dipole motion.",
+          "Answer omits the required statement of what is still debated, replacing it with a refusal to assert."
+        ],
+        "fetched": 0
+      }
+    ]
+  }
+}

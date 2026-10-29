@@ -1,0 +1,25 @@
+{
+  "decision": {
+    "reset": true,
+    "rule": "A",
+    "reason": "two bad missions in a row with lessons applied (3/10 then 4/10)"
+  },
+  "archive": {
+    "archived": "memory\\archive\\lessons-2026-10-29T18-48-48-823Z.json",
+    "count": 30
+  },
+  "withMemory": {
+    "score": 4,
+    "green": 4,
+    "red": 0,
+    "usd": 0.1532715
+  },
+  "fromZero": {
+    "score": 4,
+    "green": 4,
+    "red": 1,
+    "usd": 0.1478135
+  },
+  "kept": "with-memory",
+  "why": "same note and sources, 1 contradicted from zero against 0"
+}

@@ -1,0 +1,62 @@
+[
+  {
+    "turn": 1,
+    "action": {
+      "type": "web_search",
+      "query": "Reid 2019 Galactic rotation parameters",
+      "url": "",
+      "find": "",
+      "name": "",
+      "content": "",
+      "costUsd": 0,
+      "real": false
+    },
+    "ok": false,
+    "lesson": "The rotation-parameters search found the circular speed but provided no constellation or orbital period quote."
+  },
+  {
+    "turn": 2,
+    "action": {
+      "type": "web_search",
+      "query": "NASA Sun orbit Cygnus speed period",
+      "url": "",
+      "find": "",
+      "name": "",
+      "content": "",
+      "costUsd": 0,
+      "real": false
+    },
+    "ok": false,
+    "lesson": "The broad NASA query returned only secondary summaries and unrelated pages without primary-source exact quotes or constellation direction."
+  },
+  {
+    "turn": 3,
+    "action": {
+      "type": "web_search",
+      "query": "NASA Sun orbits Cygnus 230 million",
+      "url": "",
+      "find": "",
+      "name": "",
+      "content": "",
+      "costUsd": 0,
+      "real": false
+    },
+    "ok": false,
+    "lesson": "The NASA result supplied orbital speed and period but gave no constellation for the direction of motion."
+  },
+  {
+    "turn": 4,
+    "action": {
+      "type": "read_page",
+      "query": "",
+      "url": "https://science.nasa.gov/solar-system/solar-system-facts/",
+      "find": "orbits center galaxy 515,000 mph 230 million years",
+      "name": "",
+      "content": "",
+      "costUsd": 0,
+      "real": false
+    },
+    "ok": true,
+    "lesson": "NASA page provided exact speed and period quotes but gave no constellation for the Sun's direction of motion."
+  }
+]

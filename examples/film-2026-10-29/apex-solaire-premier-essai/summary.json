@@ -1,0 +1,107 @@
+{
+  "goal": "Toward which constellation is the Sun moving relative to the nearby stars (the solar apex), and at what speed in km/s? Answer from a primary source: a peer-reviewed paper (arXiv or journal page, e.g. Schonrich, Binney & Dehnen 2010 on the solar motion, or a Gaia/Hipparcos analysis) or an observatory page. Give the exact quote with the figure.",
+  "provider": "meta",
+  "model": "muse-spark-1.3",
+  "reached": false,
+  "turns": 4,
+  "best": {
+    "score": 5,
+    "turn": 2,
+    "action": {
+      "type": "read_page",
+      "url": "https://ar5iv.labs.arxiv.org/html/0912.3693",
+      "find": "solar motion U V W velocity Sun LSR km/s apex",
+      "costUsd": 0,
+      "real": false
+    }
+  },
+  "confidence": 7,
+  "judgeScore": 4,
+  "verifiedGreen": 4,
+  "verifiedRed": 0,
+  "contradictionRounds": 3,
+  "verifiedSources": 4,
+  "rejectedSources": 0,
+  "cost": {
+    "calls": 63,
+    "input": 70860,
+    "output": 50456,
+    "usd": 0.303013,
+    "totalMs": 284781,
+    "byTag": {
+      "plan": {
+        "calls": 8,
+        "input": 14322,
+        "output": 3342,
+        "reasoning": 2282,
+        "truncated": 0
+      },
+      "evaluate": {
+        "calls": 7,
+        "input": 8819,
+        "output": 3977,
+        "reasoning": 3344,
+        "truncated": 0
+      },
+      "synthesize": {
+        "calls": 2,
+        "input": 4422,
+        "output": 7238,
+        "reasoning": 6364,
+        "truncated": 0
+      },
+      "verify": {
+        "calls": 25,
+        "input": 12349,
+        "output": 8230,
+        "reasoning": 6297,
+        "truncated": 0
+      },
+      "judge": {
+        "calls": 7,
+        "input": 6242,
+        "output": 4793,
+        "reasoning": 4499,
+        "truncated": 0
+      },
+      "contradict": {
+        "calls": 5,
+        "input": 5356,
+        "output": 3794,
+        "reasoning": 3181,
+        "truncated": 0
+      },
+      "research": {
+        "calls": 3,
+        "input": 3005,
+        "output": 2902,
+        "reasoning": 2673,
+        "truncated": 2
+      },
+      "rewrite": {
+        "calls": 5,
+        "input": 16030,
+        "output": 15819,
+        "reasoning": 13924,
+        "truncated": 0
+      },
+      "distill": {
+        "calls": 1,
+        "input": 315,
+        "output": 361,
+        "reasoning": 247,
+        "truncated": 0
+      }
+    }
+  },
+  "verificationsCached": 11,
+  "lessonsUsed": 30,
+  "lessonsLearned": 3,
+  "zero": {
+    "rule": "A",
+    "reason": "two bad missions in a row with lessons applied (3/10 then 4/10)",
+    "kept": "with-memory",
+    "withMemory": 4,
+    "fromZero": 4
+  }
+}

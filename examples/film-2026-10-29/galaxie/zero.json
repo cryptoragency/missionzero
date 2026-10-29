@@ -1,0 +1,25 @@
+{
+  "decision": {
+    "reset": true,
+    "rule": "C",
+    "reason": "the note drifts: 3.3 on the last 3 missions against 10.0 on the 3 before"
+  },
+  "archive": {
+    "archived": "memory\\archive\\lessons-2026-10-29T18-53-31-566Z.json",
+    "count": 3
+  },
+  "withMemory": {
+    "score": 3,
+    "green": 3,
+    "red": 2,
+    "usd": 0.11131675
+  },
+  "fromZero": {
+    "score": 5,
+    "green": 4,
+    "red": 2,
+    "usd": 0.1373275
+  },
+  "kept": "from-zero",
+  "why": "judge 5/10 from zero against 3/10 with memory"
+}

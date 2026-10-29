@@ -1,0 +1,163 @@
+{
+  "answer": "WHO Global Tuberculosis Report 2024 (2023 data):\n- Fell ill: \"an estimated 10.8 million people fell ill with TB in 2023\"\n- Died: \"TB caused an estimated 1.25 million deaths in 2023, including 161 000 among people with HIV\"\n- Treatment: \"The treatment success rate for drug-susceptible TB remains high (at 88%) and has improved to 68% for MDR/RR-TB.\" 88% is drug-susceptible only, not overall.",
+  "sources": [
+    {
+      "url": "https://iris.who.int/server/api/core/bitstreams/7292c91e-ffb0-4cef-ac39-0200f06961ea/content",
+      "contribution": "an estimated 10.8 million people fell ill with TB in 2023"
+    },
+    {
+      "url": "https://iris.who.int/server/api/core/bitstreams/7292c91e-ffb0-4cef-ac39-0200f06961ea/content",
+      "contribution": "TB caused an estimated 1.25 million deaths in 2023"
+    },
+    {
+      "url": "https://iris.who.int/server/api/core/bitstreams/7292c91e-ffb0-4cef-ac39-0200f06961ea/content",
+      "contribution": "161 000 deaths among people with HIV in 2023"
+    },
+    {
+      "url": "https://iris.who.int/server/api/core/bitstreams/7292c91e-ffb0-4cef-ac39-0200f06961ea/content",
+      "contribution": "treatment success rate for drug-susceptible TB remains high at 88%"
+    },
+    {
+      "url": "https://iris.who.int/server/api/core/bitstreams/7292c91e-ffb0-4cef-ac39-0200f06961ea/content",
+      "contribution": "treatment success improved to 68% for MDR/RR-TB"
+    }
+  ],
+  "confidence": 9,
+  "uncertainties": [],
+  "rejectedSources": 0,
+  "judge": {
+    "score": 10,
+    "green": 5,
+    "red": 0,
+    "rounds": 2,
+    "versions": [
+      {
+        "round": 0,
+        "score": 5,
+        "green": 3,
+        "red": 1,
+        "reason": "Two figures verified exactly; 88% claim unsupported as overall rate, applies only to drug-susceptible TB, lacking exact quote.",
+        "verification": [
+          {
+            "url": "https://iris.who.int/server/api/core/bitstreams/7292c91e-ffb0-4cef-ac39-0200f06961ea/content",
+            "claim": "10.8 million people fell ill with TB in 2023",
+            "verdict": "supported",
+            "detail": "Globally in 2023, an estimated 10.8 million people (95% uncertainty interval [UI]: 10.1–11.7 million) fell ill with TB (incident cases)"
+          },
+          {
+            "url": "https://iris.who.int/server/api/core/bitstreams/7292c91e-ffb0-4cef-ac39-0200f06961ea/content",
+            "claim": "1.25 million people died from TB in 2023",
+            "verdict": "supported",
+            "detail": "TB caused an estimated 1.25 million deaths (95% UI: 1.13–1.37 million) in 2023, including 1.09 million among HIV-negative people and 161 000 among people with HIV."
+          },
+          {
+            "url": "https://iris.who.int/server/api/core/bitstreams/7292c91e-ffb0-4cef-ac39-0200f06961ea/content",
+            "claim": "161 000 people with HIV died from TB in 2023",
+            "verdict": "supported",
+            "detail": "including 1.09 million among HIV-negative people and 161 000 among people with HIV."
+          },
+          {
+            "url": "https://iris.who.int/server/api/core/bitstreams/7292c91e-ffb0-4cef-ac39-0200f06961ea/content",
+            "claim": "88% treatment success rate among people treated for TB",
+            "verdict": "unsupported",
+            "detail": "nearest passages: « The treatment success rate for drug-susceptible TB remains high (at 88%) and has improved to 68% for MDR/ RR-TB. » « Milestones for reducing TB disease burden Mostly off track, some success stories The first End TB Strategy milestones for reductions in TB disease burden were a 35% reduction in the total number of deaths caused by TB (i » « Treatment success rates remain lower among people living with HIV (79% globally in 2022), although there have been steady improvements over time. »"
+          }
+        ],
+        "objections": []
+      },
+      {
+        "round": 1,
+        "score": 10,
+        "green": 5,
+        "red": 0,
+        "reason": "All three figures exactly quoted, primary WHO PDF source, verification confirms each claim.",
+        "verification": [
+          {
+            "url": "https://iris.who.int/server/api/core/bitstreams/7292c91e-ffb0-4cef-ac39-0200f06961ea/content",
+            "claim": "an estimated 10.8 million people fell ill with TB in 2023",
+            "verdict": "supported",
+            "detail": "Globally in 2023, an estimated 10.8 million people (95% uncertainty interval [UI]: 10.1–11.7 million) fell ill with TB (incident cases)"
+          },
+          {
+            "url": "https://iris.who.int/server/api/core/bitstreams/7292c91e-ffb0-4cef-ac39-0200f06961ea/content",
+            "claim": "TB caused an estimated 1.25 million deaths in 2023",
+            "verdict": "supported",
+            "detail": "TB caused an estimated 1.25 million deaths (95% UI: 1.13–1.37 million) in 2023, including 1.09 million among HIV-negative people and 161 000 among people with HIV."
+          },
+          {
+            "url": "https://iris.who.int/server/api/core/bitstreams/7292c91e-ffb0-4cef-ac39-0200f06961ea/content",
+            "claim": "161 000 deaths among people with HIV in 2023",
+            "verdict": "supported",
+            "detail": "TB caused an estimated 1.25 million deaths (95% UI: 1.13–1.37 million) in 2023, including 1.09 million among HIV-negative people and 161 000 among people with HIV."
+          },
+          {
+            "url": "https://iris.who.int/server/api/core/bitstreams/7292c91e-ffb0-4cef-ac39-0200f06961ea/content",
+            "claim": "treatment success rate for drug-susceptible TB remains high at 88%",
+            "verdict": "supported",
+            "detail": "The treatment success rate for drug-susceptible TB remains high (at 88%) and has improved to 68% for MDR/ RR-TB."
+          },
+          {
+            "url": "https://iris.who.int/server/api/core/bitstreams/7292c91e-ffb0-4cef-ac39-0200f06961ea/content",
+            "claim": "treatment success improved to 68% for MDR/RR-TB",
+            "verdict": "supported",
+            "detail": "has improved to 68% for MDR/ RR-TB."
+          }
+        ],
+        "objections": [
+          "The answer presents 88% as the overall treatment success rate while verification shows the source limits 88% to drug-susceptible TB with 68% for MDR/RR-TB.",
+          "The answer fails the goal's exact-quote requirement for treatment success because verification marks the 88% overall claim as unsupported with no matching verbatim passage."
+        ],
+        "fetched": 0
+      },
+      {
+        "round": 2,
+        "score": 10,
+        "green": 6,
+        "red": 0,
+        "reason": "All three figures match primary WHO PDF quotes with exact numbers and correct 2022 cohort caveat.",
+        "verification": [
+          {
+            "url": "https://iris.who.int/server/api/core/bitstreams/7292c91e-ffb0-4cef-ac39-0200f06961ea/content",
+            "claim": "an estimated 10.8 million people fell ill with TB in 2023",
+            "verdict": "supported",
+            "detail": "Globally in 2023, an estimated 10.8 million people (95% uncertainty interval [UI]: 10.1–11.7 million) fell ill with TB (incident cases)"
+          },
+          {
+            "url": "https://iris.who.int/server/api/core/bitstreams/7292c91e-ffb0-4cef-ac39-0200f06961ea/content",
+            "claim": "TB caused an estimated 1.25 million deaths in 2023",
+            "verdict": "supported",
+            "detail": "TB caused an estimated 1.25 million deaths (95% UI: 1.13–1.37 million) in 2023, including 1.09 million among HIV-negative people and 161 000 among people with HIV."
+          },
+          {
+            "url": "https://iris.who.int/server/api/core/bitstreams/7292c91e-ffb0-4cef-ac39-0200f06961ea/content",
+            "claim": "161 000 among people with HIV in 2023",
+            "verdict": "supported",
+            "detail": "TB caused an estimated 1.25 million deaths (95% UI: 1.13–1.37 million) in 2023, including 1.09 million among HIV-negative people and 161 000 among people with HIV."
+          },
+          {
+            "url": "https://iris.who.int/server/api/core/bitstreams/7292c91e-ffb0-4cef-ac39-0200f06961ea/content",
+            "claim": "treatment success rate for drug-susceptible TB remains high (at 88%)",
+            "verdict": "supported",
+            "detail": "The treatment success rate for drug-susceptible TB remains high (at 88%) and has improved to 68% for MDR/ RR-TB."
+          },
+          {
+            "url": "https://iris.who.int/server/api/core/bitstreams/7292c91e-ffb0-4cef-ac39-0200f06961ea/content",
+            "claim": "has improved to 68% for MDR/RR-TB",
+            "verdict": "supported",
+            "detail": "has improved to 68% for MDR/ RR-TB."
+          },
+          {
+            "url": "https://iris.who.int/server/api/core/bitstreams/7292c91e-ffb0-4cef-ac39-0200f06961ea/content",
+            "claim": "treatment success for 2022 treatment cohort",
+            "verdict": "supported",
+            "detail": "reaching 68% in the most recent annual cohort of people enrolled on treatment for which data are avail- able (2022)."
+          }
+        ],
+        "objections": [
+          "The answer reports 88% and 68% treatment success without disclosing that the report attributes those rates to the 2022 treatment cohort, not 2023 cases."
+        ],
+        "fetched": 0
+      }
+    ]
+  }
+}

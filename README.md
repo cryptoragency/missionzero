@@ -12,6 +12,18 @@ Startups track · CRYPTOR.AGENCY · Meta Global AI Developer Hackathon 2026 · b
 
 **What is judged, in one paragraph.** Two things, one loop. (1) A research agent that answers a goal only from primary documents it read, with an exact quote for every figure (5 demo goals at 10/10, 4 to 9 cents each). (2) A repair mode that takes any scanner's findings on a website and returns, for each flaw, a patch applied on a copy and checked five ways (the customer's own tests, a rescan, a look at the pages, the agent's review of its own patch, written reservations), at about ten cents a finding, never touching the site itself. On a real site read by another scanner, 5 of 7 findings got a proposed fix with proof and 2 stayed unverified by design (its own probe could not confirm them), for $0.22. Plus an agent that returns to zero by itself when its memory hurts. Repository: `github.com/cryptoragency/mission0` (public from 4 November 2026). Prerequisites: Node 24, a Meta Model API key; optional: Playwright and ffmpeg for the vision and voice features, a Baseten key for the open weights.
 
+## The film and its real missions (29 October)
+
+`video/schemas.html` is the animated storyboard of the demo video (`video/script-film-2026-10-29.md` is the script, French
+narration, English subtitles): one luminous dot follows a single unbroken thread from the loop to the closing mark. Two of its
+chapters show real missions played on 29 October, versioned in `examples/film-2026-10-29/` (journal, memory, final answer,
+verdicts): tuberculosis (WHO Global TB Report 2024: 10.8 million fell ill, 1.25 million died, 88% treatment success; judge 10/10,
+5 quotes verified, $0.10, 2 minutes) and "is the solar system heading somewhere?" (four targeted missions: solar apex toward
+Hercules, 230 km/s around the Galactic centre, 369 km/s against the CMB, 631 km/s of the Local Group in Tully et al. 2014; the judge
+gave 3 to 5/10 because the sources it could read were not always the paper itself, and the film says so; every quote shown is
+verified). Seven missions, $1.49 for the day. A first attempt that asked all four space questions in one mission scored 3/10:
+one precise question per mission is what works.
+
 ## What is new in this repository
 
 Everything here was written during the hackathon, from 26 October 2026. The git history is dated and public. No code, data or prompt comes from the agency's existing products.
@@ -33,6 +45,7 @@ goal ──► plan (hypotheses + ONE free action) ──► action ──► ob
 ```
 
 - **Actions** are free and harmless: `web_search` (DuckDuckGo HTML), `read_page` (HTML or PDF, with a `find` hint that selects the passages that matter), `create_page` (a file in the evidence folder). Anything paid or with a real-world effect requires a human **yes**: the agent asks, never acts.
+- **Everything comes from freely accessible data.** A paid source (a journal behind a paywall, a dataset)? The agent asks, you set the budget, it pays and cites. It never spends on its own.
 - **Reading a 250 000-character report** is cheap: the page is read once per run, cached, and reduced to its opening plus the passages relevant to what the planner asked for. Numbers written in words ("eight characters") count as numbers.
 - **A claim is green only with a quote** that really appears in the cited page. "Supported" without a quote is not trusted.
 - **Memory**: each mission ends with generic lessons (never about a company or a person), 30 at most, reused by the next mission. Winning objections of the contradictor become lessons too.

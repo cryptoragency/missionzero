@@ -1,0 +1,47 @@
+[
+  {
+    "turn": 1,
+    "action": {
+      "type": "web_search",
+      "query": "solar apex Hercules km/s",
+      "url": "",
+      "find": "",
+      "name": "",
+      "content": "",
+      "costUsd": 0,
+      "real": false
+    },
+    "ok": false,
+    "lesson": "Secondary snippets suggest Hercules but conflict on speed and lack any peer-reviewed primary source quote."
+  },
+  {
+    "turn": 3,
+    "action": {
+      "type": "web_search",
+      "query": "Schonrich Binney Dehnen solar motion",
+      "url": "",
+      "find": "",
+      "name": "",
+      "content": "",
+      "costUsd": 0,
+      "real": false
+    },
+    "ok": false,
+    "lesson": "The search returned relevant primary sources but did not yet extract the apex constellation or speed."
+  },
+  {
+    "turn": 4,
+    "action": {
+      "type": "read_page",
+      "query": "",
+      "url": "https://ar5iv.labs.arxiv.org/html/0912.3693",
+      "find": "U V W solar motion velocity LSR km/s",
+      "name": "",
+      "content": "",
+      "costUsd": 0,
+      "real": false
+    },
+    "ok": false,
+    "lesson": "The retrieved U,V,W components quantify solar motion but do not directly state the apex constellation or total speed."
+  }
+]

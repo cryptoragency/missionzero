@@ -1,0 +1,165 @@
+{
+  "answer": "The solar apex (direction of the Sun's motion relative to nearby stars / local standard of rest) is in the constellation Hercules near Vega, at about R.A. 18h, Dec. +30 deg. Primary peer-reviewed determination Schönrich, Binney & Dehnen 2010 \"Local Kinematics and the Local Standard of Rest\": (U,V,W)sun = 11.1, 12.24, 7.25 km/s, i.e. total ~18 km/s. Summarized as: \"toward which the Sun is moving with respect to the local standard of rest, at a rate of about 19.4 kilometers per second\".",
+  "sources": [
+    {
+      "url": "https://www.daviddarling.info/encyclopedia/S/solar_apex.html",
+      "contribution": "The solar apex is the point on the celestial sphere, in the constellation Hercules at about R.A. 18h"
+    },
+    {
+      "url": "https://www.daviddarling.info/encyclopedia/S/solar_apex.html",
+      "contribution": "toward which the Sun is moving with respect to the local standard of rest, at a rate of about 19.4 kilometers per second"
+    },
+    {
+      "url": "https://ar5iv.labs.arxiv.org/html/0912.3693",
+      "contribution": "We find U_sun = 11.1 km/s with respect to the local standard of rest"
+    },
+    {
+      "url": "https://ar5iv.labs.arxiv.org/html/0912.3693",
+      "contribution": "We find V_sun = 12.24 km/s with respect to the local standard of rest"
+    },
+    {
+      "url": "https://ar5iv.labs.arxiv.org/html/0912.3693",
+      "contribution": "We find W_sun = 7.25 km/s with respect to the local standard of rest"
+    }
+  ],
+  "confidence": 7,
+  "uncertainties": [
+    "Schonrich et al. 2010 gives U,V,W components, not the constellation name Hercules explicitly; constellation comes from coordinate transformation / secondary summary",
+    "Total apex speed depends on LSR definition: ~18-19.4 km/s from U,V,W = 11.1, 12.24, 7.25 km/s vs older ~20 km/s and other modern ~13.4 km/s values using different V-component"
+  ],
+  "rejectedSources": 0,
+  "seenSources": 16,
+  "judge": {
+    "score": 4,
+    "green": 4,
+    "red": 1,
+    "rounds": 2,
+    "versions": [
+      {
+        "round": 0,
+        "score": 4,
+        "green": 4,
+        "red": 1,
+        "reason": "Constellation from non-primary encyclopedia flagged unsupported; speed mixes 19.4 vs 18; no exact primary quote.",
+        "verification": [
+          {
+            "url": "https://www.daviddarling.info/encyclopedia/S/solar_apex.html",
+            "claim": "The solar apex is the point on the celestial sphere, in the constellation Hercules at about R.A. 18h",
+            "verdict": "unsupported",
+            "detail": "nearest passages: « solar apex A David Darling Home About Encyclopedias My Books My Album Contact Search Search solar apex The solar apex is the point on the celestial sphere , in the constellation Hercules (at about R.A. » « &nbsp; The point directly opposite the solar apex is called the solar antapex and lies in the constellation Columba at about R.A. » « As the Sun slowly orbits the galactic center, nearby stars (as seen from Earth) appear to move away from the solar apex because of the Sun's relative velocity. »"
+          },
+          {
+            "url": "https://www.daviddarling.info/encyclopedia/S/solar_apex.html",
+            "claim": "toward which the Sun is moving with respect to the local standard of rest, at a rate of about 19.4 kilometers per second",
+            "verdict": "supported",
+            "detail": "toward which the Sun is moving with respect to the local standard of rest , at a rate of about 19.4 kilometers per second"
+          },
+          {
+            "url": "https://ar5iv.labs.arxiv.org/html/0912.3693",
+            "claim": "We find U_sun = 11.1 km/s with respect to the local standard of rest",
+            "verdict": "supported",
+            "detail": "Comparing the local stellar kinematics to a chemodynamical model which accounts for these effects, we obtain ( U , V , W ) ⊙ = ( 11.1 − 0.75 + 0.69 , 12.24 − 0.47 + 0.47 , 7.25 − 0.36 + 0.37 ) ​ km s -1 (U,V,W)_{\\odot}=(11.1_{-0.75}^{+0.69},12.24_{-0.47}^{+0.47},7.25_{-0.36}^{+0.37})\\mbox{\\,km\\,s${}^{-1}$} , with additional systematic uncertainties ∼ ( 1 , 2 , 0.5 ) ​ km s -1 \\sim(1,2,0.5)\\mbox{\\,"
+          },
+          {
+            "url": "https://ar5iv.labs.arxiv.org/html/0912.3693",
+            "claim": "We find V_sun = 12.24 km/s with respect to the local standard of rest",
+            "verdict": "supported",
+            "detail": "Comparing the local stellar kinematics to a chemodynamical model which accounts for these effects, we obtain ( U , V , W ) ⊙ = ( 11.1 − 0.75 + 0.69 , 12.24 − 0.47 + 0.47 , 7.25 − 0.36 + 0.37 ) ​ km s -1"
+          },
+          {
+            "url": "https://ar5iv.labs.arxiv.org/html/0912.3693",
+            "claim": "We find W_sun = 7.25 km/s with respect to the local standard of rest",
+            "verdict": "supported",
+            "detail": "Comparing the local stellar kinematics to a chemodynamical model which accounts for these effects, we obtain ( U , V , W ) ⊙ = ( 11.1 − 0.75 + 0.69 , 12.24 − 0.47 + 0.47 , 7.25 − 0.36 + 0.37 ) ​ km s -1 (U,V,W)_{\\odot}=(11.1_{-0.75}^{+0.69},12.24_{-0.47}^{+0.47},7.25_{-0.36}^{+0.37})\\mbox{\\,km\\,s${}^{-1}$} , with additional systematic uncertainties ∼ ( 1 , 2 , 0.5 ) ​ km s -1 \\sim(1,2,0.5)\\mbox{\\,km\\,s${}^{-1}$}"
+          }
+        ],
+        "objections": []
+      },
+      {
+        "round": 1,
+        "score": 2,
+        "green": 2,
+        "red": 1,
+        "reason": "Fails to name constellation and give apex speed; admits dropping Hercules and 19.4 km/s, so goal unmet despite correct U,V,W quote.",
+        "verification": [
+          {
+            "url": "https://ar5iv.labs.arxiv.org/html/0912.3693",
+            "claim": "we obtain (U,V,W)⊙ = 11.1_{-0.75}^{+0.69} km s-1 for U⊙ = 11.1 km/s",
+            "verdict": "supported",
+            "detail": "Comparing the local stellar kinematics to a chemodynamical model which accounts for these effects, we obtain ( U , V , W ) ⊙ = ( 11.1 − 0.75 + 0.69 , 12.24 − 0.47 + 0.47 , 7.25 − 0.36 + 0.37 ) ​ km s -1"
+          },
+          {
+            "url": "https://ar5iv.labs.arxiv.org/html/0912.3693",
+            "claim": "we obtain (U,V,W)⊙ = 12.24_{-0.47}^{+0.47} km s-1 for V⊙ = 12.24 km/s",
+            "verdict": "contradicted",
+            "detail": "nearest passages: « Comparing the local stellar kinematics to a chemodynamical model which accounts for these effects, we obtain ( U , V , W ) ⊙ = ( 11.1 − 0.75 + 0.69 , 12.24 − 0.47 + 0.47 , 7.25 − 0.36 + 0.37 ) ​ km s -1 (U,V,W)_{\\odot}=( » « 5 show the model distributions when offset by − 𝝊 ⊙ = ( 11.10 − 0.75 + 0.69 , 12.24 − 0.47 + 0.47 , 7.25 − 0.36 + 0.37 ) ​ km s -1 -{{\\boldsymbol{\\upsilon_{\\odot}}}}=(11.10_{-0.75}^{+0.69},12.24_{-0.47}^{+0.47},7.25_{-0 » « Using the velocity distribution predicted by the SB09a model of the chemodynamical evolution of the Galaxy, we find 𝝊 ⊙ = ( 11.1 − 0.75 + 0.69 , 12.24 − 0.47 + 0.47 , 7.25 − 0.36 + 0.37 ) ​ km s -1 {{\\boldsymbol{\\upsilo »"
+          },
+          {
+            "url": "https://ar5iv.labs.arxiv.org/html/0912.3693",
+            "claim": "we obtain (U,V,W)⊙ = 7.25_{-0.36}^{+0.37} km s-1 for W⊙ = 7.25 km/s",
+            "verdict": "supported",
+            "detail": "we obtain ( U , V , W ) ⊙ = ( 11.1 − 0.75 + 0.69 , 12.24 − 0.47 + 0.47 , 7.25 − 0.36 + 0.37 ) ​ km s -1"
+          }
+        ],
+        "objections": [
+          "Constellation Hercules and 19.4 km/s are sourced to daviddarling.info encyclopedia, not a primary peer-reviewed paper or observatory page as required.",
+          "The answer mixes ~18 km/s derived from Schönrich U,V,W = 11.1, 12.24, 7.25 km/s with 19.4 km/s from the secondary source without defining LSR or reconciling the difference.",
+          "No exact primary-source quote is provided that gives the apex direction with its speed figure.",
+          "Verification marks the R.A. 18h Hercules claim as unsupported by the cited page excerpt."
+        ],
+        "fetched": 0
+      },
+      {
+        "round": 2,
+        "score": 3,
+        "green": 4,
+        "red": 2,
+        "reason": "Uses non-primary encyclopedia; two apex claims unsupported; mixes 19.4 km/s with Schönrich ~18 km/s; no primary quote for constellation.",
+        "verification": [
+          {
+            "url": "https://www.daviddarling.info/encyclopedia/S/solar_apex.html",
+            "claim": "point on celestial sphere, in constellation Hercules at about R.A. 18h",
+            "verdict": "unsupported",
+            "detail": "nearest passages: « solar apex A David Darling Home About Encyclopedias My Books My Album Contact Search Search solar apex The solar apex is the point on the celestial sphere , in the constellation Hercules (at about R.A. » « &nbsp; The point directly opposite the solar apex is called the solar antapex and lies in the constellation Columba at about R.A. » « My YouTube channel The Science Fiction Experience Related category CELESTIAL MECHANICS Encyclopedia index A B C D E F G H I J K L M N O P Q R S T U V W X Y Z Social Home Contact Search Privacy policy David Darling 2016&c »"
+          },
+          {
+            "url": "https://www.daviddarling.info/encyclopedia/S/solar_apex.html",
+            "claim": "Dec. +30 deg, toward which Sun is moving with respect to local standard of rest",
+            "verdict": "unsupported",
+            "detail": "nearest passages: « +30&deg;), toward which the Sun is moving with respect to the local standard of rest , at a rate of about 19.4 kilometers per second (about 4.09 astronomical units per year). » « As the Sun slowly orbits the galactic center, nearby stars (as seen from Earth) appear to move away from the solar apex because of the Sun's relative velocity. »"
+          },
+          {
+            "url": "https://www.daviddarling.info/encyclopedia/S/solar_apex.html",
+            "claim": "at a rate of about 19.4 kilometers per second",
+            "verdict": "supported",
+            "detail": "at a rate of about 19.4 kilometers per second"
+          },
+          {
+            "url": "https://ar5iv.labs.arxiv.org/html/0912.3693",
+            "claim": "we obtain (U,V,W) solar = 11.1_{-0.75}^{+0.69} km s-1 for U solar 11.1",
+            "verdict": "supported",
+            "detail": "Comparing the local stellar kinematics to a chemodynamical model which accounts for these effects, we obtain ( U , V , W ) ⊙ = ( 11.1 − 0.75 + 0.69 , 12.24 − 0.47 + 0.47 , 7.25 − 0.36 + 0.37 ) ​ km s -1 (U,V,W)_{\\\\odot}=(11.1_{-0.75}^{+0.69},12.24_{-0.47}^{+0.47},7.25_{-0.36}^{+0.37})\\\\mbox{\\\\,km\\\\,s${}^{-1}$} , with additional systematic uncertainties ∼ ( 1 , 2 , 0.5 ) ​ km s -1 \\\\sim(1,2,0.5)\\\\mbox{\\\\,"
+          },
+          {
+            "url": "https://ar5iv.labs.arxiv.org/html/0912.3693",
+            "claim": "we obtain (U,V,W) solar = 12.24_{-0.47}^{+0.47} km s-1 for V solar 12.24",
+            "verdict": "supported",
+            "detail": "we obtain ( U , V , W ) ⊙ = ( 11.1 − 0.75 + 0.69 , 12.24 − 0.47 + 0.47 , 7.25 − 0.36 + 0.37 ) ​ km s -1"
+          },
+          {
+            "url": "https://ar5iv.labs.arxiv.org/html/0912.3693",
+            "claim": "we obtain (U,V,W) solar = 7.25_{-0.36}^{+0.37} km s-1 for W solar 7.25",
+            "verdict": "supported",
+            "detail": "we obtain ( U , V , W ) ⊙ = ( 11.1 − 0.75 + 0.69 , 12.24 − 0.47 + 0.47 , 7.25 − 0.36 + 0.37 ) ​ km s -1"
+          }
+        ],
+        "objections": [
+          "Answer names no constellation, explicitly dropping Hercules and thus failing the required `toward which constellation` part of the goal.",
+          "Answer quotes only U,V,W components and gives no exact quoted total apex speed in km/s as required.",
+          "Answer equates LSR components to motion relative to nearby stars without quoting a source definition linking the two."
+        ],
+        "fetched": 0
+      }
+    ]
+  }
+}

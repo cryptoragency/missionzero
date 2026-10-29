@@ -1,0 +1,59 @@
+[
+  {
+    "turn": 1,
+    "action": {
+      "type": "web_search",
+      "query": "Schonrich Binney Dehnen solar motion apex",
+      "url": "",
+      "find": "",
+      "name": "",
+      "content": "",
+      "costUsd": 0,
+      "real": false
+    },
+    "ok": false,
+    "lesson": "The search surfaced the primary Schonrich et al. source but did not yet extract the apex direction and speed quote."
+  },
+  {
+    "turn": 2,
+    "action": {
+      "type": "read_page",
+      "url": "https://ar5iv.labs.arxiv.org/html/0912.3693",
+      "find": "solar motion U V W velocity Sun LSR km/s apex",
+      "costUsd": 0,
+      "real": false
+    },
+    "ok": false,
+    "lesson": "The paper provides precise U V W components but no constellation name or total speed for the solar apex."
+  },
+  {
+    "turn": 3,
+    "action": {
+      "type": "web_search",
+      "query": "solar apex Hercules speed km/s",
+      "url": "",
+      "find": "",
+      "name": "",
+      "content": "",
+      "costUsd": 0,
+      "real": false
+    },
+    "ok": false,
+    "lesson": "The search confirmed Hercules as the likely constellation but returned only secondary sources with conflicting speeds and no qualifying primary-source quote."
+  },
+  {
+    "turn": 4,
+    "action": {
+      "type": "web_search",
+      "query": "solar apex observatory Hercules velocity",
+      "url": "",
+      "find": "",
+      "name": "",
+      "content": "",
+      "costUsd": 0,
+      "real": false
+    },
+    "ok": false,
+    "lesson": "The generic search returned only Wikipedia and secondary summaries without a peer-reviewed or observatory exact quote."
+  }
+]

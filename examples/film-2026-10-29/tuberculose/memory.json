@@ -1,0 +1,17 @@
+[
+  {
+    "turn": 1,
+    "action": {
+      "type": "web_search",
+      "query": "WHO Global Tuberculosis Report 2024",
+      "url": "",
+      "find": "",
+      "name": "",
+      "content": "",
+      "costUsd": 0,
+      "real": false
+    },
+    "ok": true,
+    "lesson": "The search successfully returned official WHO report PDF, factsheet, and top-findings links."
+  }
+]

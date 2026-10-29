@@ -1,0 +1,204 @@
+{
+  "answer": "Exact PDF quote: 'Our velocity relative to the rest frame of the cosmic microwave background (CMB) generates a dipole temperature anisotropy on the sky which has been well measured for more than 30 years, and has an accepted amplitude of v/c = 0.00123, or v = 369 km s-1.' Galactic (l,b) numbers are not in nearest passages so omitted. Secondary source names direction towards constellation Crater near boundary with Leo / boundary of Crater and Leo.",
+  "sources": [
+    {
+      "url": "https://arxiv.org/pdf/1303.5087",
+      "contribution": "has an accepted amplitude of v/c = 0.00123"
+    },
+    {
+      "url": "https://arxiv.org/pdf/1303.5087",
+      "contribution": "or v = 369 km s − 1"
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Cosmic_microwave_background",
+      "contribution": "moves towards the constellation Crater near its boundary with the constellation Leo"
+    },
+    {
+      "url": "https://people.ast.cam.ac.uk/~pettini/Intro%20Cosmology/Lecture10.pdf",
+      "contribution": "towards a point on the boundary of the constellations of Crater and Leo"
+    }
+  ],
+  "confidence": 8,
+  "uncertainties": [
+    "Galactic l,b numbers not in nearest passages of seenSources so omitted",
+    "PDF direction l,b quote not in nearest passages so omitted"
+  ],
+  "rejectedSources": 0,
+  "judge": {
+    "score": 4,
+    "green": 3,
+    "red": 1,
+    "rounds": 4,
+    "versions": [
+      {
+        "round": 0,
+        "score": 3,
+        "green": 1,
+        "red": 1,
+        "reason": "Velocity partly supported but direction and constellation lack sources; exact quote incomplete; one velocity claim marked unsupported.",
+        "verification": [
+          {
+            "url": "https://arxiv.org/pdf/1303.5087",
+            "claim": "has an accepted amplitude of v/c = 1.23 x 10^{-3}",
+            "verdict": "unsupported",
+            "detail": "nearest passages: « 23 × 10 − 3 , or v = 369 km s − 1 . » « Zonca 29 (A ffi liations can be found after the references) A&A: submitted, 23 March 2013, accepted 3 January 2014. » « ABSTRACT Our velocity relative to the rest frame of the cosmic microwave background (CMB) generates a dipole temperature anisotropy on the sky which has been well measured for more than 30 years, and has an accepted ampl »"
+          },
+          {
+            "url": "https://arxiv.org/pdf/1303.5087",
+            "claim": "or v = 369 km s^{-1}",
+            "verdict": "supported",
+            "detail": "23 × 10 − 3 , or v = 369 km s − 1 ."
+          }
+        ],
+        "objections": []
+      },
+      {
+        "round": 1,
+        "score": 3,
+        "green": 3,
+        "red": 0,
+        "reason": "Velocity correct and verified but direction, coordinates, constellation, exact PDF quote missing; incomplete vs goal.",
+        "verification": [
+          {
+            "url": "https://arxiv.org/abs/1303.5087",
+            "claim": "accepted amplitude of v/c = 0.00123",
+            "verdict": "supported",
+            "detail": "has an accepted amplitude of v/c = 0.00123, or v = 369km/s."
+          },
+          {
+            "url": "https://arxiv.org/abs/1303.5087",
+            "claim": "or v = 369km/s",
+            "verdict": "supported",
+            "detail": "or v = 369km/s."
+          },
+          {
+            "url": "https://arxiv.org/pdf/1303.5087",
+            "claim": "or v = 369 km s − 1",
+            "verdict": "supported",
+            "detail": "23 × 10 − 3 , or v = 369 km s − 1 ."
+          }
+        ],
+        "objections": [
+          "The Galactic direction l ~264 deg, b ~48 deg is asserted with no supporting source citation.",
+          "The constellation Crater / Hydra is asserted with no secondary source despite the goal permitting it.",
+          "The exact-quote claim for v/c = 1.23 x 10^{-3} is marked 'unsupported' in verification.",
+          "The velocity 369 km/s is given without the paper's uncertainty and dipole definition from the PDF."
+        ],
+        "fetched": 1
+      },
+      {
+        "round": 2,
+        "score": 4,
+        "green": 3,
+        "red": 1,
+        "reason": "Omitted required Galactic l,b; primary quote verdict unsupported, only velocity and constellation backed.",
+        "verification": [
+          {
+            "url": "https://arxiv.org/pdf/1303.5087",
+            "claim": "has an accepted amplitude of v/c = 0.00123",
+            "verdict": "unsupported",
+            "detail": "nearest passages: « ABSTRACT Our velocity relative to the rest frame of the cosmic microwave background (CMB) generates a dipole temperature anisotropy on the sky which has been well measured for more than 30 years, and has an accepted ampl » « The e ff ect on the CMB fluctuations is to increase the amplitude of the power spectrum by approximately 0 . » « Several of these null tests fail between 143 and 217 GHz, although both channels provide ev- idence for β ‖ , which is consistent with the expected amplitude and discrepant with zero at 4–5 σ . »"
+          },
+          {
+            "url": "https://arxiv.org/pdf/1303.5087",
+            "claim": "or v = 369 km s − 1",
+            "verdict": "supported",
+            "detail": "23 × 10 − 3 , or v = 369 km s − 1 ."
+          },
+          {
+            "url": "https://en.wikipedia.org/wiki/Cosmic_microwave_background",
+            "claim": "moves towards the constellation Crater near its boundary with the constellation Leo",
+            "verdict": "supported",
+            "detail": "towards the constellation Crater near its boundary with the constellation Leo"
+          },
+          {
+            "url": "https://people.ast.cam.ac.uk/~pettini/Intro%20Cosmology/Lecture10.pdf",
+            "claim": "towards a point on the boundary of the constellations of Crater and Leo",
+            "verdict": "supported",
+            "detail": "towards a point on the boundary of the constellations of Crater and Leo."
+          }
+        ],
+        "objections": [
+          "Answer omits Galactic longitude and latitude (l,b) required by the goal.",
+          "Answer omits the constellation direction required by the goal.",
+          "Answer does not provide the exact PDF quote for velocity and direction.",
+          "Sources cite the arXiv abs page instead of the PDF itself required by the goal."
+        ],
+        "fetched": 8
+      },
+      {
+        "round": 3,
+        "score": 4,
+        "green": 4,
+        "red": 0,
+        "reason": "Missing Galactic l,b coordinates required by goal; velocity and constellation supported but core direction omitted.",
+        "verification": [
+          {
+            "url": "https://arxiv.org/pdf/1303.5087",
+            "claim": "accepted amplitude of v/c = 1.23 × 10-3",
+            "verdict": "supported",
+            "detail": "23 × 10 − 3 , or v = 369 km s − 1 ."
+          },
+          {
+            "url": "https://arxiv.org/pdf/1303.5087",
+            "claim": "or v = 369 km s-1",
+            "verdict": "supported",
+            "detail": "23 × 10 − 3 , or v = 369 km s − 1 ."
+          },
+          {
+            "url": "https://en.wikipedia.org/wiki/Cosmic_microwave_background",
+            "claim": "towards the constellation Crater near its boundary with the constellation Leo",
+            "verdict": "supported",
+            "detail": "towards the constellation Crater near its boundary with the constellation Leo"
+          },
+          {
+            "url": "https://people.ast.cam.ac.uk/~pettini/Intro%20Cosmology/Lecture10.pdf",
+            "claim": "towards a point on the boundary of the constellations of Crater and Leo.",
+            "verdict": "supported",
+            "detail": "towards a point on the boundary of the constellations of Crater and Leo."
+          }
+        ],
+        "objections": [
+          "Omits the required Galactic coordinates (l, b) while the goal explicitly asks for velocity and direction in (l, b).",
+          "Quotes v/c = 0.00123 as exact PDF text yet verification marks that claim unsupported by nearest passages.",
+          "Provides no primary-paper exact quote for direction and substitutes secondary-source constellation without connecting it to the paper's (l, b)."
+        ],
+        "fetched": 0
+      },
+      {
+        "round": 4,
+        "score": 2,
+        "green": 1,
+        "red": 2,
+        "reason": "Primary PDF quotes unsupported by verification; missing required (l,b) direction; only secondary constellation claim confirmed.",
+        "verification": [
+          {
+            "url": "https://arxiv.org/pdf/1303.5087",
+            "claim": "has an accepted amplitude of v/c = 0.00123",
+            "verdict": "unsupported",
+            "detail": "nearest passages: « ABSTRACT Our velocity relative to the rest frame of the cosmic microwave background (CMB) generates a dipole temperature anisotropy on the sky which has been well measured for more than 30 years, and has an accepted ampl » « The e ff ect on the CMB fluctuations is to increase the amplitude of the power spectrum by approximately 0 . » « Several of these null tests fail between 143 and 217 GHz, although both channels provide ev- idence for β ‖ , which is consistent with the expected amplitude and discrepant with zero at 4–5 σ . »"
+          },
+          {
+            "url": "https://arxiv.org/pdf/1303.5087",
+            "claim": "or v = 369km/s",
+            "verdict": "unsupported",
+            "detail": "no passage of the cited page matches the claim"
+          },
+          {
+            "url": "https://people.ast.cam.ac.uk/~pettini/Intro%20Cosmology/Lecture10.pdf",
+            "claim": "v = 369 km s-1 towards a point on the boundary of the constellations of Crater and Leo",
+            "verdict": "supported",
+            "detail": "The Earth is moving with a velocity v = 369 km s − 1 towards a point on the boundary of the constellations of Crater and Leo."
+          }
+        ],
+        "objections": [
+          "Galactic coordinates (l,b) explicitly required by the goal are omitted with the excuse 'not in nearest passages so omitted'.",
+          "The quoted 'v = 369 km s-1' is explicitly framed in the PDF as the prior 'accepted amplitude', not the paper's own Doppler-boosting measurement.",
+          "The 'exact quote' covers only velocity amplitude and provides no quote for direction, failing the goal's direction requirement.",
+          "The constellation claim is tied only to secondary sources without the required (l,b) from the primary PDF to anchor it."
+        ],
+        "fetched": 0
+      }
+    ]
+  }
+}

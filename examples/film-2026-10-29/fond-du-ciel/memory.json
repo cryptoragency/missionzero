@@ -1,0 +1,62 @@
+[
+  {
+    "turn": 1,
+    "action": {
+      "type": "web_search",
+      "query": "Planck 1303.5087 Doppler boosting Eppur",
+      "url": "",
+      "find": "",
+      "name": "",
+      "content": "",
+      "costUsd": 0,
+      "real": false
+    },
+    "ok": false,
+    "lesson": "Search located the PDF link but did not yet read it to extract velocity and coordinates."
+  },
+  {
+    "turn": 2,
+    "action": {
+      "type": "read_page",
+      "query": "",
+      "url": "https://arxiv.org/pdf/1303.5087",
+      "find": "velocity km/s Galactic longitude latitude l b beta",
+      "name": "",
+      "content": "",
+      "costUsd": 0,
+      "real": false
+    },
+    "ok": false,
+    "lesson": "The broad PDF extraction truncated the key sentence inferring v = (369 ± 0. and gave only the 384 km s−1 component measurement without the full exact quote or constellation."
+  },
+  {
+    "turn": 3,
+    "action": {
+      "type": "read_page",
+      "query": "",
+      "url": "https://arxiv.org/pdf/1303.5087",
+      "find": "369 Assuming observed temperature dipole due entirely",
+      "name": "",
+      "content": "",
+      "costUsd": 0,
+      "real": false
+    },
+    "ok": false,
+    "lesson": "The PDF extraction truncated the key velocity sentence and did not yield a complete exact quote with full uncertainties and coordinates."
+  },
+  {
+    "turn": 4,
+    "action": {
+      "type": "web_search",
+      "query": "1303.5087 Doppler boosting velocity dipole",
+      "url": "",
+      "find": "",
+      "name": "",
+      "content": "",
+      "costUsd": 0,
+      "real": false
+    },
+    "ok": false,
+    "lesson": "Only abstract snippets were retrieved without reading the PDF for the exact quote and Galactic coordinates"
+  }
+]

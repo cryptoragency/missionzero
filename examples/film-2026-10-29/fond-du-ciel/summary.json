@@ -1,0 +1,107 @@
+{
+  "goal": "According to the Planck collaboration paper 'Planck 2013 results. XXVII. Doppler boosting of the CMB: Eppur si muove' (arXiv 1303.5087), what is the velocity of the solar system relative to the cosmic microwave background in km/s and its direction in Galactic coordinates (l, b)? Read the arXiv PDF itself and give the exact quote. Toward which constellation does that direction point (a secondary source may name the constellation)?",
+  "provider": "meta",
+  "model": "muse-spark-1.3",
+  "reached": false,
+  "turns": 4,
+  "best": {
+    "score": 5,
+    "turn": 3,
+    "action": {
+      "type": "read_page",
+      "query": "",
+      "url": "https://arxiv.org/pdf/1303.5087",
+      "find": "369 Assuming observed temperature dipole due entirely",
+      "name": "",
+      "content": "",
+      "costUsd": 0,
+      "real": false
+    }
+  },
+  "confidence": 8,
+  "judgeScore": 4,
+  "verifiedGreen": 3,
+  "verifiedRed": 1,
+  "contradictionRounds": 4,
+  "verifiedSources": 4,
+  "rejectedSources": 0,
+  "cost": {
+    "calls": 39,
+    "input": 42045,
+    "output": 33018,
+    "usd": 0.19288275,
+    "totalMs": 198706,
+    "byTag": {
+      "plan": {
+        "calls": 4,
+        "input": 8284,
+        "output": 1788,
+        "reasoning": 1276,
+        "truncated": 0
+      },
+      "evaluate": {
+        "calls": 4,
+        "input": 6838,
+        "output": 2201,
+        "reasoning": 1764,
+        "truncated": 0
+      },
+      "synthesize": {
+        "calls": 1,
+        "input": 1804,
+        "output": 2914,
+        "reasoning": 2608,
+        "truncated": 0
+      },
+      "verify": {
+        "calls": 13,
+        "input": 3408,
+        "output": 3855,
+        "reasoning": 3407,
+        "truncated": 0
+      },
+      "judge": {
+        "calls": 5,
+        "input": 2965,
+        "output": 3509,
+        "reasoning": 3327,
+        "truncated": 0
+      },
+      "contradict": {
+        "calls": 4,
+        "input": 2897,
+        "output": 3250,
+        "reasoning": 2844,
+        "truncated": 0
+      },
+      "research": {
+        "calls": 3,
+        "input": 2864,
+        "output": 1929,
+        "reasoning": 1605,
+        "truncated": 0
+      },
+      "rewrite": {
+        "calls": 4,
+        "input": 12652,
+        "output": 13132,
+        "reasoning": 12100,
+        "truncated": 0
+      },
+      "distill": {
+        "calls": 1,
+        "input": 333,
+        "output": 440,
+        "reasoning": 315,
+        "truncated": 0
+      }
+    }
+  },
+  "verificationsCached": 14,
+  "lessonsUsed": 3,
+  "lessonsLearned": 3,
+  "zero": {
+    "reset": false,
+    "reason": "the lessons are not hurting"
+  }
+}

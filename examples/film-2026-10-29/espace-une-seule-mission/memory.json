@@ -1,0 +1,84 @@
+[
+  {
+    "turn": 1,
+    "action": {
+      "type": "web_search",
+      "query": "solar apex constellation speed nearby stars",
+      "url": "",
+      "find": "",
+      "name": "",
+      "content": "",
+      "costUsd": 0,
+      "real": false
+    },
+    "ok": false,
+    "lesson": "General search returned only Wikipedia, Britannica, and educational pages with no peer-reviewed primary source or exact quotable figures."
+  },
+  {
+    "turn": 2,
+    "action": {
+      "type": "web_search",
+      "query": "Schonrich solar peculiar motion LSR",
+      "url": "",
+      "find": "",
+      "name": "",
+      "content": "",
+      "costUsd": 0,
+      "real": false
+    },
+    "ok": false,
+    "lesson": "The search found relevant Schönrich LSR papers but no exact verbatim speed and coordinate quote yet."
+  },
+  {
+    "turn": 3,
+    "action": {
+      "type": "web_search",
+      "query": "Planck CMB dipole velocity direction",
+      "url": "",
+      "find": "",
+      "name": "",
+      "content": "",
+      "costUsd": 0,
+      "real": false
+    },
+    "ok": false,
+    "lesson": "Initial search surfaced relevant Planck dipole papers but did not yet capture exact quoted figures from primary source pages."
+  },
+  {
+    "turn": 4,
+    "action": {
+      "type": "read_page",
+      "url": "https://www.aanda.org/articles/aa/full_html/2014/11/aa21556-13/aa21556-13.html",
+      "find": "velocity dipole 369 km/s direction l b",
+      "costUsd": 0,
+      "real": false
+    },
+    "ok": false,
+    "lesson": "The requested A&A page was blocked by a bot challenge so no exact Planck quote was obtained."
+  },
+  {
+    "turn": 5,
+    "action": {
+      "type": "web_search",
+      "query": "Planck dipole 369 km/s arXiv",
+      "url": "",
+      "find": "",
+      "name": "",
+      "content": "",
+      "costUsd": 0,
+      "real": false
+    },
+    "ok": false,
+    "lesson": "Only the Planck CMB dipole is sourced so far and the solar apex, Galactic orbit, and Laniakea/Dipole Repeller figures are still missing."
+  },
+  {
+    "turn": 6,
+    "action": {
+      "type": "read_page",
+      "url": "https://arxiv.org/abs/1303.5087",
+      "find": "velocity 369 km/s dipole direction CMB"
+    },
+    "ok": false,
+    "lesson": "The Planck page yields an exact 369 km/s dipole quote but leaves solar apex, Galactic orbit, and Laniakea/Repeller figures still unquoted from primary sources."
+  }
+]

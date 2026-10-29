@@ -1,0 +1,165 @@
+{
+  "answer": "Sun's Galactic-center orbit from primary sources in the list: NASA StarChild states \"We are moving at an average velocity of 828,000 km/hr\" (= 828,000/3600 = 230 km/s). NASA StarChild states \"it still takes us about 230 million years to make one complete orbit around the Milky Way\". NASA Solar System Exploration / Sun In Depth states \"Our solar system is moving with an average velocity of 450,000 miles per hour (720,000 kilometers per hour)\" and \"it takes about 230 million years for the Sun to make one complete trip around the Milky Way\". Peer-reviewed Galactic-parameter work (Reid IAU 2013 abstract) gives \"circular rotation at the Solar Circle, Θ0 = 243 +/- 7 km s -1\" - consistent with ~230-243 km/s, not a single exact value. Constellation of orbital motion: NO NASA/ESA or peer-reviewed page in the provided list gives a constellation for the ~230 km/s Galactic-center orbit. The only constellation in the list is \"The solar apex is a point in the constellation Hercules towards which the Sun and our solar system are moving at approximately 12 miles per second relative to nearby stars\" (Britannica) - that is ~12 mi/s peculiar motion relative to nearby stars (solar apex), not the Galactic-center orbital motion, so it must not be quoted as the orbit direction.",
+  "sources": [
+    {
+      "url": "https://starchild.gsfc.nasa.gov/docs/StarChild/questions/question18.html",
+      "contribution": "We are moving at an average velocity of 828,000 km/hr"
+    },
+    {
+      "url": "https://starchild.gsfc.nasa.gov/docs/StarChild/questions/question18.html",
+      "contribution": "it still takes us about 230 million years to make one complete orbit around the Milky Way"
+    },
+    {
+      "url": "https://solarsystem.nasa.gov/solar-system/sun/in-depth.amp",
+      "contribution": "Our solar system is moving with an average velocity of 450,000 miles per hour (720,000 kilometers per hour)"
+    },
+    {
+      "url": "https://solarsystem.nasa.gov/solar-system/sun/in-depth.amp",
+      "contribution": "it takes about 230 million years for the Sun to make one complete trip around the Milky Way"
+    },
+    {
+      "url": "https://ui.adsabs.harvard.edu/abs/2013IAUS..289..188R/abstract",
+      "contribution": "circular rotation at the Solar Circle, Θ0 = 243 +/- 7 km s -1"
+    },
+    {
+      "url": "https://www.britannica.com/science/solar-apex",
+      "contribution": "The solar apex is a point in the constellation Hercules towards which the Sun and our solar system are moving at approximately 12 miles per second relative to nearby stars"
+    }
+  ],
+  "confidence": 7,
+  "uncertainties": [
+    "No NASA/ESA or peer-reviewed URL in the provided list states a constellation for the Sun's ~230 km/s orbit around the Galactic Center",
+    "Hercules in the list refers to solar-apex peculiar motion (~12 miles per second relative to nearby stars), not Galactic orbital motion, so orbit-direction constellation remains unverified from primary sources",
+    "Primary speed figures vary: ~230 km/s (828,000 km/hr; 720,000 km/h) in NASA pages vs Theta0 = 243 +/- 7 km/s in Reid Galactic-parameters abstract"
+  ],
+  "rejectedSources": 0,
+  "seenSources": 24,
+  "judge": {
+    "score": 5,
+    "green": 4,
+    "red": 2,
+    "rounds": 2,
+    "versions": [
+      {
+        "round": 0,
+        "score": 5,
+        "green": 4,
+        "red": 2,
+        "reason": "Speed/period have GREEN NASA quotes but conflicting 230 vs 200 km/s; Reid/Britannica unverified and non-primary; constellation unanswered.",
+        "verification": [
+          {
+            "url": "https://starchild.gsfc.nasa.gov/docs/StarChild/questions/question18.html",
+            "claim": "We are moving at an average velocity of 828,000 km/hr",
+            "verdict": "supported",
+            "detail": "We are moving at an average velocity of 828,000 km/hr."
+          },
+          {
+            "url": "https://starchild.gsfc.nasa.gov/docs/StarChild/questions/question18.html",
+            "claim": "it still takes us about 230 million years to make one complete orbit around the Milky Way",
+            "verdict": "supported",
+            "detail": "But even at that high rate, it still takes us about 230 million years to make one complete orbit around the Milky Way!"
+          },
+          {
+            "url": "https://solarsystem.nasa.gov/solar-system/sun/in-depth.amp",
+            "claim": "Our solar system is moving with an average velocity of 450,000 miles per hour (720,000 kilometers per hour)",
+            "verdict": "supported",
+            "detail": "Our solar system is moving with an average velocity of 450,000 miles per hour (720,000 kilometers per hour)."
+          },
+          {
+            "url": "https://solarsystem.nasa.gov/solar-system/sun/in-depth.amp",
+            "claim": "it takes about 230 million years for the Sun to make one complete trip around the Milky Way",
+            "verdict": "supported",
+            "detail": "But even at this speed, it takes about 230 million years for the Sun to make one complete trip around the Milky Way."
+          },
+          {
+            "url": "https://ui.adsabs.harvard.edu/abs/2013IAUS..289..188R/abstract",
+            "claim": "circular rotation at the Solar Circle, Θ0 = 243 +/- 7 km s -1",
+            "verdict": "source-unreachable",
+            "detail": "http 405"
+          },
+          {
+            "url": "https://www.britannica.com/science/solar-apex",
+            "claim": "The solar apex is a point in the constellation Hercules towards which the Sun and our solar system are moving at approximately 12 miles per second relative to nearby stars",
+            "verdict": "source-unreachable",
+            "detail": "blocked: bot challenge (http 403), a browser would be needed"
+          }
+        ],
+        "objections": []
+      },
+      {
+        "round": 1,
+        "score": 4,
+        "green": 3,
+        "red": 0,
+        "reason": "Speed and period sourced from NASA but km/s converted not quoted, constellation unanswered, extra superseded claims unsourced.",
+        "verification": [
+          {
+            "url": "https://solarsystem.nasa.gov/solar-system/sun/in-depth.amp",
+            "claim": "Our solar system is moving with an average velocity of 450,000 miles per hour",
+            "verdict": "supported",
+            "detail": "Our solar system is moving with an average velocity of 450,000 miles per hour (720,000 kilometers per hour)."
+          },
+          {
+            "url": "https://solarsystem.nasa.gov/solar-system/sun/in-depth.amp",
+            "claim": "Our solar system is moving with an average velocity of 720,000 kilometers per hour",
+            "verdict": "supported",
+            "detail": "Our solar system is moving with an average velocity of 450,000 miles per hour (720,000 kilometers per hour)."
+          },
+          {
+            "url": "https://solarsystem.nasa.gov/solar-system/sun/in-depth.amp",
+            "claim": "it takes about 230 million years for the Sun to make one complete trip around the Milky Way",
+            "verdict": "supported",
+            "detail": "But even at this speed, it takes about 230 million years for the Sun to make one complete trip around the Milky Way."
+          }
+        ],
+        "objections": [
+          "Answer admits it provides no primary-source constellation for the ~230 km/s Galactic-center orbit, leaving one requested figure missing.",
+          "Reid Theta0 = 243 +/- 7 km/s claim is listed as source-unreachable (http 405) in verification, so the peer-reviewed speed is unsupported.",
+          "Hercules direction quote comes from Britannica, a secondary source barred by the goal, is listed as source-unreachable (http 403), and describes ~12 mi/s peculiar motion not Galactic-center orbital motion.",
+          "NASA speed quotes conflict at 828,000 km/hr (~230 km/s) versus 720,000 km/h (~200 km/s) without establishing a single orbital speed definition."
+        ],
+        "fetched": 0
+      },
+      {
+        "round": 2,
+        "score": 4,
+        "green": 3,
+        "red": 1,
+        "reason": "Missing constellation, km/s conversion absent, peer-reviewed speed unverified, conflicting speeds unresolved despite two NASA period/speed supports.",
+        "verification": [
+          {
+            "url": "https://solarsystem.nasa.gov/solar-system/sun/in-depth.amp",
+            "claim": "Sun orbits center of Milky Way moving with average velocity of 720,000 kilometers per hour",
+            "verdict": "supported",
+            "detail": "Our solar system is moving with an average velocity of 450,000 miles per hour (720,000 kilometers per hour)."
+          },
+          {
+            "url": "https://solarsystem.nasa.gov/solar-system/sun/in-depth.amp",
+            "claim": "takes about 230 million years for Sun to make one complete trip around Milky Way",
+            "verdict": "supported",
+            "detail": "But even at this speed, it takes about 230 million years for the Sun to make one complete trip around the Milky Way."
+          },
+          {
+            "url": "https://starchild.gsfc.nasa.gov/docs/StarChild/questions/question18.html",
+            "claim": "whole solar system orbits around center of Milky Way Galaxy moving at average velocity of 828,000 km/hr",
+            "verdict": "supported",
+            "detail": "We are moving at an average velocity of 828,000 km/hr."
+          },
+          {
+            "url": "https://ui.adsabs.harvard.edu/abs/2013IAUS..289..188R/abstract",
+            "claim": "circular rotation at Solar Circle Θ0 = 243 +/- 7 km s-1",
+            "verdict": "source-unreachable",
+            "detail": "http 405"
+          }
+        ],
+        "objections": [
+          "The ~200 km/s figure has no exact source quote in km/s, only a derived conversion from 720,000 km/h, violating the exact-quote-with-each-figure requirement.",
+          "The answer provides no constellation toward which the Sun moves on its Galactic-center orbit, leaving one required figure unanswered.",
+          "The cited NASA sentence about `moving with an average velocity` does not state motion around the Galactic centre, so it does not support the claimed orbital speed interpretation.",
+          "The answer relies solely on a NASA popular page and cites no peer-reviewed primary paper like Reid et al. 2019 or GRAVITY despite the goal explicitly requesting one."
+        ],
+        "fetched": 0
+      }
+    ]
+  }
+}

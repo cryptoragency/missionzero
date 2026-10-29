@@ -1,0 +1,62 @@
+[
+  {
+    "turn": 1,
+    "action": {
+      "type": "web_search",
+      "query": "Sun orbital speed Milky Way NASA",
+      "url": "",
+      "find": "",
+      "name": "",
+      "content": "",
+      "costUsd": 0,
+      "real": false
+    },
+    "ok": false,
+    "lesson": "The broad NASA search found speed (~230 km/s) and period (~230 million years) but did not establish the constellation of motion."
+  },
+  {
+    "turn": 2,
+    "action": {
+      "type": "web_search",
+      "query": "Solar apex Hercules constellation motion",
+      "url": "",
+      "find": "",
+      "name": "",
+      "content": "",
+      "costUsd": 0,
+      "real": false
+    },
+    "ok": false,
+    "lesson": "The search found only Wikipedia/Britannica and confused the Hercules solar apex peculiar motion with the Sun's Galactic-center orbit direction."
+  },
+  {
+    "turn": 3,
+    "action": {
+      "type": "web_search",
+      "query": "Reid 2019 Galactic parameters Theta0",
+      "url": "",
+      "find": "",
+      "name": "",
+      "content": "",
+      "costUsd": 0,
+      "real": false
+    },
+    "ok": false,
+    "lesson": "The search located the Reid et al. 2019 paper but the snippets did not provide exact quoted values for speed, direction, and orbital period."
+  },
+  {
+    "turn": 4,
+    "action": {
+      "type": "read_page",
+      "query": "",
+      "url": "https://arxiv.org/abs/1910.03357",
+      "find": "Theta0 rotation speed R0 Galactic parameters",
+      "name": "",
+      "content": "",
+      "costUsd": 0,
+      "real": false
+    },
+    "ok": false,
+    "lesson": "Reid et al. 2019 abstract gives the circular speed but provides no constellation direction or orbital period."
+  }
+]

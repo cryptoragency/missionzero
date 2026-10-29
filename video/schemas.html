@@ -49,15 +49,109 @@ svg { width:100%; height:auto; display:block; font-family: "Segoe UI", system-ui
 .card .h { color:var(--fg); font-size: clamp(30px, 5.2vw, 76px); font-weight:800; line-height:1.1; margin-top:12px; text-wrap: balance; max-width: 18ch; }
 .card .s { color:var(--mut); font-size: clamp(16px, 1.8vw, 26px); margin-top:18px; }
 .card.end .h { color:var(--acc); }
+
+/* Le fil du film : sur chaque carte-titre, le point traverse l'écran, le trait le suit. Jamais de rupture. */
+.card { position:relative; overflow:hidden; }
+.card .trail { position:absolute; left:0; bottom:calc(12% + 5px); height:4px; width:0; background:var(--acc2); border-radius:2px; }
+.card .dot { position:absolute; left:0; bottom:12%; width:14px; height:14px; border-radius:50%; background:#fff; box-shadow:0 0 10px var(--acc); opacity:0; }
+.card.show .trail { animation: grow 2.4s linear forwards; } .card.show .dot { animation: ride 2.4s linear forwards; }
+.card.end .trail, .card.end .dot { display:none; }
+@keyframes grow { from { width:0; } to { width:100%; } } @keyframes ride { 0% { left:0; opacity:1; } 99% { opacity:1; } 100% { left:calc(100% - 14px); opacity:0; } }
+.arrow.orbit { stroke-width:6; } .runner.go { opacity:1; }
+.zoom { animation: zoomin 1.3s cubic-bezier(.2,.8,.2,1) forwards; } .zoom .chip { fill:var(--accf); stroke:var(--acc); }
+@keyframes zoomin { to { transform: scale(1.35); } }
+#stars circle { pointer-events:none; }
+#speed { fill:var(--acc); }
+/* La carte de fin : le fil dessine le zéro, puis CRYPTOR.AGENCY et, dessous, MISSION ZERO. */
+.card .sym { display:none; } .card.end .sym { display:block; width: min(30vh, 200px); margin: 0 auto 6px; }
+.card.end .zero { fill:none; stroke:var(--acc); stroke-width:7; stroke-linecap:round; stroke-dasharray:1; stroke-dashoffset:1; animation: drawzero 2.2s cubic-bezier(.4,0,.2,1) forwards; }
+.card.end .core { fill:#fff; opacity:0; filter: drop-shadow(0 0 8px var(--acc)); animation: corein .5s 2.1s forwards; }
+.card.end .n { color:var(--mut); font-size: clamp(16px, 1.8vw, 24px); font-weight:400; letter-spacing:.02em; opacity:0; animation: fadein .8s 2.4s forwards; }
+.card.end .h { color:var(--fg); font-size: clamp(34px, 6vw, 88px); letter-spacing:.08em; opacity:0; animation: fadein .8s 2.6s forwards; max-width: none; }
+.card.end .s { color:var(--acc); font-size: clamp(22px, 3vw, 44px); letter-spacing:.42em; font-weight:700; margin-top:8px; opacity:0; animation: fadein .8s 3.1s forwards; }
+@keyframes drawzero { to { stroke-dashoffset:0; } } @keyframes corein { to { opacity:1; } } @keyframes fadein { to { opacity:1; } }
 </style>
 <div class="wrap">
-  <h1>Mission Zero, le film en quatre chapitres <small>Format vidéo, en français ; les sous-titres anglais sont incrustés au montage. Le film enchaîne les chapitres avec une carte-titre devant chacun.</small></h1>
-  <div class="filmbar"><button class="big" id="go">▶ Lancer le film</button><button data-ch="s1">1 · Constat</button><button data-ch="s2">2 · Correction</button><button data-ch="s3">3 · MYTHOZOR ARGUS + Mission Zero</button><button data-ch="s4">4 · Mission Zero, la vedette</button><button id="grid">Voir les quatre schémas</button></div>
-  <div class="card" id="card"><div><div class="n" id="card-n"></div><div class="h" id="card-h"></div><div class="s" id="card-s"></div></div></div>
+  <h1>Mission Zero, le film <small>Un seul fil à suivre, du premier point au dernier. Format vidéo, en français ; sous-titres anglais incrustés au montage. Chaque chiffre du chapitre « L'espace » vient d'une vraie mission jouée par Mission Zero, dossier de preuves à l'appui.</small></h1>
+  <div class="filmbar"><button class="big" id="go">▶ Lancer le film</button><button data-ch="s0">1 · La boucle</button><button data-ch="sM">2 · La médecine</button><button data-ch="s1">3 · Constat</button><button data-ch="s2">4 · Correction</button><button data-ch="s3">5 · MYTHOZOR ARGUS</button><button data-ch="sE">6 · L'espace</button><button id="grid">Voir tous les schémas</button></div>
+  <div class="card" id="card"><div><div class="sym"><svg viewBox="0 0 200 200" aria-label="le zéro, dessiné par le fil"><circle class="zero" cx="100" cy="100" r="72" pathLength="1" transform="rotate(-90 100 100)"/><circle class="core" cx="100" cy="100" r="11"/></svg></div><div class="n" id="card-n"></div><div class="h" id="card-h"></div><div class="s" id="card-s"></div></div><div class="trail"></div><div class="dot"></div></div>
   <svg width="0" height="0" style="position:absolute"><defs>
     <marker id="mok" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="4" markerHeight="4" markerUnits="strokeWidth" orient="auto"><path d="M1,1 L11,6 L1,11 L4,6 z" fill="#2ee6a0" opacity=".8"/></marker>
     <marker id="mred" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="4" markerHeight="4" markerUnits="strokeWidth" orient="auto"><path d="M1,1 L11,6 L1,11 L4,6 z" fill="#ff6b61" opacity=".85"/></marker>
+    <radialGradient id="dark"><stop offset="0" stop-color="#000" stop-opacity=".95"/><stop offset=".6" stop-color="#05070f" stop-opacity=".8"/><stop offset="1" stop-color="#0d1526" stop-opacity="0"/></radialGradient>
   </defs></svg>
+
+  <section class="scene" id="s0">
+    <header><h2>1 · LA BOUCLE</h2><span class="t">ouverture</span></header>
+    <svg viewBox="0 0 1600 900" role="img" aria-label="La boucle de Mission Zero : un point qui tourne sans s'arrêter par Objectif, Hypothèses, Actions, Évaluation, Leçons, jusqu'à la preuve">
+      <g class="b" data-k="1" data-d="2200"><text class="lbl acc" x="800" y="80" text-anchor="middle" style="font-size:56px;letter-spacing:.04em">MISSION ZERO</text><text class="lbl s" x="800" y="118" text-anchor="middle" style="font-size:22px">un objectif, aucun plan, et l'ordre de prouver</text></g>
+      <g class="a" data-k="2" data-d="100"><path class="arrow orbit" pathLength="1" d="M800,230 A190,190 0 1,1 800,610 A190,190 0 1,1 800,230"/></g>
+      <g class="b" data-k="3" data-ring="o1" data-d="1200"><circle class="ring" id="o1" cx="800" cy="230" r="58"/><text class="lbl m" x="800" y="237" text-anchor="middle">Objectif</text></g>
+      <g class="b" data-k="4" data-ring="o2" data-d="1200"><circle class="ring" id="o2" cx="981" cy="361" r="58"/><text class="lbl m" x="981" y="368" text-anchor="middle">Hypothèses</text></g>
+      <g class="b" data-k="5" data-ring="o3" data-d="1200"><circle class="ring" id="o3" cx="912" cy="574" r="58"/><text class="lbl m" x="912" y="581" text-anchor="middle">Actions</text></g>
+      <g class="b" data-k="6" data-ring="o4" data-d="1200"><circle class="ring" id="o4" cx="688" cy="574" r="58"/><text class="lbl m" x="688" y="581" text-anchor="middle">Évaluation</text></g>
+      <g class="b" data-k="7" data-ring="o5" data-d="1200"><circle class="ring" id="o5" cx="619" cy="361" r="58"/><text class="lbl m" x="619" y="368" text-anchor="middle">Leçons</text></g>
+      <g class="b" data-k="8" data-d="2000"><circle class="ring lit" cx="800" cy="420" r="62"/><text class="lbl m acc" x="800" y="414" text-anchor="middle">Preuves</text><text class="lbl xs" x="800" y="438" text-anchor="middle">citation exacte</text></g>
+      <g class="b" data-k="9"><rect class="box gold" x="1180" y="190" width="380" height="110" rx="16"/><text class="lbl m acc" x="1370" y="228" text-anchor="middle">🧠 Il apprend</text><text class="lbl xs" x="1370" y="256" text-anchor="middle">une leçon après chaque mission, 30 gardées</text><text class="lbl xs" x="1370" y="280" text-anchor="middle">et il les remet à zéro lui-même si elles nuisent</text></g>
+      <g class="b" data-k="10"><rect class="box gold" x="1180" y="320" width="380" height="110" rx="16"/><text class="lbl m acc" x="1370" y="358" text-anchor="middle">🧪 Il teste</text><text class="lbl xs" x="1370" y="386" text-anchor="middle">un vérificateur, un contradicteur, un juge</text><text class="lbl xs" x="1370" y="410" text-anchor="middle">cinq contrôles, et il se refuse lui-même</text></g>
+      <g class="b" data-k="11"><rect class="box gold" x="1180" y="450" width="380" height="110" rx="16"/><text class="lbl m acc" x="1370" y="488" text-anchor="middle">🛡 Il sécurise</text><text class="lbl xs" x="1370" y="516" text-anchor="middle">patchs prouvés, journal haché, secrets masqués</text><text class="lbl xs" x="1370" y="540" text-anchor="middle">jamais sur le site, un humain applique</text></g>
+      <g class="b" data-k="12"><rect class="box ok" x="40" y="190" width="380" height="170" rx="16"/><text class="lbl m" x="230" y="228" text-anchor="middle">✔ Déjà : la recherche</text><text class="lbl xs" x="230" y="258" text-anchor="middle">un rapport de 117 pages lu en entier</text><text class="lbl xs" x="230" y="282" text-anchor="middle">chaque chiffre cité mot pour mot</text><text class="lbl xs okt" x="230" y="312" text-anchor="middle">juge 10/10 · 6 centimes</text><text class="lbl xs" x="230" y="340" text-anchor="middle">5 missions, 5 fois 10/10</text></g>
+      <g class="b" data-k="13"><rect class="box ok" x="40" y="390" width="380" height="170" rx="16"/><text class="lbl m" x="230" y="428" text-anchor="middle">✔ Déjà : la sécurité</text><text class="lbl xs" x="230" y="458" text-anchor="middle">15 failles d'une boutique, 10 correctifs proposés, 5 sous réserve</text><text class="lbl xs" x="230" y="482" text-anchor="middle">7 constats d'un vrai site, 5 confirmés</text><text class="lbl xs okt" x="230" y="512" text-anchor="middle">dix centimes par faille</text><text class="lbl xs" x="230" y="540" text-anchor="middle">une mission en poids ouverts, même résultat</text></g>
+      <g class="b" data-k="14" data-d="2600"><text class="lbl" x="800" y="760" text-anchor="middle" style="font-size:30px">La boucle ne sait pas ce qu'est un site. Elle sait chercher, lire, prouver.</text><text class="lbl amber" x="800" y="806" text-anchor="middle" style="font-size:26px">Où l'envoyer ?</text></g>
+      <g class="a" data-k="15" data-d="1400"><path class="arrow" pathLength="1" d="M800 612 L800 680 L1040 680 L1040 850 L1600 850"/></g>
+    </svg>
+    <div class="caption" id="c0"></div>
+    <div class="bar"><button data-play="s0">▶ Rejouer</button><button data-all="s0">Tout afficher</button></div>
+  </section>
+
+  <section class="scene" id="sB">
+    <header><h2>OÙ L'ENVOYER ?</h2><span class="t">l'écran des choix</span></header>
+    <svg viewBox="0 0 1600 900" role="img" aria-label="La boucle au centre, et autour, tout ce qu'on peut lui demander : l'espace, la sécurité d'un site, une étude médicale, un chiffre INSEE, une loi, un brevet, votre métier">
+      <g class="a" data-k="1"><path class="arrow" pathLength="1" d="M0 882 L660 882 L660 600 L734 518"/></g>
+      <g class="b" data-k="2"><circle class="ring lit" cx="800" cy="450" r="96"/><text class="lbl m acc" x="800" y="443" text-anchor="middle">la boucle</text><text class="lbl xs" x="800" y="468" text-anchor="middle">chercher · lire · prouver</text><circle class="ring lit" cx="800" cy="354" r="9"/><circle class="ring lit" cx="891" cy="420" r="9"/><circle class="ring lit" cx="856" cy="527" r="9"/><circle class="ring lit" cx="744" cy="527" r="9"/><circle class="ring lit" cx="709" cy="420" r="9"/></g>
+      <g class="b" data-k="3" data-d="350" id="bE"><rect class="chip next" x="670" y="120" width="260" height="60" rx="30"/><text class="chip-t" x="800" y="158" text-anchor="middle" style="font-size:22px">🪐 L'espace</text></g>
+      <g class="b" data-k="4" data-d="350" id="bM"><rect class="chip next" x="950" y="160" width="260" height="60" rx="30"/><text class="chip-t" x="1080" y="198" text-anchor="middle" style="font-size:22px">🩺 La médecine</text></g>
+      <g class="b" data-k="5" data-d="350"><rect class="chip next" x="1155" y="270" width="260" height="60" rx="30"/><text class="chip-t" x="1285" y="308" text-anchor="middle" style="font-size:22px">Un chiffre INSEE</text></g>
+      <g class="b" data-k="6" data-d="350"><rect class="chip next" x="1230" y="420" width="260" height="60" rx="30"/><text class="chip-t" x="1360" y="458" text-anchor="middle" style="font-size:22px">Une norme sanitaire</text></g>
+      <g class="b" data-k="7" data-d="350"><rect class="chip next" x="1155" y="570" width="260" height="60" rx="30"/><text class="chip-t" x="1285" y="608" text-anchor="middle" style="font-size:22px">Un article de loi</text></g>
+      <g class="b" data-k="8" data-d="350"><rect class="chip next" x="970" y="680" width="260" height="60" rx="30"/><text class="chip-t" x="1100" y="718" text-anchor="middle" style="font-size:22px">Une décision de justice</text></g>
+      <g class="b" data-k="9" data-d="350"><rect class="chip next" x="670" y="720" width="260" height="60" rx="30"/><text class="chip-t" x="800" y="758" text-anchor="middle" style="font-size:22px">Un appel d'offres</text></g>
+      <g class="b" data-k="10" data-d="350"><rect class="chip next" x="370" y="680" width="260" height="60" rx="30"/><text class="chip-t" x="500" y="718" text-anchor="middle" style="font-size:22px">Un rapport annuel</text></g>
+      <g class="b" data-k="11" data-d="350"><rect class="chip next" x="185" y="570" width="260" height="60" rx="30"/><text class="chip-t" x="315" y="608" text-anchor="middle" style="font-size:22px">Un brevet</text></g>
+      <g class="b" data-k="12" data-d="350" id="bS"><rect class="chip next" x="90" y="420" width="280" height="60" rx="30"/><text class="chip-t" x="230" y="458" text-anchor="middle" style="font-size:22px">🛡 La sécurité d'un site</text></g>
+      <g class="b" data-k="13" data-d="350"><rect class="chip next" x="185" y="270" width="260" height="60" rx="30"/><text class="chip-t" x="315" y="308" text-anchor="middle" style="font-size:22px">Une norme produit</text></g>
+      <g class="b" data-k="14" data-d="1600"><rect class="chip next" x="390" y="160" width="260" height="60" rx="30"/><text class="chip-t" x="520" y="198" text-anchor="middle" style="font-size:22px">Votre métier</text></g>
+      <g class="b" data-k="15" data-d="2600"><text class="lbl s" x="800" y="836" text-anchor="middle" style="font-size:20px">Tout vient de données accessibles gratuitement. Une source payante ? Il demande, vous fixez le budget, il la paie et la cite.</text></g>
+      <g class="a" data-k="16" data-pass="medecine" data-zoom="#bM"><path class="arrow" pathLength="1" d="M868 382 L1000 222"/></g>
+      <g class="b" data-k="17" data-pass="medecine" data-d="2200"><text class="lbl amber" x="800" y="70" text-anchor="middle" style="font-size:26px">Premier voyage : la médecine. Pour montrer que ça sert.</text></g>
+      <g class="b" data-k="16" data-pass="securite" data-hide="#bM" data-d="700"><rect class="chip ok" x="950" y="160" width="260" height="60" rx="30"/><text class="chip-t" x="1080" y="198" text-anchor="middle" style="font-size:22px">✔ La médecine · prouvé</text></g>
+      <g class="a" data-k="17" data-pass="securite" data-zoom="#bS"><path class="arrow" pathLength="1" d="M702 450 L372 450"/></g>
+      <g class="b" data-k="18" data-pass="securite" data-d="2200"><text class="lbl amber" x="800" y="70" text-anchor="middle" style="font-size:26px">Deuxième voyage : la sécurité d'un site. Du concret, et on en a besoin.</text></g>
+      <g class="b" data-k="16" data-pass="espace" data-hide="#bM" data-d="500"><rect class="chip ok" x="950" y="160" width="260" height="60" rx="30"/><text class="chip-t" x="1080" y="198" text-anchor="middle" style="font-size:22px">✔ La médecine · prouvé</text></g>
+      <g class="b" data-k="17" data-pass="espace" data-hide="#bS" data-d="700"><rect class="chip ok" x="90" y="420" width="280" height="60" rx="30"/><text class="chip-t" x="230" y="458" text-anchor="middle" style="font-size:22px">✔ La sécurité · prouvé</text></g>
+      <g class="a" data-k="18" data-pass="espace" data-zoom="#bE"><path class="arrow" pathLength="1" d="M800 352 L800 184"/></g>
+      <g class="b" data-k="19" data-pass="espace" data-d="2200"><text class="lbl amber" x="800" y="70" text-anchor="middle" style="font-size:26px">Dernier voyage : l'espace. Accrochez-vous.</text></g>
+    </svg>
+    <div class="caption" id="cB"></div>
+    <div class="bar"><button data-play="sB">▶ Rejouer</button><button data-all="sB">Tout afficher</button></div>
+  </section>
+
+  <section class="scene" id="sM">
+    <header><h2>2 · LA MÉDECINE : UNE MALADIE QU'ON SAIT SOIGNER</h2><span class="t">une vraie mission de Mission Zero</span></header>
+    <svg viewBox="0 0 1600 900" role="img" aria-label="Le fil devient un battement de cœur ; à chaque battement, un chiffre du rapport de l'OMS sur la tuberculose, avec sa citation exacte">
+      <g class="b" data-k="1" data-d="2600"><text class="lbl acc" x="800" y="64" text-anchor="middle" style="font-size:34px">Une IA vous dit un chiffre. Mission Zero vous montre la page.</text><text class="lbl s" x="800" y="104" text-anchor="middle" style="font-size:22px">La tuberculose. Une maladie vieille comme l'humanité. On sait la soigner depuis 1950.</text></g>
+      <g class="a" data-k="2" data-d="1300"><path class="arrow" pathLength="1" d="M0 470 L510 470 L530 420 L550 520 L570 470 L600 470"/></g>
+      <g class="b" data-k="3" data-d="3200"><rect class="box amber" x="340" y="230" width="380" height="175" rx="16"/><text class="lbl amber" x="530" y="282" text-anchor="middle" style="font-size:44px;font-weight:700" id="m1n">10,8 millions</text><text class="lbl s" x="530" y="314" text-anchor="middle" id="m1t">de personnes tombées malades en 2023</text><text class="lbl xs" x="530" y="346" text-anchor="middle" id="m1q">« an estimated 10.8 million people fell ill with TB in 2023 »</text><text class="lbl xs" x="530" y="368" text-anchor="middle" id="m1q2"></text><text class="lbl xs okt" x="530" y="392" text-anchor="middle" id="m1s">OMS · Global TB Report 2024 · vérifié ✔</text></g>
+      <g class="a" data-k="4" data-d="1300"><path class="arrow" pathLength="1" d="M600 470 L940 470 L960 420 L980 520 L1000 470 L1030 470"/></g>
+      <g class="b" data-k="5" data-d="3200"><rect class="box red" x="770" y="535" width="380" height="175" rx="16"/><text class="lbl red" x="960" y="587" text-anchor="middle" style="font-size:44px;font-weight:700" id="m2n">1,25 million</text><text class="lbl s" x="960" y="619" text-anchor="middle" id="m2t">de morts en 2023, plus que toute autre infection</text><text class="lbl xs" x="960" y="651" text-anchor="middle" id="m2q">« TB caused an estimated 1.25 million deaths in 2023 »</text><text class="lbl xs" x="960" y="673" text-anchor="middle" id="m2q2"></text><text class="lbl xs okt" x="960" y="697" text-anchor="middle" id="m2s">OMS · Global TB Report 2024 · vérifié ✔</text></g>
+      <g class="a" data-k="6" data-d="1300"><path class="arrow" pathLength="1" d="M1030 470 L1370 470 L1390 420 L1410 520 L1430 470 L1600 470"/></g>
+      <g class="b" data-k="7" data-d="3200"><rect class="box ok" x="1200" y="230" width="380" height="175" rx="16"/><text class="lbl acc" x="1390" y="282" text-anchor="middle" style="font-size:44px;font-weight:700" id="m3n">88 %</text><text class="lbl s" x="1390" y="314" text-anchor="middle" id="m3t">guérissent, soignés, quand le microbe est sensible</text><text class="lbl xs" x="1390" y="346" text-anchor="middle" id="m3q">« The treatment success rate for drug-susceptible TB</text><text class="lbl xs" x="1390" y="368" text-anchor="middle" id="m3q2">remains high (at 88%) »</text><text class="lbl xs okt" x="1390" y="392" text-anchor="middle" id="m3s">OMS · Global TB Report 2024 · vérifié ✔</text></g>
+      <g class="b" data-k="8" data-d="2600"><text class="lbl" x="800" y="800" text-anchor="middle" style="font-size:28px">Trois chiffres. Trois pages. Aucun inventé.</text><text class="lbl s" x="800" y="840" text-anchor="middle" style="font-size:22px" id="mproof">Vraie mission du 29 octobre 2026 : 5 citations vérifiées, 0 rejetée, juge 10/10, 25 appels au modèle, 10 centimes, 2 minutes.</text></g>
+      <g class="b" data-k="9" data-d="2400"><text class="lbl amber" x="800" y="160" text-anchor="middle" style="font-size:26px">Et la page dit : on sait soigner. Reste à agir.</text></g>
+    </svg>
+    <div class="caption" id="cM"></div>
+    <div class="bar"><button data-play="sM">▶ Rejouer</button><button data-all="sM">Tout afficher</button></div>
+  </section>
 
   <section class="scene" id="s1">
     <header><h2>1 · CONSTAT</h2><span class="t">scène 0</span></header>
@@ -171,109 +265,148 @@ svg { width:100%; height:auto; display:block; font-family: "Segoe UI", system-ui
     <div class="bar"><button data-play="s3">▶ Rejouer</button><button data-all="s3">Tout afficher</button></div>
   </section>
 
-  <section class="scene" id="s4">
-    <header><h2>4 · MISSION ZERO, DE LA RECHERCHE AU PILOTAGE</h2><span class="t">scènes 3, 4 et 11</span></header>
-    <svg viewBox="0 0 1600 900" role="img" aria-label="La boucle de Mission Zero : objectif, hypothèses, actions, évaluation, leçons, preuves ; il apprend, il teste, il sécurise ; déjà la recherche et la sécurité, demain tout domaine">
-      <g class="b" data-k="1"><text class="lbl acc" x="800" y="80" text-anchor="middle" style="font-size:56px;letter-spacing:.04em">MISSION ZERO</text><text class="lbl s" x="800" y="118" text-anchor="middle" style="font-size:22px">un objectif, aucun plan, et l'ordre de prouver</text></g>
-      <g class="b" data-k="2" data-ring="o1"><circle class="ring" id="o1" cx="800" cy="230" r="58"/><text class="lbl m" x="800" y="237" text-anchor="middle">Objectif</text></g>
-      <g class="a" data-k="3"><path class="arrow" pathLength="1" d="M850 266 L930 324"/></g>
-      <g class="b" data-k="4" data-ring="o2"><circle class="ring" id="o2" cx="980" cy="360" r="58"/><text class="lbl m" x="980" y="367" text-anchor="middle">Hypothèses</text></g>
-      <g class="a" data-k="5"><path class="arrow" pathLength="1" d="M961 419 L929 521"/></g>
-      <g class="b" data-k="6" data-ring="o3"><circle class="ring" id="o3" cx="910" cy="580" r="58"/><text class="lbl m" x="910" y="587" text-anchor="middle">Actions</text></g>
-      <g class="a" data-k="7"><path class="arrow" pathLength="1" d="M848 580 L752 580"/></g>
-      <g class="b" data-k="8" data-ring="o4"><circle class="ring" id="o4" cx="690" cy="580" r="58"/><text class="lbl m" x="690" y="587" text-anchor="middle">Évaluation</text></g>
-      <g class="a" data-k="9"><path class="arrow" pathLength="1" d="M671 521 L639 419"/></g>
-      <g class="b" data-k="10" data-ring="o5"><circle class="ring" id="o5" cx="620" cy="360" r="58"/><text class="lbl m" x="620" y="367" text-anchor="middle">Leçons</text></g>
-      <g class="a" data-k="11"><path class="arrow" pathLength="1" d="M670 324 L750 266"/></g>
-      <g class="b" data-k="12"><circle class="ring lit" cx="800" cy="420" r="62"/><text class="lbl m acc" x="800" y="414" text-anchor="middle">Preuves</text><text class="lbl xs" x="800" y="438" text-anchor="middle">citation exacte</text></g>
-      <g class="b" data-k="13"><rect class="box gold" x="1180" y="190" width="380" height="110" rx="16"/><text class="lbl m acc" x="1370" y="228" text-anchor="middle">🧠 Il apprend</text><text class="lbl xs" x="1370" y="256" text-anchor="middle">des leçons après chaque mission, 30 gardées</text><text class="lbl xs" x="1370" y="280" text-anchor="middle">et il les remet à zéro lui-même si elles nuisent</text></g>
-      <g class="b" data-k="14"><rect class="box gold" x="1180" y="320" width="380" height="110" rx="16"/><text class="lbl m acc" x="1370" y="358" text-anchor="middle">🧪 Il teste</text><text class="lbl xs" x="1370" y="386" text-anchor="middle">un vérificateur, un contradicteur, un juge</text><text class="lbl xs" x="1370" y="410" text-anchor="middle">cinq contrôles, et il se refuse lui-même</text></g>
-      <g class="b" data-k="15"><rect class="box gold" x="1180" y="450" width="380" height="110" rx="16"/><text class="lbl m acc" x="1370" y="488" text-anchor="middle">🛡 Il sécurise</text><text class="lbl xs" x="1370" y="516" text-anchor="middle">patchs prouvés, journal haché, secrets masqués</text><text class="lbl xs" x="1370" y="540" text-anchor="middle">jamais sur le site, un humain applique</text></g>
-      <g class="b" data-k="16"><rect class="box ok" x="40" y="190" width="380" height="170" rx="16"/><text class="lbl m" x="230" y="228" text-anchor="middle">✔ Déjà : la recherche</text><text class="lbl xs" x="230" y="258" text-anchor="middle">un rapport de 117 pages lu en entier</text><text class="lbl xs" x="230" y="282" text-anchor="middle">chaque chiffre cité mot pour mot</text><text class="lbl xs okt" x="230" y="312" text-anchor="middle">juge 10/10 · 6 centimes</text><text class="lbl xs" x="230" y="340" text-anchor="middle">5 missions, 5 fois 10/10</text></g>
-      <g class="b" data-k="17"><rect class="box ok" x="40" y="390" width="380" height="170" rx="16"/><text class="lbl m" x="230" y="428" text-anchor="middle">✔ Déjà : la sécurité</text><text class="lbl xs" x="230" y="458" text-anchor="middle">15 failles de la boutique, 10 correctifs proposés, 5 sous réserve</text><text class="lbl xs" x="230" y="482" text-anchor="middle">7 constats d'un vrai site, 5 confirmés</text><text class="lbl xs okt" x="230" y="512" text-anchor="middle">dix centimes par faille</text><text class="lbl xs" x="230" y="540" text-anchor="middle">une mission en poids ouverts, même résultat</text></g>
-      <g class="b" data-k="18" data-d="500"><rect class="chip next" x="60" y="700" width="220" height="44" rx="22"/><text class="chip-t" x="170" y="728" text-anchor="middle" style="font-size:17px">conformité, audits</text></g>
-      <g class="b" data-k="19" data-d="500"><rect class="chip next" x="300" y="700" width="240" height="44" rx="22"/><text class="chip-t" x="420" y="728" text-anchor="middle" style="font-size:17px">infrastructure, serveurs</text></g>
-      <g class="b" data-k="20" data-d="500"><rect class="chip next" x="560" y="700" width="240" height="44" rx="22"/><text class="chip-t" x="680" y="728" text-anchor="middle" style="font-size:17px">supervision, incidents</text></g>
-      <g class="b" data-k="21" data-d="500"><rect class="chip next" x="820" y="700" width="260" height="44" rx="22"/><text class="chip-t" x="950" y="728" text-anchor="middle" style="font-size:17px">pilotage d'un système</text></g>
-      <g class="b" data-k="22" data-d="500"><rect class="chip next" x="1100" y="700" width="220" height="44" rx="22"/><text class="chip-t" x="1210" y="728" text-anchor="middle" style="font-size:17px">recherche scientifique</text></g>
-      <g class="b" data-k="23" data-d="500"><rect class="chip next" x="1340" y="700" width="200" height="44" rx="22"/><text class="chip-t" x="1440" y="728" text-anchor="middle" style="font-size:17px">votre métier</text></g>
-      <g class="b" data-k="24"><text class="lbl amber" x="800" y="670" text-anchor="middle" style="font-size:24px">Demain, le même agent, d'autres domaines</text><text class="lbl" x="800" y="800" text-anchor="middle" style="font-size:30px">De la recherche au pilotage : partout où il faut chercher, tester, prouver.</text><text class="lbl s" x="800" y="840" text-anchor="middle">Aujourd'hui, il sécurise des sites. La boucle, elle, ne sait pas ce qu'est un site.</text></g>
+  <section class="scene" id="sE">
+    <header><h2>2 · L'ESPACE : ON VA QUELQUE PART</h2><span class="t">une vraie mission de Mission Zero</span></header>
+    <svg viewBox="0 0 1600 900" role="img" aria-label="Un ciel d'étoiles qui défile, un compteur de vitesse qui monte, une flèche qui garde le cap : vers Hercule, autour de la galaxie, vers le Lion, vers le Grand Attracteur ; chaque chiffre avec sa page">
+      <g id="stars"></g>
+      <g class="b" data-k="1" data-stars="1" data-d="2600"><text class="lbl acc" x="800" y="64" text-anchor="middle" style="font-size:34px">Une IA vous dit un chiffre. Mission Zero vous montre la page.</text></g>
+      <g class="b" data-k="2" data-d="1800"><text class="lbl s" x="60" y="130" style="font-size:22px">La question d'un enfant : « On va quelque part ? »</text><text class="lbl" x="60" y="200" style="font-size:64px;font-weight:800" id="speed">0</text><text class="lbl s" x="60" y="236" style="font-size:20px">kilomètres par seconde, et vous ne sentez rien</text></g>
+      <g class="a" data-k="3"><path class="arrow" pathLength="1" d="M0 775 L58 775"/></g>
+      <g class="b" data-k="4" data-speed="20"><rect class="box gold" x="60" y="700" width="360" height="150" rx="16"/><text class="lbl m acc" x="240" y="736" text-anchor="middle">1 · Vers Hercule</text><text class="lbl" x="240" y="770" text-anchor="middle">20 km/s</text><text class="lbl xs" x="240" y="800" text-anchor="middle" id="q1a">« in the constellation Hercules, toward which the Sun is moving »</text><text class="lbl xs" x="240" y="822" text-anchor="middle" id="q1b">« about 20 km/s » (Sampson, 2007)</text><text class="lbl xs okt" x="240" y="842" text-anchor="middle" id="s1">Univ. du Maryland, astronomie · vérifié ✔</text></g>
+      <g class="a" data-k="5"><path class="arrow" pathLength="1" d="M240 698 L240 595 L438 595"/></g>
+      <g class="b" data-k="6" data-speed="230"><rect class="box gold" x="440" y="520" width="360" height="150" rx="16"/><text class="lbl m acc" x="620" y="556" text-anchor="middle">2 · Autour du centre de la galaxie</text><text class="lbl" x="620" y="590" text-anchor="middle">230 km/s</text><text class="lbl xs" x="620" y="620" text-anchor="middle" id="q2a">« We are moving at an average velocity of 828,000 km/hr »</text><text class="lbl xs" x="620" y="642" text-anchor="middle" id="q2b">« about 230 million years … one complete trip around the Milky Way »</text><text class="lbl xs okt" x="620" y="662" text-anchor="middle" id="s2">NASA StarChild · NASA, Sun In Depth · vérifié ✔</text></g>
+      <g class="a" data-k="7"><path class="arrow" pathLength="1" d="M620 518 L620 415 L818 415"/></g>
+      <g class="b" data-k="8" data-speed="370"><rect class="box gold" x="820" y="340" width="360" height="150" rx="16"/><text class="lbl m acc" x="1000" y="376" text-anchor="middle">3 · Par rapport au fond du ciel, vers le Lion</text><text class="lbl" x="1000" y="410" text-anchor="middle">369 km/s</text><text class="lbl xs" x="1000" y="440" text-anchor="middle" id="q3a">« v = 369 km/s towards a point on the boundary</text><text class="lbl xs" x="1000" y="462" text-anchor="middle" id="q3b">of the constellations of Crater and Leo »</text><text class="lbl xs okt" x="1000" y="482" text-anchor="middle" id="s3">Univ. de Cambridge, cours de cosmologie · vérifié ✔</text></g>
+      <g class="a" data-k="9"><path class="arrow" pathLength="1" d="M1000 338 L1000 235 L1198 235"/></g>
+      <g class="b" data-k="10" data-speed="631"><rect class="box gold" x="1200" y="160" width="360" height="150" rx="16"/><text class="lbl m acc" x="1380" y="196" text-anchor="middle">4 · Vers le Grand Attracteur</text><text class="lbl" x="1380" y="230" text-anchor="middle">631 km/s</text><text class="lbl xs" x="1380" y="260" text-anchor="middle" id="q4a">« motion of the Local Group of 631 km/s reflected</text><text class="lbl xs" x="1380" y="282" text-anchor="middle" id="q4b">in the cosmic microwave background dipole »</text><text class="lbl xs okt" x="1380" y="302" text-anchor="middle" id="s4">Tully et al., Nature 2014, arXiv 1409.0880 · vérifié ✔</text></g>
+      <g class="b" data-k="11" data-d="600"><circle cx="1600" cy="235" r="80" fill="url(#dark)"/><text class="lbl amber" x="1380" y="350" text-anchor="middle" style="font-size:22px">caché derrière notre galaxie</text><text class="lbl xs" x="1380" y="376" text-anchor="middle">on y va, on ne le voit pas</text></g>
+      <g class="a" data-k="12" data-d="1400"><path class="arrow" pathLength="1" d="M1562 235 L1600 235"/></g>
+      <g class="b" data-k="13" data-d="2600"><text class="lbl" x="800" y="880" text-anchor="middle" style="font-size:28px" id="final-sE">Vous bougez à 631 km par seconde vers quelque chose que personne n'a vu. Prouvé, page par page.</text></g>
+      <g class="b" data-k="14" data-d="2400"><rect class="box ok" x="620" y="110" width="560" height="110" rx="16"/><text class="lbl m acc" x="900" y="148" text-anchor="middle">Le dossier de preuves, ouvert à tous</text><text class="lbl xs" x="900" y="176" text-anchor="middle" id="proof1">7 missions jouées le 29 octobre 2026 : journal, citations, verdicts, note du juge</text><text class="lbl xs okt" x="900" y="200" text-anchor="middle" id="proof2">149 centimes pour la journée · médecine 10/10 · espace 3 à 5/10 · chaque chiffre affiché est vérifié</text></g>
+      <g class="a" data-k="15" data-d="1200"><path class="arrow ghost" pathLength="1" d="M1600 235 L1600 236"/></g>
     </svg>
-    <div class="caption" id="c4"></div>
-    <div class="bar"><button data-play="s4">▶ Rejouer</button><button data-all="s4">Tout afficher</button></div>
+    <div class="caption" id="cE"></div>
+    <div class="bar"><button data-play="sE">▶ Rejouer</button><button data-all="sE">Tout afficher</button></div>
   </section>
+
 </div>
 <script>
 (function () {
   var SVGNS = 'http://www.w3.org/2000/svg', XLINK = 'http://www.w3.org/1999/xlink';
   var CAP = {
-    s1: ['Une boutique en ligne. Elle tourne, les clients achètent.', 'Les commandes tombent.', null, 'Tout va bien.', 'Le site est conforme. Aujourd\'hui.', 'Une équipe. Une personne, souvent. Le site, les clients, et la sécurité.', 'Une faille : aucun en-tête de sécurité.', 'Rouge.', 'Elle corrige à la main, quand elle a le temps.', 'Corrigé.', 'Vert.', 'Une autre : le prix peut être changé par le client.', 'Rouge.', 'Elle corrige, le soir, après les commandes.', 'Corrigé.', 'Vert.', 'Deux de plus : la carte bancaire en clair…', '…et une bibliothèque de 2012, quatre failles connues.', 'Rouge.', 'Pas le temps. Pas les compétences. Pas le budget.', 'Une cinquième. Elle restera ouverte.', 'Rouge. Et ça ne redeviendra pas vert.', '<b>8 sites sur 10 restent exposés.</b> Ça arrive. C\'est certain. La seule question, c\'est quand.'],
+    s0: ['<b>Mission Zero.</b> Un objectif, aucun plan, et l\'ordre de prouver.', 'Suivez le point. Il ne s\'arrêtera plus.', 'Un objectif.', 'Il fait des hypothèses.', 'Il agit : cherche, lit, teste.', 'Il se note, sévèrement.', 'Il garde une leçon. Et il recommence.', 'Il tourne jusqu\'à la <b>preuve</b> : la citation exacte, sur la page.', 'Il apprend : une leçon après chaque mission, et il remet sa mémoire à zéro lui-même quand elle nuit.', 'Il teste : un vérificateur, un contradicteur, un juge, cinq contrôles. Il se refuse lui-même.', 'Il sécurise : des patchs prouvés, un journal haché, jamais sur le site.', 'Il sait déjà faire la recherche : dix sur dix, six centimes.', 'Et la sécurité : des failles corrigées, avec preuves.', 'Mais la boucle ne sait pas ce qu\'est un site. Elle sait chercher, lire, prouver. <b>Où l\'envoyer ?</b>', 'Suivez le point.'],
+    sB: ['Le point arrive. La boucle attend un objectif.', 'Chercher, lire, prouver : la boucle ne change jamais.', 'L\'espace…', 'la médecine…', 'un chiffre de l\'INSEE…', 'une norme sanitaire…', 'un article de loi…', 'une décision de justice…', 'un appel d\'offres…', 'un rapport annuel…', 'un brevet…', 'la sécurité d\'un site…', 'une norme produit…', 'votre métier. <b>Zéro code : un objectif.</b>', 'Tout vient de données gratuites. Une source payante ? Il demande, vous fixez le budget, il la paie et la cite.', 'Premier voyage : la médecine.', 'Pour montrer que ça sert. À des vies.'],
+    sB2: ['Le point revient.', 'La boucle, inchangée.', null, null, null, null, null, null, null, null, null, null, null, null, 'La médecine est prouvée. Au tour de la sécurité.', 'La médecine : prouvée, page par page.', 'Deuxième voyage : la sécurité d\'un site.', 'Du concret. Et on en a besoin.'],
+    sB3: ['Le point revient une dernière fois.', 'La boucle, toujours la même.', null, null, null, null, null, null, null, null, null, null, null, null, 'Deux voyages prouvés. Il en reste un.', 'La médecine : prouvée.', 'La sécurité : prouvée.', 'Dernier voyage : l\'espace.', 'Accrochez-vous.'],
+    sM: ['<b>Une IA vous dit un chiffre. Mission Zero vous montre la page.</b> La tuberculose : vieille comme l\'humanité, soignable depuis 1950.', 'Suivez le point. C\'est un battement de cœur.', '<b>10,8 millions</b> de personnes tombées malades en 2023. Mission Zero l\'a lu dans le rapport de l\'OMS, et le cite mot pour mot.', null, '<b>1,25 million</b> en sont mortes. Plus que de toute autre infection au monde.', null, 'Et pourtant, soignés, <b>88 % guérissent</b> quand le microbe est sensible aux médicaments. La page le dit.', 'Trois chiffres. Trois pages. Aucun inventé. Une vraie mission, quelques centimes.', 'Et la page dit : on sait soigner. Reste à agir.'],
+    sE: ['<b>Une IA vous dit un chiffre. Mission Zero vous montre la page.</b>', 'La question d\'un enfant : « On va quelque part ? » Suivez le point : chaque chiffre arrive avec sa page.', null, 'Oui. Le Soleil fonce vers la constellation d\'Hercule, à 20 km par seconde.', null, 'Et il tourne autour du centre de la galaxie, à 230 km par seconde. Un tour : 230 millions d\'années. La NASA le dit, mot pour mot.', null, 'Par rapport au fond du ciel, la lumière la plus vieille de l\'univers : 369 km par seconde, vers le Lion et la Coupe. Mesuré par Planck, cité par Cambridge.', null, 'Et toute la Voie lactée coule, avec 100 000 galaxies, vers le Grand Attracteur. 631 km par seconde, Tully 2014, mot pour mot.', 'Le Grand Attracteur est caché derrière notre propre galaxie. On y va. On ne le voit pas.', 'Ce qui tire et ce qui pousse : encore débattu. Mission Zero l\'écrit tel quel : mesuré, pas vu, pas tranché. Il n\'invente pas la suite.', '<b>Vous bougez à 631 km par seconde vers quelque chose que personne n\'a vu.</b> Prouvé, page par page.', 'Chaque chiffre vient d\'une vraie mission : journal, citations, verdicts, note du juge. Le juge est sévère : 3 à 5 sur 10 quand la source n\'est pas l\'article lui-même. Il le dit.', 'Le point continue. Il ne s\'arrête jamais.'],
+        s1: ['Une boutique en ligne. Elle tourne, les clients achètent.', 'Les commandes tombent.', null, 'Tout va bien.', 'Le site est conforme. Aujourd\'hui.', 'Une équipe. Une personne, souvent. Le site, les clients, et la sécurité.', 'Une faille : aucun en-tête de sécurité.', 'Rouge.', 'Elle corrige à la main, quand elle a le temps.', 'Corrigé.', 'Vert.', 'Une autre : le prix peut être changé par le client.', 'Rouge.', 'Elle corrige, le soir, après les commandes.', 'Corrigé.', 'Vert.', 'Deux de plus : la carte bancaire en clair…', '…et une bibliothèque de 2012, quatre failles connues.', 'Rouge.', 'Pas le temps. Pas les compétences. Pas le budget.', 'Une cinquième. Elle restera ouverte.', 'Rouge. Et ça ne redeviendra pas vert.', '<b>8 sites sur 10 restent exposés.</b> Ça arrive. C\'est certain. La seule question, c\'est quand.'],
     s2: ['Le même site, ses cinq failles.', null, 'Un scanner les liste. N\'importe lequel : MYTHOZOR ARGUS, un scanner de CVE, un outil de dépendances.', null, '<b>Mission Zero part de zéro</b> : aucun plan, aucune mémoire, une copie du site, et l\'ordre de prouver.', null, 'Un premier correctif, appliqué sur une copie.', null, 'Contrôle 1 : les tests du client passent. Vert.', null, 'Contrôle 2 : le scanner ne voit plus la faille. Vert.', null, 'Contrôle 3 : Muse Spark regarde la page…', '…et le formulaire de paiement a perdu ses champs. <b>Rouge.</b>', null, '<b>Refusé</b>, par lui-même. Il lit pourquoi.', null, 'Un second correctif, sur une copie neuve. Le rouge disparaît.', 'Les contrôles 1 et 2 sont rejoués : toujours verts.', null, 'Regard : vert, cette fois.', null, 'Relecture : il corrige la cause, pas le symptôme. Vert.', null, 'Réserves : rien à cacher. Vert.', null, 'Cinq verts : <b>confirmé</b>, avec le patch, les preuves et le journal haché. Un humain applique.', 'Il part de zéro, se refuse lui-même, et confirme. Seul.'],
     s3: ['Tout tourne chez vous. Rien ne sort.', 'Votre site, sur votre serveur, en ligne tous les jours.', '<b>MYTHOZOR ARGUS</b> le surveille en continu, 35 contrôles, jour et nuit.', null, null, null, null, null, null, 'Tout est vert.', 'Une nouvelle faille arrive. MYTHOZOR ARGUS la voit, en direct. Rouge.', null, '<b>Mission Zero est branché</b> : il la prend aussitôt. Copie, correctif, cinq contrôles, patch, preuves.', null, 'Vous validez d\'un clic. Ou en automatique : appliqué tout seul, vous êtes prévenu. Les deux existent, vous choisissez.', null, 'Et MYTHOZOR ARGUS vérifie à nouveau.', 'Le rouge est repassé au vert. Sans vous réveiller.', 'MYTHOZOR.com, un produit de CRYPTOR.AGENCY.'],
-    s4: ['<b>Mission Zero.</b> Un objectif, aucun plan, et l\'ordre de prouver.', 'Un objectif.', null, 'Il fait des hypothèses.', null, 'Il agit : cherche, lit, teste.', null, 'Il s\'évalue, sévèrement.', null, 'Il garde une leçon.', 'Et il recommence, jusqu\'à la preuve.', 'Il n\'écrit que ce qu\'il a lu, avec la citation exacte.', 'Il apprend : des leçons après chaque mission, et il remet sa mémoire à zéro lui-même quand elle nuit.', 'Il teste : un vérificateur, un contradicteur, un juge, cinq contrôles. Il se refuse lui-même.', 'Il sécurise : des patchs prouvés, un journal haché, jamais sur le site.', 'Déjà fait : la recherche. Un rapport de 117 pages, chaque chiffre cité, dix sur dix.', 'Déjà fait : la sécurité. Quinze failles d\'une boutique, sept constats d\'un vrai site.', 'Demain, le même agent, ailleurs : la conformité…', 'l\'infrastructure…', 'la supervision…', 'le pilotage d\'un système…', 'la recherche scientifique…', 'votre métier.', 'De la recherche au pilotage : partout où il faut chercher, tester, prouver. La boucle ne sait pas ce qu\'est un site.']
   };
-  var timers = {};
-  function steps(id) { return Array.prototype.slice.call(document.querySelectorAll('#' + id + ' [data-k]')); }
+  var timers = {}, pass = {};
+  function steps(id) { var p = pass[id] || 'all'; return Array.prototype.slice.call(document.querySelectorAll('#' + id + ' [data-k]')).filter(function (s) { return !s.dataset.pass || p === 'all' || s.dataset.pass === p; }); }
+  function capId(id) { return 'c' + id.slice(1); }
   var n = 0;
   document.querySelectorAll('.a .arrow').forEach(function (p) {
     n += 1; p.id = p.id || 'p' + n;
+    var orbit = p.classList.contains('orbit');
     var c = document.createElementNS(SVGNS, 'circle'); c.setAttribute('r', '8'); c.setAttribute('class', 'runner');
-    var m = document.createElementNS(SVGNS, 'animateMotion'); m.setAttribute('dur', '1s'); m.setAttribute('begin', 'indefinite'); m.setAttribute('fill', 'freeze');
+    var m = document.createElementNS(SVGNS, 'animateMotion'); m.setAttribute('dur', orbit ? '6s' : '1s'); m.setAttribute('begin', 'indefinite'); m.setAttribute('fill', 'freeze'); if (orbit) m.setAttribute('repeatCount', 'indefinite');
     var mp = document.createElementNS(SVGNS, 'mpath'); mp.setAttributeNS(XLINK, 'xlink:href', '#' + p.id); mp.setAttribute('href', '#' + p.id);
     m.appendChild(mp); c.appendChild(m); p.parentNode.appendChild(c);
+    if (orbit) p.style.transitionDuration = '6s';
   });
+  // Le compteur de vitesse du chapitre L'espace : il monte, il ne redescend jamais.
+  var speedTimer = null;
+  function tweenSpeed(to) {
+    var el = document.getElementById('speed'); if (!el) return; var from = Number(el.textContent) || 0, t0 = Date.now(); clearInterval(speedTimer);
+    speedTimer = setInterval(function () { var k = Math.min(1, (Date.now() - t0) / 900); el.textContent = Math.round(from + (to - from) * (1 - Math.pow(1 - k, 3))); if (k >= 1) clearInterval(speedTimer); }, 40);
+    starSpeed = 0.15 + to / 900;
+  }
+  // Le ciel d'étoiles : des points qui viennent vers vous, comme par le pare-brise.
+  var starSpeed = 0.2, starsOn = false, stars = [], starEls = [], lastT = 0;
+  function initStars() {
+    var g = document.getElementById('stars'); if (!g || starEls.length) return;
+    for (var i = 0; i < 140; i++) { var c = document.createElementNS(SVGNS, 'circle'); c.setAttribute('fill', '#fff'); g.appendChild(c); starEls.push(c); stars.push({ x: Math.random() * 2 - 1, y: Math.random() * 2 - 1, z: Math.random() }); }
+  }
+  function tickStars(t) {
+    if (!starsOn) return; var dt = Math.min(0.05, (t - lastT) / 1000 || 0.016); lastT = t;
+    stars.forEach(function (s, i) {
+      s.z -= starSpeed * dt; if (s.z <= 0.03) { s.x = Math.random() * 2 - 1; s.y = Math.random() * 2 - 1; s.z = 1; }
+      var sx = 800 + s.x / s.z * 700, sy = 450 + s.y / s.z * 420;
+      if (sx < -20 || sx > 1620 || sy < -20 || sy > 920) { s.x = Math.random() * 2 - 1; s.y = Math.random() * 2 - 1; s.z = 1; return; }
+      var e = starEls[i]; e.setAttribute('cx', sx.toFixed(1)); e.setAttribute('cy', sy.toFixed(1)); e.setAttribute('r', ((1 - s.z) * 3 + 0.4).toFixed(2)); e.setAttribute('opacity', ((1 - s.z) * 0.8 + 0.1).toFixed(2));
+    });
+    requestAnimationFrame(tickStars);
+  }
+  function startStars() { initStars(); if (!starsOn) { starsOn = true; lastT = 0; requestAnimationFrame(tickStars); } }
+  function stopStars() { starsOn = false; }
   function act(step) {
     (step.dataset.hide || '').split(',').filter(Boolean).forEach(function (h) { document.querySelector(h).classList.add('hidden'); });
     (step.dataset.ring || '').split(',').filter(Boolean).forEach(function (r) { var id = r.split(':')[0], mode = r.split(':')[1] || 'lit'; var el = document.getElementById(id); el.classList.remove('lit', 'bad'); if (mode !== 'off') el.classList.add(mode); });
-    (step.dataset.chip || '').split(',').filter(Boolean).forEach(function (r) { var id = r.split(':')[0], mode = r.split(':')[1] || 'ok'; var el = document.getElementById(id); el.classList.remove('ok', 'ko'); el.classList.add(mode); });
+    (step.dataset.chip || '').split(',').filter(Boolean).forEach(function (r) { var id = r.split(':')[0], mode = r.split(':')[1] || 'ok'; var el = document.getElementById(id); if (el) { el.classList.remove('ok', 'ko'); el.classList.add(mode); } });
+    if (step.dataset.speed) tweenSpeed(Number(step.dataset.speed));
+    if (step.dataset.stars) startStars();
+    if (step.dataset.zoom) { var z = document.querySelector(step.dataset.zoom); if (z) setTimeout(function () { z.classList.add('zoom'); }, 900); }
   }
   function fire(step) {
     step.classList.add('on'); act(step);
     if (step.classList.contains('a')) {
-      step.querySelectorAll('.runner').forEach(function (c) { c.classList.add('go'); var m = c.querySelector('animateMotion'); try { m.beginElement(); } catch (e) { /* sans SMIL, le trait se dessine quand même */ } setTimeout(function () { c.classList.remove('go'); }, 1050); });
-      setTimeout(function () { step.classList.add('drawn'); }, 1000);
+      var orbit = !!step.querySelector('.orbit');
+      step.querySelectorAll('.runner').forEach(function (c) { c.classList.add('go'); var m = c.querySelector('animateMotion'); try { m.beginElement(); } catch (e) { /* sans SMIL, le trait se dessine quand même */ } if (!orbit) setTimeout(function () { c.classList.remove('go'); }, 1050); });
+      setTimeout(function () { step.classList.add('drawn'); }, orbit ? 6000 : 1000);
     } else { step.classList.add('focus'); setTimeout(function () { step.classList.remove('focus'); }, 1200); }
   }
   function reset(id) {
-    steps(id).forEach(function (s) { s.classList.remove('on', 'drawn', 'focus', 'hidden'); });
+    Array.prototype.slice.call(document.querySelectorAll('#' + id + ' [data-k]')).forEach(function (s) { s.classList.remove('on', 'drawn', 'focus', 'hidden', 'zoom'); });
+    document.querySelectorAll('#' + id + ' .zoom').forEach(function (z) { z.classList.remove('zoom'); });
     document.querySelectorAll('#' + id + ' .ring').forEach(function (r) { if (r.id) r.classList.remove('lit', 'bad'); });
-    document.querySelectorAll('#' + id + ' .chip').forEach(function (r) { r.classList.remove('ok', 'ko'); });
-    document.getElementById('c' + id.slice(1)).innerHTML = '';
+    document.querySelectorAll('#' + id + ' .chip').forEach(function (r) { if (r.id) r.classList.remove('ok', 'ko'); });
+    document.querySelectorAll('#' + id + ' .runner').forEach(function (c) { c.classList.remove('go'); });
+    if (id === 'sE') { stopStars(); var sp = document.getElementById('speed'); if (sp) sp.textContent = '0'; }
+    document.getElementById(capId(id)).innerHTML = '';
   }
-  function caption(id, k) { var t = CAP[id][k - 1]; if (t) document.getElementById('c' + id.slice(1)).innerHTML = t; }
-  function play(id, done) {
-    clearTimeout(timers[id]); document.getElementById(id).dataset.played = '1'; reset(id);
-    var list = steps(id), k = 0;
-    (function next() { if (k >= list.length) { if (done) timers[id] = setTimeout(done, 2200); return; } var s = list[k]; k += 1; fire(s); caption(id, k); var d = Number(s.dataset.d) || (s.classList.contains('a') ? 1100 : 1300); timers[id] = setTimeout(next, d); })();
+  function caps(id) { if (id !== 'sB') return CAP[id]; return pass[id] === 'securite' ? CAP.sB2 : pass[id] === 'espace' ? CAP.sB3 : CAP.sB; }
+  function caption(id, k) { var t = caps(id)[k - 1]; if (t) document.getElementById(capId(id)).innerHTML = t; }
+  function play(id, done, p) {
+    clearTimeout(timers[id]); pass[id] = p || pass[id] || 'all'; document.getElementById(id).dataset.played = '1'; reset(id);
+    var list = steps(id), k = 0, quick = (id === 'sB' && pass[id] !== 'medecine' && pass[id] !== 'all');
+    (function next() { if (k >= list.length) { if (done) timers[id] = setTimeout(done, 2200); return; } var s = list[k]; k += 1; fire(s); caption(id, k); var d = Number(s.dataset.d) || (s.classList.contains('a') ? 1100 : 1300); if (quick && !s.dataset.pass) d = Math.min(d, 220); timers[id] = setTimeout(next, d); })();
   }
-  function all(id) { clearTimeout(timers[id]); document.getElementById(id).dataset.played = '1'; reset(id); var list = steps(id); list.forEach(function (s) { s.classList.add('on', 'drawn'); act(s); }); caption(id, list.length); }
-  document.querySelectorAll('[data-play]').forEach(function (b) { b.addEventListener('click', function () { play(b.dataset.play); }); });
+  function all(id) { clearTimeout(timers[id]); pass[id] = id === 'sB' ? 'espace' : 'all'; document.getElementById(id).dataset.played = '1'; reset(id); var list = steps(id); list.forEach(function (s) { s.classList.add('on', 'drawn'); act(s); if (s.querySelector('.orbit')) fire(s); }); caption(id, list.length); }
+  document.querySelectorAll('[data-play]').forEach(function (b) { b.addEventListener('click', function () { play(b.dataset.play, null, 'all'); }); });
   document.querySelectorAll('[data-all]').forEach(function (b) { b.addEventListener('click', function () { all(b.dataset.all); }); });
-  // Le film : carte-titre, chapitre, carte-titre, chapitre… puis la carte de fin.
-  var IDS = ['s1', 's2', 's3', 's4'];
+  // Le film : carte-titre (le point la traverse), chapitre, carte-titre, chapitre… puis la carte de fin. Le fil ne casse jamais.
   var CH = [
-    { id: 's1', n: '1', h: 'CONSTAT', s: 'Un commerce qui tourne. Une équipe qui corrige à la main. Les failles reviennent.' },
-    { id: 's2', n: '2', h: 'CORRECTION AVEC MISSION ZERO', s: 'Il part de zéro, se refuse lui-même, et confirme. Seul.' },
-    { id: 's3', n: '3', h: 'MYTHOZOR ARGUS, DÉTECTION EN DIRECT + CORRECTION AVEC MISSION ZERO', s: 'Chez vous : une faille arrive, elle est corrigée. Vous validez, ou automatique.' },
-    { id: 's4', n: '4', h: 'MISSION ZERO, DE LA RECHERCHE AU PILOTAGE', s: 'Il apprend, il teste, il sécurise. Aujourd\'hui des sites. Demain, votre métier.' },
+    { id: 's0', n: '1', h: 'LA BOUCLE', s: 'Un objectif, aucun plan, et l\'ordre de prouver. Suivez le point.' },
+    { id: 'sB', pass: 'medecine', n: '', h: 'OÙ L\'ENVOYER ?', s: 'Partout où il faut chercher, lire, prouver.' },
+    { id: 'sM', n: '2', h: 'LA MÉDECINE', s: 'Une maladie qu\'on sait soigner. Trois chiffres, trois pages, une vraie mission.' },
+    { id: 'sB', pass: 'securite', n: '', h: 'RETOUR AUX CHOIX', s: 'La médecine est prouvée. Deuxième voyage : la sécurité d\'un site.' },
+    { id: 's1', n: '3', h: 'CONSTAT', s: 'Un commerce qui tourne. Une équipe qui corrige à la main. Les failles reviennent.' },
+    { id: 's2', n: '4', h: 'CORRECTION AVEC MISSION ZERO', s: 'Il part de zéro, se refuse lui-même, et confirme. Seul.' },
+    { id: 's3', n: '5', h: 'MYTHOZOR ARGUS, DÉTECTION EN DIRECT + CORRECTION', s: 'Chez vous : une faille arrive, elle est corrigée. Vous validez, ou automatique.' },
+    { id: 'sB', pass: 'espace', n: '', h: 'DERNIER VOYAGE', s: 'Deux voyages prouvés. Il en reste un. Accrochez-vous.' },
+    { id: 'sE', n: '6', h: 'L\'ESPACE : ON VA QUELQUE PART', s: 'Une question d\'enfant. Une vraie mission. Chaque chiffre avec sa page.' },
   ];
+  var IDS = ['s0', 'sB', 'sM', 's1', 's2', 's3', 'sE'];
   var wrap = document.querySelector('.wrap'), card = document.getElementById('card'), filmTimer = null, filmOn = false;
-  function stopFilm() { filmOn = false; clearTimeout(filmTimer); IDS.forEach(function (id) { clearTimeout(timers[id]); }); }
+  function stopFilm() { filmOn = false; clearTimeout(filmTimer); IDS.forEach(function (id) { clearTimeout(timers[id]); }); stopStars(); }
   function showCard(ch, ms, then) {
     document.querySelectorAll('.scene').forEach(function (s) { s.classList.remove('active'); });
-    card.classList.toggle('end', !ch.n); document.getElementById('card-n').textContent = ch.n ? 'Chapitre ' + ch.n : ''; document.getElementById('card-h').textContent = ch.h; document.getElementById('card-s').textContent = ch.s;
-    card.classList.add('show'); filmTimer = setTimeout(function () { card.classList.remove('show'); then(); }, ms);
+    card.classList.toggle('end', !!ch.end); document.getElementById('card-n').textContent = ch.end ? ch.n : (ch.n ? 'Chapitre ' + ch.n : ''); document.getElementById('card-h').textContent = ch.h; document.getElementById('card-s').textContent = ch.s;
+    card.classList.remove('show'); void card.offsetWidth; card.classList.add('show'); filmTimer = setTimeout(function () { card.classList.remove('show'); then(); }, ms);
   }
   function chapter(i) {
-    if (i >= CH.length) { showCard({ n: '', h: 'Preuves, pas promesses.', s: 'MYTHOZOR.com · un produit de CRYPTOR.AGENCY' }, 4000, function () { card.classList.add('show'); }); return; }
+    if (i >= CH.length) { showCard({ end: true, n: 'Preuves, pas promesses.', h: 'CRYPTOR.AGENCY', s: 'MISSION ZERO' }, 6000, function () { card.classList.add('show'); }); return; }
     var ch = CH[i];
-    showCard(ch, 2600, function () { document.getElementById(ch.id).classList.add('active'); play(ch.id, function () { if (filmOn) chapter(i + 1); }); });
+    showCard(ch, 2600, function () { document.getElementById(ch.id).classList.add('active'); play(ch.id, function () { if (filmOn) chapter(i + 1); }, ch.pass || 'all'); });
   }
   function film(from) { stopFilm(); filmOn = true; wrap.classList.add('film'); chapter(from || 0); }
   document.getElementById('go').addEventListener('click', function () { film(0); });
-  document.querySelectorAll('[data-ch]').forEach(function (b) { b.addEventListener('click', function () { film(IDS.indexOf(b.dataset.ch)); }); });
+  document.querySelectorAll('[data-ch]').forEach(function (b) { b.addEventListener('click', function () { var i = CH.findIndex(function (c) { return c.id === b.dataset.ch; }); film(i < 0 ? 0 : i); }); });
   document.getElementById('grid').addEventListener('click', function () { stopFilm(); card.classList.remove('show'); wrap.classList.remove('film'); document.querySelectorAll('.scene').forEach(function (s) { s.classList.remove('active'); }); });
-  var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (!filmOn && e.isIntersecting && !e.target.dataset.played) play(e.target.id); }); }, { threshold: 0.3 });
+  var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (!filmOn && e.isIntersecting && !e.target.dataset.played) play(e.target.id, null, 'all'); }); }, { threshold: 0.3 });
   IDS.forEach(function (id) { io.observe(document.getElementById(id)); });
   film(0);
 })();

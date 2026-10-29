@@ -1,0 +1,107 @@
+{
+  "goal": "A child asks: is the solar system heading somewhere? Answer with figures from primary sources only: (1) the direction (constellation) and speed of the solar apex, the Sun's motion relative to nearby stars; (2) the Sun's orbital speed around the Galactic centre and the direction of that motion (constellation), and the time for one orbit; (3) the motion of the Milky Way and the Local Group toward the Great Attractor and the Shapley concentration, inside the Laniakea supercluster (Tully et al., Nature 2014) and the Dipole Repeller (Hoffman et al., Nature Astronomy 2017): speed and direction; (4) the speed and direction of the solar system relative to the cosmic microwave background, from the Planck dipole. Say what is measured and what is still debated (for example whether the Great Attractor or Shapley dominates). Every figure with an exact quote from the cited page.",
+  "provider": "meta",
+  "model": "muse-spark-1.3",
+  "reached": false,
+  "turns": 6,
+  "best": {
+    "score": 3,
+    "turn": 2,
+    "action": {
+      "type": "web_search",
+      "query": "Schonrich solar peculiar motion LSR",
+      "url": "",
+      "find": "",
+      "name": "",
+      "content": "",
+      "costUsd": 0,
+      "real": false
+    }
+  },
+  "confidence": 4,
+  "judgeScore": 3,
+  "verifiedGreen": 2,
+  "verifiedRed": 4,
+  "contradictionRounds": 2,
+  "verifiedSources": 6,
+  "rejectedSources": 0,
+  "cost": {
+    "calls": 32,
+    "input": 49388,
+    "output": 28771,
+    "usd": 0.18401175,
+    "totalMs": 139977,
+    "byTag": {
+      "plan": {
+        "calls": 6,
+        "input": 14037,
+        "output": 3912,
+        "reasoning": 3192,
+        "truncated": 0
+      },
+      "evaluate": {
+        "calls": 6,
+        "input": 6538,
+        "output": 3824,
+        "reasoning": 3212,
+        "truncated": 0
+      },
+      "synthesize": {
+        "calls": 1,
+        "input": 3824,
+        "output": 4791,
+        "reasoning": 3495,
+        "truncated": 0
+      },
+      "verify": {
+        "calls": 10,
+        "input": 3517,
+        "output": 2538,
+        "reasoning": 2207,
+        "truncated": 0
+      },
+      "judge": {
+        "calls": 3,
+        "input": 4110,
+        "output": 2434,
+        "reasoning": 2302,
+        "truncated": 0
+      },
+      "contradict": {
+        "calls": 2,
+        "input": 4046,
+        "output": 1428,
+        "reasoning": 1087,
+        "truncated": 0
+      },
+      "rewrite": {
+        "calls": 2,
+        "input": 11179,
+        "output": 8474,
+        "reasoning": 7428,
+        "truncated": 0
+      },
+      "research": {
+        "calls": 1,
+        "input": 1623,
+        "output": 1000,
+        "reasoning": 998,
+        "truncated": 1
+      },
+      "distill": {
+        "calls": 1,
+        "input": 514,
+        "output": 370,
+        "reasoning": 253,
+        "truncated": 0
+      }
+    }
+  },
+  "verificationsCached": 16,
+  "lessonsUsed": 30,
+  "lessonsLearned": 3,
+  "zero": {
+    "reset": false,
+    "reason": "the lessons are not hurting"
+  }
+}
