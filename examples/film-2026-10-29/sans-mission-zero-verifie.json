@@ -1,0 +1,66 @@
+{
+  "items": [
+    {
+      "claim": "the Sun's peculiar motion U=11.1, V=12.24, W=7.25 km/s",
+      "url": "https://doi.org/10.1111/j.1365-2966.2009.16266.x"
+    },
+    {
+      "claim": "R0 = 8.34 kpc, Theta0 = 240 km/s",
+      "url": "https://doi.org/10.1088/0004-637X/783/2/130"
+    },
+    {
+      "claim": "Local Group streaming ~ 600 km/s toward the Great Attractor",
+      "url": "https://doi.org/10.1086/166073"
+    },
+    {
+      "claim": "CMB dipole velocity 369.82 km/s toward l=264.021 deg, b=48.253 deg",
+      "url": "https://doi.org/10.1051/0004-6361/201833880"
+    },
+    {
+      "claim": "solar apex ~19.7 km/s toward a point in the constellation Hercules, near Vega (Mihalas & Binney 1981, p.362)",
+      "url": ""
+    }
+  ],
+  "result": {
+    "results": [
+      {
+        "claim": "the Sun's peculiar motion U=11.1, V=12.24, W=7.25 km/s",
+        "url": "https://doi.org/10.1111/j.1365-2966.2009.16266.x",
+        "verdict": "source-unreachable",
+        "color": "red",
+        "detail": "http 404"
+      },
+      {
+        "claim": "R0 = 8.34 kpc, Theta0 = 240 km/s",
+        "url": "https://doi.org/10.1088/0004-637X/783/2/130",
+        "verdict": "supported",
+        "color": "green",
+        "detail": "specifically R 0 = 8.34 kpc, Θ 0 = 240 km s −1 , d Θ/ dR = −0.2 km s −1 kpc −1"
+      },
+      {
+        "claim": "Local Group streaming ~ 600 km/s toward the Great Attractor",
+        "url": "https://doi.org/10.1086/166073",
+        "verdict": "source-unreachable",
+        "color": "red",
+        "detail": "http 405"
+      },
+      {
+        "claim": "CMB dipole velocity 369.82 km/s toward l=264.021 deg, b=48.253 deg",
+        "url": "https://doi.org/10.1051/0004-6361/201833880",
+        "verdict": "source-unreachable",
+        "color": "red",
+        "detail": "blocked: bot challenge (http 403), a browser would be needed"
+      },
+      {
+        "claim": "solar apex ~19.7 km/s toward a point in the constellation Hercules, near Vega (Mihalas & Binney 1981, p.362)",
+        "url": "",
+        "verdict": "source-unreachable",
+        "color": "red",
+        "detail": "invalid url"
+      }
+    ],
+    "green": 1,
+    "red": 4
+  },
+  "usd": 0.00182825
+}
