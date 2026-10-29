@@ -68,6 +68,8 @@ The same loop, pointed at code. A scanner (any scanner: the input is a generic J
 
 The target in this repository is Maison Verde (`demo-site/`), a fictional shop built with the 15 flaws scanners find on most e-commerce sites (`demo-site/FLAWS.md`). It runs locally only.
 
+**The scanner probes only a site you own.** A local address is yours by definition. Any other host must serve a token of your choice (`MZ_OWNER_TOKEN`, 16 characters or more) at `/.well-known/mission-zero.txt`, the same proof a registrar asks for a domain; otherwise `scan()` refuses before a single probe runs (`src/scanner.js`, `src/scanner.test.js`). Mission Zero is a repair tool, not a reconnaissance one: pointing it at someone else's site is not possible by design, and not allowed by its licence.
+
 ```bash
 npm run repair -- demo-site/findings.example.json          # the 15 findings, one proposed fix each
 npm run repair -- --scan                                   # scan the demo shop first, then repair

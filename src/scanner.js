@@ -123,7 +123,23 @@ export const POLICY_PROBES = [
 export const ALL_PROBES = [...PROBES, ...POLICY_PROBES];
 export const hasProbe = (f) => ALL_PROBES.some((p) => p.id === f.id || p.type === f.type);
 
+// The scanner probes only a site you own. A local address is yours by definition. Any other host must serve
+// /.well-known/mission-zero.txt containing the owner token (opts.ownerToken or MZ_OWNER_TOKEN, 16 characters or more):
+// the same proof a registrar asks for a domain. Without it the scan is refused before a single probe runs.
+const LOCAL_HOSTS = new Set(['127.0.0.1', 'localhost', '::1', '[::1]']);
+export function isLocal(base) { try { return LOCAL_HOSTS.has(new URL(base).hostname); } catch { return false; } }
+export async function proveOwnership(base, token = process.env.MZ_OWNER_TOKEN) {
+  if (isLocal(base)) return { ok: true, how: 'local address' };
+  const t = String(token || '').trim();
+  if (t.length < 16) return { ok: false, why: 'no owner token of 16 characters or more (MZ_OWNER_TOKEN), to be served at /.well-known/mission-zero.txt' };
+  const r = await get(base, '/.well-known/mission-zero.txt');
+  if (r.status === 200 && r.body.trim() === t) return { ok: true, how: '/.well-known/mission-zero.txt' };
+  return { ok: false, why: r.status === 200 ? 'the token served at /.well-known/mission-zero.txt is not yours' : '/.well-known/mission-zero.txt answered ' + (r.status || r.error) };
+}
+
 export async function scan(base, opts = {}) {
+  const owner = await proveOwnership(base, opts.ownerToken);
+  if (!owner.ok) throw new Error('scan refused: ' + base + ' is not a site you proved you own (' + owner.why + ')');
   const findings = [];
   for (const p of (opts.policy || opts.only ? ALL_PROBES : PROBES)) {
     if (p.needsLogin && !opts.login) continue;
@@ -131,5 +147,5 @@ export async function scan(base, opts = {}) {
     const hit = await p.run(base, opts);
     if (hit) findings.push({ id: p.id, severity: p.severity, type: p.type, url: base + p.path, ...hit });
   }
-  return { target: base, scanner: 'mission-zero scan 0.1', scannedAt: new Date().toISOString(), findings };
+  return { target: base, owner: owner.how, scanner: 'mission-zero scan 0.1', scannedAt: new Date().toISOString(), findings };
 }
