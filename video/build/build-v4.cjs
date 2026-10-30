@@ -35,6 +35,7 @@ const sBgeo = (function () {
   step('<g class="b" data-k="?" data-d="1800"><text class="lbl xs" x="0" y="0"> </text></g>', 'securite');
   step('<g class="a" data-k="?" data-zoom="#bS" data-dur="1000"><path class="arrow" pathLength="1" d="' + fil(9) + '"/></g>', 'securite');
   step('<g class="b" data-k="?" data-d="2400"><text class="lbl amber" x="800" y="70" text-anchor="middle" style="font-size:26px">Premier voyage : la sécurité d\'un site.</text></g>', 'securite');
+  step(exit, 'securite');
   // 2e passage : la sécurité prouvée, le fil vers l'espace, puis il ressort à droite.
   step('<g class="b" data-k="?" data-hide="#bS" data-d="1400">' + okChip(9, 'La sécurité · prouvée') + '</g>', 'espace');
   step('<g class="a" data-k="?" data-zoom="#bE" data-dur="1000"><path class="arrow" pathLength="1" d="' + fil(0) + '"/></g>', 'espace');
@@ -49,7 +50,7 @@ const sBgeo = (function () {
   const sec = '  <section class="scene" id="sB">\n    <header><h2>OÙ L\'ENVOYER ?</h2><span class="t">l\'écran des choix</span></header>\n    <svg viewBox="0 0 1600 900" role="img" aria-label="La boucle au centre et, autour, tout ce qu\'on peut lui demander">\n      ' + out.join('\n      ') + '\n    </svg>\n    <div class="caption" id="cB"></div>\n  </section>\n';
   const nulls = (n) => Array(n).fill(null);
   const cap = {
-    securite: ['Le point arrive. La boucle attend un objectif.', 'Même boucle, zéro code.', 'L\'espace…', 'la médecine…', 'un chiffre de l\'INSEE…', 'une norme…', 'une loi…', 'une décision de justice…', 'un appel d\'offres…', 'un rapport annuel…', 'un brevet…', 'la sécurité d\'un site…', 'une norme produit…', 'votre métier.', 'Tout vient de données gratuites.', null, '<b>D\'abord, la sécurité d\'un site.</b>'],
+    securite: ['Le point arrive. La boucle attend un objectif.', 'Même boucle, zéro code.', 'L\'espace…', 'la médecine…', 'un chiffre de l\'INSEE…', 'une norme…', 'une loi…', 'une décision de justice…', 'un appel d\'offres…', 'un rapport annuel…', 'un brevet…', 'la sécurité d\'un site…', 'une norme produit…', 'votre métier.', 'Tout vient de données gratuites.', null, '<b>D\'abord, la sécurité d\'un site.</b>', null],
     espace: ['Le point revient.', 'La boucle, inchangée.'].concat(nulls(12), ['La sécurité&nbsp;: <b>prouvée</b>.', null, '<b>Deuxième voyage&nbsp;: l\'espace.</b>', null]),
     medecine: ['Le point revient.', 'La boucle, toujours la même.'].concat(nulls(12), [null, 'L\'espace&nbsp;: <b>prouvé</b>.', null, '<b>Dernier voyage&nbsp;: la médecine.</b>', null]),
   };

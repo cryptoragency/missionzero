@@ -23,7 +23,7 @@ module.exports = (function () {
     + '<text class="lbl okt" x="1190" y="616" text-anchor="middle" style="font-size:24px">pas lu ? il le dit</text></g>', '<b>Mission Zero</b>&nbsp;: quatre chiffres, un dollar. Chacun avec sa page.');
   g.push('</g>');
   // Les panneaux s'effacent ; le fil descend de là où il est, puis file vers Hercule, en bas à gauche.
-  arrow('M838,450 L838,605 L480,605', 'data-hide="#vs,#q0" data-dur="1300" data-d="1400" data-round="40"');
+  arrow('M-33.3,605 L60,605', 'data-hide="#vs,#q0" data-dur="900" data-d="1000"');
   const box = (x, y, title, speed, src) => '<rect class="box gold" x="' + x + '" y="' + y + '" width="420" height="170" rx="16"/><text class="lbl acc" x="' + (x + 210) + '" y="' + (y + 46) + '" text-anchor="middle" style="font-size:23px">' + title + '</text><text class="lbl" x="' + (x + 210) + '" y="' + (y + 104) + '" text-anchor="middle" style="font-size:44px;font-weight:700">' + speed + '</text><text class="lbl okt" x="' + (x + 210) + '" y="' + (y + 146) + '" text-anchor="middle" style="font-size:20px">' + src + '</text>';
   step('<g class="b" data-k="?" data-speed="20" data-d="3800"><g id="spd"><text class="lbl s" x="60" y="100" style="font-size:22px">déplacement du système solaire</text><text class="lbl" x="60" y="178" style="font-size:72px;font-weight:800" id="speed">0</text><text class="lbl s" x="60" y="214" style="font-size:22px">km/s</text></g>' + box(60, 520, 'Le système solaire va vers Hercule', '20 km/s', 'Université du Maryland') + '</g>', '<b>Le système solaire se déplace.</b> Vingt kilomètres par seconde vers Hercule.');
   arrow('M270,520 L270,365 L560,365', 'data-dur="1100" data-d="1150" data-round="40"');
