@@ -7,28 +7,154 @@ const style = src.slice(src.indexOf('<style>'), src.indexOf('</style>') + 8);
 // (une simple surbrillance, rien de plus) ; un arrêt pour marquer l'événement (Évaluation clignote en rouge : l'alerte est prise
 // en compte) ; puis le point refait le tour vite sur les ronds déjà verts, et sur Évaluation le contour se rallume : validé. On poursuit.
 const geo = require('./s0-geo.cjs'); const s0 = geo.s0;
-// L'écran des choix (corrections GUIDOR du 30) : le fil arrive de la boucle sans coupure (même hauteur à l'écran), file droit
-// vers le rond « la boucle » ; les douze pastilles sortent du centre une à une, en éventail, sur une ellipse symétrique ; un
-// couloir libre de chaque côté (à gauche pour l'entrée du fil) ; le dernier fil mène à « La sécurité d'un site ».
+// L'écran des choix, en trois passages (ordre du gérant, 30 octobre 16 h) : vers la sécurité (éventail complet), retour
+// (sécurité prouvée, vers l'espace), dernier (sécurité et espace prouvés, vers la médecine). Le fil arrive de la gauche à la
+// hauteur du fil de l'écran précédent (y = 450, 488 px à l'écran) ; dans les retours, il ressort à droite à la même hauteur,
+// par le couloir libre, vers l'écran suivant. Le fil vers une pastille s'arrête au bord de la pastille agrandie (x1,35).
 const sBgeo = (function () {
-  const CX = 800, CY = 450, RB = 96, RX = 560, RY = 310, W = 240, H = 56;
+  const CX = 800, CY = 450, RB = 96, RX = 560, RY = 310, W = 240, H = 56, Z = 1.35;
   const labels = ['🪐 L\'espace', '🩺 La médecine', 'Un chiffre INSEE', 'Une norme sanitaire', 'Un article de loi', 'Une décision de justice', 'Un appel d\'offres', 'Un rapport annuel', 'Un brevet', '🛡 La sécurité d\'un site', 'Une norme produit', 'Votre métier'];
   const angs = [255, 285, 315, 345, 15, 45, 75, 105, 135, 165, 195, 225];
+  const ids = { 0: 'bE', 1: 'bM', 9: 'bS' };
   const f = (v) => Math.round(v * 10) / 10; let k = 0; const out = [];
-  const step = (x) => { k += 1; out.push(x.replace('data-k="?"', 'data-k="' + k + '"')); };
+  const step = (x, pass) => { k += 1; out.push(x.replace('data-k="?"', 'data-k="' + k + '"' + (pass ? ' data-pass="' + pass + '"' : ''))); };
+  const chips = angs.map((a, i) => { const t = (a * Math.PI) / 180; return { x: CX + RX * Math.cos(t), y: CY + RY * Math.sin(t), label: labels[i] }; });
+  const fil = (i) => {
+    const sc = chips[i], dx = sc.x - CX, dy = sc.y - CY, L = Math.hypot(dx, dy), ux = dx / L, uy = dy / L;
+    const inChip = (x, y) => { const qx = Math.max(Math.abs(x - sc.x) - Z * (W / 2 - H / 2), 0), qy = y - sc.y; return Math.hypot(qx, qy) <= Z * H / 2 + 3; };
+    let t = RB; while (!inChip(CX + ux * t, CY + uy * t)) t += 0.5;
+    return 'M' + f(CX + ux * RB) + ',' + f(CY + uy * RB) + ' L' + f(CX + ux * t) + ',' + f(CY + uy * t);
+  };
+  const okChip = (i, label) => { const c = chips[i]; return '<rect class="chip ok" x="' + f(c.x - W / 2) + '" y="' + f(c.y - H / 2) + '" width="' + W + '" height="' + H + '" rx="' + H / 2 + '"/><text class="chip-t" x="' + f(c.x) + '" y="' + f(c.y + 7) + '" text-anchor="middle" style="font-size:19px">✔ ' + label + ' · prouvé</text>'; };
+  const exit = '<g class="a" data-k="?" data-dur="1000" data-d="1050"><path class="arrow" pathLength="1" d="M' + (CX + RB) + ',' + CY + ' L1633.3,' + CY + '"/></g>';
   step('<g class="a" data-k="?" data-dur="1300" data-d="1400"><path class="arrow" pathLength="1" d="M-33.3,' + CY + ' L' + (CX - RB) + ',' + CY + '"/></g>');
   step('<g class="b" data-k="?" data-d="1600"><circle class="ring lit" cx="' + CX + '" cy="' + CY + '" r="' + RB + '"/><text class="lbl m acc" x="' + CX + '" y="' + (CY - 4) + '" text-anchor="middle">la boucle</text><text class="lbl xs" x="' + CX + '" y="' + (CY + 22) + '" text-anchor="middle">chercher · lire · prouver</text></g>');
-  const chips = angs.map((a, i) => { const t = (a * Math.PI) / 180; return { x: CX + RX * Math.cos(t), y: CY + RY * Math.sin(t), label: labels[i] }; });
-  chips.forEach((c, i) => step('<g class="fan" data-k="?" data-d="' + (i === 11 ? 1500 : 380) + '"' + (i === 9 ? ' id="bS"' : '') + ' style="transform-origin:' + f(c.x) + 'px ' + f(c.y) + 'px;--fx:' + f(CX - c.x) + 'px;--fy:' + f(CY - c.y) + 'px"><rect class="chip next" x="' + f(c.x - W / 2) + '" y="' + f(c.y - H / 2) + '" width="' + W + '" height="' + H + '" rx="' + H / 2 + '"/><text class="chip-t" x="' + f(c.x) + '" y="' + f(c.y + 7) + '" text-anchor="middle" style="font-size:19px">' + c.label + '</text></g>'));
-  step('<g class="b" data-k="?" data-d="1800"><text class="lbl xs" x="0" y="0"> </text></g>'); // « Tout vient de données gratuites. » : en légende seulement
-  // Le dernier fil : du bord du rond, droit vers la pastille de la sécurité, arrêté à son contour (pastille = deux demi-cercles).
-  const sc = chips[9], dx = sc.x - CX, dy = sc.y - CY, L = Math.hypot(dx, dy), ux = dx / L, uy = dy / L;
-  const Z = 1.35; // la pastille choisie grossit (zoomin, x1,35) : le fil s'arrête sur le bord de la pastille agrandie, jamais sur son texte
-  const inChip = (x, y) => { const qx = Math.max(Math.abs(x - sc.x) - Z * (W / 2 - H / 2), 0), qy = y - sc.y; return Math.hypot(qx, qy) <= Z * H / 2 + 3; };
-  let t = RB; while (!inChip(CX + ux * t, CY + uy * t)) t += 0.5;
-  step('<g class="a" data-k="?" data-zoom="#bS" data-dur="1000"><path class="arrow" pathLength="1" d="M' + f(CX + ux * RB) + ',' + f(CY + uy * RB) + ' L' + f(CX + ux * t) + ',' + f(CY + uy * t) + '"/></g>');
-  step('<g class="b" data-k="?" data-d="2400"><text class="lbl amber" x="800" y="70" text-anchor="middle" style="font-size:26px">Premier voyage : la sécurité d\'un site.</text></g>');
-  return '  <section class="scene" id="sB">\n    <header><h2>OÙ L\'ENVOYER ?</h2><span class="t">l\'écran des choix</span></header>\n    <svg viewBox="0 0 1600 900" role="img" aria-label="La boucle au centre et, autour, tout ce qu\'on peut lui demander">\n      ' + out.join('\n      ') + '\n    </svg>\n    <div class="caption" id="cB"></div>\n  </section>\n';
+  chips.forEach((c, i) => step('<g class="fan" data-k="?" data-d="' + (i === 11 ? 1500 : 380) + '"' + (ids[i] ? ' id="' + ids[i] + '"' : '') + ' style="transform-origin:' + f(c.x) + 'px ' + f(c.y) + 'px;--fx:' + f(CX - c.x) + 'px;--fy:' + f(CY - c.y) + 'px"><rect class="chip next" x="' + f(c.x - W / 2) + '" y="' + f(c.y - H / 2) + '" width="' + W + '" height="' + H + '" rx="' + H / 2 + '"/><text class="chip-t" x="' + f(c.x) + '" y="' + f(c.y + 7) + '" text-anchor="middle" style="font-size:19px">' + c.label + '</text></g>'));
+  const base = k;
+  // 1er passage : la sécurité d'un site.
+  step('<g class="b" data-k="?" data-d="1800"><text class="lbl xs" x="0" y="0"> </text></g>', 'securite');
+  step('<g class="a" data-k="?" data-zoom="#bS" data-dur="1000"><path class="arrow" pathLength="1" d="' + fil(9) + '"/></g>', 'securite');
+  step('<g class="b" data-k="?" data-d="2400"><text class="lbl amber" x="800" y="70" text-anchor="middle" style="font-size:26px">Premier voyage : la sécurité d\'un site.</text></g>', 'securite');
+  // 2e passage : la sécurité prouvée, le fil vers l'espace, puis il ressort à droite.
+  step('<g class="b" data-k="?" data-hide="#bS" data-d="1400">' + okChip(9, 'La sécurité') + '</g>', 'espace');
+  step('<g class="a" data-k="?" data-zoom="#bE" data-dur="1000"><path class="arrow" pathLength="1" d="' + fil(0) + '"/></g>', 'espace');
+  step('<g class="b" data-k="?" data-d="2400"><text class="lbl amber" x="800" y="70" text-anchor="middle" style="font-size:26px">Deuxième voyage : l\'espace.</text></g>', 'espace');
+  step(exit, 'espace');
+  // 3e passage : sécurité et espace prouvés, le fil vers la médecine, puis il ressort à droite.
+  step('<g class="b" data-k="?" data-hide="#bS" data-d="700">' + okChip(9, 'La sécurité') + '</g>', 'medecine');
+  step('<g class="b" data-k="?" data-hide="#bE" data-d="1400">' + okChip(0, 'L\'espace') + '</g>', 'medecine');
+  step('<g class="a" data-k="?" data-zoom="#bM" data-dur="1000"><path class="arrow" pathLength="1" d="' + fil(1) + '"/></g>', 'medecine');
+  step('<g class="b" data-k="?" data-d="2400"><text class="lbl amber" x="800" y="70" text-anchor="middle" style="font-size:26px">Dernier voyage : la médecine.</text></g>', 'medecine');
+  step(exit, 'medecine');
+  const sec = '  <section class="scene" id="sB">\n    <header><h2>OÙ L\'ENVOYER ?</h2><span class="t">l\'écran des choix</span></header>\n    <svg viewBox="0 0 1600 900" role="img" aria-label="La boucle au centre et, autour, tout ce qu\'on peut lui demander">\n      ' + out.join('\n      ') + '\n    </svg>\n    <div class="caption" id="cB"></div>\n  </section>\n';
+  const nulls = (n) => Array(n).fill(null);
+  const cap = {
+    securite: ['Le point arrive. La boucle attend un objectif.', 'Même boucle, zéro code.', 'L\'espace…', 'la médecine…', 'un chiffre de l\'INSEE…', 'une norme…', 'une loi…', 'une décision de justice…', 'un appel d\'offres…', 'un rapport annuel…', 'un brevet…', 'la sécurité d\'un site…', 'une norme produit…', 'votre métier.', 'Tout vient de données gratuites.', null, '<b>D\'abord, la sécurité d\'un site.</b>'],
+    espace: ['Le point revient.', 'La boucle, inchangée.'].concat(nulls(12), ['La sécurité&nbsp;: <b>prouvée</b>.', null, '<b>Deuxième voyage&nbsp;: l\'espace.</b>', null]),
+    medecine: ['Le point revient.', 'La boucle, toujours la même.'].concat(nulls(12), [null, 'L\'espace&nbsp;: <b>prouvé</b>.', null, '<b>Dernier voyage&nbsp;: la médecine.</b>', null]),
+  };
+  Object.keys(cap).forEach((p) => { const n = base + out.filter((x) => x.includes('data-pass="' + p + '"')).length; if (cap[p].length !== n) throw new Error('sB ' + p + ' : ' + n + ' étapes, ' + cap[p].length + ' légendes'); });
+  return { sec, cap };
+})();
+
+// L'ESPACE (scène sE du 29, légendes du brief) : la même question posée deux fois, le panneau rouge (le modèle seul) et le
+// panneau vert (Mission Zero) ; puis la sensation : les étoiles viennent vers vous, le compteur monte, le fil va de boîte en
+// boîte (Hercule, la galaxie, le Grand Attracteur) et ressort à droite à y = 450, la hauteur d'entrée de l'écran suivant.
+const sEgeo = (function () {
+  let k = 0; const g = [];
+  const step = (s) => { k += 1; g.push(s.replace('data-k="?"', 'data-k="' + k + '"')); };
+  const row = (x, y, txt, ok, label) => '<text class="lbl xs" x="' + x + '" y="' + y + '" style="font-size:17px;fill:var(--fg)">' + txt + '</text><rect class="chip ' + (ok ? 'ok' : 'ko') + '" x="' + (x < 800 ? 590 : 1400) + '" y="' + (y - 22) + '" width="' + (x < 800 ? 150 : 120) + '" height="32" rx="16"/><text class="chip-t" x="' + (x < 800 ? 665 : 1460) + '" y="' + y + '" text-anchor="middle">' + label + '</text>';
+  g.push('<g id="stars"></g>');
+  g.push('<g id="vs">');
+  step('<g class="b" data-k="?" data-stars="1" data-d="2600"><text class="lbl acc" x="800" y="80" text-anchor="middle" style="font-size:34px">« On va quelque part ? » Posée deux fois.</text></g>');
+  // Le fil entre à gauche à y = 450, passe sous les deux panneaux et monte entre eux : chaque panneau apparaît à son arrivée.
+  step('<g class="a" data-k="?" data-dur="1700" data-d="1800"><path class="arrow" pathLength="1" d="M-33.3,450 L20,450 L20,700 L800,700 L800,420"/></g>');
+  step('<g class="b" data-k="?" data-d="3200"><rect class="box red" x="60" y="150" width="700" height="500" rx="16"/><text class="lbl m red" x="410" y="192" text-anchor="middle">Sans Mission Zero · le modèle seul</text><text class="lbl s" x="410" y="226" text-anchor="middle">12 chiffres · 1 centime</text>'
+    + row(90, 290, 'Hercule, 19,7 km/s · manuel de 1981, « p. 362 »', false, 'sans adresse') + row(90, 350, 'U, V, W = 11,1 · 12,24 · 7,25 km/s · MNRAS 2010', false, 'injoignable')
+    + row(90, 410, 'R₀ = 8,34 kpc, Θ₀ = 240 km/s · ApJ 2014', true, 'vérifié ✔') + row(90, 470, '600 km/s vers le Grand Attracteur · ApJ 1988', false, 'injoignable')
+    + row(90, 530, '369,82 km/s, l = 264°, b = 48° · A&amp;A 2020', false, 'injoignable') + '</g>');
+  step('<g class="b" data-k="?" data-d="3000"><text class="lbl amber" x="410" y="610" text-anchor="middle" style="font-size:20px">4 sources sur 5 : personne ne peut les ouvrir</text></g>');
+  step('<g class="b" data-k="?" data-d="3600"><rect class="box ok" x="840" y="150" width="700" height="500" rx="16"/><text class="lbl m acc" x="1190" y="192" text-anchor="middle">Avec Mission Zero</text><text class="lbl s" x="1190" y="226" text-anchor="middle">4 chiffres · 1 $ · chacun avec sa page</text>'
+    + row(870, 290, 'Hercule · « the Sun is moving » · Maryland', true, 'vérifié ✔') + row(870, 350, '230 km/s · « 828,000 km/hr » · NASA', true, 'vérifié ✔')
+    + row(870, 410, '369 km/s · « Crater and Leo » · Cambridge', true, 'vérifié ✔') + row(870, 470, '631 km/s · « 631 km s⁻¹ » · Tully 2014', true, 'vérifié ✔')
+    + '<text class="lbl okt" x="1190" y="610" text-anchor="middle" style="font-size:20px">ce qu\'il n\'a pas lu, il le dit</text></g>');
+  g.push('</g>');
+  // Les panneaux s'effacent ; le fil reprend où il s'était arrêté et passe au-dessus de la future boîte de la galaxie, vers Hercule.
+  step('<g class="a" data-k="?" data-hide="#vs" data-dur="1400" data-d="1500"><path class="arrow" pathLength="1" d="M800,420 L800,470 L240,470 L240,678"/></g>');
+  const box = (x, y, title, speed, q1, src) => '<rect class="box gold" x="' + x + '" y="' + y + '" width="400" height="150" rx="16"/><text class="lbl m acc" x="' + (x + 200) + '" y="' + (y + 36) + '" text-anchor="middle">' + title + '</text><text class="lbl" x="' + (x + 200) + '" y="' + (y + 72) + '" text-anchor="middle">' + speed + '</text><text class="lbl xs" x="' + (x + 200) + '" y="' + (y + 104) + '" text-anchor="middle">' + q1 + '</text><text class="lbl xs okt" x="' + (x + 200) + '" y="' + (y + 132) + '" text-anchor="middle">' + src + '</text>';
+  step('<g class="b" data-k="?" data-speed="20" data-d="3400"><text class="lbl s" x="60" y="170" style="font-size:22px">« On va quelque part ? »</text><text class="lbl" x="60" y="240" style="font-size:64px;font-weight:800" id="speed">0</text><text class="lbl s" x="60" y="276" style="font-size:20px">km/s · et vous ne sentez rien</text>' + box(40, 680, 'Vers Hercule', '20 km/s', '« toward which the Sun is moving »', 'Univ. du Maryland · vérifié ✔') + '</g>');
+  step('<g class="a" data-k="?" data-dur="1100"><path class="arrow" pathLength="1" d="M440,755 L720,755 L720,652"/></g>');
+  step('<g class="b" data-k="?" data-speed="230" data-d="3800">' + box(520, 500, 'Autour de la galaxie', '230 km/s', '« an average velocity of 828,000 km/hr »', 'NASA, mot pour mot · vérifié ✔') + '</g>');
+  step('<g class="a" data-k="?" data-dur="1100"><path class="arrow" pathLength="1" d="M720,498 L720,395 L998,395"/></g>');
+  step('<g class="b" data-k="?" data-speed="631" data-d="3400">' + box(1000, 320, 'Vers le Grand Attracteur', '631 km/s', '« motion of the Local Group of 631 km/s »', 'Tully et al., Nature 2014 · vérifié ✔') + '</g>');
+  step('<g class="b" data-k="?" data-d="3600"><text class="lbl amber" x="1200" y="515" text-anchor="middle" style="font-size:22px">caché derrière notre galaxie</text><text class="lbl xs" x="1200" y="543" text-anchor="middle">on y va, on ne le voit pas</text></g>');
+  step('<g class="b" data-k="?" data-d="3600"><text class="lbl" x="800" y="840" text-anchor="middle" style="font-size:30px">Mesuré, pas vu, pas tranché.</text></g>');
+  step('<g class="a" data-k="?" data-dur="1000" data-d="1050"><path class="arrow" pathLength="1" d="M1400,450 L1633.3,450"/></g>');
+  const cap = ['On va quelque part&nbsp;? Posée deux fois.', null, 'Le modèle seul&nbsp;: <span class="r">douze chiffres, un centime.</span>', 'Quatre sources sur cinq, personne ne peut les ouvrir.',
+    '<b>Mission Zero</b>&nbsp;: quatre chiffres, un dollar. Chacun avec sa page.', null, 'Vingt kilomètres par seconde vers Hercule.', null,
+    'Deux cent trente autour de la galaxie. La NASA, mot pour mot.', null, 'Six cent trente et un vers le Grand Attracteur.',
+    'Caché derrière notre galaxie. On y va. On ne le voit pas.', 'Mesuré, pas vu, pas tranché. <b>Il n\'invente pas la suite.</b>', null];
+  if (cap.length !== k) throw new Error('sE : ' + k + ' étapes, ' + cap.length + ' légendes');
+  const sec = '  <section class="scene" id="sE">\n    <header><h2>L\'ESPACE</h2><span class="t">une vraie mission de Mission Zero</span></header>\n    <svg viewBox="0 0 1600 900" role="img" aria-label="La même question posée deux fois, puis un ciel d\'étoiles, un compteur qui monte, un fil qui va de boîte en boîte : vers Hercule, autour de la galaxie, vers le Grand Attracteur ; chaque chiffre avec sa page">\n      ' + g.join('\n      ') + '\n    </svg>\n    <div class="caption" id="cE"></div>\n  </section>\n';
+  return { sec, cap };
+})();
+
+// LA MÉDECINE (scène sM du 29, légendes du brief) : le fil entre à y = 450 et arrive sur le panneau rouge (avant) ; puis il
+// devient un électrocardiogramme : trois battements, chaque pointe s'arrête à 10 px de sa boîte ; puis la veille (une courbe,
+// son seuil, un point rouge en semaine 38) ; le futur ; et il ressort à droite vers la fin.
+const sMgeo = (function () {
+  let k = 0; const g = [];
+  const step = (s) => { k += 1; g.push(s.replace('data-k="?"', 'data-k="' + k + '"')); };
+  const box = (cls, x, y, numCls, num, t, q1, q2) => '<rect class="box ' + cls + '" x="' + x + '" y="' + y + '" width="380" height="175" rx="16"/><text class="lbl ' + numCls + '" x="' + (x + 190) + '" y="' + (y + 52) + '" text-anchor="middle" style="font-size:44px;font-weight:700">' + num + '</text><text class="lbl s" x="' + (x + 190) + '" y="' + (y + 84) + '" text-anchor="middle">' + t + '</text><text class="lbl xs" x="' + (x + 190) + '" y="' + (y + 116) + '" text-anchor="middle">' + q1 + '</text><text class="lbl xs" x="' + (x + 190) + '" y="' + (y + 138) + '" text-anchor="middle">' + q2 + '</text><text class="lbl xs okt" x="' + (x + 190) + '" y="' + (y + 162) + '" text-anchor="middle">OMS · Global TB Report 2024 · vérifié ✔</text>';
+  const beat = (x0, x1, dur) => '<g class="a" data-k="?" data-dur="' + dur + '" data-d="' + (dur + 100) + '"><path class="arrow" pathLength="1" data-round="10" d="M' + x0 + ',450 L' + (x1 - 90) + ',450 L' + (x1 - 70) + ',400 L' + (x1 - 50) + ',500 L' + (x1 - 30) + ',450 L' + x1 + ',450"/></g>';
+  step('<g class="a" data-k="?" data-dur="900" data-d="1000"><path class="arrow" pathLength="1" d="M-33.3,450 L40,450"/></g>');
+  step('<g class="b" data-k="?" data-d="4200"><rect class="box red" x="40" y="370" width="260" height="160" rx="16"/><text class="lbl xs red" x="170" y="398" text-anchor="middle" style="font-weight:700;letter-spacing:.08em">SANS MISSION ZERO</text><text class="lbl" x="170" y="436" text-anchor="middle" style="font-size:24px">100 publications</text><text class="lbl xs" x="170" y="464" text-anchor="middle">pas le temps de les lire</text><text class="lbl xs red" x="170" y="500" text-anchor="middle">une IA : un chiffre, sans page</text></g>');
+  step(beat(300, 600, 1500));
+  step('<g class="b" data-k="?" data-d="3400">' + box('amber', 340, 215, 'amber', '10,8 millions', 'de malades en 2023', '« an estimated 10.8 million people', 'fell ill with TB in 2023 »') + '</g>');
+  step(beat(600, 1030, 1200));
+  step('<g class="b" data-k="?" data-d="3400">' + box('red', 770, 535, 'red', '1,25 million', 'de morts en 2023', '« TB caused an estimated', '1.25 million deaths in 2023 »') + '</g>');
+  step(beat(1030, 1480, 1300));
+  step('<g class="b" data-k="?" data-d="4200">' + box('ok', 1200, 215, 'acc', '88 %', 'guéris, quand on soigne', '« The treatment success rate for drug-susceptible TB', 'remains high (at 88%) »') + '</g>');
+  // La veille : le fil descend sur le graphique ; une courbe hebdomadaire, son seuil, et le point rouge de la semaine 38.
+  step('<g class="a" data-k="?" data-dur="900" data-d="1000"><path class="arrow" pathLength="1" d="M1480,450 L1530,450 L1530,563"/></g>');
+  // La veille Sentinelles du 30 (examples/watch-sentinelles-2026-10-30) : S35 à S43, seuil 150 pour 100 000 ; semaine 38 : 55 → 77, +40 %.
+  const weeks = [['35', 27], ['36', 38], ['37', 55], ['38', 77], ['39', 88], ['40', 94], ['41', 92], ['42', 85], ['43', 94]];
+  const X = (i) => 1215 + i * 42, Y = (v) => Math.round(790 - v * 0.94);
+  const curve = 'M' + weeks.map(([, v], i) => X(i) + ',' + Y(v)).join(' L');
+  step('<g class="b" data-k="?" data-d="3600"><rect class="box" x="1180" y="565" width="400" height="250" rx="16"/><text class="lbl xs" x="1380" y="592" text-anchor="middle" style="fill:var(--fg)">la veille · grippe, Sentinelles, pour 100 000</text><line x1="1205" y1="' + Y(150) + '" x2="1555" y2="' + Y(150) + '" stroke="rgba(255,210,122,.8)" stroke-width="2" stroke-dasharray="8 6"/><text class="lbl xs amber" x="1555" y="' + (Y(150) - 8) + '" text-anchor="end">seuil 150</text><path d="' + curve + '" fill="none" stroke="var(--acc2)" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>' + weeks.map(([, v], i) => '<circle cx="' + X(i) + '" cy="' + Y(v) + '" r="3.5" fill="#fff"/>').join('') + weeks.map(([w], i) => '<text class="lbl xs" x="' + X(i) + '" y="806" text-anchor="middle" style="font-size:13px">S' + w + '</text>').join('') + '</g>');
+  step('<g class="b" data-k="?" data-d="3200"><circle cx="' + X(3) + '" cy="' + Y(77) + '" r="9" fill="rgba(255,59,48,.35)" stroke="#ff3b30" stroke-width="3" style="filter:drop-shadow(0 0 8px rgba(255,59,48,1))"/><text class="lbl red" x="1380" y="628" text-anchor="middle" style="font-size:18px;font-weight:700">S38 · 55 → 77 · +40 %</text></g>');
+  step('<g class="b" data-k="?" data-d="3600"><text class="lbl xs okt" x="1380" y="844" text-anchor="middle">3 sources citées · aucun commentaire publié, il le dit</text></g>');
+  // Au futur : le fil passe sous la boîte rouge et mène à la phrase.
+  step('<g class="a" data-k="?" data-dur="1200" data-d="1300"><path class="arrow" pathLength="1" d="M1180,780 C1000,780 900,810 762,810"/></g>');
+  step('<g class="b" data-k="?" data-d="3400"><text class="lbl" x="750" y="818" text-anchor="end" style="font-size:24px">Demain : les relevés d\'un laboratoire.</text></g>');
+  step('<g class="b" data-k="?" data-d="3000"><text class="lbl amber" x="800" y="120" text-anchor="middle" style="font-size:30px">On sait soigner. Reste à chercher.</text></g>');
+  step('<g class="a" data-k="?" data-dur="800" data-d="850"><path class="arrow" pathLength="1" d="M1580,700 L1633.3,700"/></g>');
+  const cap = [null, 'Un chercheur n\'a pas le temps de lire cent publications. <span class="r">Une IA lui sort un chiffre, sans page.</span>', '<b>Mission Zero lit pour lui.</b>',
+    'Dix millions huit cent mille malades en 2023.', null, '<span class="r">Un million deux cent cinquante mille morts.</span>', null,
+    'Quatre-vingt-huit pour cent guéris, quand on soigne. <b>Trois pages de l\'OMS, mot pour mot.</b>', null,
+    'Chaque semaine, il compare et ne signale que ce qui bouge.', 'Semaine 38&nbsp;: <b class="r">plus quarante pour cent.</b>', 'Il cite la méthode et dit qu\'aucun commentaire n\'existe.', null,
+    'Demain, sur les relevés d\'un laboratoire. <b>Le chercheur tranche.</b>', '<b>On sait soigner. Reste à chercher.</b>', null];
+  if (cap.length !== k) throw new Error('sM : ' + k + ' étapes, ' + cap.length + ' légendes');
+  const sec = '  <section class="scene" id="sM">\n    <header><h2>LA MÉDECINE</h2><span class="t">une vraie mission de Mission Zero</span></header>\n    <svg viewBox="0 0 1600 900" role="img" aria-label="Le fil devient un battement de cœur ; à chaque battement, un chiffre du rapport de l\'OMS sur la tuberculose ; puis la veille hebdomadaire">\n      ' + g.join('\n      ') + '\n    </svg>\n    <div class="caption" id="cM"></div>\n  </section>\n';
+  return { sec, cap };
+})();
+
+// LA FIN (le fil arrive verticalement au bord gauche du zéro, dans le sens du cercle : aucun angle) : le fil entre à la hauteur où la médecine l'a laissé (728 px), dessine le zéro, le point se pose au centre ; silence ;
+// coupure au noir ; « WHAT DO YOU NEED ? » blanc plein écran, « CRYPTOR.AGENCY » dessous, « MISSION ZERO » néon en dernier.
+const sZgeo = (function () {
+  let k = 0; const g = [];
+  const step = (s) => { k += 1; g.push(s.replace('data-k="?"', 'data-k="' + k + '"')); };
+  step('<g class="a" data-k="?" id="zin" data-dur="1300" data-d="1400"><path class="arrow" pathLength="1" d="M0,728 C380,728 690,640 690,400"/></g>');
+  step('<g class="a" data-k="?" id="zz" data-dur="2200" data-d="2400"><path class="arrow zero" pathLength="1" d="M690,400 A110,110 0 1,1 910,400 A110,110 0 1,1 690,400"/></g>');
+  step('<g class="b" data-k="?" id="zdot" data-d="2000"><circle cx="800" cy="400" r="11" fill="#fff" style="filter:drop-shadow(0 0 8px rgba(46,230,160,.9))"/></g>');
+  step('<g class="b" data-k="?" data-cls="black" data-hide="#zin,#zz,#zdot" data-d="900"><text class="lbl xs" x="0" y="0"> </text></g>');
+  step('<g class="b" data-k="?" data-d="1800"><text x="800" y="420" text-anchor="middle" style="font-size:120px;font-weight:900;fill:#fff;letter-spacing:.02em">WHAT DO YOU NEED ?</text></g>');
+  step('<g class="b" data-k="?" data-d="1500"><text x="800" y="520" text-anchor="middle" style="font-size:40px;font-weight:600;fill:#e8edf7;letter-spacing:.3em">CRYPTOR.AGENCY</text></g>');
+  step('<g class="b" data-k="?" data-d="4200"><text class="neon" x="800" y="620" text-anchor="middle" style="font-size:58px;font-weight:800;letter-spacing:.35em">MISSION ZERO</text></g>');
+  const cap = [null, null, null, null, null, null, null];
+  if (cap.length !== k) throw new Error('sZ : ' + k + ' étapes, ' + cap.length + ' légendes');
+  const sec = '  <section class="scene" id="sZ">\n    <header><h2>LA FIN</h2><span class="t">le zéro</span></header>\n    <svg viewBox="0 0 1600 900" role="img" aria-label="Le fil dessine un zéro, puis : WHAT DO YOU NEED ? CRYPTOR.AGENCY. MISSION ZERO.">\n      ' + g.join('\n      ') + '\n    </svg>\n    <div class="caption" id="cZ"></div>\n  </section>\n';
+  return { sec, cap };
 })();
 // La sécurité, condensée : la carte du choc, la colonne rouge, la colonne verte, rejeté puis proposé, le regard, le vrai site, MYTHOZOR.
 const s1old = `  <section class="scene" id="s1">
@@ -111,7 +237,7 @@ const s2geo = (function () {
   arrow(`M1170,${RY} L1260,${RY}`);
   ring(5, 'data-ring="r5"', 'écrites, jamais cachées', 'Réserves', 1500);
   arrow(`M1330,${RY + RR} L1330,600`);
-  step(`<g class="b" data-k="?" data-d="3600"><rect class="box ok" x="1070" y="600" width="520" height="130" rx="16"/><text class="lbl acc" x="1330" y="642" text-anchor="middle">Confirmé · patch + preuves</text><text class="lbl s" x="1330" y="690" text-anchor="middle" style="fill:var(--fg)">un humain applique, d'un clic</text></g>`);
+  step(`<g class="b" data-k="?" data-d="3600"><rect class="box ok" x="1070" y="600" width="520" height="130" rx="16"/><text class="lbl acc" x="1330" y="642" text-anchor="middle">Confirmé · patch + preuves</text><text class="lbl s" x="1330" y="690" text-anchor="middle" style="fill:var(--fg)">un humain applique, ou l'automatique</text></g>`);
   step(`<g class="b" data-k="?" data-d="2400"><text class="lbl xs" x="0" y="0"> </text></g>`);
   const cap = ['Le même site, ses cinq failles.', null, 'Un scanner les liste. N’importe lequel.', null,
     '<b>Mission Zero part de zéro.</b> Une copie du site et l’ordre de prouver.', null, 'Un premier correctif, sur une copie.', null,
@@ -121,7 +247,7 @@ const s2geo = (function () {
     '<b class="r">Refusé</b>, par lui-même.', null, '<b>Correctif n°2</b>, sur une copie neuve.',
     'Contrôles 1 et 2 rejoués&nbsp;: toujours verts.', null, 'Contrôle 3&nbsp;: la page est intacte. Vert.', null,
     'Contrôle 4&nbsp;: la relecture. La cause, pas le symptôme. Vert.', null, 'Contrôle 5&nbsp;: les réserves, écrites. Vert.', null,
-    'Cinq verts&nbsp;: <b>confirmé</b>. Un humain applique, d’un clic.', 'Il part de zéro, se refuse et confirme. Seul.'];
+    'Cinq verts&nbsp;: <b>confirmé</b>. Un humain applique, ou l’automatique.', 'Il part de zéro, se refuse et confirme. Seul.'];
   if (cap.length !== k) throw new Error('s2 : ' + k + ' étapes, ' + cap.length + ' légendes');
   const sec = `  <section class="scene" id="s2">
     <header><h2>3 · CORRECTION AVEC MISSION ZERO</h2><span class="t">correction</span></header>
@@ -147,6 +273,8 @@ const fixS1 = (x) => {
   r('<rect class="badge" x="600" y="412" width="380" height="36" rx="18"/><text class="badge-t" x="790" y="437"', '<rect class="badge" x="890" y="466" width="300" height="36" rx="18"/><text class="badge-t" x="1040" y="491"');
   r('<rect class="badge" x="730" y="600" width="420" height="36" rx="18"/><text class="badge-t" x="940" y="625"', '<rect class="badge" x="740" y="582" width="420" height="36" rx="18"/><text class="badge-t" x="950" y="607"');
   r('<rect class="badge" x="100" y="128" width="400" height="36" rx="18"/><text class="badge-t" x="300" y="153"', '<rect class="badge" x="840" y="128" width="320" height="30" rx="15"/><text class="badge-t" x="1000" y="149"');
+  // L'équipe n'est plus un encadré : la silhouette du personnage et ses deux lignes dessous (gérant 30 octobre, 16 h).
+  r('<rect class="box" x="1250" y="180" width="310" height="300" rx="18"/><text class="lbl" x="1405" y="260" text-anchor="middle" style="font-size:54px">👩‍💻</text><text class="lbl m" x="1405" y="312" text-anchor="middle">L\'équipe</text><text class="lbl xs" x="1405" y="342" text-anchor="middle">une personne, souvent</text><text class="lbl xs" x="1405" y="366" text-anchor="middle">le site, les clients, la sécurité</text>', '<text class="lbl" x="1405" y="290" text-anchor="middle" style="font-size:96px">👩‍💻</text><text class="lbl s" x="1405" y="340" text-anchor="middle" style="fill:var(--fg)">une personne, souvent</text><text class="lbl xs" x="1405" y="368" text-anchor="middle">le site, les clients, la sécurité</text>');
   return x;
 };
 // ARGUS : pastilles dans le cadre, ⚠ sur la pastille rouge, boîtes allégées (une ligne lisible par boîte), le mode automatique
@@ -164,48 +292,54 @@ const fixS3 = (x) => {
   r('x="350" y="640"', 'x="330" y="640"'); r('en-têtes : la politique de sécurité a sauté', 'en-têtes : protection sautée');
   r('d="M1300 602 L1300 735 L350 735 L350 602"', 'd="M1300 602 L1300 735 L490 735 L490 602"');
   grp(13, '<g class="b" data-k="13"><rect class="box gold" x="600" y="290" width="400" height="310" rx="18"/><text class="lbl acc" x="800" y="340" text-anchor="middle" style="font-size:28px">Mission Zero, branché</text><rect class="mini" x="625" y="380" width="100" height="50" rx="10"/><text class="lbl xs" x="675" y="411" text-anchor="middle" style="fill:var(--fg)">copie du site</text><path class="arrow" d="M727 405 L752 405" style="stroke-dasharray:none;stroke-dashoffset:0;stroke-width:3"/><rect class="mini" x="756" y="380" width="100" height="50" rx="10"/><text class="lbl xs" x="806" y="411" text-anchor="middle" style="fill:var(--fg)">correctif</text><path class="arrow" d="M858 405 L883 405" style="stroke-dasharray:none;stroke-dashoffset:0;stroke-width:3"/><circle class="ring lit" cx="905" cy="405" r="12"/><circle class="ring lit" cx="933" cy="405" r="12"/><circle class="ring lit" cx="961" cy="405" r="12"/><text class="lbl s okt" x="800" y="510" text-anchor="middle">✔ correctif confirmé, sur une copie</text></g>');
-  grp(15, '<g class="b" data-k="15"><rect class="box ok" x="1080" y="290" width="440" height="310" rx="18"/><text class="lbl" x="1300" y="340" text-anchor="middle" style="font-size:28px">Vous validez</text><rect class="tile" x="1100" y="380" width="400" height="44" rx="8"/><text class="lbl xs" x="1115" y="408">en-têtes CSP · confirmé</text><rect x="1392" y="388" width="98" height="28" rx="7" fill="rgba(46,230,160,.18)" stroke="rgba(46,230,160,.7)" stroke-width="1.5"/><text class="lbl xs acc" x="1441" y="407" text-anchor="middle" style="font-weight:600">Appliquer</text><text class="lbl s" x="1300" y="490" text-anchor="middle" style="fill:var(--fg)">aujourd\'hui : un humain applique, d\'un clic</text><text class="lbl xs" x="1300" y="540" text-anchor="middle">mode automatique : à venir</text></g>');
+  // Le bloc « Vous validez · ou automatique » du 29 reste tel quel (les deux modes, décision du gérant du 30 octobre, 16 h).
   return x;
 };
+// ARGUS : le fil ressort de « Vous validez » vers la droite, à la hauteur d'entrée de l'écran des choix (488 px à l'écran).
+const addExit3 = (x) => { const i = x.lastIndexOf('\n    </svg>'); return x.slice(0, i) + '\n      <g class="a" data-k="19" data-dur="900" data-d="950"><path class="arrow" pathLength="1" d="M1520,425.3 L1642.2,425.3"/></g>' + x.slice(i); };
 const pick = (id, next) => { let x = src.slice(src.indexOf('<section class="scene" id="' + id + '">'), src.indexOf('<section class="scene" id="' + next + '">')); var i = x.indexOf("<div class=\"bar\">"); if (i >= 0) { var j = x.indexOf("</div>", i) + 7; x = x.slice(0, i) + x.slice(j); } return x; };
 const titled = (sec, label, cls, sub) => { var o = sec.indexOf('<svg viewBox="0 0 1600 900"'); var oe = sec.indexOf('>', o) + 1; var ce = sec.indexOf('</svg>', oe); var head = '<text class="lbl ' + cls + '" x="800" y="40" text-anchor="middle" style="font-size:26px;letter-spacing:.2em;font-weight:700">' + label + '</text>' + (sub ? '<text class="lbl s" x="800" y="70" text-anchor="middle" style="font-size:20px;letter-spacing:.08em">' + sub + '</text>' : ''); return sec.slice(0, oe) + head + '<g transform="translate(' + (sub ? '40,84) scale(0.95)' : '32,56) scale(0.96)') + '">' + sec.slice(oe, ce) + '</g>' + sec.slice(ce); };
-const sB = titled(sBgeo, 'OÙ L’ENVOYER ?', 'amber');
-const s1 = titled(fixS1(pick('s1', 's2')), 'SANS MISSION ZERO', 'red'), s2 = titled(s2geo.sec, 'AVEC MISSION ZERO', 'acc'), s3 = titled((function (x) { var i = x.indexOf('<g class="b" data-k="19"><text class="lbl acc" x="800" y="822"'); if (i < 0) return x; var j = x.indexOf('</g>', i) + 4; return x.slice(0, i) + x.slice(j); })(fixS3(pick('s3', 'sE'))), 'EXEMPLE D’UTILISATION AVEC MISSION ZERO', 'acc', 'MYTHOZOR ARGUS · surveillance cybersécurité');
+const sB = titled(sBgeo.sec, 'OÙ L’ENVOYER ?', 'amber'), sE = titled(sEgeo.sec, 'L’ESPACE · AVEC MISSION ZERO', 'acc'), sM = titled(sMgeo.sec, 'LA MÉDECINE · AVEC MISSION ZERO', 'acc'), sZ = sZgeo.sec;
+const s1 = titled(fixS1(pick('s1', 's2')), 'SANS MISSION ZERO', 'red'), s2 = titled(s2geo.sec, 'AVEC MISSION ZERO', 'acc'), s3 = titled((function (x) { var i = x.indexOf('<g class="b" data-k="19"><text class="lbl acc" x="800" y="822"'); if (i < 0) return x; var j = x.indexOf('</g>', i) + 4; return x.slice(0, i) + x.slice(j); })(addExit3(fixS3(pick('s3', 'sE')))), 'EXEMPLE D’UTILISATION AVEC MISSION ZERO', 'acc', 'MYTHOZOR ARGUS · surveillance cybersécurité');
 const CAP = {
   s0: geo.cap,
-  sB: ['Le point arrive. La boucle attend un objectif.', 'Même boucle, zéro code.', 'L\'espace…', 'la médecine…', 'un chiffre de l\'INSEE…', 'une norme…', 'une loi…', 'une décision de justice…', 'un appel d\'offres…', 'un rapport annuel…', 'un brevet…', 'la sécurité d\'un site…', 'une norme produit…', 'votre métier.', 'Tout vient de données gratuites.', null, '<b>D\'abord, la sécurité d\'un site.</b>'],
+  sB: sBgeo.cap.securite, sB2: sBgeo.cap.espace, sB3: sBgeo.cap.medecine,
   s1: ['Une boutique en ligne. Elle tourne.', 'Les commandes tombent.', null, 'Tout va bien.', 'Conforme. Aujourd’hui.', 'Une équipe : une personne, souvent.', 'Une faille : aucun en-tête de sécurité.', 'Rouge.', 'Elle corrige à la main.', 'Corrigé.', 'Vert.', 'Une autre : le prix changé par le client.', 'Rouge.', 'Elle corrige, le soir.', 'Corrigé.', 'Vert.', 'Deux de plus : la carte bancaire en clair…', '…et une bibliothèque de 2012.', 'Rouge.', 'Pas le temps. Pas le budget.', 'Une cinquième. Elle restera ouverte.', 'Rouge.', '<b>8 sites sur 10 restent exposés.</b> La seule question, c’est quand.'],
   s2: s2geo.cap,
-  s3: ['Chez vous. Rien ne sort.', 'Votre site, sur votre serveur.', '<b>MYTHOZOR ARGUS</b> surveille, jour et nuit.', null, null, null, null, null, null, 'Tout est vert.', 'Une nouvelle faille. ARGUS la voit. Rouge.', null, '<b>Mission Zero</b> la prend. Copie, correctif, cinq contrôles, patch.', null, 'Vous validez d’un clic. Le mode automatique est à venir.', null, 'ARGUS vérifie à nouveau.', 'Le rouge repasse au vert.'],
+  s3: ['Chez vous. Rien ne sort.', 'Votre site, sur votre serveur.', '<b>MYTHOZOR ARGUS</b> surveille, jour et nuit.', null, null, null, null, null, null, 'Tout est vert.', 'Une nouvelle faille. ARGUS la voit. Rouge.', null, '<b>Mission Zero</b> la prend. Copie, correctif, cinq contrôles, patch.', null, 'Vous validez d’un clic. Ou en automatique.', null, 'ARGUS vérifie à nouveau.', 'Rouge repassé au vert. Sans vous réveiller.'],
 };
+CAP.s3 = CAP.s3.concat([null]); CAP.sE = sEgeo.cap; CAP.sM = sMgeo.cap; CAP.sZ = sZgeo.cap;
 // Apostrophes typographiques dans tout le texte affiché (jamais dans le code ni les attributs).
 const typo = (h) => h.replace(/>([^<]+)</g, (m, t) => '>' + t.replace(/'/g, '’') + '<');
+// Le moteur : celui du 30 (fil et point ensemble, zooms, alerte, éventail), plus les passages de l'écran des choix, les
+// étoiles et le compteur de l'espace, un arrondi réglable par fil (data-round, pointes du cœur), une classe posée sur la page
+// (data-cls, le noir de la fin).
 const script = `<script>
 (function () {
-  var SVGNS = 'http://www.w3.org/2000/svg', XLINK = 'http://www.w3.org/1999/xlink';
+  var SVGNS = 'http://www.w3.org/2000/svg';
   var CAP = ${JSON.stringify(CAP).replace(/'/g, '’')};
-  var timers = {}, SPEED = {};
+  var timers = {}, pass = {}, SPEED = {};
   function speedOf(el) { var sc = el.closest('.scene'); return (sc && SPEED[sc.id]) || 1; }
-  function steps(id) { return Array.prototype.slice.call(document.querySelectorAll('#' + id + ' [data-k]')); }
+  function steps(id) { var p = pass[id] || 'all'; return Array.prototype.slice.call(document.querySelectorAll('#' + id + ' [data-k]')).filter(function (s) { return !s.dataset.pass || p === 'all' || s.dataset.pass === p; }); }
   function capId(id) { return 'c' + id.slice(1); }
-  function roundPath(d) {
+  function roundPath(d, maxR) {
     var t = d.trim(); if (t.charAt(0) !== 'M' || /[ACQSTHVZacqsthvz]/.test(t.slice(1))) return d;
     var nums = t.replace(/[ML]/g, ' ').split(/[ ,]+/).filter(Boolean).map(Number); var pts = []; for (var j = 0; j + 1 < nums.length; j += 2) pts.push([nums[j], nums[j + 1]]);
     if (pts.length < 3) return d;
     var out = 'M' + pts[0][0] + ',' + pts[0][1];
     for (var i = 1; i < pts.length - 1; i++) {
       var p = pts[i - 1], c = pts[i], n2 = pts[i + 1];
-      var l1 = Math.hypot(c[0] - p[0], c[1] - p[1]), l2 = Math.hypot(n2[0] - c[0], n2[1] - c[1]), rr = Math.min(48, l1 / 2, l2 / 2);
+      var l1 = Math.hypot(c[0] - p[0], c[1] - p[1]), l2 = Math.hypot(n2[0] - c[0], n2[1] - c[1]), rr = Math.min(maxR || 48, l1 / 2, l2 / 2);
       var a = [c[0] - (c[0] - p[0]) / l1 * rr, c[1] - (c[1] - p[1]) / l1 * rr], bq = [c[0] + (n2[0] - c[0]) / l2 * rr, c[1] + (n2[1] - c[1]) / l2 * rr];
       out += ' L' + a[0].toFixed(1) + ',' + a[1].toFixed(1) + ' Q' + c[0] + ',' + c[1] + ' ' + bq[0].toFixed(1) + ',' + bq[1].toFixed(1);
     }
     var last = pts[pts.length - 1]; return out + ' L' + last[0] + ',' + last[1];
   }
-  document.querySelectorAll('.arrow').forEach(function (p) { p.setAttribute('d', roundPath(p.getAttribute('d'))); });
+  document.querySelectorAll('.arrow').forEach(function (p) { p.setAttribute('d', roundPath(p.getAttribute('d'), Number(p.dataset.round) || 0)); });
   var n = 0, gen = 0;
   document.querySelectorAll('.a .arrow').forEach(function (p) {
     n += 1; p.id = p.id || 'p' + n;
-    var orbit = p.classList.contains('orbit'), dur = Math.round((Number(p.parentNode.dataset.dur) || (orbit ? 4000 : 1000)) * speedOf(p));
+    var dur = Math.round((Number(p.parentNode.dataset.dur) || 1000) * speedOf(p));
     var c = document.createElementNS(SVGNS, 'circle'); c.setAttribute('r', '8'); c.setAttribute('class', 'runner'); c.dataset.for = p.id;
     p.parentNode.appendChild(c); p.style.transition = 'none'; p.parentNode.dataset.dur = dur;
   });
@@ -220,10 +354,32 @@ const script = `<script>
     }
     list.forEach(function (o) { o.p.style.strokeDashoffset = '1'; var q = o.p.getPointAtLength(0); if (o.c) { o.c.setAttribute('cx', q.x); o.c.setAttribute('cy', q.y); o.c.classList.add('go'); } });
     requestAnimationFrame(frame);
-    // Les surbrillances au passage du point : data-pulses="id@fraction[:strong]".
     (step.dataset.pulses || '').split(',').filter(Boolean).forEach(function (r) { var m = r.split('@'), f = m[1].split(':'); setTimeout(function () { if (my === gen) pulse(m[0], f[1] === 'strong'); }, Math.round(Number(f[0]) * dur)); });
   }
   function pulse(id, strong) { var el = document.getElementById(id); if (!el) return; el.classList.remove('pulse', 'strong'); void el.getBBox(); el.classList.add('pulse'); if (strong) el.classList.add('strong'); setTimeout(function () { el.classList.remove('pulse', 'strong'); }, strong ? 1300 : 700); }
+  // Le compteur de vitesse de l'espace : il monte, il ne redescend jamais. Le ciel d'étoiles vient vers vous, comme par le pare-brise.
+  var speedTimer = null, starSpeed = 0.2, starsOn = false, stars = [], starEls = [], lastT = 0;
+  function tweenSpeed(to) {
+    var el = document.getElementById('speed'); if (!el) return; var from = Number(el.textContent) || 0, t0 = Date.now(); clearInterval(speedTimer);
+    speedTimer = setInterval(function () { var k = Math.min(1, (Date.now() - t0) / 900); el.textContent = Math.round(from + (to - from) * (1 - Math.pow(1 - k, 3))); if (k >= 1) clearInterval(speedTimer); }, 40);
+    starSpeed = 0.15 + to / 900;
+  }
+  function initStars() {
+    var g = document.getElementById('stars'); if (!g || starEls.length) return;
+    for (var i = 0; i < 140; i++) { var c = document.createElementNS(SVGNS, 'circle'); c.setAttribute('fill', '#fff'); g.appendChild(c); starEls.push(c); stars.push({ x: Math.random() * 2 - 1, y: Math.random() * 2 - 1, z: Math.random() }); }
+  }
+  function tickStars(t) {
+    if (!starsOn) return; var dt = Math.min(0.05, (t - lastT) / 1000 || 0.016); lastT = t;
+    stars.forEach(function (s, i) {
+      s.z -= starSpeed * dt; if (s.z <= 0.03) { s.x = Math.random() * 2 - 1; s.y = Math.random() * 2 - 1; s.z = 1; }
+      var sx = 800 + s.x / s.z * 700, sy = 450 + s.y / s.z * 420;
+      if (sx < -20 || sx > 1620 || sy < -20 || sy > 920) { s.x = Math.random() * 2 - 1; s.y = Math.random() * 2 - 1; s.z = 1; return; }
+      var e = starEls[i]; e.setAttribute('cx', sx.toFixed(1)); e.setAttribute('cy', sy.toFixed(1)); e.setAttribute('r', ((1 - s.z) * 3 + 0.4).toFixed(2)); e.setAttribute('opacity', ((1 - s.z) * 0.8 + 0.1).toFixed(2));
+    });
+    requestAnimationFrame(tickStars);
+  }
+  function startStars() { initStars(); if (!starsOn) { starsOn = true; lastT = 0; requestAnimationFrame(tickStars); } }
+  function stopStars() { starsOn = false; starSpeed = 0.2; }
   function act(step) {
     (step.dataset.hide || '').split(',').filter(Boolean).forEach(function (h) { document.querySelector(h).classList.add('hidden'); });
     (step.dataset.ring || '').split(',').filter(Boolean).forEach(function (r) { var id = r.split(':')[0], mode = r.split(':')[1] || 'lit'; var el = document.getElementById(id); el.classList.remove('lit', 'bad'); if (mode !== 'off') el.classList.add(mode); });
@@ -232,9 +388,11 @@ const script = `<script>
     if (step.dataset.unzoom) { var uz = document.getElementById(step.dataset.unzoom); if (uz) { uz.classList.remove('zoomx'); uz.parentNode.classList.remove('zooming'); } }
     (step.dataset.chip || '').split(',').filter(Boolean).forEach(function (r) { var id = r.split(':')[0], mode = r.split(':')[1] || 'ok'; var el = document.getElementById(id); if (el) { el.classList.remove('ok', 'ko'); el.classList.add(mode); } });
     (step.dataset.gone || '').split(',').filter(Boolean).forEach(function (id) { document.getElementById(id).classList.add('gone'); });
-    // Surbrillance au passage (pulse, ou pulse:strong pour une revalidation) ; clignotement d'une alerte prise en compte.
     (step.dataset.pulse || '').split(',').filter(Boolean).forEach(function (r) { pulse(r.split(':')[0], r.split(':')[1] === 'strong'); });
     (step.dataset.blink || '').split(',').filter(Boolean).forEach(function (id) { var el = document.getElementById(id); if (!el) return; el.classList.remove('blink'); void el.getBBox(); el.classList.add('blink'); setTimeout(function () { el.classList.remove('blink'); }, 3600); });
+    if (step.dataset.speed) tweenSpeed(Number(step.dataset.speed));
+    if (step.dataset.stars) startStars();
+    if (step.dataset.cls) document.body.classList.add(step.dataset.cls);
     if (step.dataset.zoom) { var z = document.querySelector(step.dataset.zoom); if (z) setTimeout(function () { z.classList.add('zoom'); }, 900); }
   }
   function fire(step) {
@@ -242,7 +400,7 @@ const script = `<script>
     if (step.classList.contains('a')) draw(step);
   }
   function reset(id) {
-    gen += 1; steps(id).forEach(function (s) { s.classList.remove('on', 'drawn', 'focus', 'hidden', 'zoom'); });
+    gen += 1; Array.prototype.slice.call(document.querySelectorAll('#' + id + ' [data-k]')).forEach(function (s) { s.classList.remove('on', 'drawn', 'focus', 'hidden', 'zoom'); if (s.dataset.cls) document.body.classList.remove(s.dataset.cls); });
     document.querySelectorAll('#' + id + ' .zooming').forEach(function (z) { z.classList.remove('zooming'); });
     document.querySelectorAll('#' + id + ' .zoomx').forEach(function (z) { z.classList.remove('zoomx'); });
     document.querySelectorAll('#' + id + ' .arrow').forEach(function (p) { p.style.strokeDashoffset = ''; });
@@ -254,34 +412,41 @@ const script = `<script>
     document.querySelectorAll('#' + id + ' .runner').forEach(function (c) { c.classList.remove('go'); });
     document.querySelectorAll('#' + id + ' .shrink').forEach(function (c) { c.classList.remove('shrink'); });
     document.querySelectorAll('#' + id + ' .pulse, #' + id + ' .blink').forEach(function (c) { c.classList.remove('pulse', 'strong', 'blink'); });
+    if (id === 'sE') { stopStars(); clearInterval(speedTimer); var sp = document.getElementById('speed'); if (sp) sp.textContent = '0'; }
     document.getElementById(capId(id)).innerHTML = '';
   }
-  function caption(id, k) { var t = CAP[id][k - 1]; if (t) document.getElementById(capId(id)).innerHTML = t; }
-  function play(id, done) {
-    clearTimeout(timers[id]); reset(id);
-    var list = steps(id), k = 0;
+  function caps(id) { if (id !== 'sB') return CAP[id]; return pass[id] === 'espace' ? CAP.sB2 : pass[id] === 'medecine' ? CAP.sB3 : CAP.sB; }
+  function caption(id, k) { var t = caps(id)[k - 1]; if (t) document.getElementById(capId(id)).innerHTML = t; }
+  // Un passage « retour » sur l'écran des choix : le fil arrive à sa vitesse, puis la boucle et l'éventail reviennent vite.
+  function play(id, done, p) {
+    clearTimeout(timers[id]); pass[id] = p || pass[id] || 'all'; reset(id);
+    var list = steps(id), k = 0, quick = (id === 'sB' && pass[id] !== 'securite' && pass[id] !== 'all');
     void document.getElementById(id).getBoundingClientRect();
-    (function next() { if (k >= list.length) { if (done) timers[id] = setTimeout(done, list[list.length - 1].classList.contains('a') ? 0 : 1800); return; } var s = list[k]; k += 1; fire(s); caption(id, k); var d = Math.round((Number(s.dataset.d) || (s.classList.contains('a') ? 1100 : 1300)) * speedOf(s)); if (s.classList.contains('a')) d = Math.max(d, (Number(s.dataset.dur) || 0) + 60); timers[id] = setTimeout(next, d); })();
+    (function next() { if (k >= list.length) { if (done) timers[id] = setTimeout(done, list[list.length - 1].classList.contains('a') ? 0 : 1800); return; } var s = list[k]; k += 1; fire(s); caption(id, k); var d = Math.round((Number(s.dataset.d) || (s.classList.contains('a') ? 1100 : 1300)) * speedOf(s)); if (quick && !s.dataset.pass && !s.classList.contains('a')) d = Math.min(d, 220); if (s.classList.contains('a')) d = Math.max(d, (Number(s.dataset.dur) || 0) + 60); timers[id] = setTimeout(next, d); })();
   }
-  function all(id) { clearTimeout(timers[id]); reset(id); var list = steps(id); list.forEach(function (s) { s.classList.add('on', 'drawn'); act(s); if (s.querySelector('.orbit')) fire(s); }); document.querySelectorAll('#' + id + ' .shrink').forEach(function (c) { c.classList.remove('shrink'); }); caption(id, list.length); }
+  function all(id) { clearTimeout(timers[id]); pass[id] = id === 'sB' ? 'medecine' : 'all'; reset(id); var list = steps(id); list.forEach(function (s) { s.classList.add('on', 'drawn'); act(s); }); document.querySelectorAll('#' + id + ' .shrink').forEach(function (c) { c.classList.remove('shrink'); }); document.body.classList.remove('black'); caption(id, list.length); }
   function show(id) { document.querySelectorAll('.scene').forEach(function (s) { s.classList.toggle('active', s.id === id); }); }
   var t0 = 0, clock = document.getElementById('clock');
   function tick() { if (t0) clock.textContent = Math.round((Date.now() - t0) / 100) / 10 + ' s'; }
   setInterval(tick, 200);
-  // Le film d'une minute : la boucle, l'écran des choix, la sécurité. Le fil ne casse pas.
-  function film() {
-    t0 = Date.now(); document.body.classList.add('film');
-    var chain = ['s0', 'sB', 's1', 's2', 's3'], i = 0; (function step() { if (i >= chain.length) { clock.textContent = 'fin · ' + Math.round((Date.now() - t0) / 100) / 10 + ' s'; t0 = 0; return; } var id = chain[i]; i += 1; show(id); play(id, step); })();
+  // Le film complet : la boucle, les choix, la sécurité (boutique, correction, ARGUS), les choix, l'espace, les choix, la médecine, la fin.
+  var CHAIN = [['s0'], ['sB', 'securite'], ['s1'], ['s2'], ['s3'], ['sB', 'espace'], ['sE'], ['sB', 'medecine'], ['sM'], ['sZ']];
+  var IDS = ['s0', 'sB', 's1', 's2', 's3', 'sE', 'sM', 'sZ'];
+  function stopAll() { IDS.forEach(function (id) { clearTimeout(timers[id]); }); stopStars(); document.body.classList.remove('black'); }
+  function film(from) {
+    stopAll(); t0 = Date.now(); document.body.classList.add('film');
+    var i = from || 0; (function step() { if (i >= CHAIN.length) { clock.textContent = 'fin · ' + Math.round((Date.now() - t0) / 100) / 10 + ' s'; t0 = 0; return; } var c = CHAIN[i]; i += 1; show(c[0]); play(c[0], step, c[1] || 'all'); })();
   }
-  document.getElementById('go').addEventListener('click', film);
-  document.querySelectorAll('[data-ch]').forEach(function (b) { b.addEventListener('click', function () { document.body.classList.add('film'); show(b.dataset.ch); play(b.dataset.ch); }); });
-  document.getElementById('grid').addEventListener('click', function () { document.body.classList.remove('film'); ['s0', 'sB', 's1', 's2', 's3'].forEach(all); });
+  document.getElementById('go').addEventListener('click', function () { film(0); });
+  document.querySelectorAll('[data-ch]').forEach(function (b) { b.addEventListener('click', function () { stopAll(); document.body.classList.add('film'); show(b.dataset.ch); play(b.dataset.ch, null, b.dataset.pass || 'all'); }); });
+  document.getElementById('grid').addEventListener('click', function () { stopAll(); document.body.classList.remove('film'); IDS.forEach(all); });
+  window.MZF = { film: film, play: play, CHAIN: CHAIN, CAP: CAP, steps: steps, pass: pass };
   var q = new URLSearchParams(location.search);
   if (q.get('record')) document.documentElement.classList.add('record');
-  if (q.get('auto')) film(); else { document.body.classList.add('film'); show('s0'); }
+  if (q.get('auto')) film(0); else { document.body.classList.add('film'); show('s0'); }
 })();
 </script>`;
-// Les styles propres au moteur du 30 (surbrillance, alerte, zoom, éventail, rétrécissement) : partagés avec build-v5.cjs.
+// Les styles propres au moteur du 30 (surbrillance, alerte, zoom, éventail, rétrécissement), puis ceux de la fin (zéro, noir, néon).
 const extra = `<style>
 .film .scene { display:none; } .film .scene.active { display:grid; } .film .scene header { display:none; }
 .field { fill:#fff; stroke:#999; stroke-width:1.5; } .field.gone { fill:none; stroke:var(--red); stroke-dasharray:5 4; }
@@ -312,21 +477,30 @@ const extra = `<style>
 #loop.shrink { transform: scale(0.01); opacity: 0; }
 /* Le point blanc naît pendant le rétrécissement, au centre : aucun écran vide entre la boucle et le point. */
 #dotc.on { animation-delay: .25s; }
+/* La fin : le zéro tracé par le fil, la coupure au noir, le néon qui s'allume en dernier (un seul allumage, pas de boucle). */
+.arrow.zero { stroke:var(--acc); stroke-width:7; }
+body.black { background:#000; } body.black .scene { background:#000; } body.black .caption { visibility:hidden; }
+.neon { fill:#39ffb0; filter: drop-shadow(0 0 6px #2ee6a0) drop-shadow(0 0 18px rgba(46,230,160,.8)); }
+.b.on .neon { animation: neon 1.6s linear both; }
+@keyframes neon { 0% { opacity:0; } 12% { opacity:1; } 18% { opacity:.15; } 30% { opacity:1; } 36% { opacity:.3; } 50%, 100% { opacity:1; } }
 </style>`;
 const html = `<!doctype html>
 <html lang="fr">
 <meta charset="utf-8">
-<title>Mission Zero film · une minute</title>
+<title>Mission Zero · le film</title>
 ${style}
 ${extra}
 <div class="wrap">
   <h1>Mission Zero, le film · une minute <small>Le modèle du 29 octobre, raccourci : des phrases courtes, les flèches qui se dessinent, le point qui court devant, chaque élément qui apparaît et reste. Voix française (le fondateur), sous-titres anglais incrustés au montage.</small></h1>
-  <div class="filmbar"><button class="big" id="go">▶ Lancer le film</button><button data-ch="s0">1 · La boucle</button><button data-ch="sB">· Où l'envoyer ?</button><button data-ch="s1">2 · Constat</button><button data-ch="s2">3 · Correction</button><button data-ch="s3">4 · MYTHOZOR ARGUS</button><button id="grid">Voir tous les schémas</button><span id="clock" style="color:var(--mut)"></span></div>
+  <div class="filmbar"><button class="big" id="go">▶ Lancer le film</button><button data-ch="s0">1 · La boucle</button><button data-ch="sB" data-pass="securite">· Où l'envoyer ?</button><button data-ch="s1">2 · Constat</button><button data-ch="s2">3 · Correction</button><button data-ch="s3">4 · MYTHOZOR ARGUS</button><button data-ch="sB" data-pass="espace">· Choix : l'espace</button><button data-ch="sE">5 · L'espace</button><button data-ch="sB" data-pass="medecine">· Choix : la médecine</button><button data-ch="sM">6 · La médecine</button><button data-ch="sZ">· Fin</button><button id="grid">Voir tous les schémas</button><span id="clock" style="color:var(--mut)"></span></div>
 ${typo(s0)}
 ${typo(sB)}
 ${typo(s1)}
 ${typo(s2)}
 ${typo(s3)}
+${typo(sE)}
+${typo(sM)}
+${typo(sZ)}
 </div>
 ${script}
 </html>
@@ -335,5 +509,5 @@ if (require.main === module) {
   fs.writeFileSync(__dirname + '/../film-v4.html', html);
   console.log('film-v4.html', html.length, 'octets; s0 steps:', (s0.match(/data-k=/g) || []).length, 'sB steps:', (sB.match(/data-k=/g) || []).length, 's1 steps:', (s1.match(/data-k=/g) || []).length);
 }
-// Pièces réutilisées par build-v5.cjs (le film complet du script du 29 sur le moteur du 30).
-module.exports = { src, style, extra, s0, s1, s2, s3, CAP, titled, typo };
+// Source unique du film (décision du gérant, 30 octobre) : build-v4.cjs → film-v4.html.
+module.exports = { src, style, extra, s0, sB, s1, s2, s3, sE, sM, sZ, CAP, titled, typo };
