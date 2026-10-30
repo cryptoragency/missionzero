@@ -49,3 +49,40 @@ anglais incrustés au montage (hors de ce fichier).
 - Captures headless à plusieurs instants (le fil n'est jamais tracé avant le point ; aucun fil ne traverse un rond ou
   une boîte ; les zooms sont au premier plan et lisibles ; rien de décalé).
 - Durée totale lisible dans `#clock` à la fin (`fin · N s`).
+
+## Décisions du gérant après le premier lot (30 octobre, 16 h) : « on tient le bon »
+1. Boutique SANS MISSION ZERO : « L'équipe » n'est plus un encadré. Juste la silhouette d'un humain (le personnage), avec ses deux
+   lignes de texte dessous, sans boîte ni cadre.
+2. On REMET les deux modes, partout où on parle d'appliquer : « correction par un humain, ou correction automatique ». Dans
+   ARGUS : le bloc « Vous validez · ou automatique » du 29 revient (clic par correctif, ou mode automatique appliqué tout seul,
+   vous êtes prévenu, les deux existent, vous choisissez). Dans la correction : « confirmé : un humain applique, ou
+   l'automatique ». C'est le gérant qui tranche : GUIDOR ne doit plus retirer ce point.
+3. On fait TOUTE la vidéo, sans se préoccuper du temps, au même rythme que le lot validé. Après la sécurité :
+   l'écran des choix revient (la sécurité passe « prouvé », le fil va vers L'espace), puis L'ESPACE, puis l'écran des choix
+   (espace « prouvé », le fil va vers La médecine), puis LA MÉDECINE, puis la FIN.
+
+## L'espace (reprendre la scène sE du storyboard du 29 : le ciel d'étoiles, le compteur de vitesse, les boîtes à citation)
+Phrases courtes, un arrêt par événement, le fil mène à chaque boîte :
+- « On va quelque part ? Posée deux fois. »
+- AVANT, panneau rouge, le modèle seul : « Douze chiffres, un centime. Quatre sources sur cinq, personne ne peut les ouvrir. »
+- AVEC, panneau vert : « Mission Zero : quatre chiffres, un dollar. Chacun avec sa page. »
+- Le compteur monte : « Vingt kilomètres par seconde vers Hercule. » « Deux cent trente autour de la galaxie. La NASA, mot pour
+  mot. » « Six cent trente et un vers le Grand Attracteur. Caché derrière notre galaxie. On y va. On ne le voit pas. »
+- « Mesuré, pas vu, pas tranché. Il n'invente pas la suite. »
+Titre en haut : « L'ESPACE · AVEC MISSION ZERO ».
+
+## La médecine (reprendre la scène sM du storyboard du 29 : le fil devient un électrocardiogramme, trois battements)
+- AVANT, rouge : « Un chercheur n'a pas le temps de lire cent publications. Une IA lui sort un chiffre, sans page. »
+- AVEC, vert : « Mission Zero lit pour lui. » Battement 1 : « Dix millions huit cent mille malades en 2023. » Battement 2,
+  rouge : « Un million deux cent cinquante mille morts. » Battement 3, vert : « Quatre-vingt-huit pour cent guéris, quand on
+  soigne. Trois pages de l'OMS, mot pour mot. »
+- La veille (une courbe simple avec son seuil et un point rouge) : « Chaque semaine, il compare, et ne signale que ce qui bouge.
+  Semaine 38 : plus quarante pour cent. Il cite la méthode, et dit qu'aucun commentaire n'existe. »
+- Au futur : « Demain, sur les relevés d'un laboratoire. Le chercheur tranche. »
+- « On sait soigner. Reste à chercher. »
+Titre en haut : « LA MÉDECINE · AVEC MISSION ZERO ».
+
+## La fin
+Le point dessine un cercle et se pose au centre (le zéro), silence. Coupure au noir. Gros titre choc, blanc, plein écran :
+« WHAT DO YOU NEED ? ». Dessous, plus petit, en majuscules : « CRYPTOR.AGENCY ». Dessous : « MISSION ZERO » en vert néon,
+qui s'allume en dernier. Rien d'autre.
