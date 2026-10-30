@@ -1,0 +1,34 @@
+[
+  {
+    "name": "Sentinelles grippe France",
+    "kind": "sentinelles",
+    "api": "https://www.sentiweb.fr/api/v1/datasets/rest/incidence?indicator=3&geo=PAY&span=all",
+    "page": "https://www.sentiweb.fr/france/fr/?page=maladies&mal=3",
+    "indicatorLabel": "Influenza-like illness incidence",
+    "thresholdValue": 150,
+    "threshold": 20,
+    "note": "Réseau Sentinelles (Inserm, Sorbonne Université): weekly incidence per 100 000 of influenza-like illness in France since 1984. thresholdValue is a watch threshold chosen here, not the network's epidemic threshold, which it publishes each season in its bulletin."
+  },
+  {
+    "name": "Sentinelles grippe regions",
+    "kind": "sentinelles",
+    "api": "https://www.sentiweb.fr/api/v1/datasets/rest/incidence?indicator=3&geo=RDD&span=all",
+    "page": "https://www.sentiweb.fr/france/fr/?page=maladies&mal=3",
+    "indicatorLabel": "Influenza-like illness incidence",
+    "threshold": 30
+  },
+  {
+    "name": "Essais vaccins tuberculose",
+    "kind": "clinicaltrials",
+    "api": "https://clinicaltrials.gov/api/v2/studies?query.cond=tuberculosis&query.intr=vaccine&pageSize=100&fields=NCTId,BriefTitle,OverallStatus,LastUpdatePostDate,Phase",
+    "page": "https://clinicaltrials.gov/search?cond=tuberculosis&intr=vaccine",
+    "note": "ClinicalTrials.gov: every registered study of a tuberculosis vaccine and its status. A status that changes (recruiting, completed, terminated) is a variation."
+  },
+  {
+    "name": "Relevés d'une sonde (exemple)",
+    "kind": "file",
+    "path": "watch/readings.example.json",
+    "threshold": 10,
+    "note": "The generic format any probe or instrument export can take: an array of snapshots, oldest first. Replace the path with your own export."
+  }
+]

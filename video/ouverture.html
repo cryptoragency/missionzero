@@ -1,0 +1,326 @@
+<title>Ouverture Mission Zero</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;800&display=swap">
+<style>
+/* Un seul monde visuel, choisi : la nuit des deux images, puis le vert fluo qui tapisse tout. Scène 16/9 en haut, scénario dessous. */
+:root {
+  --bg:#07090d; --fg:#e9eef5; --mut:#9aa6b8; --line:rgba(255,255,255,.14); --card:rgba(255,255,255,.045);
+  --night:#110519; --fluo:#39ff14; --fluo2:#9dff7a; --ink:#061a04; --meta:#2d7cff;
+  /* Couleurs lues sur la carte de l'agent ARGUS de l'espace : personnage CYBERPROTECT, cadre nuit, liseré cuivre-or. */
+  --argus-steel:#2f5fb8; --argus-steel-hi:#5b8ee6; --argus-steel-lo:#173a7a; --argus-cyan:#39c6ff; --argus-gun:#3a3f4a; --argus-night:#0f1a30; --argus-copper:#e3a857;
+  --display:"Sora", "Segoe UI", system-ui, sans-serif; --body:"Segoe UI", system-ui, sans-serif;
+  color-scheme: dark;
+}
+body { background:var(--bg); color:var(--fg); font-family:var(--body); margin:0; padding-block:16px;
+  padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px)); }
+.wrap { max-width:1500px; margin:0 auto; display:grid; gap:16px; }
+h1 { font-family:var(--display); font-size:clamp(1.1rem, 2vw, 1.5rem); margin:0; font-weight:600; text-wrap:balance; }
+h1 small { display:block; font-family:var(--body); font-weight:400; color:var(--mut); font-size:.92rem; margin-top:4px; }
+
+/* La scène */
+.stage { position:relative; width:100%; max-width:100%; aspect-ratio:16/9; max-height:82vh; margin:0 auto; overflow:hidden;
+  border-radius:14px; border:1px solid var(--line); background:var(--night); isolation:isolate; }
+.layer { position:absolute; inset:0; background-position:center; background-size:cover; background-repeat:no-repeat; will-change:transform, opacity; }
+.img-a { background-image:url("assets/coquille-zero.jpg"); opacity:0; }
+.img-b { background-image:url("assets/mission-zero.jpg"); opacity:0; }
+.bubble, .wedge, .core0 { opacity:0; }
+.membrane { position:absolute; width:1px; height:1px; border-radius:50%; transform:translate(-50%,-50%); opacity:0; pointer-events:none; box-sizing:border-box;
+  border:2px dashed rgba(157,255,122,.55); box-shadow:0 0 18px rgba(57,255,20,.25), inset 0 0 24px rgba(57,255,20,.12); background:radial-gradient(circle, rgba(57,255,20,.08), transparent 70%);
+  animation:membrane 6s linear infinite; }
+@keyframes membrane { to { transform:translate(-50%,-50%) rotate(360deg); } }
+.vein { position:absolute; left:0; top:0; height:2px; transform-origin:0 50%; opacity:0; pointer-events:none;
+  background:linear-gradient(90deg, rgba(157,255,122,.7), rgba(157,255,122,.05)); }
+.tag { position:absolute; left:0; top:0; transform:translate(-50%,-50%); opacity:0; pointer-events:none; white-space:nowrap;
+  font-family:var(--display); font-weight:600; font-size:clamp(9px, 1.15vw, 15px); letter-spacing:.12em; text-transform:uppercase; color:#fff;
+  background:rgba(17,5,25,.75); border:1px solid rgba(255,255,255,.35); border-radius:999px; padding:.4em 1em; backdrop-filter:blur(4px); }
+.role { position:absolute; left:0; top:0; transform:translate(-50%,0); opacity:0; pointer-events:none; white-space:nowrap; text-align:center;
+  font-family:var(--display); font-size:clamp(10px, 1.3vw, 17px); color:var(--fluo2); text-shadow:0 0 8px rgba(57,255,20,.6); }
+.halo { position:absolute; width:1px; height:1px; border-radius:50%; opacity:0; pointer-events:none; transform:translate(-50%,-50%);
+  background:radial-gradient(circle, rgba(57,255,20,.55), rgba(57,255,20,.18) 45%, transparent 70%); will-change:transform, opacity; }
+.halo.meta { background:radial-gradient(circle, rgba(90,160,255,.6), rgba(45,124,255,.2) 45%, transparent 70%); }
+.dot { position:absolute; left:0; top:0; width:14px; height:14px; margin:-7px; border-radius:50%; background:#fff; opacity:0; pointer-events:none;
+  box-shadow:0 0 10px 3px var(--fluo), 0 0 24px 6px rgba(57,255,20,.5); will-change:transform, opacity; }
+.flash { position:absolute; inset:0; background:#e8ffe0; opacity:0; pointer-events:none; }
+.flood { position:absolute; left:50%; top:50%; width:20px; height:20px; margin:-10px; border-radius:50%; background:var(--fluo); opacity:0; pointer-events:none;
+  box-shadow:0 0 60px 30px rgba(57,255,20,.8); will-change:transform; }
+canvas.shards { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+.build { position:absolute; left:3%; right:3%; bottom:4%; display:grid; gap:6px; opacity:0; pointer-events:none; }
+.build .lbl { font-family:var(--display); font-size:clamp(10px, 1.3vw, 16px); letter-spacing:.14em; text-transform:uppercase; color:var(--fluo2); text-shadow:0 0 8px rgba(57,255,20,.6); }
+.build .bar { height:3px; background:rgba(255,255,255,.14); border-radius:2px; overflow:hidden; }
+.build .bar i { display:block; height:100%; width:0; background:var(--fluo); box-shadow:0 0 10px var(--fluo); }
+/* Le BOOM et le noyau ARGUS : fond nuit de la carte, onde de choc, puis le noyau qui grossit vers la caméra. */
+.night { position:absolute; inset:0; background:var(--argus-night); opacity:0; pointer-events:none; }
+.wave { position:absolute; left:50%; top:50%; width:40px; height:40px; margin:-20px; border-radius:50%; opacity:0; pointer-events:none;
+  border:6px solid #fff; box-shadow:0 0 30px 10px rgba(255,255,255,.7), inset 0 0 30px 10px rgba(255,255,255,.5); will-change:transform, opacity; }
+.core { position:absolute; left:50%; top:50%; width:28%; aspect-ratio:1; max-width:none; transform:translate(-50%,-50%) scale(0); opacity:0; pointer-events:none; will-change:transform; overflow:visible; }
+.core .proof { animation:proof 1.1s ease-in-out infinite alternate; }
+@keyframes proof { from { opacity:.45; } to { opacity:1; } }
+.core .cvein { stroke:var(--argus-cyan); stroke-width:1.6; fill:none; stroke-linecap:round; stroke-linejoin:round; filter:url(#glow); }
+.core .seam { stroke:var(--argus-gun); stroke-width:3.2; fill:none; stroke-linecap:round; }
+.core .node { fill:var(--argus-cyan); filter:url(#glow); }
+
+/* Commandes et scénario */
+.bar-ctl { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+button { background:var(--card); color:var(--fg); border:1px solid var(--line); border-radius:8px; padding:9px 14px; font:inherit; cursor:pointer; }
+button:hover, button:focus-visible { border-color:var(--fluo); outline:none; }
+button.big { background:rgba(57,255,20,.14); border-color:rgba(57,255,20,.6); font-weight:600; }
+.now { color:var(--mut); font-size:.95rem; min-height:1.4em; }
+.now b { color:var(--fluo2); }
+.story { display:grid; gap:10px; }
+.story h2 { font-family:var(--display); font-size:1.05rem; margin:8px 0 0; font-weight:600; }
+.step { display:grid; grid-template-columns:5.5em 1fr; gap:12px; padding:12px 14px; border:1px solid var(--line); border-radius:12px; background:var(--card); min-width:0; }
+.step.live { border-color:rgba(57,255,20,.7); background:rgba(57,255,20,.06); }
+.step .t { font-family:var(--display); color:var(--fluo2); font-variant-numeric:tabular-nums; font-size:.95rem; }
+.step .what { min-width:0; display:grid; gap:4px; }
+.step .what b { font-family:var(--display); font-weight:600; }
+.step .what p { margin:0; color:var(--fg); line-height:1.45; max-width:70ch; }
+.step .what .en { color:var(--mut); font-size:.92rem; }
+@media (max-width:560px) { .step { grid-template-columns:1fr; gap:4px; } }
+@media (prefers-reduced-motion: reduce) { .final .title span.in { animation:none; opacity:1; transform:none; } .membrane { animation:none; } }
+</style>
+
+<div class="wrap">
+  <h1>Ouverture Mission Zero <small>Un noyau vide aux membranes ouvertes. Cerebral Valley dépose les cinq IA une à une, le zéro devient Mission Zero, Meta et les autres le font grossir, il s'emballe et sort de sa coquille en vert fluo, BOOM, et le noyau aux couleurs de la carte ARGUS grossit jusqu'à remplir l'écran. Vingt-neuf secondes, à placer devant le film.</small></h1>
+
+  <div class="stage" id="stage" aria-label="Animation d'ouverture : cinq modèles déposés un à un autour d'un noyau qui explose en vert fluo">
+    <div class="layer img-a" id="imgA"></div>
+    <div class="layer img-b" id="imgB"></div>
+    <div class="layer img-a core0" id="core0"></div>
+    <div id="membranes"></div>
+    <div class="layer img-a wedge" data-w="chatgpt"></div>
+    <div class="layer img-a wedge" data-w="gemini"></div>
+    <div class="layer img-a wedge" data-w="grok"></div>
+    <div class="layer img-a wedge" data-w="claude"></div>
+    <div class="layer img-a wedge" data-w="meta"></div>
+    <div class="layer img-a bubble" data-b="chatgpt" data-src="a"></div>
+    <div class="layer img-a bubble" data-b="gemini" data-src="a"></div>
+    <div class="layer img-a bubble" data-b="grok" data-src="a"></div>
+    <div class="layer img-a bubble" data-b="claude" data-src="a"></div>
+    <div class="layer img-a bubble" data-b="meta" data-src="a"></div>
+    <div id="labels"></div>
+    <div class="halo meta" id="haloMeta"></div>
+    <div class="halo" id="haloCore"></div>
+    <div class="layer img-b bubble" data-b="chatgpt"></div>
+    <div class="layer img-b bubble" data-b="claude"></div>
+    <div class="layer img-b bubble" data-b="gemini"></div>
+    <div class="layer img-b bubble" data-b="grok"></div>
+    <div class="layer img-b bubble" data-b="meta"></div>
+    <div class="layer img-b bubble" data-b="core"></div>
+    <div id="dots"></div>
+    <div class="build" id="build"><div class="lbl">Construction · hackathon Meta · 26 oct → 4 nov 2026</div><div class="bar"><i id="buildBar"></i></div></div>
+    <div class="flood" id="flood"></div>
+    <div id="waves"></div>
+    <div class="night" id="night"></div>
+    <canvas class="shards" id="shards"></canvas>
+    <svg class="core" id="core" viewBox="-100 -100 200 200" aria-label="Le noyau aux couleurs de la carte ARGUS, qui contient la preuve">
+      <defs>
+        <radialGradient id="steel" cx="38%" cy="32%" r="75%"><stop offset="0" stop-color="var(--argus-steel-hi)"/><stop offset=".55" stop-color="var(--argus-steel)"/><stop offset="1" stop-color="var(--argus-steel-lo)"/></radialGradient>
+        <radialGradient id="proofg"><stop offset="0" stop-color="#dff6ff"/><stop offset=".35" stop-color="var(--argus-cyan)"/><stop offset="1" stop-color="var(--argus-cyan)" stop-opacity="0"/></radialGradient>
+        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="1.4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <clipPath id="disc"><circle r="94"/></clipPath>
+      </defs>
+      <circle r="98" fill="none" stroke="var(--argus-copper)" stroke-width="2.4"/>
+      <circle r="94" fill="url(#steel)"/>
+      <g clip-path="url(#disc)">
+        <path class="seam" d="M-100,-38 Q0,-22 100,-38"/><path class="seam" d="M-100,38 Q0,22 100,38"/>
+        <path class="seam" d="M-6,-100 Q4,-50 -2,-22"/><path class="seam" d="M8,22 Q0,60 12,100"/>
+        <path class="seam" d="M-100,0 Q-60,8 -34,-6"/><path class="seam" d="M34,6 Q60,-8 100,0"/>
+        <path class="cvein" d="M-70,-60 H-40 V-45 H-12"/><path class="cvein" d="M70,-62 H46 V-50 H24 V-34"/>
+        <path class="cvein" d="M-78,10 H-56 V30 H-30 V48"/><path class="cvein" d="M78,14 H60 V-4 H36"/>
+        <path class="cvein" d="M-20,80 V62 H-4 V40"/><path class="cvein" d="M30,78 V58 H16 V44"/>
+        <path class="cvein" d="M-50,-20 H-36 V-8"/><path class="cvein" d="M52,34 H40 V50 H28"/>
+        <circle class="node" cx="-12" cy="-45" r="2.2"/><circle class="node" cx="24" cy="-34" r="2.2"/><circle class="node" cx="-30" cy="48" r="2.2"/><circle class="node" cx="36" cy="-4" r="2.2"/><circle class="node" cx="-4" cy="40" r="2.2"/><circle class="node" cx="16" cy="44" r="2.2"/><circle class="node" cx="-36" cy="-8" r="2.2"/><circle class="node" cx="28" cy="50" r="2.2"/>
+        <circle class="proof" r="30" fill="url(#proofg)"/>
+        <ellipse cx="-34" cy="-48" rx="30" ry="16" fill="#fff" opacity=".14" transform="rotate(-25 -34 -48)"/>
+      </g>
+    </svg>
+    <div class="wave" id="wave"></div>
+    <div class="flash" id="flash"></div>
+  </div>
+
+  <div class="bar-ctl">
+    <button class="big" id="replay">▶ Rejouer l'ouverture</button>
+    <button id="slow">Au ralenti (×2)</button>
+    <span class="now" id="now"></span>
+  </div>
+
+  <div class="story" id="story">
+    <h2>Le scénario, écrit proprement</h2>
+    <div class="step" data-at="0"><div class="t">0:00</div><div class="what"><b>Les membranes</b><p>Nuit. Au centre, un petit noyau de pierre qui ne porte qu'un zéro. Autour de lui, cinq membranes vides, ouvertes, reliées au noyau par une veine. Elles attendent.</p><p class="en">A small stone core holding nothing but a zero. Around it, five empty membranes, open, waiting.</p></div></div>
+    <div class="step" data-at="1.2"><div class="t">0:01</div><div class="what"><b>Les dépôts</b><p>Cerebral Valley dépose les IA une à une dans leur membrane : ChatGPT pour le texte d'inscription, Gemini pour l'image, Grok pour la vidéo, Claude pour le langage, Meta pour la mise en œuvre. À chaque dépôt, la membrane se referme, l'éclair s'allume et le noyau grossit un peu.</p><p class="en">Cerebral Valley drops the AIs one by one: ChatGPT for the entry text, Gemini for the image, Grok for the video, Claude for the language, Meta for the build. Each time, the membrane closes, the bolt lights up and the core grows a little.</p></div></div>
+    <div class="step" data-at="9.5"><div class="t">0:09</div><div class="what"><b>Le nom</b><p>Les cinq sont en place : c'est l'image complète. Le noyau pulse une fois et le zéro devient Mission Zero.</p><p class="en">All five in place: the full picture. The core pulses once and the zero becomes Mission Zero.</p></div></div>
+    <div class="step" data-at="13"><div class="t">0:13</div><div class="what"><b>La construction</b><p>Meta grossit : c'est le moteur, Muse Spark. Chacun des autres envoie à son tour une impulsion vers le centre, et Mission Zero grossit à chaque arrivée. En bas, la barre du hackathon se remplit, du 26 octobre au 4 novembre.</p><p class="en">Meta grows: it is the engine. Each of the others sends a pulse to the core, and Mission Zero grows with every one. The hackathon bar fills, 26 October to 4 November.</p></div></div>
+    <div class="step" data-at="18.2"><div class="t">0:18</div><div class="what"><b>L'emballement</b><p>Le noyau bat trop vite. Il tremble, les impulsions arrivent de partout en même temps, la pierre se fissure.</p><p class="en">The core races. It shakes, pulses arrive from everywhere at once, the stone cracks.</p></div></div>
+    <div class="step" data-at="20"><div class="t">0:20</div><div class="what"><b>L'explosion</b><p>Un éclair blanc. La coquille éclate en morceaux, et le vert fluo part du centre et tapisse tout l'écran.</p><p class="en">A white flash. The shell bursts, and fluorescent green floods the whole screen from the centre.</p></div></div>
+    <div class="step" data-at="21"><div class="t">0:21</div><div class="what"><b>L'emballement dans le vert</b><p>Le vert tapisse l'écran et ça continue d'enfler : il bat de plus en plus vite, l'image tremble de plus en plus fort, des ondes vertes partent du centre.</p><p class="en">The green floods the screen and keeps swelling: it beats faster and faster, the picture shakes harder and harder, green waves ripple from the centre.</p></div></div>
+    <div class="step" data-at="23.6"><div class="t">0:23</div><div class="what"><b>Le BOOM</b><p>Gros BOOOOMMMMM : flash blanc, onde de choc, éclats. Le fond passe au bleu nuit de la carte ARGUS.</p><p class="en">A huge BOOOOMMMMM: white flash, shockwave, shards. The background turns to the ARGUS card's night blue.</p></div></div>
+    <div class="step" data-at="24"><div class="t">0:24</div><div class="what"><b>Le noyau ARGUS</b><p>Du boom sort un noyau dur, poli, massif, aux couleurs de la carte ARGUS : blindage bleu acier, veines de circuits cyan lumineuses, joints gris canon, fin liseré cuivre-or, rien de gravé. Il contient la preuve, qui bat au centre. Il grossit vers la caméra jusqu'à remplir l'écran : sa surface est la première image de la vidéo suivante.</p><p class="en">Out of the boom comes a hard, polished, massive core in the ARGUS card colours: steel-blue armour, glowing cyan circuit veins, gunmetal joints, a thin copper-gold rim, no engraving. It holds the proof, beating at its centre. It grows toward the camera until it fills the screen: its surface is the first frame of the next video.</p></div></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const stage = $('stage'), imgA = $('imgA'), imgB = $('imgB'), core0 = $('core0'), haloMeta = $('haloMeta'), haloCore = $('haloCore');
+  const flood = $('flood'), flash = $('flash'), build = $('build'), buildBar = $('buildBar');
+  const night = $('night'), coreArgus = $('core'), wave = $('wave'), wavesBox = $('waves'), canvas = $('shards'), dotsBox = $('dots'), now = $('now');
+  const membranesBox = $('membranes'), labelsBox = $('labels');
+  const bubblesB = Array.from(document.querySelectorAll('.bubble:not([data-src])'));   // image Mission Zero
+  const bubblesA = Array.from(document.querySelectorAll('.bubble[data-src="a"]'));      // image du zéro
+  const wedges = Array.from(document.querySelectorAll('.wedge'));
+  // Centres des bulles, en fraction de l'image (lus sur l'image), rayon en fraction de la largeur.
+  const POS = { chatgpt:[.268,.228,.078], claude:[.733,.228,.078], gemini:[.270,.754,.078], grok:[.820,.50,.066], meta:[.737,.754,.078], core:[.499,.50,.064] };
+  // L'ordre des dépôts et le rôle de chacun.
+  const ORDER = [['chatgpt','ChatGPT · le texte d’inscription'], ['gemini','Gemini · l’image'], ['grok','Grok · la vidéo'], ['claude','Claude · le langage'], ['meta','Meta · la mise en œuvre']];
+  const T0 = 9200;   // durée de la phase des dépôts ; tout le reste est décalé d'autant
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let speed = 1, running = [], timers = [], raf = 0, t0 = 0, tick = 0;
+
+  function geom(){
+    const r = stage.getBoundingClientRect(); const W = r.width, H = r.height;
+    // Les images sont 16/9 (1.79) et la scène aussi : "cover" ne rogne presque rien, les fractions s'appliquent telles quelles.
+    const px = k => ({ x: POS[k][0]*W, y: POS[k][1]*H, r: POS[k][2]*W });
+    bubblesA.concat(bubblesB).forEach(b => { const p = px(b.dataset.b); b.style.clipPath = `circle(${p.r*1.12}px at ${p.x}px ${p.y}px)`; b.style.transformOrigin = `${p.x}px ${p.y}px`; });
+    const c = px('core');
+    core0.style.clipPath = `circle(${c.r*1.25}px at ${c.x}px ${c.y}px)`; core0.style.transformOrigin = `${c.x}px ${c.y}px`;
+    // Une part de tarte du centre vers chaque bulle : elle révèle l'éclair de l'image quand la bulle est posée.
+    wedges.forEach(w => { const p = px(w.dataset.w); const a = Math.atan2(p.y-c.y, p.x-c.x), d = 0.3, L = Math.hypot(W,H);
+      const P = (t, l) => `${c.x+Math.cos(t)*l}px ${c.y+Math.sin(t)*l}px`, r0 = c.r*1.3;   // la part commence hors du noyau, pour ne pas le montrer en grand
+      w.style.clipPath = `polygon(${P(a-d, r0)}, ${P(a-d, L)}, ${P(a-d/2, L)}, ${P(a, L)}, ${P(a+d/2, L)}, ${P(a+d, L)}, ${P(a+d, r0)}, ${P(a, r0*1.1)})`; });
+    const m = px('meta');
+    haloMeta.style.left = m.x+'px'; haloMeta.style.top = m.y+'px'; haloCore.style.left = c.x+'px'; haloCore.style.top = c.y+'px';
+    canvas.width = W * devicePixelRatio; canvas.height = H * devicePixelRatio;
+    return { W, H, px, c };
+  }
+  function anim(el, frames, opt){ const a = el.animate(frames, Object.assign({ fill:'forwards' }, opt, { duration:(opt.duration||0)*speed, delay:(opt.delay||0)*speed })); running.push(a); return a; }
+  function later(fn, ms){ timers.push(setTimeout(fn, ms*speed)); }
+  function stopAll(){ running.forEach(a => a.cancel()); running = []; timers.forEach(clearTimeout); timers = []; cancelAnimationFrame(raf); clearInterval(tick);
+    dotsBox.innerHTML = ''; wavesBox.innerHTML = ''; membranesBox.innerHTML = ''; labelsBox.innerHTML = ''; buildBar.style.width = '0'; flood.style.opacity = 0; night.style.opacity = 0;
+    coreArgus.style.opacity = 0; coreArgus.style.transform = 'translate(-50%,-50%) scale(0)'; wave.style.opacity = 0; flood.style.background = '';
+    canvas.getContext('2d').clearRect(0,0,canvas.width,canvas.height); }
+
+  // Phase des dépôts : une membrane vide par IA, Cerebral Valley dépose chaque bulle à son tour.
+  function deposits(g){
+    const c = g.c;
+    anim(core0, [{ opacity:0, transform:'scale(.4)' }, { opacity:1, transform:'scale(.55)' }], { duration:900, delay:200, easing:'ease-out' });
+    ORDER.forEach(([k], i) => {
+      const p = g.px(k);
+      const m = document.createElement('div'); m.className = 'membrane'; m.style.left = p.x+'px'; m.style.top = p.y+'px'; m.style.width = m.style.height = (p.r*2.3)+'px'; membranesBox.appendChild(m);
+      anim(m, [{ opacity:0 }, { opacity:1 }], { duration:500, delay:400+i*120, composite:'add' });
+      const v = document.createElement('div'); v.className = 'vein'; const a = Math.atan2(p.y-c.y, p.x-c.x), L = Math.hypot(p.x-c.x, p.y-c.y);
+      v.style.left = (c.x+Math.cos(a)*c.r*.6)+'px'; v.style.top = (c.y+Math.sin(a)*c.r*.6)+'px'; v.style.width = (L-c.r*.6-p.r*1.1)+'px'; v.style.transform = `rotate(${a}rad)`; membranesBox.appendChild(v);
+      anim(v, [{ opacity:0 }, { opacity:.6 }], { duration:500, delay:500+i*120 });
+      m.dataset.k = k; v.dataset.k = k;
+    });
+    ORDER.forEach(([k, role], i) => {
+      const at = 1500 + i*1500, p = g.px(k), b = bubblesA.find(x => x.dataset.b === k), w = wedges.find(x => x.dataset.w === k);
+      const m = membranesBox.querySelector(`.membrane[data-k="${k}"]`), v = membranesBox.querySelector(`.vein[data-k="${k}"]`);
+      // L'étiquette Cerebral Valley descend avec la bulle depuis le haut de l'écran.
+      const tag = document.createElement('div'); tag.className = 'tag'; tag.textContent = 'Cerebral Valley'; labelsBox.appendChild(tag);
+      const dy = p.y + p.r*1.4 + 40;
+      anim(tag, [{ opacity:0, transform:`translate(-50%,-50%) translate(${p.x}px,${-60}px)` }, { opacity:1, offset:.15 }, { opacity:1, transform:`translate(-50%,-50%) translate(${p.x}px,${p.y-p.r*1.45}px)`, offset:.7 }, { opacity:0, transform:`translate(-50%,-50%) translate(${p.x}px,${p.y-p.r*1.45-40}px)` }], { duration:1200, delay:at, easing:'cubic-bezier(.3,0,.2,1)' });
+      anim(b, [{ opacity:1, transform:`translateY(${-dy}px) scale(.85)` }, { opacity:1, transform:'translateY(0) scale(.85)', offset:.7 }, { opacity:1, transform:'scale(1.08)', offset:.85 }, { opacity:1, transform:'scale(1)' }], { duration:1200, delay:at, easing:'cubic-bezier(.3,0,.2,1)' });
+      anim(m, [{ opacity:1, transform:'translate(-50%,-50%) scale(1)' }, { opacity:1, transform:'translate(-50%,-50%) scale(.82)', offset:.5 }, { opacity:0, transform:'translate(-50%,-50%) scale(1.3)' }], { duration:700, delay:at+820, composite:'replace' });
+      later(() => { m.style.animation = 'none'; }, at+820);
+      anim(v, [{ opacity:.6 }, { opacity:1, offset:.3 }, { opacity:0 }], { duration:500, delay:at+900 });
+      anim(w, [{ opacity:0 }, { opacity:1 }], { duration:450, delay:at+900 });
+      anim(core0, [{ transform:`scale(${.55+i*.09})` }, { transform:`scale(${.55+(i+1)*.09+.05})`, offset:.6 }, { transform:`scale(${.55+(i+1)*.09})` }], { duration:500, delay:at+950, easing:'ease-out' });
+      anim(haloCore, [{ opacity:0, transform:'translate(-50%,-50%) scale(1)' }, { opacity:.8, transform:'translate(-50%,-50%) scale(1.5)', offset:.4 }, { opacity:0, transform:'translate(-50%,-50%) scale(2)' }], { duration:600, delay:at+950 });
+      const lab = document.createElement('div'); lab.className = 'role'; lab.textContent = role; lab.style.left = p.x+'px'; lab.style.top = (p.y+p.r*1.25)+'px'; labelsBox.appendChild(lab);
+      anim(lab, [{ opacity:0, transform:'translate(-50%,6px)' }, { opacity:1, transform:'translate(-50%,0)', offset:.2 }, { opacity:1, offset:.8 }, { opacity:0 }], { duration:1500, delay:at+850 });
+    });
+    // Les cinq sont posés : l'image complète prend le relais, pile sur les couches.
+    anim(core0, [{ transform:'scale(1)' }], { duration:400, delay:T0-700, easing:'ease-out' });
+    anim(imgA, [{ opacity:0 }, { opacity:1 }], { duration:500, delay:T0-500 });
+    later(() => { bubblesA.concat(wedges, [core0]).forEach(el => { el.getAnimations().forEach(a => a.cancel()); el.style.opacity = 0; }); membranesBox.innerHTML = ''; }, T0);
+  }
+
+  function pulse(k, at, g){
+    const b = bubblesB.find(x => x.dataset.b === k);
+    anim(b, [{ transform:'scale(1)' }, { transform:'scale(1.28)', offset:.45 }, { transform:'scale(1)' }], { duration:700, delay:at, easing:'ease-in-out', composite:'add', fill:'none' });
+    // Une impulsion part de la bulle vers le centre.
+    const p = g.px(k), c = g.px('core'); const d = document.createElement('div'); d.className = 'dot'; dotsBox.appendChild(d);
+    anim(d, [{ transform:`translate(${p.x}px,${p.y}px)`, opacity:0 }, { opacity:1, offset:.1 }, { transform:`translate(${c.x}px,${c.y}px)`, opacity:1, offset:.92 }, { transform:`translate(${c.x}px,${c.y}px)`, opacity:0 }], { duration:650, delay:at+250, easing:'cubic-bezier(.3,0,.8,1)' });
+    anim(haloCore, [{ opacity:0, transform:'translate(-50%,-50%) scale(1)' }, { opacity:.9, transform:'translate(-50%,-50%) scale(1.6)', offset:.3 }, { opacity:0, transform:'translate(-50%,-50%) scale(2.2)' }], { duration:650, delay:at+850 });
+  }
+
+  function explode(g, col){ col = col || '157,255,122';
+    const ctx = canvas.getContext('2d'), dpr = devicePixelRatio, cx = g.W/2, cy = g.H/2, R = POS.core[2]*g.W;
+    const parts = [];
+    for (let i=0;i<70;i++){ const a = Math.random()*Math.PI*2, s = (0.9+Math.random()*1.4)*g.W/900; const n = 3+Math.floor(Math.random()*3); const pts=[]; for(let j=0;j<n;j++) pts.push([(Math.random()-.5)*R*.6,(Math.random()-.5)*R*.6]);
+      parts.push({ x:cx+Math.cos(a)*R*.5, y:cy+Math.sin(a)*R*.5, vx:Math.cos(a)*s*9, vy:Math.sin(a)*s*9, rot:Math.random()*6, vr:(Math.random()-.5)*.3, pts, shard:true }); }
+    for (let i=0;i<220;i++){ const a = Math.random()*Math.PI*2, s = (0.5+Math.random()*2.2)*g.W/900; parts.push({ x:cx, y:cy, vx:Math.cos(a)*s*12, vy:Math.sin(a)*s*12, shard:false, r:1+Math.random()*3 }); }
+    const start = performance.now(), dur = 1700*speed;
+    function frame(t){ const k = Math.min(1,(t-start)/dur); ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,g.W,g.H);
+      for (const p of parts){ p.x += p.vx/speed; p.y += p.vy/speed; p.vx *= .985; p.vy *= .985; const al = 1-k;
+        if (p.shard){ p.rot += p.vr; ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot); ctx.beginPath(); p.pts.forEach((q,i)=> i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1])); ctx.closePath();
+          ctx.fillStyle = `rgba(8,22,6,${al})`; ctx.fill(); ctx.strokeStyle = `rgba(${col},${al})`; ctx.lineWidth = 1.5; ctx.stroke(); ctx.restore(); }
+        else { ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,7); ctx.fillStyle = `rgba(230,255,220,${al})`; ctx.fill(); } }
+      if (k<1) raf = requestAnimationFrame(frame); else ctx.clearRect(0,0,g.W,g.H); }
+    raf = requestAnimationFrame(frame);
+  }
+
+  function play(){
+    stopAll(); const g = geom(); t0 = performance.now();
+    if (reduced){ night.style.opacity = 1; coreArgus.style.opacity = 1; coreArgus.style.transform = 'translate(-50%,-50%) scale(2.2)'; return; }
+    bubblesB.forEach(b => b.style.opacity = 0); bubblesA.concat(wedges,[core0]).forEach(el => el.style.opacity = 0); imgA.style.opacity = 0; imgB.style.opacity = 0;
+    // 1 · Les membranes et les dépôts : la coquille se construit, bulle après bulle, jusqu'à l'image du zéro.
+    deposits(g);
+    // 2 · Le nom : fondu vers l'image Mission Zero, pulsation du centre.
+    anim(imgB, [{ opacity:0 }, { opacity:1 }], { duration:1500, delay:T0+1000, easing:'ease-in-out' });
+    anim(haloCore, [{ opacity:0, transform:'translate(-50%,-50%) scale(1)' }, { opacity:1, transform:'translate(-50%,-50%) scale(2.4)', offset:.5 }, { opacity:0, transform:'translate(-50%,-50%) scale(3)' }], { duration:1400, delay:T0+1400 });
+    later(() => { bubblesB.forEach(b => b.style.opacity = 1); imgA.style.opacity = 0; }, T0+2600);
+    // 3 · La construction : Meta grossit, le centre grossit, les autres envoient leurs impulsions.
+    const meta = bubblesB.find(b => b.dataset.b === 'meta'), core = bubblesB.find(b => b.dataset.b === 'core');
+    const C = T0 + 3800;   // début de la construction
+    anim(meta, [{ transform:'scale(1)' }, { transform:'scale(1.95)' }], { duration:5200, delay:C, easing:'ease-in' });
+    anim(haloMeta, [{ opacity:0, transform:'translate(-50%,-50%) scale(1)' }, { opacity:.8, transform:'translate(-50%,-50%) scale(3.2)' }], { duration:5200, delay:C, easing:'ease-in' });
+    anim(core, [{ transform:'scale(1)' }, { transform:'scale(1.12)', offset:.12 }, { transform:'scale(1.08)', offset:.2 }, { transform:'scale(1.3)', offset:.42 }, { transform:'scale(1.24)', offset:.5 }, { transform:'scale(1.55)', offset:.75 }, { transform:'scale(1.5)', offset:.82 }, { transform:'scale(1.8)' }], { duration:5200, delay:C, easing:'ease-in' });
+    [['meta',100],['chatgpt',700],['claude',1500],['meta',2000],['gemini',2400],['grok',3200],['meta',3700],['chatgpt',4200],['claude',4500],['gemini',4700],['grok',4900]].forEach(([k,at]) => pulse(k, C+at, g));
+    anim(build, [{ opacity:0 }, { opacity:1 }], { duration:600, delay:C });
+    anim(buildBar, [{ width:'0%' }, { width:'100%' }], { duration:6600, delay:C+200, easing:'linear' });
+    // 4 · L'emballement : le centre bat trop vite et tremble.
+    const E = C + 5200;
+    const jitter = []; for (let i=0;i<24;i++) jitter.push({ transform:`scale(${1.8+ i*.03}) translate(${(Math.random()-.5)*6}px,${(Math.random()-.5)*6}px)` });
+    anim(core, jitter, { duration:1700, delay:E, easing:'steps(24)' });
+    anim(stage, [{ transform:'translate(0,0)' }, { transform:'translate(2px,-1px)' }, { transform:'translate(-2px,2px)' }, { transform:'translate(1px,2px)' }, { transform:'translate(-1px,-2px)' }, { transform:'translate(0,0)' }], { duration:220, delay:E+700, iterations:5 });
+    ['chatgpt','claude','gemini','grok','meta','chatgpt','claude','gemini','grok','meta'].forEach((k,i) => pulse(k, E+i*150, g));
+    anim(haloCore, [{ opacity:.2 }, { opacity:1 }, { opacity:.2 }], { duration:160, delay:E+600, iterations:7 });
+    // 5 · L'explosion : éclair, éclats, le vert tapisse l'écran.
+    const X = E + 1700, diag = Math.hypot(g.W, g.H);
+    anim(flash, [{ opacity:0 }, { opacity:1, offset:.2 }, { opacity:0 }], { duration:520, delay:X });
+    later(() => { flood.style.opacity = 1; explode(g); }, X+50);
+    anim(flood, [{ transform:'scale(1)' }, { transform:`scale(${diag/10})` }], { duration:1100, delay:X+50, easing:'cubic-bezier(.2,.7,.3,1)' });
+    bubblesB.concat([imgB, haloMeta, build]).forEach(el => anim(el, [{ opacity:1, filter:'blur(0)' }, { opacity:0, filter:'blur(14px)' }], { duration:700, delay:X+100 }));
+    // 6 · L'emballement dans le vert : le vert bat de plus en plus vite, l'image tremble de plus en plus fort.
+    const G = X + 1100;
+    anim(flood, [{ backgroundColor:'#39ff14' }, { backgroundColor:'#c8ffb0' }, { backgroundColor:'#1fd400' }, { backgroundColor:'#39ff14' }], { duration:520, delay:G, iterations:2 });
+    anim(flood, [{ backgroundColor:'#39ff14' }, { backgroundColor:'#e9ffe0' }, { backgroundColor:'#15b800' }, { backgroundColor:'#39ff14' }], { duration:260, delay:G+1040, iterations:5 });
+    anim(stage, [{ transform:'translate(0,0)' }, { transform:'translate(3px,-2px)' }, { transform:'translate(-3px,3px)' }, { transform:'translate(2px,3px)' }, { transform:'translate(-2px,-3px)' }, { transform:'translate(0,0)' }], { duration:180, delay:G+300, iterations:6 });
+    anim(stage, [{ transform:'translate(0,0)' }, { transform:'translate(7px,-5px)' }, { transform:'translate(-7px,6px)' }, { transform:'translate(5px,7px)' }, { transform:'translate(-6px,-7px)' }, { transform:'translate(0,0)' }], { duration:120, iterations:10, delay:G+1380 });
+    for (let i=0;i<6;i++){ const w = document.createElement('div'); w.className = 'wave'; w.style.borderColor = '#0a5c00'; w.style.boxShadow = 'none'; wavesBox.appendChild(w);
+      anim(w, [{ opacity:.7, transform:'scale(1)' }, { opacity:0, transform:`scale(${Math.hypot(g.W,g.H)/40})` }], { duration:900-i*90, delay:G+i*380, easing:'ease-out' }); }
+    // 7 · Le BOOM : flash blanc, onde de choc, le fond passe à la nuit de la carte ARGUS.
+    const B = G + 2600, diagW = Math.hypot(g.W, g.H);
+    anim(flash, [{ opacity:0 }, { opacity:1, offset:.12 }, { opacity:1, offset:.35 }, { opacity:0 }], { duration:900, delay:B });
+    anim(stage, [{ transform:'translate(0,0) scale(1)' }, { transform:'translate(-10px,8px) scale(1.03)' }, { transform:'translate(10px,-6px) scale(1.02)' }, { transform:'translate(-6px,-8px) scale(1.01)' }, { transform:'translate(0,0) scale(1)' }], { duration:600, delay:B+80 });
+    anim(night, [{ opacity:0 }, { opacity:1 }], { duration:300, delay:B+150 });
+    anim(wave, [{ opacity:1, transform:'scale(1)' }, { opacity:0, transform:`scale(${diagW/30})` }], { duration:1300, delay:B+200, easing:'cubic-bezier(.1,.8,.3,1)' });
+    later(() => { explode(g, '57,198,255'); }, B+150);
+    // 8 · Le noyau ARGUS sort du boom et grossit vers la caméra jusqu'à remplir l'écran.
+    anim(coreArgus, [{ opacity:0, transform:'translate(-50%,-50%) scale(.05)' }, { opacity:1, transform:'translate(-50%,-50%) scale(.42)', offset:.3 }, { opacity:1, transform:'translate(-50%,-50%) scale(.36)', offset:.5 }, { opacity:1, transform:'translate(-50%,-50%) scale(.4)' }], { duration:1100, delay:B+350, easing:'cubic-bezier(.2,.9,.3,1.2)' });
+    anim(coreArgus, [{ transform:'translate(-50%,-50%) scale(.4)' }, { transform:'translate(-50%,-50%) scale(1)', offset:.4 }, { transform:'translate(-50%,-50%) scale(9.5)' }], { duration:4200, delay:B+1450, easing:'cubic-bezier(.55,0,.85,.35)' });
+    // Le pas de temps dans le scénario.
+    const steps = Array.from(document.querySelectorAll('.step'));
+    tick = setInterval(() => { const s = (performance.now()-t0)/1000/speed; let live = steps[0]; steps.forEach(st => { if (s >= +st.dataset.at) live = st; }); steps.forEach(st => st.classList.toggle('live', st === live));
+      now.innerHTML = `<b>${live.querySelector('b').textContent}</b> · ${s.toFixed(1).replace('.',',')} s`; if (s > 29) { clearInterval(tick); now.innerHTML = '<b>Fin</b> · 29 s'; } }, 100);
+  }
+
+  $('replay').addEventListener('click', play);
+  $('slow').addEventListener('click', e => { speed = speed === 1 ? 2 : 1; e.target.textContent = speed === 1 ? 'Au ralenti (×2)' : 'Vitesse normale'; play(); });
+  addEventListener('resize', () => { if (!running.length) geom(); });
+  // Lance l'ouverture quand les deux images sont chargées.
+  let left = 2; const go = () => { if (--left <= 0) play(); };
+  ['assets/coquille-zero.jpg','assets/mission-zero.jpg'].forEach(src => { const im = new Image(); im.onload = go; im.onerror = go; im.src = src; });
+})();
+</script>

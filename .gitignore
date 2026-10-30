@@ -7,3 +7,6 @@ web/data/
 memory/spend.json
 video/out/
 logs/
+
+# watch mode outputs (versioned runs go to examples/)
+watch/*/

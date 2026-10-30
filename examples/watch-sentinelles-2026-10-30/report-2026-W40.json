@@ -1,0 +1,10 @@
+{
+  "source": "Sentinelles grippe France",
+  "period": "2026-W40",
+  "comparedWith": "2026-W39",
+  "replayed": true,
+  "threshold": 20,
+  "variations": [],
+  "explanation": null,
+  "at": "2026-10-30T09:46:41.830Z"
+}

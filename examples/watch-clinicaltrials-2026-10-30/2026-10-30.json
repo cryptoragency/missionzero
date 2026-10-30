@@ -1,0 +1,1010 @@
+{
+  "source": "Essais vaccins tuberculose",
+  "page": "https://clinicaltrials.gov/search?cond=tuberculosis&intr=vaccine",
+  "period": "2026-10-30",
+  "readings": [
+    {
+      "key": "NCT00052195",
+      "label": "NCT00052195 Investigational Vaccine for the Prevention of Disseminated Tuberculosis in HIV Infected People",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE2",
+        "PHASE3"
+      ],
+      "lastUpdate": "2016-02-19",
+      "page": "https://clinicaltrials.gov/study/NCT00052195"
+    },
+    {
+      "key": "NCT00146302",
+      "label": "NCT00146302 Should Low Birth Weight Infants Be Vaccinated With BCG Vaccine at Birth in Developing Countries?",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE4"
+      ],
+      "lastUpdate": "2012-03-19",
+      "page": "https://clinicaltrials.gov/study/NCT00146302"
+    },
+    {
+      "key": "NCT00146744",
+      "label": "NCT00146744 Safety and Immunogenicity of GSK Biological's Candidate Tuberculosis Vaccine Mtb72F/AS02A in Healthy PPD-positive Adults",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE2"
+      ],
+      "lastUpdate": "2017-05-30",
+      "page": "https://clinicaltrials.gov/study/NCT00146744"
+    },
+    {
+      "key": "NCT00202410",
+      "label": "NCT00202410 Efficacy of Anti-Tubercular Vaccination in Multiple Sclerosis",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE2",
+        "PHASE3"
+      ],
+      "lastUpdate": "2011-05-19",
+      "page": "https://clinicaltrials.gov/study/NCT00202410"
+    },
+    {
+      "key": "NCT00265226",
+      "label": "NCT00265226 Efficacy and Safety Study of Immunomodulator as an Adjunct Therapy in Pulmonary Tuberculosis (TB) Retreatment Patients",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE3"
+      ],
+      "lastUpdate": "2014-01-06",
+      "page": "https://clinicaltrials.gov/study/NCT00265226"
+    },
+    {
+      "key": "NCT00291889",
+      "label": "NCT00291889 Safety and Immunogenicity of GSK Biological's Candidate Tuberculosis Vaccine Mtb72F/AS02 in Healthy PPD-negative Adults.",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2017-05-30",
+      "page": "https://clinicaltrials.gov/study/NCT00291889"
+    },
+    {
+      "key": "NCT00341328",
+      "label": "NCT00341328 Efficacy and Safety of Immunomodulator as an Adjunct Therapy in New Pulmonary Tuberculosis(Category I) Patients.",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE3"
+      ],
+      "lastUpdate": "2013-04-26",
+      "page": "https://clinicaltrials.gov/study/NCT00341328"
+    },
+    {
+      "key": "NCT00395720",
+      "label": "NCT00395720 The Safety and Immunogenicity of a TB Vaccine; MVA85A, in Healthy Volunteers Who Are Infected With HIV",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2011-03-28",
+      "page": "https://clinicaltrials.gov/study/NCT00395720"
+    },
+    {
+      "key": "NCT00396370",
+      "label": "NCT00396370 BCG Vaccination Delivered Intradermally, Orally and by Combined Routes",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2019-11-12",
+      "page": "https://clinicaltrials.gov/study/NCT00396370"
+    },
+    {
+      "key": "NCT00423566",
+      "label": "NCT00423566 A Phase I Study of the Safety and Immunogenicity of a Recombinant MVA Vaccine Encoding a Secreted Antigen From M. Tuberculosis, Antigen 85A, Delivered Intradermally by a Needle Injection in Healthy Volunteers.",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2007-01-18",
+      "page": "https://clinicaltrials.gov/study/NCT00423566"
+    },
+    {
+      "key": "NCT00427830",
+      "label": "NCT00427830 A Phase I Study of the Safety and Immunogenicity of a Recombinant MVA Vaccine Encoding a Secreted Antigen From M. Tuberculosis, Antigen 85A, Delivered Intradermally by a Needle Injection in Healthy Volunteers Who Have Previously Received BCG",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2007-01-29",
+      "page": "https://clinicaltrials.gov/study/NCT00427830"
+    },
+    {
+      "key": "NCT00440544",
+      "label": "NCT00440544 A Phase I Trial of a LTK63 Adjuvated Tuberculosis Nasal Subunit Vaccine (Ag85B-ESAT6)",
+      "value": "TERMINATED",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2008-11-03",
+      "page": "https://clinicaltrials.gov/study/NCT00440544"
+    },
+    {
+      "key": "NCT00456183",
+      "label": "NCT00456183 Safety and Immunogenicity of MVA85A in Volunteers Latently Infected With TB.",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2007-05-31",
+      "page": "https://clinicaltrials.gov/study/NCT00456183"
+    },
+    {
+      "key": "NCT00460590",
+      "label": "NCT00460590 Safety and Immunogenicity of MVA85A, in Healthy Volunteers in Cape Town",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2008-08-07",
+      "page": "https://clinicaltrials.gov/study/NCT00460590"
+    },
+    {
+      "key": "NCT00465465",
+      "label": "NCT00465465 A Study of 2 Doses of a New TB Vaccine, MVA85A, in Healthy Volunteers Previously Vaccinated With BCG",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2008-04-04",
+      "page": "https://clinicaltrials.gov/study/NCT00465465"
+    },
+    {
+      "key": "NCT00480454",
+      "label": "NCT00480454 Safety, Immunogenicity, and Impact of MVA85A, on the Immunogenicity of the EPI Vaccines",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2010-02-09",
+      "page": "https://clinicaltrials.gov/study/NCT00480454"
+    },
+    {
+      "key": "NCT00480558",
+      "label": "NCT00480558 A Study of MVA85A, in Asymptomatic Volunteers Infected With TB, HIV or Both",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2011-03-28",
+      "page": "https://clinicaltrials.gov/study/NCT00480558"
+    },
+    {
+      "key": "NCT00548444",
+      "label": "NCT00548444 T-Cell Turnover Following Vaccination With MVA85A",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2010-01-18",
+      "page": "https://clinicaltrials.gov/study/NCT00548444"
+    },
+    {
+      "key": "NCT00621322",
+      "label": "NCT00621322 Safety and Immunogenicity Study of GSK Biologicals Tuberculosis Vaccines (692342) to Healthy Adults",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE2"
+      ],
+      "lastUpdate": "2018-08-24",
+      "page": "https://clinicaltrials.gov/study/NCT00621322"
+    },
+    {
+      "key": "NCT00730795",
+      "label": "NCT00730795 Safety and Immunogenicity of a Candidate Tuberculosis (TB) Vaccine Given to PPD-Negative Adults",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2008-08-08",
+      "page": "https://clinicaltrials.gov/study/NCT00730795"
+    },
+    {
+      "key": "NCT00731471",
+      "label": "NCT00731471 A Phase I Study of a New Tuberculosis (TB) Vaccine, MVA85A, in Healthy Volunteers With HIV",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2011-03-28",
+      "page": "https://clinicaltrials.gov/study/NCT00731471"
+    },
+    {
+      "key": "NCT00749034",
+      "label": "NCT00749034 Dose-Escalation Study on Safety and Immunogenicity of VPM1002 in Comparison With BCG in Healthy Male Volunteers",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2010-05-20",
+      "page": "https://clinicaltrials.gov/study/NCT00749034"
+    },
+    {
+      "key": "NCT00810849",
+      "label": "NCT00810849 A Trial of Adjunctive Prednisolone and Mycobacterium w Immunotherapy in Tuberculous Pericarditis",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE3"
+      ],
+      "lastUpdate": "2014-09-03",
+      "page": "https://clinicaltrials.gov/study/NCT00810849"
+    },
+    {
+      "key": "NCT00922363",
+      "label": "NCT00922363 Trial on the Safety of a New Liposomal Adjuvant System, CAF01, When Given With the Tuberculosis Subunit Vaccine Ag85B-ESAT-6 as Two Injections With Two Months Interval to Healthy Adult Volunteers",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2013-01-21",
+      "page": "https://clinicaltrials.gov/study/NCT00922363"
+    },
+    {
+      "key": "NCT00929396",
+      "label": "NCT00929396 A Safety and Immunogenicity Trial With an Adjuvanted Tuberculosis (TB) Subunit Vaccine in Purified Protein Derivative (PPD) Positive Volunteers",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2013-01-21",
+      "page": "https://clinicaltrials.gov/study/NCT00929396"
+    },
+    {
+      "key": "NCT00950612",
+      "label": "NCT00950612 Safety and Immunogenicity of a Candidate Tuberculosis (TB) Vaccine in Healthy HIV Negative Adolescents",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE2"
+      ],
+      "lastUpdate": "2018-08-17",
+      "page": "https://clinicaltrials.gov/study/NCT00950612"
+    },
+    {
+      "key": "NCT01049282",
+      "label": "NCT01049282 A Safety and Immunogenicity Trial With an Adjuvanted TB Subunit Vaccine (Ag85B-ESAT-6 + IC31)",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2015-04-17",
+      "page": "https://clinicaltrials.gov/study/NCT01049282"
+    },
+    {
+      "key": "NCT01098474",
+      "label": "NCT01098474 Safety and Immunogenicity Study of a Candidate Tuberculosis Vaccine in Healthy Infants",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE2"
+      ],
+      "lastUpdate": "2019-06-27",
+      "page": "https://clinicaltrials.gov/study/NCT01098474"
+    },
+    {
+      "key": "NCT01113281",
+      "label": "NCT01113281 Dose-Escalation Study on Safety and Immunogenicity of VPM1002 in Comparison to BCG in Healthy Volunteers in South Africa",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2011-11-21",
+      "page": "https://clinicaltrials.gov/study/NCT01113281"
+    },
+    {
+      "key": "NCT01151189",
+      "label": "NCT01151189 Efficacy Against TB Disease, Safety, and Immunogenicity of MVA85A/AERAS-485 in HIV-Infected Adults (C-030-485)",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE2"
+      ],
+      "lastUpdate": "2016-05-24",
+      "page": "https://clinicaltrials.gov/study/NCT01151189"
+    },
+    {
+      "key": "NCT01194180",
+      "label": "NCT01194180 A BCG Challenge Model Study to Assess Anti-mycobacterial Immunity Induced by BCG and a Candidate TB Vaccine, MVA85A",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2012-08-30",
+      "page": "https://clinicaltrials.gov/study/NCT01194180"
+    },
+    {
+      "key": "NCT01198366",
+      "label": "NCT01198366 Study of AERAS-402 in Healthy Infants",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE1",
+        "PHASE2"
+      ],
+      "lastUpdate": "2017-05-08",
+      "page": "https://clinicaltrials.gov/study/NCT01198366"
+    },
+    {
+      "key": "NCT01288950",
+      "label": "NCT01288950 Vitamin D Supplementation Enhances Immune Response to Bacille-Calmette-Guerin (BCG) Vaccination in Infants",
+      "value": "COMPLETED",
+      "phases": [
+        "NA"
+      ],
+      "lastUpdate": "2012-08-22",
+      "page": "https://clinicaltrials.gov/study/NCT01288950"
+    },
+    {
+      "key": "NCT01340820",
+      "label": "NCT01340820 Study of AERAS 422 in Healthy Adults",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2012-08-16",
+      "page": "https://clinicaltrials.gov/study/NCT01340820"
+    },
+    {
+      "key": "NCT01479972",
+      "label": "NCT01479972 Study to Evaluate Safety and Immunogenicity of VPM1002 in Comparison With BCG in Newborn Infants in South Africa",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE2"
+      ],
+      "lastUpdate": "2013-10-29",
+      "page": "https://clinicaltrials.gov/study/NCT01479972"
+    },
+    {
+      "key": "NCT01497769",
+      "label": "NCT01497769 Safety of Tuberculosis Vaccine, MVA85A, Administered by the Aerosol Route and the Intradermal Route",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2013-07-02",
+      "page": "https://clinicaltrials.gov/study/NCT01497769"
+    },
+    {
+      "key": "NCT01583972",
+      "label": "NCT01583972 Efficacy of Newborn Vitamin A Supplementation in Improving Immune Function",
+      "value": "COMPLETED",
+      "phases": [
+        "NA"
+      ],
+      "lastUpdate": "2014-08-26",
+      "page": "https://clinicaltrials.gov/study/NCT01583972"
+    },
+    {
+      "key": "NCT01683773",
+      "label": "NCT01683773 Safety Study of Tuberculosis Vaccines AERAS-402 and MVA85A",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2014-09-17",
+      "page": "https://clinicaltrials.gov/study/NCT01683773"
+    },
+    {
+      "key": "NCT01742364",
+      "label": "NCT01742364 Comparative Study of Bacille Calmette Guerin (BCG) Delivery Via Disposable Syringe Jet Injector and Needle & Syringe",
+      "value": "COMPLETED",
+      "phases": [
+        "NA"
+      ],
+      "lastUpdate": "2017-02-08",
+      "page": "https://clinicaltrials.gov/study/NCT01742364"
+    },
+    {
+      "key": "NCT01755598",
+      "label": "NCT01755598 Study to Evaluate the Efficacy of GlaxoSmithKline (GSK) Biologicals' Candidate Tuberculosis (TB) Vaccine in Adults",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE2"
+      ],
+      "lastUpdate": "2019-12-03",
+      "page": "https://clinicaltrials.gov/study/NCT01755598"
+    },
+    {
+      "key": "NCT01811823",
+      "label": "NCT01811823 Effect of HIV and/or Active Tuberculosis on the Immune Responses to Trivalent Influenza Vaccine (TIV) in Adults",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE4"
+      ],
+      "lastUpdate": "2018-09-05",
+      "page": "https://clinicaltrials.gov/study/NCT01811823"
+    },
+    {
+      "key": "NCT01868464",
+      "label": "NCT01868464 Challenge Model for Assessment of Human TB Immunity",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2020-01-27",
+      "page": "https://clinicaltrials.gov/study/NCT01868464"
+    },
+    {
+      "key": "NCT01879163",
+      "label": "NCT01879163 Phase I Trial Evaluating Safety and Immunogenicity of MVA85A-IMX313 Compared to MVA85A in BCG Vaccinated Adults",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2014-12-16",
+      "page": "https://clinicaltrials.gov/study/NCT01879163"
+    },
+    {
+      "key": "NCT01927159",
+      "label": "NCT01927159 Phase 1 ID93 + GLA-SE Vaccine Trial in BCG-Vaccinated Healthy Adult Volunteers",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2018-02-01",
+      "page": "https://clinicaltrials.gov/study/NCT01927159"
+    },
+    {
+      "key": "NCT01954563",
+      "label": "NCT01954563 Study Evaluating Aerosol and Intradermal Administration of a Candidate Tuberculosis (TB) Vaccine, MVA85A, as a Way to Increase Immune Response and Avoid Anti-vector Immunity",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2016-01-28",
+      "page": "https://clinicaltrials.gov/study/NCT01954563"
+    },
+    {
+      "key": "NCT02013245",
+      "label": "NCT02013245 Dose-Escalation Study to Evaluate the Safety and Immunogenicity of MTBVAC Vaccine in Comparison With BCG Vaccine.",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2017-03-24",
+      "page": "https://clinicaltrials.gov/study/NCT02013245"
+    },
+    {
+      "key": "NCT02063555",
+      "label": "NCT02063555 Phase I Trial of DAR-901",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2016-08-02",
+      "page": "https://clinicaltrials.gov/study/NCT02063555"
+    },
+    {
+      "key": "NCT02075203",
+      "label": "NCT02075203 Evaluation of Safety, Immunogenicity, and Prevention of TB With AERAS-404 and BCG Revaccination in Healthy Adolescents",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE2"
+      ],
+      "lastUpdate": "2019-09-04",
+      "page": "https://clinicaltrials.gov/study/NCT02075203"
+    },
+    {
+      "key": "NCT02088892",
+      "label": "NCT02088892 A Clinical Challenge Study of BCG in Healthy Volunteers",
+      "value": "COMPLETED",
+      "phases": [
+        "NA"
+      ],
+      "lastUpdate": "2015-01-22",
+      "page": "https://clinicaltrials.gov/study/NCT02088892"
+    },
+    {
+      "key": "NCT02097095",
+      "label": "NCT02097095 Substudy of Protocol TB-018 (NCT01755598): Collection and Storage of Biological Samples for Evaluation of Correlates of TB (C-041-972)",
+      "value": "COMPLETED",
+      "phases": [],
+      "lastUpdate": "2017-02-01",
+      "page": "https://clinicaltrials.gov/study/NCT02097095"
+    },
+    {
+      "key": "NCT02178748",
+      "label": "NCT02178748 Trial to Investigate the Effect of Schistosoma Mansoni Infection on the Response to Vaccination With MVA85A in BCG-vaccinated African Adolescents",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE2"
+      ],
+      "lastUpdate": "2015-01-30",
+      "page": "https://clinicaltrials.gov/study/NCT02178748"
+    },
+    {
+      "key": "NCT02375256",
+      "label": "NCT02375256 A Leukapheresis Study for Immune Responses in Healthy US Adults Who Receive BCG Vaccination Followed by Boosting With AERAS-402",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2015-03-03",
+      "page": "https://clinicaltrials.gov/study/NCT02375256"
+    },
+    {
+      "key": "NCT02389322",
+      "label": "NCT02389322 Phase IIb Clinical Study of Recombinant Mycobacterium Tuberculosis Allergen ESAT6-CFP10 on Healthy People Aged 18-65",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE2"
+      ],
+      "lastUpdate": "2017-03-17",
+      "page": "https://clinicaltrials.gov/study/NCT02389322"
+    },
+    {
+      "key": "NCT02391415",
+      "label": "NCT02391415 Study to Evaluate the Safety and Immunogenicity of VPM1002 in Comparison With BCG in HIV-exposed/-Unexposed Newborn Infants in South Africa",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE2"
+      ],
+      "lastUpdate": "2018-04-18",
+      "page": "https://clinicaltrials.gov/study/NCT02391415"
+    },
+    {
+      "key": "NCT02413502",
+      "label": "NCT02413502 Leukapheresis Sampling for Immune Responses After BCG Vaccination in BCG-naïve Healthy Adults in the US",
+      "value": "COMPLETED",
+      "phases": [
+        "EARLY_PHASE1"
+      ],
+      "lastUpdate": "2015-10-09",
+      "page": "https://clinicaltrials.gov/study/NCT02413502"
+    },
+    {
+      "key": "NCT02465216",
+      "label": "NCT02465216 Phase 2a ID93 + GLA-SE Vaccine Trial in TB Patients After Treatment Completion",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE2"
+      ],
+      "lastUpdate": "2019-03-12",
+      "page": "https://clinicaltrials.gov/study/NCT02465216"
+    },
+    {
+      "key": "NCT02501421",
+      "label": "NCT02501421 Reactogenicity, Safety and Immunogenicity of a TB/FLU-04L Tuberculosis Vaccine",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2020-08-28",
+      "page": "https://clinicaltrials.gov/study/NCT02501421"
+    },
+    {
+      "key": "NCT02508376",
+      "label": "NCT02508376 Safety, Tolerability, and Immunogenicity of the Vaccine Candidates ID93 + AP10-602 and ID93 + GLA-SE Administered Intramuscularly in Healthy Adult Subjects",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2017-09-15",
+      "page": "https://clinicaltrials.gov/study/NCT02508376"
+    },
+    {
+      "key": "NCT02711735",
+      "label": "NCT02711735 Safety of RUTI® Vaccination in MDR-TB Patients",
+      "value": "TERMINATED",
+      "phases": [
+        "PHASE2"
+      ],
+      "lastUpdate": "2022-07-05",
+      "page": "https://clinicaltrials.gov/study/NCT02711735"
+    },
+    {
+      "key": "NCT02729571",
+      "label": "NCT02729571 Dose-escalation Safety and Immunogenicity Study to Compare MTBVAC to BCG in Newborns With a Safety Arm in Adults",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE1",
+        "PHASE2"
+      ],
+      "lastUpdate": "2018-05-01",
+      "page": "https://clinicaltrials.gov/study/NCT02729571"
+    },
+    {
+      "key": "NCT03017378",
+      "label": "NCT03017378 Reactogenicity, Safety and Immunogenicity of a TB/FLU-01L Tuberculosis Vaccine",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2017-01-11",
+      "page": "https://clinicaltrials.gov/study/NCT03017378"
+    },
+    {
+      "key": "NCT03026972",
+      "label": "NCT03026972 A Phase ⅠStudy of the Recombinant Mycobacterium Tuberculosis Vaccine Freeze-dried",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2022-03-24",
+      "page": "https://clinicaltrials.gov/study/NCT03026972"
+    },
+    {
+      "key": "NCT03159975",
+      "label": "NCT03159975 Safety and Immunogenicity Study of GX-70 in TB Patient",
+      "value": "WITHDRAWN",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2019-01-11",
+      "page": "https://clinicaltrials.gov/study/NCT03159975"
+    },
+    {
+      "key": "NCT03255278",
+      "label": "NCT03255278 Evaluation of the Safety and Immunogenicity of the Recombinant Subunit Vaccine \"GamTBvac\" Against the Tuberculosis.",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2017-12-27",
+      "page": "https://clinicaltrials.gov/study/NCT03255278"
+    },
+    {
+      "key": "NCT03341195",
+      "label": "NCT03341195 Mobile Phone SMS Messages and Automated Calls in Improving Vaccine Coverage Among Children in Pakistan",
+      "value": "UNKNOWN",
+      "phases": [
+        "NA"
+      ],
+      "lastUpdate": "2017-11-17",
+      "page": "https://clinicaltrials.gov/study/NCT03341195"
+    },
+    {
+      "key": "NCT03536117",
+      "label": "NCT03536117 Dose-Defining Safety and Immunogenicity Study of MTBVAC in South African Neonates",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE2"
+      ],
+      "lastUpdate": "2025-04-27",
+      "page": "https://clinicaltrials.gov/study/NCT03536117"
+    },
+    {
+      "key": "NCT03681860",
+      "label": "NCT03681860 EMaBS TB Vaccine Study",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE1",
+        "PHASE2"
+      ],
+      "lastUpdate": "2022-08-05",
+      "page": "https://clinicaltrials.gov/study/NCT03681860"
+    },
+    {
+      "key": "NCT03722472",
+      "label": "NCT03722472 Phase 1 Clinical Trial of Single-Vial ID93 + GLA-SE in Healthy Adults",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2023-06-01",
+      "page": "https://clinicaltrials.gov/study/NCT03722472"
+    },
+    {
+      "key": "NCT03806699",
+      "label": "NCT03806699 Phase 1 Clinical Trial of ID93+GLA-SE Vaccine in BCG-vaccinated Healthy Adolescent",
+      "value": "UNKNOWN",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2019-07-23",
+      "page": "https://clinicaltrials.gov/study/NCT03806699"
+    },
+    {
+      "key": "NCT03870061",
+      "label": "NCT03870061 Evaluation of an Infant Immunization Encouragement Program in Nigeria",
+      "value": "COMPLETED",
+      "phases": [
+        "NA"
+      ],
+      "lastUpdate": "2020-03-31",
+      "page": "https://clinicaltrials.gov/study/NCT03870061"
+    },
+    {
+      "key": "NCT03878004",
+      "label": "NCT03878004 Phase II Clinical Trial of Safety and Immunogenicity of Recombinant Subunit Tuberculosis Vaccine GamTBvac",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE2"
+      ],
+      "lastUpdate": "2020-06-17",
+      "page": "https://clinicaltrials.gov/study/NCT03878004"
+    },
+    {
+      "key": "NCT03947138",
+      "label": "NCT03947138 A Study of GC3107(BCG Vaccine) in Healthy Infants",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE3"
+      ],
+      "lastUpdate": "2022-11-02",
+      "page": "https://clinicaltrials.gov/study/NCT03947138"
+    },
+    {
+      "key": "NCT04351685",
+      "label": "NCT04351685 Evaluation of Efficacy and Safety of VPM1002 in Comparison to BCG in Prevention of Tb Infection in Infants",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE3"
+      ],
+      "lastUpdate": "2025-02-10",
+      "page": "https://clinicaltrials.gov/study/NCT04351685"
+    },
+    {
+      "key": "NCT04453293",
+      "label": "NCT04453293 Immunization With BCG Vaccine to Prevent Tuberculosis Infection",
+      "value": "TERMINATED",
+      "phases": [
+        "PHASE3"
+      ],
+      "lastUpdate": "2026-01-23",
+      "page": "https://clinicaltrials.gov/study/NCT04453293"
+    },
+    {
+      "key": "NCT04547738",
+      "label": "NCT04547738 Influence of Filarial Infections on Tuberculosis Disease and Tuberculosis Vaccination in Cameroon",
+      "value": "UNKNOWN",
+      "phases": [],
+      "lastUpdate": "2021-11-23",
+      "page": "https://clinicaltrials.gov/study/NCT04547738"
+    },
+    {
+      "key": "NCT04556981",
+      "label": "NCT04556981 Safety and Immunogenicity of a Mycobacterium Tuberculosis Vaccine M72/AS01E in Participants With Well-controlled HIV",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE2"
+      ],
+      "lastUpdate": "2025-07-17",
+      "page": "https://clinicaltrials.gov/study/NCT04556981"
+    },
+    {
+      "key": "NCT04884308",
+      "label": "NCT04884308 Bacille Calmette-Guerin (BCG) Vaccine for Immune Protection Against Infections",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE2"
+      ],
+      "lastUpdate": "2025-02-10",
+      "page": "https://clinicaltrials.gov/study/NCT04884308"
+    },
+    {
+      "key": "NCT04975178",
+      "label": "NCT04975178 Efficacy, Safety and Immunogenicity Evaluation of MTBVAC in Newborns in Sub-Saharan Africa",
+      "value": "RECRUITING",
+      "phases": [
+        "PHASE3"
+      ],
+      "lastUpdate": "2025-02-10",
+      "page": "https://clinicaltrials.gov/study/NCT04975178"
+    },
+    {
+      "key": "NCT04975737",
+      "label": "NCT04975737 Study of the Safety and Efficacy of the Subunit Recombinant Tuberculosis Vaccine GamTBvac",
+      "value": "ACTIVE_NOT_RECRUITING",
+      "phases": [
+        "PHASE3"
+      ],
+      "lastUpdate": "2026-07-06",
+      "page": "https://clinicaltrials.gov/study/NCT04975737"
+    },
+    {
+      "key": "NCT05136833",
+      "label": "NCT05136833 Evaluation of Efficacy and Safety of the Concomitant of RUTI® Immunotherapy With the Standard Treatment in TB Patients",
+      "value": "WITHDRAWN",
+      "phases": [
+        "PHASE2"
+      ],
+      "lastUpdate": "2022-07-13",
+      "page": "https://clinicaltrials.gov/study/NCT05136833"
+    },
+    {
+      "key": "NCT05148949",
+      "label": "NCT05148949 Study on Three Doses of an Inactivated COVID-19 Vaccine in Chinese Pulmonary Tuberculosis Patients",
+      "value": "UNKNOWN",
+      "phases": [
+        "PHASE4"
+      ],
+      "lastUpdate": "2022-08-16",
+      "page": "https://clinicaltrials.gov/study/NCT05148949"
+    },
+    {
+      "key": "NCT05455112",
+      "label": "NCT05455112 Safety and Efficacy of RUTI® With the Standard of Treatment for Tuberculosis",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE2"
+      ],
+      "lastUpdate": "2025-12-10",
+      "page": "https://clinicaltrials.gov/study/NCT05455112"
+    },
+    {
+      "key": "NCT05537038",
+      "label": "NCT05537038 Safety and Immune Responses After Vaccination With Two Investigational RNA-based Vaccines Against Tuberculosis in Healthy Volunteers",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2025-12-22",
+      "page": "https://clinicaltrials.gov/study/NCT05537038"
+    },
+    {
+      "key": "NCT05539989",
+      "label": "NCT05539989 Safety and Immunogenicity of VPM1002 Vaccination or BCG Revaccination Against TB in Pre-Adolescents Living With and Without HIV in South Africa",
+      "value": "WITHDRAWN",
+      "phases": [
+        "PHASE1",
+        "PHASE2"
+      ],
+      "lastUpdate": "2026-08-17",
+      "page": "https://clinicaltrials.gov/study/NCT05539989"
+    },
+    {
+      "key": "NCT05541952",
+      "label": "NCT05541952 BCG Re-vaccination for Primary Tuberculosis Prophylaxis in the Prison Population",
+      "value": "WITHDRAWN",
+      "phases": [
+        "PHASE4"
+      ],
+      "lastUpdate": "2023-10-19",
+      "page": "https://clinicaltrials.gov/study/NCT05541952"
+    },
+    {
+      "key": "NCT05547464",
+      "label": "NCT05547464 Safety and Immune Responses After Vaccination With Two Investigational RNA-based Vaccines Against Tuberculosis in BCG Vaccinated Volunteers",
+      "value": "ACTIVE_NOT_RECRUITING",
+      "phases": [
+        "PHASE1",
+        "PHASE2"
+      ],
+      "lastUpdate": "2026-03-18",
+      "page": "https://clinicaltrials.gov/study/NCT05547464"
+    },
+    {
+      "key": "NCT05945498",
+      "label": "NCT05945498 Evaluation of ТВ/Flu-05Е Vaccine for the Prevention of Tuberculosis Infection in BCG-vaccinated Volunteers Aged 18-50 Years",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2024-04-18",
+      "page": "https://clinicaltrials.gov/study/NCT05945498"
+    },
+    {
+      "key": "NCT06050356",
+      "label": "NCT06050356 First-in-Human Trial of the Novel Tuberculosis Vaccine Candidate, H107e/CAF®10b",
+      "value": "ACTIVE_NOT_RECRUITING",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2026-03-10",
+      "page": "https://clinicaltrials.gov/study/NCT06050356"
+    },
+    {
+      "key": "NCT06062238",
+      "label": "NCT06062238 Study to Assess Efficacy and Safety of M72/AS01E-4 Mycobacterium Tuberculosis (Mtb) Vaccine in Adolescents and Adults",
+      "value": "ACTIVE_NOT_RECRUITING",
+      "phases": [
+        "PHASE3"
+      ],
+      "lastUpdate": "2026-08-28",
+      "page": "https://clinicaltrials.gov/study/NCT06062238"
+    },
+    {
+      "key": "NCT06178666",
+      "label": "NCT06178666 A Controlled Human Infection Model (CHIM) With Intradermal BCG in Malawi",
+      "value": "UNKNOWN",
+      "phases": [
+        "NA"
+      ],
+      "lastUpdate": "2023-12-21",
+      "page": "https://clinicaltrials.gov/study/NCT06178666"
+    },
+    {
+      "key": "NCT06205589",
+      "label": "NCT06205589 Therapeutic ID93 + GLA-SE Vaccination in Participants With Rifampicin-Susceptible Pulmonary TB",
+      "value": "NOT_YET_RECRUITING",
+      "phases": [
+        "PHASE2"
+      ],
+      "lastUpdate": "2026-08-24",
+      "page": "https://clinicaltrials.gov/study/NCT06205589"
+    },
+    {
+      "key": "NCT06246851",
+      "label": "NCT06246851 BCG Revaccination Study in Diabetic and Non-Diabetic Adults",
+      "value": "ACTIVE_NOT_RECRUITING",
+      "phases": [
+        "NA"
+      ],
+      "lastUpdate": "2026-04-24",
+      "page": "https://clinicaltrials.gov/study/NCT06246851"
+    },
+    {
+      "key": "NCT06272812",
+      "label": "NCT06272812 A Study to Evaluate the Efficacy, Safety and Immunogenicity of MTBVAC in Adolescents and Adults Living in a TB Endemic Region.",
+      "value": "ACTIVE_NOT_RECRUITING",
+      "phases": [
+        "PHASE2"
+      ],
+      "lastUpdate": "2026-10-29",
+      "page": "https://clinicaltrials.gov/study/NCT06272812"
+    },
+    {
+      "key": "NCT06670755",
+      "label": "NCT06670755 ID93/GLA-SE Vaccination + BCG Challenge",
+      "value": "RECRUITING",
+      "phases": [
+        "NA"
+      ],
+      "lastUpdate": "2026-10-22",
+      "page": "https://clinicaltrials.gov/study/NCT06670755"
+    },
+    {
+      "key": "NCT06714513",
+      "label": "NCT06714513 ID93+GLA-SE Vaccine Against Tuberculosis in Older Adults Aged 55-74",
+      "value": "RECRUITING",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2025-06-17",
+      "page": "https://clinicaltrials.gov/study/NCT06714513"
+    },
+    {
+      "key": "NCT06845358",
+      "label": "NCT06845358 Safety and Challenge Study of BCG TICE(R) Vaccination to Test Tuberculosis Immunity in Heathy Humans",
+      "value": "WITHDRAWN",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2025-12-17",
+      "page": "https://clinicaltrials.gov/study/NCT06845358"
+    },
+    {
+      "key": "NCT06873282",
+      "label": "NCT06873282 Phase 2 Study of the ТВ/Flu-05Е Tuberculosis Vaccine",
+      "value": "COMPLETED",
+      "phases": [
+        "PHASE2"
+      ],
+      "lastUpdate": "2025-03-20",
+      "page": "https://clinicaltrials.gov/study/NCT06873282"
+    },
+    {
+      "key": "NCT06997367",
+      "label": "NCT06997367 Safety and Immunogenicity of a Mycobacterium Tuberculosis Vaccine MTBVAC in Healthy Indian Adults and Adolescents (BBV169/2024)",
+      "value": "ACTIVE_NOT_RECRUITING",
+      "phases": [
+        "PHASE2"
+      ],
+      "lastUpdate": "2026-04-29",
+      "page": "https://clinicaltrials.gov/study/NCT06997367"
+    },
+    {
+      "key": "NCT07647107",
+      "label": "NCT07647107 A Phase I Study of Lipovaxin Tuberculosis Vaccine in Adult Healthy Populations",
+      "value": "NOT_YET_RECRUITING",
+      "phases": [
+        "PHASE1"
+      ],
+      "lastUpdate": "2026-06-15",
+      "page": "https://clinicaltrials.gov/study/NCT07647107"
+    },
+    {
+      "key": "NCT07762014",
+      "label": "NCT07762014 rBCG-N-RSV Vaccine in Adults Aged 60 Years and Older",
+      "value": "RECRUITING",
+      "phases": [
+        "PHASE2"
+      ],
+      "lastUpdate": "2026-09-15",
+      "page": "https://clinicaltrials.gov/study/NCT07762014"
+    }
+  ]
+}

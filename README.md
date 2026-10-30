@@ -177,6 +177,16 @@ When a rule fires, the agent **archives its lessons itself** (`memory/archive/le
 
 First real run (28 October, forced for the experiment, DBIR 2025 goal, 3 turns, 1 round): the agent archived its 30 lessons, ran again knowing nothing, and both answers were identical, 10/10, the 60 % human element quoted from the report. With memory: $0.031. From zero: $0.054, 75 % more: both took 2 turns, the difference is in what was read and written (the first turn scored 4/10 with memory and 8/10 from zero, so the lessons did not even help the first move here). Verdict written by the agent: « same result either way: the memory did no harm », memory restored. The run and its replay are in `examples/back-to-zero/`. A natural reset (rules A, B or C) has not fired yet; when one does, it will be shown as it happened, never staged.
 
+## Watch mode: it reads the readings every period and reports only what moved
+
+A researcher does not have time to re-read a hundred publications, a weekly bulletin or a probe's log every day. Watch mode does it. `npm run watch -- "<source>"` reads one source's readings for the period (a public health series, a trial registry, an instrument's export in the generic format of `watch/readings.example.json`), compares them with the previous period, and reports only the variations: a value that moved more than the threshold (20 % by default), a threshold crossed, a status that changed, a key that appeared or vanished. Each report (`watch/<source>/report-<period>.md`) carries the page to cite and is chained in the hashed journal. Mission Zero never acts on the source: it reads, compares, cites; a human decides.
+
+With `--explain`, the biggest variation becomes a Mission Zero goal: the loop reads the primary sources (the bulletin, the agency's reports), answers with the exact quote for every figure, and says what is not proven. `--replay=N` plays the last N periods of a public series one after another, as if the watch had run each week: the history is public, nothing is staged, and every replayed report says so. `--until=<period>` cuts the series at a period.
+
+Sources shipped in `watch/sources.json`: Réseau Sentinelles (France, influenza-like illness incidence per 100 000, weekly since 1984, country and regions), ClinicalTrials.gov (every registered tuberculosis vaccine study and its status, daily), and an example probe export (an incubator's temperature and a culture's density, day by day: the generic format any instrument can write). Adding a source is one adapter function (`src/watch.js`) or one file in the generic format.
+
+Measured (30 October, versioned in `examples/watch-sentinelles-2026-10-30/`): eight weeks of Sentinelles replayed (W35 to W43) in under two seconds without any model call: three variations found (W36 +40.7 %, W37 +44.7 %, W38 +40 %, the autumn rise of influenza-like illness), then five quiet weeks. With `--explain` on the W38 rise (55 to 77 per 100 000, +40 %), Mission Zero read the Sentinelles pages, quoted the surveillance method word for word (3 verified quotes, 9/10, $0.048, 14 calls) and said plainly that no published comment on that particular rise exists in what it read: the network comments on epidemic weeks, not on a September uptick. Two earlier attempts (kept locally) had asked it to re-verify the figures on the bulletin page and it answered « not proven », rightly: the figures live in the dataset, which the watch reads and keeps, not in the page. The goal now says so. The first reading of the tuberculosis vaccine trials (ClinicalTrials.gov, 100 studies with their status) is in `examples/watch-clinicaltrials-2026-10-30/`: the next reading will show which trial changed status.
+
 ## Known limits (read before trusting a « proposed » fix)
 
 We would rather list these ourselves.
@@ -236,10 +246,11 @@ Who pays: online shops and the agencies and hosts that run them, where the same 
 cp .env.example .env            # add your MODEL_API_KEY (Meta Model API)
 npm install
 npm run check-key
-npm test                        # 65 tests, no network, no model calls
+npm test                        # 80 tests, no network, no model calls
 node --env-file=.env src/run.js "your goal" 4 3     # 4 turns, 3 contradiction rounds
 npm run demo                    # the 5 goals above, table + evidence
 node bench/make-replay.js evidence/<folder>         # animated replay of a mission (one HTML file)
+npm run watch -- "Sentinelles grippe France" --replay=8 --explain   # watch mode: what moved, and why, with quotes
 ```
 
 Real runs are committed in `examples/`: five research missions (`dbir-2025`, `gdpr-max-fine`, `nist-800-63b-4`, `cvss-v4`, `anssi-hygiene`), the self-reset (`back-to-zero`), the repair of the 15 flaws (`repair-maison-verde`, two runs with their patches and hashed journals, plus the `stories/` runs the video shows) and the raw outputs of the Meta tools (`meta-tools`). Open any `replay.html` in a browser to watch a mission or a repair replayed from its own evidence, or read the raw `journal.jsonl` and `repair.json`.
@@ -261,6 +272,7 @@ The evidence folder (`evidence/<date>/`) holds `journal.jsonl` (every plan, obse
 | `src/meta.js` | Meta Model API client (or Baseten open weights by base URL), reasoning effort per role, daily ledger |
 | `src/run.js`, `src/zero.js` | one mission end to end; the agent's own return to zero (outcomes, rules, archive, rerun, compare) |
 | `src/contradict.js`, `src/compare.js` | contradictor on the plan (kept for the A/B, off by default) and run comparison |
+| `src/watch.js` | watch mode: readings compared period to period, variations only, replay of a public history, cited explanation of the biggest one |
 | `src/scanner.js` | 15 shop probes and 7 policy probes (F16 to F22), generic findings; a finding is rescanned by id or by type |
 | `src/repair.js` | cited recommendation, exact edits on a copy, journeys replayed, inline-script policy control, rescan, unverified status, patch |
 | `src/secrets.js` | secret filter before every model call, restored in the edits only |

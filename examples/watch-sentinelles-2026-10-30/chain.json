@@ -1,0 +1,307 @@
+{
+  "entries": [
+    {
+      "n": 1,
+      "file": "2026-W35.json",
+      "fileHash": "ae6116474e8479c7828d05a4c52bbb441bae385eeb499bdb5d21d476a984eba1",
+      "prev": "0000000000000000000000000000000000000000000000000000000000000000",
+      "hash": "9e3c39fac4183ed3d64ef1a164ede185cca4df472bd75795dee3e18f88943ca3",
+      "at": "2026-10-30T09:46:41.818Z",
+      "step": "snapshot"
+    },
+    {
+      "n": 2,
+      "file": "2026-W36.json",
+      "fileHash": "ba9babe4dcdd098707e79c4433f1345e0ebb2858a903392d4041c395eefb5f46",
+      "prev": "9e3c39fac4183ed3d64ef1a164ede185cca4df472bd75795dee3e18f88943ca3",
+      "hash": "28aa63865fde66277d24450aae83534c4d350c674a5c156162b615e012e34dd5",
+      "at": "2026-10-30T09:46:41.823Z",
+      "step": "snapshot"
+    },
+    {
+      "n": 3,
+      "file": "report-2026-W36.json",
+      "fileHash": "3ce7400273f04786a69d832fdd097b3ac45c2967d546c2e1fbf0b315028d01fe",
+      "prev": "28aa63865fde66277d24450aae83534c4d350c674a5c156162b615e012e34dd5",
+      "hash": "e3ad87c0a744a3f61334387a1082f510510c6264de55ebb56585858275b074ed",
+      "at": "2026-10-30T09:46:41.823Z",
+      "step": "report",
+      "variations": 1
+    },
+    {
+      "n": 4,
+      "file": "2026-W37.json",
+      "fileHash": "2281974baf4425773fe7bc9df46d5973e44323c499c41b86d7728166e7bc61e4",
+      "prev": "e3ad87c0a744a3f61334387a1082f510510c6264de55ebb56585858275b074ed",
+      "hash": "4227a1980c6967e9573108f2e43b01d23d456a6aee3f3fd85dcc27ab9bd43064",
+      "at": "2026-10-30T09:46:41.825Z",
+      "step": "snapshot"
+    },
+    {
+      "n": 5,
+      "file": "report-2026-W37.json",
+      "fileHash": "eea47b0ad475408a38841ab2493fca62df26f8170cfe843a5555177a5bfac407",
+      "prev": "4227a1980c6967e9573108f2e43b01d23d456a6aee3f3fd85dcc27ab9bd43064",
+      "hash": "e8471a136e4ad93dbef6d67c327bc52a244651ab97608f44af7e5117db9e4cd8",
+      "at": "2026-10-30T09:46:41.826Z",
+      "step": "report",
+      "variations": 1
+    },
+    {
+      "n": 6,
+      "file": "2026-W38.json",
+      "fileHash": "e40067c8c996027b754781658616bf1fa85a7082867f92a5811f4394296c909b",
+      "prev": "e8471a136e4ad93dbef6d67c327bc52a244651ab97608f44af7e5117db9e4cd8",
+      "hash": "936cc024b574ccccc5bb3177266093478710e688e5101108f6f34afb453fb481",
+      "at": "2026-10-30T09:46:41.827Z",
+      "step": "snapshot"
+    },
+    {
+      "n": 7,
+      "file": "report-2026-W38.json",
+      "fileHash": "9537e126d241fb6842524f0d69ba467a87f2852df89dda9ced2b52d121d24d72",
+      "prev": "936cc024b574ccccc5bb3177266093478710e688e5101108f6f34afb453fb481",
+      "hash": "09df3b9348284db1bdfa25fa482c05839f326c209dd1c2b3eff0524a5911fb8a",
+      "at": "2026-10-30T09:46:41.828Z",
+      "step": "report",
+      "variations": 1
+    },
+    {
+      "n": 8,
+      "file": "2026-W39.json",
+      "fileHash": "a867a0e28977c2cf2b2370e0beb3a71e62f8bd01eac9a67ca3502c754fd5919a",
+      "prev": "09df3b9348284db1bdfa25fa482c05839f326c209dd1c2b3eff0524a5911fb8a",
+      "hash": "99ab2199c88925b582784ce41fd6740ad1e1037d0bea6e73a7a76b821b91f82e",
+      "at": "2026-10-30T09:46:41.830Z",
+      "step": "snapshot"
+    },
+    {
+      "n": 9,
+      "file": "report-2026-W39.json",
+      "fileHash": "ef742e80f3a741b92eca4b2c8b79b300700f3b60e1d69ddb123f699fd4de26cc",
+      "prev": "99ab2199c88925b582784ce41fd6740ad1e1037d0bea6e73a7a76b821b91f82e",
+      "hash": "22d8a0a45c46d0fc4b8fbf2ca6c8f9aeaa6a1c664b7ae01b9cd242edc6f26f4d",
+      "at": "2026-10-30T09:46:41.830Z",
+      "step": "report",
+      "variations": 0
+    },
+    {
+      "n": 10,
+      "file": "2026-W40.json",
+      "fileHash": "56bbe52558291b1c08f3053fdcdb4dec72a33ea92509efa62b3fa935876209ed",
+      "prev": "22d8a0a45c46d0fc4b8fbf2ca6c8f9aeaa6a1c664b7ae01b9cd242edc6f26f4d",
+      "hash": "9126f7f82189facd4061ee48903c9b280e245fae733d637f1344f4801887ec30",
+      "at": "2026-10-30T09:46:41.832Z",
+      "step": "snapshot"
+    },
+    {
+      "n": 11,
+      "file": "report-2026-W40.json",
+      "fileHash": "9b5982803dca1c791e2fa0a797d770cd55972a6efad6ae0a6c34fa7aae5e16ef",
+      "prev": "9126f7f82189facd4061ee48903c9b280e245fae733d637f1344f4801887ec30",
+      "hash": "33d723c1fcf85681a2748ce8b5f198b0a7350c824f50998bf4c9a1dbc39781e1",
+      "at": "2026-10-30T09:46:41.832Z",
+      "step": "report",
+      "variations": 0
+    },
+    {
+      "n": 12,
+      "file": "2026-W41.json",
+      "fileHash": "a2e64385e2bd606f0b0e16b223b0bd761cdb78feb2ee56b3aec0354a015ff4e6",
+      "prev": "33d723c1fcf85681a2748ce8b5f198b0a7350c824f50998bf4c9a1dbc39781e1",
+      "hash": "cd2343fccc0ce1448d5176d6983c4827e9900c6f19bb1049798548e9723cff60",
+      "at": "2026-10-30T09:46:41.834Z",
+      "step": "snapshot"
+    },
+    {
+      "n": 13,
+      "file": "report-2026-W41.json",
+      "fileHash": "0923fd6534cf189cf069afee3fdf35fbf20442add7b1d31750eaa4652eb509bc",
+      "prev": "cd2343fccc0ce1448d5176d6983c4827e9900c6f19bb1049798548e9723cff60",
+      "hash": "ae16ad00ef8c7d650a539f387babee94969d058b871d400628d930217ec04f13",
+      "at": "2026-10-30T09:46:41.835Z",
+      "step": "report",
+      "variations": 0
+    },
+    {
+      "n": 14,
+      "file": "2026-W42.json",
+      "fileHash": "632b4de7b01cafccdacdae066d28eb1cae203e7fb3d2670253703f5a177d716e",
+      "prev": "ae16ad00ef8c7d650a539f387babee94969d058b871d400628d930217ec04f13",
+      "hash": "18ebb9aedd74e49f0f2a328724de242d5bbd9836ac8bf7891a57096b5d512048",
+      "at": "2026-10-30T09:46:41.837Z",
+      "step": "snapshot"
+    },
+    {
+      "n": 15,
+      "file": "report-2026-W42.json",
+      "fileHash": "53dffcf9203696b51ac9972a9eda8364461b7ff43fcb848a77d3efa253f9a592",
+      "prev": "18ebb9aedd74e49f0f2a328724de242d5bbd9836ac8bf7891a57096b5d512048",
+      "hash": "a18ea70ccd4759cd07e6cebdbd0f420fe3b8c1a748498ba29dcccff7f94f9d67",
+      "at": "2026-10-30T09:46:41.837Z",
+      "step": "report",
+      "variations": 0
+    },
+    {
+      "n": 16,
+      "file": "2026-W43.json",
+      "fileHash": "55e5e8d2ef93c33ee8aeac1cc02be680722fce75bdef6d072812085a6528570c",
+      "prev": "a18ea70ccd4759cd07e6cebdbd0f420fe3b8c1a748498ba29dcccff7f94f9d67",
+      "hash": "ced4e6ea52b3f2c2a5a57ca1711a22deb25ef0bf817efd3c29d0344921dd1852",
+      "at": "2026-10-30T09:46:41.839Z",
+      "step": "snapshot"
+    },
+    {
+      "n": 17,
+      "file": "report-2026-W43.json",
+      "fileHash": "b54dd4a6f927d2807cbede8f73215aaae3ae824ce7450a703f328caa4e6ca135",
+      "prev": "ced4e6ea52b3f2c2a5a57ca1711a22deb25ef0bf817efd3c29d0344921dd1852",
+      "hash": "7149123d2b0a1d5c88702b87b92edecf4133ebe5a945d9869d3769db1f69df64",
+      "at": "2026-10-30T09:46:41.839Z",
+      "step": "report",
+      "variations": 0
+    },
+    {
+      "n": 18,
+      "file": "2026-W36.json",
+      "fileHash": "ba9babe4dcdd098707e79c4433f1345e0ebb2858a903392d4041c395eefb5f46",
+      "prev": "7149123d2b0a1d5c88702b87b92edecf4133ebe5a945d9869d3769db1f69df64",
+      "hash": "3c2d4401f01cd1a743588a34979147b5bd3ddb53de7824b54125976804cb3319",
+      "at": "2026-10-30T09:46:47.318Z",
+      "step": "snapshot"
+    },
+    {
+      "n": 19,
+      "file": "2026-W37.json",
+      "fileHash": "2281974baf4425773fe7bc9df46d5973e44323c499c41b86d7728166e7bc61e4",
+      "prev": "3c2d4401f01cd1a743588a34979147b5bd3ddb53de7824b54125976804cb3319",
+      "hash": "0128dbb124da684ab95644b957e24338856d963d31371e27b12eca76100c7fdf",
+      "at": "2026-10-30T09:46:47.321Z",
+      "step": "snapshot"
+    },
+    {
+      "n": 20,
+      "file": "report-2026-W37.json",
+      "fileHash": "32e8ede24b90c8efe079e853b33ceeff9230abdacdad537e601d450d5170ae83",
+      "prev": "0128dbb124da684ab95644b957e24338856d963d31371e27b12eca76100c7fdf",
+      "hash": "dff209176ae466ed81480df3962592c723c6235a36c5aaf74311e758ebc1572a",
+      "at": "2026-10-30T09:46:47.322Z",
+      "step": "report",
+      "variations": 1
+    },
+    {
+      "n": 21,
+      "file": "2026-W38.json",
+      "fileHash": "e40067c8c996027b754781658616bf1fa85a7082867f92a5811f4394296c909b",
+      "prev": "dff209176ae466ed81480df3962592c723c6235a36c5aaf74311e758ebc1572a",
+      "hash": "d6d2c9ff24165a77151ec9bc9bb7c6d4b480938a214a15bebe5efee1cd5b81f2",
+      "at": "2026-10-30T09:48:03.624Z",
+      "step": "snapshot"
+    },
+    {
+      "n": 22,
+      "file": "report-2026-W38.json",
+      "fileHash": "9dacd12278c40c0f26e23fe6dff87ef79fa070059be3bd635c52e4d2261bd9fb",
+      "prev": "d6d2c9ff24165a77151ec9bc9bb7c6d4b480938a214a15bebe5efee1cd5b81f2",
+      "hash": "bbe53d0d685abd91ae685deb2649e163f05c342d6e5d949f8589a0bebaa992d5",
+      "at": "2026-10-30T09:48:03.625Z",
+      "step": "report",
+      "variations": 1
+    },
+    {
+      "n": 23,
+      "file": "2026-W36.json",
+      "fileHash": "ba9babe4dcdd098707e79c4433f1345e0ebb2858a903392d4041c395eefb5f46",
+      "prev": "bbe53d0d685abd91ae685deb2649e163f05c342d6e5d949f8589a0bebaa992d5",
+      "hash": "43bc834f9ee829da48566ff3fb0126cff9f2ae3b20182d27597da33a70f5b10c",
+      "at": "2026-10-30T09:48:46.808Z",
+      "step": "snapshot"
+    },
+    {
+      "n": 24,
+      "file": "2026-W37.json",
+      "fileHash": "2281974baf4425773fe7bc9df46d5973e44323c499c41b86d7728166e7bc61e4",
+      "prev": "43bc834f9ee829da48566ff3fb0126cff9f2ae3b20182d27597da33a70f5b10c",
+      "hash": "1c864456019eb668576f6721c5a8cadb8c64747edf3333be4041fade623ee20a",
+      "at": "2026-10-30T09:48:46.810Z",
+      "step": "snapshot"
+    },
+    {
+      "n": 25,
+      "file": "report-2026-W37.json",
+      "fileHash": "a2d992efcf51efd2498e7229cfb16758fe64ea89e3e697dda381a4649209d6a4",
+      "prev": "1c864456019eb668576f6721c5a8cadb8c64747edf3333be4041fade623ee20a",
+      "hash": "f804f9ca6bd0a6b96580f2820f239fae17fa71db9d1e8d0a042a314d8ed55c65",
+      "at": "2026-10-30T09:48:46.811Z",
+      "step": "report",
+      "variations": 1
+    },
+    {
+      "n": 26,
+      "file": "2026-W38.json",
+      "fileHash": "e40067c8c996027b754781658616bf1fa85a7082867f92a5811f4394296c909b",
+      "prev": "f804f9ca6bd0a6b96580f2820f239fae17fa71db9d1e8d0a042a314d8ed55c65",
+      "hash": "485f09f58eda1bf73873b4d5c99691d5b08e048b44480e446e29e7154700d403",
+      "at": "2026-10-30T09:49:51.377Z",
+      "step": "snapshot"
+    },
+    {
+      "n": 27,
+      "file": "report-2026-W38.json",
+      "fileHash": "713d1f7ccf1a2c6c1d10aaa9f064d2b6f689bd223b70e8a7c6a7d118467c04a5",
+      "prev": "485f09f58eda1bf73873b4d5c99691d5b08e048b44480e446e29e7154700d403",
+      "hash": "b567576e702d78257a7ec296558a188683e8b73ffd44c2d7e28ae2971968da2a",
+      "at": "2026-10-30T09:49:51.378Z",
+      "step": "report",
+      "variations": 1
+    },
+    {
+      "n": 28,
+      "file": "2026-W36.json",
+      "fileHash": "ba9babe4dcdd098707e79c4433f1345e0ebb2858a903392d4041c395eefb5f46",
+      "prev": "b567576e702d78257a7ec296558a188683e8b73ffd44c2d7e28ae2971968da2a",
+      "hash": "f7f2aaa284a281d139a7088c2b2552e3514b90a395e91cc7e26ae94b8e7314c7",
+      "at": "2026-10-30T09:50:23.261Z",
+      "step": "snapshot"
+    },
+    {
+      "n": 29,
+      "file": "2026-W37.json",
+      "fileHash": "2281974baf4425773fe7bc9df46d5973e44323c499c41b86d7728166e7bc61e4",
+      "prev": "f7f2aaa284a281d139a7088c2b2552e3514b90a395e91cc7e26ae94b8e7314c7",
+      "hash": "6907e5a7b52421cb44a42d0353929c18dc5fca85e701ed22c722a0a9a9c8743c",
+      "at": "2026-10-30T09:50:23.264Z",
+      "step": "snapshot"
+    },
+    {
+      "n": 30,
+      "file": "report-2026-W37.json",
+      "fileHash": "92e4c2a85aeddd9856b3ff3a7e3e0e9675e834bc19b97bfd843d24520d5c869c",
+      "prev": "6907e5a7b52421cb44a42d0353929c18dc5fca85e701ed22c722a0a9a9c8743c",
+      "hash": "5c038dcbc9cba8ae443810f8ca8de5ed8766764ab00a789087ebef5d6ac57c8e",
+      "at": "2026-10-30T09:50:23.265Z",
+      "step": "report",
+      "variations": 1
+    },
+    {
+      "n": 31,
+      "file": "2026-W38.json",
+      "fileHash": "e40067c8c996027b754781658616bf1fa85a7082867f92a5811f4394296c909b",
+      "prev": "5c038dcbc9cba8ae443810f8ca8de5ed8766764ab00a789087ebef5d6ac57c8e",
+      "hash": "48eaf62b668c2a13d89a310466adddc13c09020a39e3837d4a4e5022b1147f49",
+      "at": "2026-10-30T09:51:06.723Z",
+      "step": "snapshot"
+    },
+    {
+      "n": 32,
+      "file": "report-2026-W38.json",
+      "fileHash": "1268d92fe837382103a8d144ec678fab3ca8d579cbde48a2fdac84e61a1a9ad1",
+      "prev": "48eaf62b668c2a13d89a310466adddc13c09020a39e3837d4a4e5022b1147f49",
+      "hash": "395544ac71e4c30a47678f6575238dba01557531d5f5b621156f8e83657abc71",
+      "at": "2026-10-30T09:51:06.724Z",
+      "step": "report",
+      "variations": 1
+    }
+  ],
+  "head": "395544ac71e4c30a47678f6575238dba01557531d5f5b621156f8e83657abc71"
+}

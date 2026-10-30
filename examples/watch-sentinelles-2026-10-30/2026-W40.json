@@ -1,0 +1,17 @@
+{
+  "source": "Sentinelles grippe France",
+  "page": "https://www.sentiweb.fr/france/fr/?page=maladies&mal=3",
+  "period": "2026-W40",
+  "readings": [
+    {
+      "key": "Influenza-like illness incidence.FR",
+      "label": "Influenza-like illness incidence, France",
+      "value": 94,
+      "unit": "per 100 000",
+      "low": 83,
+      "high": 105,
+      "thresholdValue": 150,
+      "page": "https://www.sentiweb.fr/france/fr/?page=maladies&mal=3"
+    }
+  ]
+}

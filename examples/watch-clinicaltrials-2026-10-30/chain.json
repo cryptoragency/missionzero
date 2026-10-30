@@ -1,0 +1,24 @@
+{
+  "entries": [
+    {
+      "n": 1,
+      "file": "2026-10-30.json",
+      "fileHash": "2f20c22105b0830825e7106de851955084f97070d920af2803af0e43d8b12203",
+      "prev": "0000000000000000000000000000000000000000000000000000000000000000",
+      "hash": "0e6eadb08dbaec4324dd11f5d6e6d787bda22132294a9b9c462ab765a857429e",
+      "at": "2026-10-30T09:46:19.717Z",
+      "step": "snapshot"
+    },
+    {
+      "n": 2,
+      "file": "report-2026-10-30.json",
+      "fileHash": "26350f9489abf0c4d9471fd992327018a1e1bd98f5e8aa13875ccce08cefd54d",
+      "prev": "0e6eadb08dbaec4324dd11f5d6e6d787bda22132294a9b9c462ab765a857429e",
+      "hash": "e8fdef274f98ce57eada766be3f038a8fad218038df2e34751c5c5862fdddc01",
+      "at": "2026-10-30T09:46:19.717Z",
+      "step": "report",
+      "variations": 0
+    }
+  ],
+  "head": "e8fdef274f98ce57eada766be3f038a8fad218038df2e34751c5c5862fdddc01"
+}

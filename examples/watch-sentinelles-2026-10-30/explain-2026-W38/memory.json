@@ -1,0 +1,32 @@
+[
+  {
+    "turn": 1,
+    "action": {
+      "type": "web_search",
+      "query": "Sentiweb Sentinelles grippe France bulletin",
+      "url": "",
+      "find": "",
+      "name": "",
+      "content": "",
+      "costUsd": 0,
+      "real": false
+    },
+    "ok": false,
+    "lesson": "Generic search returned only Sentiweb homepages and portals without the specific grippe bulletin, method description, or W37-W38 commentary."
+  },
+  {
+    "turn": 2,
+    "action": {
+      "type": "web_search",
+      "query": "sentiweb France maladies grippe syndromes",
+      "url": "",
+      "find": "",
+      "name": "",
+      "content": "",
+      "costUsd": 0,
+      "real": false
+    },
+    "ok": false,
+    "lesson": "The search surfaced the primary Sentiweb bulletin URLs but yielded no documented seasonal pattern, method details, or commentary on the W37-W38 rise yet."
+  }
+]

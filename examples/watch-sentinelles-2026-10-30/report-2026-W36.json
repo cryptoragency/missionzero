@@ -1,0 +1,23 @@
+{
+  "source": "Sentinelles grippe France",
+  "period": "2026-W36",
+  "comparedWith": "2026-W35",
+  "replayed": true,
+  "threshold": 20,
+  "variations": [
+    {
+      "key": "Influenza-like illness incidence.FR",
+      "label": "Influenza-like illness incidence, France",
+      "kind": "change",
+      "before": 27,
+      "after": 38,
+      "delta": 11,
+      "pct": 40.7,
+      "unit": "per 100 000",
+      "thresholdValue": 150,
+      "page": "https://www.sentiweb.fr/france/fr/?page=maladies&mal=3"
+    }
+  ],
+  "explanation": null,
+  "at": "2026-10-30T09:46:41.820Z"
+}
