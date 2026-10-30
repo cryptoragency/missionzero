@@ -163,7 +163,7 @@ const CAP = {
   sB: sBgeo.cap.securite, sB2: sBgeo.cap.espace, sB3: sBgeo.cap.medecine,
   s1: ['Une boutique en ligne. Elle tourne.', 'Les commandes tombent.', null, 'Tout va bien.', 'Conforme. Aujourd’hui.', 'Une équipe : une personne, souvent.', 'Une faille : aucun en-tête de sécurité.', 'Rouge.', 'Elle corrige à la main.', 'Corrigé.', 'Vert.', 'Une autre : le prix changé par le client.', 'Rouge.', 'Elle corrige, le soir.', 'Corrigé.', 'Vert.', 'Deux de plus : la carte bancaire en clair…', '…et une bibliothèque de 2012.', 'Rouge.', 'Pas le temps. Pas le budget.', 'Une cinquième. Elle restera ouverte.', 'Rouge.', '<b>8 sites sur 10 restent exposés.</b> La seule question, c’est quand.'],
   s2: s2geo.cap,
-  s3: ['Chez vous. Rien ne sort.', 'Votre site, sur votre serveur.', '<b>MYTHOZOR ARGUS</b> surveille, jour et nuit.', null, null, null, null, null, null, 'Tout est vert.', 'Une nouvelle faille. ARGUS la voit. Rouge.', null, '<b>Mission Zero</b> la prend. Copie, correctif, cinq contrôles, patch.', null, 'Vous validez d’un clic. Ou en automatique.', null, 'ARGUS vérifie à nouveau.', 'Rouge repassé au vert. Sans vous réveiller.'],
+  s3: ['Chez vous, sur votre machine. Aucun serveur à nous.', 'Votre site, sur votre serveur.', '<b>MYTHOZOR ARGUS</b> surveille, jour et nuit.', null, null, null, null, null, null, 'Tout est vert.', 'Une nouvelle faille. ARGUS la voit. Rouge.', null, '<b>Mission Zero</b> la prend. Copie, correctif, cinq contrôles, patch.', null, 'Vous validez d’un clic. Ou en automatique.', null, 'ARGUS vérifie à nouveau.', 'Rouge repassé au vert. Sans vous réveiller.'],
 };
 CAP.s3 = CAP.s3.concat([null]); CAP.sE = sEgeo.cap; CAP.sM = sMgeo.cap; CAP.sZ = sZgeo.cap;
 // Apostrophes typographiques dans tout le texte affiché (jamais dans le code ni les attributs).
@@ -389,7 +389,7 @@ const COURT = [
   ['⚠ jQuery 2012 · 4 failles connues', '⚠ jQuery 2012'], ['pas les compétences, pas le budget', 'ni budget, ni compétence'], ['⚠ mot de passe faible accepté', '⚠ mot de passe faible'],
   ['sur 26 sites d’entreprises scannés par MYTHOZOR ARGUS, 81 % sans protection contre l’injection de code', '26 sites scannés par MYTHOZOR ARGUS · 81 % sans protection'],
   ['Ça arrive. C’est certain. La seule question, c’est quand.', ' '],
-  ['sur vos serveurs · rien ne sort', 'vos serveurs · rien ne sort'], ['🌿 votre site · votre serveur', '🌿 votre site'], ['35 contrôles, en continu, jour et nuit', '35 contrôles · jour et nuit'],
+  ['sur vos serveurs · rien ne sort', 'sur votre machine · aucun serveur à nous'], ['🌿 votre site · votre serveur', '🌿 votre site'], ['35 contrôles, en continu, jour et nuit', '35 contrôles · jour et nuit'],
   ['⚠ nouvelle faille, en direct', '⚠ nouvelle faille'], ['en-têtes : protection sautée', 'en-têtes sautés'], ['Mission Zero, branché', 'Mission Zero'], ['✔ correctif confirmé, sur une copie', '✔ confirmé sur une copie'],
   ['mode manuel : un clic par correctif, dans votre espace', 'manuel : un clic, dans votre espace'], ['appliqué tout seul, vous êtes prévenu, vous pouvez revenir en arrière', 'tout seul · prévenu · retour possible'],
   ['les deux existent : c’est vous qui choisissez', 'vous choisissez'], ['et MYTHOZOR ARGUS vérifie à nouveau', 'ARGUS revérifie'], ['✔ corrigé, tout est vert', '✔ tout est vert'], ['le rouge est repassé au vert', ' '],
