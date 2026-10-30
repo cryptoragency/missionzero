@@ -10,3 +10,7 @@ logs/
 
 # watch mode outputs (versioned runs go to examples/)
 watch/*/
+
+# film (Remotion): dependencies and renders stay out; sources are versioned
+film/node_modules/
+film/out/
