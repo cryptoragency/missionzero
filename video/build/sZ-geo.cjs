@@ -5,7 +5,7 @@ module.exports = (function () {
   let k = 0; const g = [], cap = [];
   const step = (s) => { k += 1; g.push(s.replace('data-k="?"', 'data-k="' + k + '"')); cap.push(null); };
   const hand = (id, y, size, weight, spacing, cls, txt, delay) => '<text id="' + id + '" class="hand' + (cls ? ' ' + cls : '') + '" x="800" y="' + y + '" text-anchor="middle" style="font-size:' + size + 'px;font-weight:' + weight + ';letter-spacing:' + spacing + '">' + txt.split('').map((ch, i) => '<tspan style="transition-delay:' + (i * delay).toFixed(2) + 's">' + (ch === ' ' ? ' ' : ch) + '</tspan>').join('') + '</text>';
-  step('<g class="a" data-k="?" id="zin" data-dur="1300" data-d="1400"><path class="arrow" pathLength="1" d="M0,810 C380,810 690,700 690,400"/></g>');
+  step('<g class="a" data-k="?" id="zin" data-dur="1300" data-d="1400"><path class="arrow" pathLength="1" d="M0,700 C380,700 690,640 690,400"/></g>');
   step('<g class="a" data-k="?" id="zz" data-dur="2200" data-d="2400"><path class="arrow zero" pathLength="1" d="M690,400 A110,110 0 1,1 910,400 A110,110 0 1,1 690,400"/></g>');
   step('<g class="b" data-k="?" id="zdot" data-d="2000"><circle cx="800" cy="400" r="11" fill="#fff" style="filter:drop-shadow(0 0 8px rgba(46,230,160,.9))"/></g>');
   step('<g class="b" data-k="?" data-cls="black" data-hide="#zin,#zz,#zdot" data-d="700"><text class="lbl xs" x="0" y="0"> </text></g>');

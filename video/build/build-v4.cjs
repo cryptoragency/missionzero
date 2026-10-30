@@ -312,6 +312,11 @@ const extra = `<style>
 /* Surbrillance au passage du point : une pulsation du contour, rien de plus. Forte quand on revalide. */
 .ring.pulse { animation: ringpulse .6s ease-out; } .ring.pulse.strong { animation: ringpulse-strong 1.2s ease-out; }
 .mark { fill:none; stroke:var(--mut); stroke-width:2; } .mark.done { fill:var(--acc2); stroke:var(--acc2); } .mark.now { fill:var(--acc); stroke:#fff; stroke-width:2.5; }
+/* Plein cadre (gérant, 30 octobre 20 h 10) : le dessin remplit 1280 × 720, la légende est posée dessus, en bas. */
+.record .scene { padding:0 !important; position:relative; } .record .scene svg { max-height:none !important; width:1280px; height:720px; display:block; margin:0 !important; }
+.record .caption { position:absolute; left:0; right:0; bottom:12px; min-height:0 !important; font-size:1.45rem !important; text-align:center; padding:0 24px !important; text-shadow:0 2px 10px #000, 0 0 2px #000; }
+.record .wrap { gap:0 !important; }
+.lbl.xs { font-size:18px; } .lbl.s { font-size:21px; } .chip-t { font-size:17px; }
 .box.pulse { animation: ringpulse .6s ease-out; } .box.pulse.strong { animation: ringpulse-strong 1.2s ease-out; }
 @keyframes ringpulse { 0% { stroke-width:3; filter:none; } 30% { stroke-width:7; filter:drop-shadow(0 0 10px rgba(46,230,160,.9)); } 100% { stroke-width:3; filter:none; } }
 @keyframes ringpulse-strong { 0% { stroke-width:3; filter:none; } 25% { stroke-width:9; filter:drop-shadow(0 0 18px rgba(46,230,160,1)); } 100% { stroke-width:3; filter:drop-shadow(0 0 6px rgba(46,230,160,.6)); } }
