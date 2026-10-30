@@ -323,6 +323,7 @@ svg { width:100%; height:auto; display:block; font-family: "Segoe UI", system-ui
     if (step.dataset.zoom) { var z = document.querySelector(step.dataset.zoom); if (z) setTimeout(function () { z.classList.add('zoom'); }, 900); }
   }
   function fire(step) {
+    if (step.classList.contains('a')) { step.querySelectorAll('.arrow').forEach(function (p) { p.style.transition = 'none'; p.style.strokeDashoffset = '1'; void p.getBoundingClientRect(); p.style.transition = ''; p.style.strokeDashoffset = ''; }); void step.getBoundingClientRect(); }
     step.classList.add('on'); act(step);
     if (step.classList.contains('a')) {
       var dur = Number(step.dataset.dur) || 1000;
@@ -345,6 +346,7 @@ svg { width:100%; height:auto; display:block; font-family: "Segoe UI", system-ui
   function play(id, done) {
     clearTimeout(timers[id]); reset(id);
     var list = steps(id), k = 0;
+    void document.getElementById(id).getBoundingClientRect();
     (function next() { if (k >= list.length) { if (done) timers[id] = setTimeout(done, 1800); return; } var s = list[k]; k += 1; fire(s); caption(id, k); var d = Math.round((Number(s.dataset.d) || (s.classList.contains('a') ? 1100 : 1300)) * speedOf(s)); timers[id] = setTimeout(next, d); })();
   }
   function all(id) { clearTimeout(timers[id]); reset(id); var list = steps(id); list.forEach(function (s) { s.classList.add('on', 'drawn'); act(s); if (s.querySelector('.orbit')) fire(s); }); caption(id, list.length); }
