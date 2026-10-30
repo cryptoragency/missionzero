@@ -4,6 +4,7 @@
 // Cost: about 0.5 USD per goal; the daily cap in .env stops everything when reached.
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
+import { evidenceFolder } from '../src/evidenceDir.js';
 
 const args = Object.fromEntries(process.argv.slice(2).map((a) => { const m = a.match(/^--([^=]+)(?:=(.*))?$/); return m ? [m[1], m[2] ?? true] : [a, true]; }));
 const goals = JSON.parse(readFileSync(new URL('./demo-goals.json', import.meta.url), 'utf8'));
@@ -18,7 +19,7 @@ if (args.dry) {
   process.exit(0);
 }
 
-const folder = 'evidence/demo-' + new Date().toISOString().slice(0, 16).replace(/[:T]/g, '-');
+const folder = evidenceFolder('demo-');
 mkdirSync(folder, { recursive: true });
 const rows = [];
 for (const g of chosen) {

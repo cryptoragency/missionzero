@@ -9,6 +9,7 @@ import { repairAll, freePort, startSite } from '../src/repair.js';
 import { scan } from '../src/scanner.js';
 import { appendChain, verifyChain } from '../src/chain.js';
 import { loadLessons, approvedTexts } from '../src/memory.js';
+import { evidenceFolder } from '../src/evidenceDir.js';
 
 const arg = (k, d) => { const a = process.argv.find((x) => x.startsWith('--' + k + '=')); return a ? a.slice(k.length + 3) : d; };
 const file = process.argv.find((x, i) => i >= 2 && !x.startsWith('--'));
@@ -20,7 +21,7 @@ const loginArg = arg('login', 'admin:maisonverde2019');
 const login = loginArg === 'none' ? null : { user: loginArg.split(':')[0], password: loginArg.split(':').slice(1).join(':') };
 // --files=server.js,index.html: the files the model may edit (default: server.js). --policy: the generic policy probes join --scan.
 const files = arg('files', 'server.js').split(',').map((s) => s.trim()).filter(Boolean);
-const folder = 'evidence/repair-' + new Date().toISOString().slice(0, 16).replace(/[:T]/g, '-');
+const folder = evidenceFolder('repair-');
 mkdirSync(folder, { recursive: true });
 
 // Findings from any scanner's URL: a JSON document in the generic format ({ findings: [...] }).

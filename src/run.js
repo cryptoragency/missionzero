@@ -9,6 +9,7 @@ import { verifyReport } from './verify.js';
 import { makeResearch } from './research.js';
 import { loadLessons, saveLessons, mergeLessons, distill, approvedTexts } from './memory.js';
 import { recordOutcome, loadOutcomes, decideReset, archiveLessons, compareRuns } from './zero.js';
+import { evidenceFolder } from './evidenceDir.js';
 
 const args = process.argv.slice(2).filter((a) => !a.startsWith('--'));
 const goal = args[0];
@@ -18,7 +19,7 @@ const maxTurns = Number(args[1]) || 3;
 // Rounds on the plan lost the A/B of 2026-10-27; they stay available through MZ_PLAN_CONTRADICTIONS (default 0).
 const contradictions = Math.max(0, Math.min(5, Number(args[2] ?? 3) || 0));
 const planContradictions = Math.max(0, Math.min(5, Number(process.env.MZ_PLAN_CONTRADICTIONS) || 0));
-const folder = 'evidence/' + new Date().toISOString().slice(0, 16).replace(/[:T]/g, '-');
+const folder = evidenceFolder('');
 mkdirSync(folder, { recursive: true });
 
 const lessonsPath = 'memory/lessons.json';

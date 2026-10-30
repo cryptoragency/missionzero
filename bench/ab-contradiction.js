@@ -8,9 +8,10 @@ import { makeExecutor } from '../src/tools.js';
 import { synthesize, seenUrls } from '../src/synthesis.js';
 import { refineAnswer } from '../src/contradictAnswer.js';
 import { verifyReport } from '../src/verify.js';
+import { evidenceFolder } from '../src/evidenceDir.js';
 
 const goal = process.argv[2] || 'Find the three most-cited public studies on how often small businesses suffer a cyberattack, with the figure each one reports';
-const folder = 'evidence/ab-' + new Date().toISOString().slice(0, 16).replace(/[:T]/g, '-');
+const folder = evidenceFolder('ab-');
 mkdirSync(folder, { recursive: true });
 const client = createClient();
 const ask = (messages, opts) => client.ask(messages, { max_tokens: 3500, ...opts });

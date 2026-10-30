@@ -6,11 +6,12 @@ import { run, readJson } from './loop.js';
 import { makeExecutor, readPage } from './tools.js';
 import { synthesize } from './synthesis.js';
 import { loadLessons, saveLessons, mergeLessons, distill, approvedTexts } from './memory.js';
+import { evidenceFolder } from './evidenceDir.js';
 
 const goal = process.argv[2];
 if (!goal) { console.error('Usage: node --env-file=.env src/compare.js "goal" [maxTurns]'); process.exit(1); }
 const maxTurns = Number(process.argv[3]) || 5;
-const folder = 'evidence/compare-' + new Date().toISOString().slice(0, 16).replace(/[:T]/g, '-');
+const folder = evidenceFolder('compare-');
 mkdirSync(folder, { recursive: true });
 
 // Each contender gets its own client so cost, calls and time are measured separately.

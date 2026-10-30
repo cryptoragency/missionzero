@@ -6,6 +6,7 @@
 // Cost: about 0.05 USD per run at low effort, more at high and above (the reasoning is billed as output); --cap bounds each run.
 import { readFileSync, writeFileSync, mkdirSync, existsSync, copyFileSync, rmSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
+import { evidenceFolder } from '../src/evidenceDir.js';
 
 const args = Object.fromEntries(process.argv.slice(2).map((a) => { const m = a.match(/^--([^=]+)(?:=(.*))?$/); return m ? [m[1], m[2] ?? true] : [a, true]; }));
 const goals = JSON.parse(readFileSync(new URL('./demo-goals.json', import.meta.url), 'utf8'));
@@ -20,7 +21,7 @@ if (args.dry) {
   process.exit(0);
 }
 
-const folder = 'evidence/effort-sweep-' + new Date().toISOString().slice(0, 16).replace(/[:T]/g, '-');
+const folder = evidenceFolder('effort-sweep-');
 mkdirSync(folder, { recursive: true });
 // Same memory for every run: what the agent knows before the sweep is put back after each mission.
 const keep = ['memory/lessons.json', 'memory/outcomes.json'].filter(existsSync);

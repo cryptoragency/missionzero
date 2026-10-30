@@ -7,11 +7,12 @@ import { createClient } from '../src/meta.js';
 import { freePort, startSite } from '../src/repair.js';
 import { screenshotPages, lookAtPages, toDataUrl } from '../src/vision.js';
 import { segment } from '../src/sam.js';
+import { evidenceFolder } from '../src/evidenceDir.js';
 
 const arg = (k, d) => { const a = process.argv.find((x) => x.startsWith('--' + k + '=')); return a ? a.slice(k.length + 3) : d; };
 const siteDir = arg('site', 'demo-site');
 const concept = arg('concept', 'credit card form');
-const folder = 'evidence/vision-' + new Date().toISOString().slice(0, 16).replace(/[:T]/g, '-');
+const folder = evidenceFolder('vision-');
 mkdirSync(folder, { recursive: true });
 
 const port = await freePort(); const site = await startSite(siteDir, port);
