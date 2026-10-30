@@ -12,6 +12,9 @@ logs/
 watch/*/
 # raw downloads (FluNet rows, about 620 KB): re-fetched with the command in bench/make-flunet-readings.js
 watch/*-brut-*.json
+# WHO FluNet readings: public-health use only under WHO's terms, never committed (rebuild with bench/make-flunet-readings.js)
+watch/flunet-monde.json
+examples/watch-flunet-monde-*/
 
 # film (Remotion): dependencies and renders stay out; sources are versioned
 film/node_modules/

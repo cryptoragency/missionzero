@@ -26,7 +26,7 @@
     "page": "https://www.who.int/tools/flunet",
     "attribution": "WHO FluNet (GISRS), who.int/tools/flunet, used under WHO's terms for data; WHO does not endorse this project",
     "threshold": 10,
-    "note": "WHO FluNet (GISRS): influenza-positive specimens reported each ISO week by about 190 countries, world total, positivity rate, countries reporting, and the six WHO regions. Rows pulled from the public API (xmart-api-public.who.int/FLUMART/VIW_FNT) on 2026-10-30 and turned into readings by bench/make-flunet-readings.js. The last weeks are always incomplete: countries report late."
+    "note": "WHO FluNet (GISRS): influenza-positive specimens reported each ISO week by about 190 countries, world total, positivity rate, countries reporting, and the six WHO regions. Rows pulled from the public API (xmart-api-public.who.int/FLUMART/VIW_FNT) on 2026-10-30 and turned into readings by bench/make-flunet-readings.js. The last weeks are always incomplete: countries report late. The readings file is NOT committed: WHO's terms for its datasets (who.int/about/policies/publishing/data-policy/terms-and-conditions) restrict use to public health purposes and exclude any use in conjunction with the promotion of a commercial enterprise, so each user fetches the rows and builds watch/flunet-monde.json with bench/make-flunet-readings.js (the fetch command is at the top of that file)."
   },
   {
     "name": "Essais vaccins tuberculose",
