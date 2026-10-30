@@ -153,11 +153,11 @@ const fixS3 = (x) => {
 // ARGUS : le fil ressort de « Vous validez » vers la droite, à la hauteur d'entrée de l'écran des choix (488 px à l'écran).
 const addExit3 = (x) => { const i = x.lastIndexOf('\n    </svg>'); return x.slice(0, i) + '\n      <g class="a" data-k="19" data-dur="900" data-d="950"><path class="arrow" pathLength="1" d="M1520,425.3 L1642.2,425.3"/></g>' + x.slice(i); };
 const pick = (id, next) => { let x = src.slice(src.indexOf('<section class="scene" id="' + id + '">'), src.indexOf('<section class="scene" id="' + next + '">')); var i = x.indexOf("<div class=\"bar\">"); if (i >= 0) { var j = x.indexOf("</div>", i) + 7; x = x.slice(0, i) + x.slice(j); } return x; };
-const marks = (sec, n) => { var o = sec.indexOf('<svg viewBox="0 0 1600 900"'); var oe = sec.indexOf('>', o) + 1; var dots = ''; for (var i = 0; i < 6; i++) dots += '<circle class="mark' + (i < n ? ' done' : i === n ? ' now' : '') + '" cx="' + (1420 + i * 26) + '" cy="38" r="6"/>'; return sec.slice(0, oe) + '<g class="marks">' + dots + '</g>' + sec.slice(oe); };
+const marks = (sec, n) => { var o = sec.indexOf('<svg viewBox="0 0 1600 900"'); var oe = sec.indexOf('>', o) + 1; var dots = ''; for (var i = 0; i < 5; i++) dots += '<circle class="mark' + (i < n ? ' done' : i === n ? ' now' : '') + '" cx="' + (1446 + i * 26) + '" cy="38" r="6"/>'; return sec.slice(0, oe) + '<g class="marks">' + dots + '</g>' + sec.slice(oe); };
 const titled = (sec, label, cls, sub) => { var o = sec.indexOf('<svg viewBox="0 0 1600 900"'); var oe = sec.indexOf('>', o) + 1; var ce = sec.indexOf('</svg>', oe); var head = '<text class="lbl ' + cls + '" x="800" y="40" text-anchor="middle" style="font-size:26px;letter-spacing:.2em;font-weight:700">' + label + '</text>' + (sub ? '<text class="lbl s" x="800" y="70" text-anchor="middle" style="font-size:20px;letter-spacing:.08em">' + sub + '</text>' : ''); return sec.slice(0, oe) + head + '<g transform="translate(' + (sub ? '40,84) scale(0.95)' : '32,56) scale(0.96)') + '">' + sec.slice(oe, ce) + '</g>' + sec.slice(ce); };
 const sB = titled(sBgeo.sec, 'OÙ L’ENVOYER ?', 'amber'), sE = titled(sEgeo.sec, 'L’ESPACE · AVEC MISSION ZERO', 'acc'), sM = titled(sMgeo.sec, 'LA MÉDECINE · AVEC MISSION ZERO', 'acc'), sZ = sZgeo.sec;
 const s1 = titled(fixS1(pick('s1', 's2')), 'SANS MISSION ZERO', 'red'), s2 = titled(s2geo.sec, 'AVEC MISSION ZERO', 'acc'), s3 = titled((function (x) { var i = x.indexOf('<g class="b" data-k="19"><text class="lbl acc" x="800" y="822"'); if (i < 0) return x; var j = x.indexOf('</g>', i) + 4; return x.slice(0, i) + x.slice(j); })(addExit3(fixS3(pick('s3', 'sE')))), 'EXEMPLE D’UTILISATION AVEC MISSION ZERO', 'acc', 'MYTHOZOR ARGUS · surveillance cybersécurité');
-const S0 = marks(s0, 0), S1 = marks(s1, 1), S2 = marks(s2, 2), S3 = marks(s3, 3), SE = marks(sE, 4), SM = marks(sM, 5);
+const S0 = marks(s0, 0), S1 = marks(s1, 1), S2 = marks(s2, 2), SE = marks(sE, 3), SM = marks(sM, 4);
 const CAP = {
   s0: geo.cap,
   sB: sBgeo.cap.securite, sB2: sBgeo.cap.espace, sB3: sBgeo.cap.medecine,
@@ -292,8 +292,8 @@ const script = `<script>
   function tick() { if (t0) clock.textContent = Math.round((Date.now() - t0) / 100) / 10 + ' s'; }
   setInterval(tick, 200);
   // Le film complet : la boucle, les choix, la sécurité (boutique, correction, ARGUS), les choix, l'espace, les choix, la médecine, la fin.
-  var CHAIN = [['s0'], ['sB', 'securite'], ['s1'], ['s2'], ['s3'], ['sB', 'espace'], ['sE'], ['sB', 'medecine'], ['sM'], ['sZ']];
-  var IDS = ['s0', 'sB', 's1', 's2', 's3', 'sE', 'sM', 'sZ'];
+  var CHAIN = [['s0'], ['sB', 'securite'], ['s1'], ['s2'], ['sB', 'espace'], ['sE'], ['sB', 'medecine'], ['sM'], ['sZ']];
+  var IDS = ['s0', 'sB', 's1', 's2', 'sE', 'sM', 'sZ'];
   function stopAll() { IDS.forEach(function (id) { clearTimeout(timers[id]); }); stopStars(); document.body.classList.remove('black'); }
   function film(from) {
     stopAll(); t0 = Date.now(); document.body.classList.add('film');
@@ -367,12 +367,11 @@ ${style}
 ${extra}
 <div class="wrap">
   <h1>Mission Zero, le film · une minute <small>Le modèle du 29 octobre, raccourci : des phrases courtes, les flèches qui se dessinent, le point qui court devant, chaque élément qui apparaît et reste. Voix française (le fondateur), sous-titres anglais incrustés au montage.</small></h1>
-  <div class="filmbar"><button class="big" id="go">▶ Lancer le film</button><button data-ch="s0">1 · La boucle</button><button data-ch="sB" data-pass="securite">· Où l'envoyer ?</button><button data-ch="s1">2 · Constat</button><button data-ch="s2">3 · Correction</button><button data-ch="s3">4 · MYTHOZOR ARGUS</button><button data-ch="sB" data-pass="espace">· Choix : l'espace</button><button data-ch="sE">5 · L'espace</button><button data-ch="sB" data-pass="medecine">· Choix : la médecine</button><button data-ch="sM">6 · La médecine</button><button data-ch="sZ">· Fin</button><button id="grid">Voir tous les schémas</button><button id="x2" title="Vitesse de lecture : ×1, ×2, ×3">×1</button><span id="clock" style="color:var(--mut)"></span></div>
+  <div class="filmbar"><button class="big" id="go">▶ Lancer le film</button><button data-ch="s0">1 · La boucle</button><button data-ch="sB" data-pass="securite">· Où l'envoyer ?</button><button data-ch="s1">2 · Constat</button><button data-ch="s2">3 · Correction</button><button data-ch="sB" data-pass="espace">· Choix : l'espace</button><button data-ch="sE">4 · L'espace</button><button data-ch="sB" data-pass="medecine">· Choix : la médecine</button><button data-ch="sM">5 · La médecine</button><button data-ch="sZ">· Fin</button><button id="grid">Voir tous les schémas</button><button id="x2" title="Vitesse de lecture : ×1, ×2, ×3">×1</button><span id="clock" style="color:var(--mut)"></span></div>
 ${typo(S0)}
 ${typo(sB)}
 ${typo(S1)}
 ${typo(S2)}
-${typo(S3)}
 ${typo(SE)}
 ${typo(SM)}
 ${typo(sZ)}

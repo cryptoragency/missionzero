@@ -55,6 +55,7 @@ module.exports = (function () {
   arrow('M340,135 L420,135', 'data-dur="500" data-d="600"', 'ghost');
   step(`<g class="b" data-k="?" data-hide="#scan5" data-d="2600"><text class="lbl s okt" x="600" y="160" text-anchor="middle" style="font-size:22px;font-weight:700">✔ 0 faille</text></g>`, 'FAILLE SCAN&nbsp;: zéro. Tout est vert.');
   step(`<g class="b" data-k="?" data-d="1800"><text class="lbl xs" x="0" y="0"> </text></g>`);
+  arrow('M1560,135 L1633.3,135', 'data-dur="700" data-d="750"');
 
   const sec = `  <section class="scene" id="s2">
     <header><h2>3 · CORRECTION AVEC MISSION ZERO</h2><span class="t">correction</span></header>
