@@ -1,0 +1,59 @@
+{
+  "answer": "The Verizon 2025 DBIR analyzed 12,195 confirmed breaches, and around 60% of breaches involved the human element.",
+  "sources": [
+    {
+      "url": "https://www.verizon.com/business/resources/reports/2025-dbir-executive-summary.pdf",
+      "contribution": "12,195 were confirmed data breaches"
+    },
+    {
+      "url": "https://www.verizon.com/business/resources/Tea/reports/2025-dbir-data-breach-investigations-report.pdf",
+      "contribution": "12,195 confirmed breaches were analyzed"
+    },
+    {
+      "url": "https://www.verizon.com/business/resources/Tea/reports/2025-dbir-data-breach-investigations-report.pdf",
+      "contribution": "60% of breaches involved the human element"
+    }
+  ],
+  "confidence": 9,
+  "uncertainties": [
+    "Exact report phrasing for the human-element share is rounded as around 60%."
+  ],
+  "rejectedSources": 0,
+  "seenSources": 8,
+  "judge": {
+    "score": 5,
+    "green": 2,
+    "red": 1,
+    "rounds": 0,
+    "versions": [
+      {
+        "round": 0,
+        "score": 5,
+        "green": 2,
+        "red": 1,
+        "reason": "12,195 supported by executive summary, but 60% citation uses invalid Tea URL marked unsupported, so human-element claim unbacked.",
+        "verification": [
+          {
+            "url": "https://www.verizon.com/business/resources/reports/2025-dbir-executive-summary.pdf",
+            "claim": "12,195 were confirmed data breaches",
+            "verdict": "supported",
+            "detail": "12,195 were confirmed data breaches"
+          },
+          {
+            "url": "https://www.verizon.com/business/resources/Tea/reports/2025-dbir-data-breach-investigations-report.pdf",
+            "claim": "12,195 confirmed breaches were analyzed",
+            "verdict": "supported",
+            "detail": "This year, the Verizon DBIR team analyzed 22,052 real-world security incidents, of which 12,195 were confirmed data breaches that occurred inside organizations of all sizes and types."
+          },
+          {
+            "url": "https://www.verizon.com/business/resources/Tea/reports/2025-dbir-data-breach-investigations-report.pdf",
+            "claim": "60% of breaches involved the human element",
+            "verdict": "unsupported",
+            "detail": "nearest passages: « 11 2025 DBIR Summary of findings Although the involvement of the human element in breaches remained roughly the same as last year, hovering around 60%, the percentages of breaches where a third party was involved doubled » « 20 2025 DBIR Results and analysis As we leave our past behind and embrace a new era with slightly more precise calculations, we see the human involvement in breaches at 60% this year, as opposed to 61% last year, which e » « Speaking of more precision, Figure 15 presents the human element breaches broken down by their high-level components. »"
+          }
+        ],
+        "objections": []
+      }
+    ]
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "goal": "In the Verizon 2025 Data Breach Investigations Report, how many confirmed breaches were analyzed and what share of breaches involved the human element? Cite the report itself.",
+  "provider": "meta",
+  "model": "muse-spark-1.3",
+  "reached": false,
+  "turns": 3,
+  "best": {
+    "score": 3,
+    "turn": 1,
+    "action": {
+      "type": "web_search",
+      "query": "Verizon 2025 Data Breach Investigations Report",
+      "url": "",
+      "find": "",
+      "name": "",
+      "content": "",
+      "costUsd": 0,
+      "real": false
+    }
+  },
+  "confidence": 8,
+  "judgeScore": 5,
+  "verifiedGreen": 1,
+  "verifiedRed": 1,
+  "contradictionRounds": 0,
+  "verifiedSources": 2,
+  "rejectedSources": 0,
+  "cost": {
+    "calls": 13,
+    "input": 11215,
+    "output": 19373,
+    "usd": 0.096354,
+    "totalMs": 147524,
+    "byTag": {
+      "plan": {
+        "calls": 3,
+        "input": 4472,
+        "output": 1965,
+        "reasoning": 1281,
+        "truncated": 0
+      },
+      "evaluate": {
+        "calls": 3,
+        "input": 3139,
+        "output": 4065,
+        "reasoning": 3968,
+        "truncated": 2
+      },
+      "synthesize": {
+        "calls": 1,
+        "input": 1139,
+        "output": 2912,
+        "reasoning": 2765,
+        "truncated": 0
+      },
+      "verify": {
+        "calls": 2,
+        "input": 760,
+        "output": 1775,
+        "reasoning": 1717,
+        "truncated": 1
+      },
+      "judge": {
+        "calls": 2,
+        "input": 948,
+        "output": 6127,
+        "reasoning": 6085,
+        "truncated": 1
+      },
+      "contradict": {
+        "calls": 1,
+        "input": 572,
+        "output": 1500,
+        "reasoning": 1498,
+        "truncated": 1
+      },
+      "distill": {
+        "calls": 1,
+        "input": 185,
+        "output": 1029,
+        "reasoning": 926,
+        "truncated": 0
+      }
+    }
+  },
+  "verificationsCached": 2,
+  "lessonsUsed": 6,
+  "lessonsLearned": 3,
+  "zero": {
+    "reset": false,
+    "reason": "MZ_ZERO=off"
+  }
+}

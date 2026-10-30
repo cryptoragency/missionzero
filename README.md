@@ -57,6 +57,20 @@ Muse Spark reasons before answering and the reasoning is billed as output: it wa
 
 Measured by others too: at the Fireworks workshop of this hackathon (30 October 2026, Sinan Ozdemir, [notebooks](https://github.com/sinanuozdemir/ai-experiments/tree/main/experiments/meta-hackathon-muse)), Muse Spark Open on 400 short-answer items scored 88.5 at `low` and 81.8 at `high`; at `max`, 19 answers of 400 came back empty because the reasoning used up the output limit. Mission Zero measures it on its own missions: `npm run effort-sweep` plays one goal at every effort level, then with the per-role setting, with the same memory for every run (`bench/run-effort-sweep.js`).
 
+Measured on Mission Zero (30 October 2026, the Verizon DBIR goal, 3 turns at most, 1 contradiction round, same memory for every run, Meta API, versioned in `examples/effort-sweep/` with each run's summary, answer and journal):
+
+| effort | judge | green | red | turns | calls | output tokens | reasoning tokens | truncated | cost | seconds |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| minimal | 10 | 2 | 0 | 2 | 12 | 3857 | 2904 | 0 | $0.028 | 37 |
+| low | 10 | 2 | 0 | 2 | 10 | 6272 | 5584 | 0 | $0.036 | 39 |
+| medium | 10 | 2 | 0 | 2 | 10 | 9950 | 9156 | 1 | $0.052 | 59 |
+| high | 5 | 2 | 1 | 2 | 11 | 12576 | 11796 | 2 | $0.064 | 74 |
+| xhigh | 5 | 1 | 1 | 2 | 10 | 10982 | 10315 | 3 | $0.056 | 51 |
+| max | 5 | 1 | 1 | 3 | 13 | 19373 | 18240 | 5 | $0.096 | 155 |
+| per-role | 10 | 2 | 0 | 2 | 13 | 10533 | 9376 | 0 | $0.057 | 75 |
+
+Reading it: `minimal`, `low` and `medium` all reach 10/10 with both figures quoted from the report; from `high` up the judge falls to 5/10, a cited source is contradicted, and 2 to 5 answers per run are cut by the output cap because the reasoning ate it (the same truncation the workshop saw at `max`). Cost and time grow with the effort, and `max` took 155 seconds for the worst answer. On this goal `minimal` alone would have been enough and twice cheaper than the per-role setting; the per-role setting keeps `medium` for planning and writing because harder goals (the NIST revisions, the ANSSI PDF) needed it on 27 October. The point is measured, not assumed: more thinking is not more truth.
+
 ## Results on the demo goals (27 October 2026, 4 turns, 3 contradiction rounds)
 
 | # | Goal | Judge | Green proofs | Cost |

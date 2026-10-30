@@ -1,0 +1,74 @@
+{
+  "answer": "In the Verizon 2025 Data Breach Investigations Report, 12,195 confirmed breaches were analyzed, and 60% of breaches involved the human element.",
+  "sources": [
+    {
+      "url": "https://www.verizon.com/business/resources/Tea/reports/2025-dbir-data-breach-investigations-report.pdf",
+      "contribution": "12,195 confirmed breaches were analyzed"
+    },
+    {
+      "url": "https://www.verizon.com/business/resources/Tea/reports/2025-dbir-data-breach-investigations-report.pdf",
+      "contribution": "60% of breaches involved the human element"
+    }
+  ],
+  "confidence": 9,
+  "uncertainties": [
+    "Exact wording of human-element figure in report PDF extraction"
+  ],
+  "rejectedSources": 0,
+  "seenSources": 8,
+  "judge": {
+    "score": 10,
+    "green": 2,
+    "red": 0,
+    "rounds": 1,
+    "versions": [
+      {
+        "round": 0,
+        "score": 10,
+        "green": 2,
+        "red": 0,
+        "reason": "Both figures verified as supported by primary report quotes with exact numbers.",
+        "verification": [
+          {
+            "url": "https://www.verizon.com/business/resources/Tea/reports/2025-dbir-data-breach-investigations-report.pdf",
+            "claim": "12,195 confirmed breaches were analyzed",
+            "verdict": "supported",
+            "detail": "of which 12,195 were confirmed data breaches that occurred inside organizations of all sizes and types."
+          },
+          {
+            "url": "https://www.verizon.com/business/resources/Tea/reports/2025-dbir-data-breach-investigations-report.pdf",
+            "claim": "60% of breaches involved the human element",
+            "verdict": "supported",
+            "detail": "we see the human involvement in breaches at 60% this year, as opposed to 61% last year, which equates to approximately the same thing within our usual 95% confidence level tolerance."
+          }
+        ],
+        "objections": []
+      },
+      {
+        "round": 1,
+        "score": 0,
+        "green": 0,
+        "red": 2,
+        "reason": "Both citations unreachable, no verifiable primary source confirms figures.",
+        "verification": [
+          {
+            "url": "https://github.com/VCCyberSec/VZ_DBIR_Reports/blob/main/2025-dbir-data-breach-investigations-report.pdf",
+            "claim": "12,195 were confirmed data breaches",
+            "verdict": "source-unreachable",
+            "detail": "Invalid PDF structure."
+          },
+          {
+            "url": "https://github.com/VCCyberSec/VZ_DBIR_Reports/blob/main/2025-dbir-data-breach-investigations-report.pdf",
+            "claim": "human involvement in breaches at 60% this year",
+            "verdict": "source-unreachable",
+            "detail": "Invalid PDF structure."
+          }
+        ],
+        "objections": [
+          "Both source URLs contain the invalid path segment \"/Tea/\" and do not resolve to the actual Verizon 2025 DBIR PDF."
+        ],
+        "fetched": 0
+      }
+    ]
+  }
+}

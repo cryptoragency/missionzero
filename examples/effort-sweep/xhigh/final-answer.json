@@ -1,0 +1,47 @@
+{
+  "answer": "In the Verizon 2025 Data Breach Investigations Report, 12,195 confirmed breaches were analyzed, and 60% of breaches involved the human element.",
+  "sources": [
+    {
+      "url": "https://www.verizon.com/business/resources/Tea/reports/2025-dbir-data-breach-investigations-report.pdf",
+      "contribution": "12,195 confirmed breaches were analyzed"
+    },
+    {
+      "url": "https://www.verizon.com/business/resources/Tea/reports/2025-dbir-data-breach-investigations-report.pdf",
+      "contribution": "60% of breaches involved the human element"
+    }
+  ],
+  "confidence": 9,
+  "uncertainties": [],
+  "rejectedSources": 0,
+  "seenSources": 8,
+  "judge": {
+    "score": 5,
+    "green": 1,
+    "red": 1,
+    "rounds": 0,
+    "versions": [
+      {
+        "round": 0,
+        "score": 5,
+        "green": 1,
+        "red": 1,
+        "reason": "First figure verified as supported, second figure verdict unsupported, so only half of goal strictly backed by report.",
+        "verification": [
+          {
+            "url": "https://www.verizon.com/business/resources/Tea/reports/2025-dbir-data-breach-investigations-report.pdf",
+            "claim": "12,195 confirmed breaches were analyzed",
+            "verdict": "supported",
+            "detail": "analyzed 22,052 real-world security incidents, of which 12,195 were confirmed data breaches that occurred inside organizations of all sizes and types."
+          },
+          {
+            "url": "https://www.verizon.com/business/resources/Tea/reports/2025-dbir-data-breach-investigations-report.pdf",
+            "claim": "60% of breaches involved the human element",
+            "verdict": "unsupported",
+            "detail": "nearest passages: « 11 2025 DBIR Summary of findings Although the involvement of the human element in breaches remained roughly the same as last year, hovering around 60%, the percentages of breaches where a third party was involved doubled » « 20 2025 DBIR Results and analysis As we leave our past behind and embrace a new era with slightly more precise calculations, we see the human involvement in breaches at 60% this year, as opposed to 61% last year, which e » « Speaking of more precision, Figure 15 presents the human element breaches broken down by their high-level components. »"
+          }
+        ],
+        "objections": []
+      }
+    ]
+  }
+}

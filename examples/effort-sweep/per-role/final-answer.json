@@ -1,0 +1,77 @@
+{
+  "answer": "The Verizon 2025 Data Breach Investigations Report analyzed 12,195 confirmed data breaches, and found that 60% of breaches involved the human element.",
+  "sources": [
+    {
+      "url": "https://www.verizon.com/business/resources/Ta22/reports/2025-dbir-data-breach-investigations-report.pdf",
+      "contribution": "12,195 were confirmed data breaches"
+    },
+    {
+      "url": "https://www.verizon.com/business/resources/Tea/reports/2025-dbir-data-breach-investigations-report.pdf",
+      "contribution": "60% of breaches involved the human element"
+    }
+  ],
+  "confidence": 8,
+  "uncertainties": [
+    "Human-element sentence wording is from the full PDF text extraction, not visible in the short snippet shown in seenSources"
+  ],
+  "rejectedSources": 0,
+  "seenSources": 8,
+  "judge": {
+    "score": 10,
+    "green": 2,
+    "red": 0,
+    "rounds": 1,
+    "versions": [
+      {
+        "round": 0,
+        "score": 10,
+        "green": 2,
+        "red": 0,
+        "reason": "Both figures exactly match primary report pages per verification.",
+        "verification": [
+          {
+            "url": "https://www.verizon.com/business/resources/Ta22/reports/2025-dbir-data-breach-investigations-report.pdf",
+            "claim": "12,195 were confirmed data breaches",
+            "verdict": "supported",
+            "detail": "12,195 were confirmed data breaches"
+          },
+          {
+            "url": "https://www.verizon.com/business/resources/Tea/reports/2025-dbir-data-breach-investigations-report.pdf",
+            "claim": "60% of breaches involved the human element",
+            "verdict": "supported",
+            "detail": "we see the human involvement in breaches at 60% this year"
+          }
+        ],
+        "objections": []
+      },
+      {
+        "round": 1,
+        "score": 5,
+        "green": 2,
+        "red": 0,
+        "reason": "Correctly gives 12,195 breaches with primary source but omits required human-element share, partially fulfilling goal.",
+        "verification": [
+          {
+            "url": "https://www.verizon.com/business/resources/Ta22/reports/2025-dbir-data-breach-investigations-report.pdf",
+            "claim": "analyzed 22,052 real-world security incidents",
+            "verdict": "supported",
+            "detail": "This year, the Verizon DBIR team analyzed 22,052 real-world security incidents, of which 12,195 were confirmed data breaches that occurred inside organizations of all sizes and types."
+          },
+          {
+            "url": "https://www.verizon.com/business/resources/Ta22/reports/2025-dbir-data-breach-investigations-report.pdf",
+            "claim": "12,195 were confirmed data breaches",
+            "verdict": "supported",
+            "detail": "12,195 were confirmed data breaches"
+          }
+        ],
+        "objections": [
+          "The two cited report URLs are inconsistent (/Ta22/ vs /Tea/), so at least one does not resolve to the single canonical primary PDF.",
+          "The answer's own uncertainties admit the 60% human-element wording is 'not visible in the short snippet shown in seenSources', contradicting the 'supported' verification verdict.",
+          "The contribution for 12,195 says 'were confirmed' not 'analyzed', leaving the analyzed-incidents vs confirmed-breaches definition unsupported.",
+          "seenSources is 8 but only 2 sources are cited with rejectedSources 0, leaving 6 seen sources undisclosed."
+        ],
+        "fetched": 0
+      }
+    ]
+  }
+}
