@@ -216,11 +216,11 @@ const s2geo = (function () {
   const ring = (n, attrs, top, name, d) => step(`<g class="b" data-k="?" ${attrs} data-d="${d || 1100}"><circle class="ring" id="r${n}" cx="${X[n - 1]}" cy="${RY}" r="${RR}"/><text class="lbl m" x="${X[n - 1]}" y="${RY - 7}" text-anchor="middle">${n}</text><text class="lbl s" x="${X[n - 1]}" y="${RY + 23}" text-anchor="middle" style="fill:var(--fg)">${name}</text><text class="lbl s" x="${X[n - 1]}" y="${RY - RR - 25}" text-anchor="middle">${top}</text></g>`);
   const arrow = (d, attrs, cls) => step(`<g class="a" data-k="?" ${attrs || ''}><path class="arrow${cls ? ' ' + cls : ''}" pathLength="1" d="${d}"/></g>`);
   // Le site, le scanner, Mission Zero : trois boîtes sur une ligne, le fil d'un bord à l'autre.
-  step(`<g class="b" data-k="?" data-d="1500"><rect class="box red" x="40" y="40" width="300" height="190" rx="16"/><text class="lbl m red" x="190" y="76" text-anchor="middle">Votre site · 5 failles</text><rect class="tile" x="70" y="96" width="60" height="44" rx="6"/><rect class="tile" x="140" y="96" width="60" height="44" rx="6"/><rect class="tile" x="210" y="96" width="60" height="44" rx="6"/><rect class="tile" x="70" y="150" width="200" height="24" rx="6"/><text class="lbl xs" x="190" y="210" text-anchor="middle">tel qu'il est, en ligne</text></g>`);
+  step(`<g class="b" data-k="?" data-d="1500"><rect class="box red" id="siteBox" x="40" y="40" width="300" height="190" rx="16"/><text class="lbl m red" id="siteT" x="190" y="76" text-anchor="middle">Votre site · 5 failles</text><rect class="tile" x="70" y="96" width="60" height="44" rx="6"/><rect class="tile" x="140" y="96" width="60" height="44" rx="6"/><rect class="tile" x="210" y="96" width="60" height="44" rx="6"/><rect class="tile" x="70" y="150" width="200" height="24" rx="6"/><text class="lbl xs" x="190" y="210" text-anchor="middle">tel qu'il est, en ligne</text></g>`);
   arrow('M340,135 L420,135');
-  step(`<g class="b" data-k="?" data-d="1600"><rect class="box" x="420" y="40" width="360" height="190" rx="16"/><text class="lbl m" x="600" y="76" text-anchor="middle">Un scanner, n'importe lequel</text><text class="lbl s red" x="600" y="132" text-anchor="middle">⚠ 5 failles listées</text><text class="lbl xs" x="600" y="190" text-anchor="middle">MYTHOZOR ARGUS, CVE, dépendances : même liste</text></g>`);
+  step(`<g class="b" data-k="?" data-d="1600"><rect class="box" x="420" y="40" width="360" height="190" rx="16"/><text class="lbl m" x="600" y="76" text-anchor="middle">Un scanner, n'importe lequel</text><text class="lbl s red" id="scan5" x="600" y="132" text-anchor="middle">⚠ 5 failles listées</text><text class="lbl xs" x="600" y="190" text-anchor="middle">MYTHOZOR ARGUS, CVE, dépendances : même liste</text></g>`);
   arrow('M780,135 L860,135');
-  step(`<g class="b" data-k="?" data-d="2600"><rect class="box gold" x="860" y="40" width="700" height="190" rx="16"/><text class="lbl acc" x="1210" y="82" text-anchor="middle" style="font-size:30px">Mission Zero part de zéro</text><text class="lbl s" x="1210" y="160" text-anchor="middle" style="font-size:20px">une copie du site, aucun plan, l'ordre de prouver</text></g>`);
+  step(`<g class="b" data-k="?" data-d="2600"><rect class="box gold" id="mzBox" x="860" y="40" width="700" height="190" rx="16"/><text class="lbl acc" x="1210" y="82" text-anchor="middle" style="font-size:30px">Mission Zero part de zéro</text><text class="lbl s" x="1210" y="160" text-anchor="middle" style="font-size:20px">une copie du site, aucun plan, l'ordre de prouver</text></g>`);
   // De Mission Zero au correctif : une seule courbe douce, au-dessus des légendes des contrôles.
   arrow('M1210,230 C1210,268 1170,278 1100,278 L330,278 C220,278 155,290 155,355', 'data-dur="1300" data-d="1400"');
   step(`<g class="b" data-k="?" id="fix1" data-d="1500"><rect class="box gold" x="40" y="355" width="230" height="150" rx="16"/><text class="lbl acc" x="155" y="422" text-anchor="middle">Correctif n°1</text><text class="lbl s" x="155" y="456" text-anchor="middle">appliqué sur la copie</text></g>`);
@@ -237,7 +237,7 @@ const s2geo = (function () {
   arrow('M870,640 C870,690 760,690 560,690', 'id="red2" data-dur="900" data-d="1000"', 'red');
   step(`<g class="b" data-k="?" id="red3" data-d="1900"><rect class="box red" x="300" y="645" width="260" height="90" rx="16"/><text class="lbl red" x="430" y="682" text-anchor="middle">Refusé</text><text class="lbl s" x="430" y="715" text-anchor="middle">par lui-même</text></g>`);
   arrow('M300,690 C200,690 155,660 155,505', 'id="red4" data-dur="900" data-d="1000"', 'red');
-  step(`<g class="b" data-k="?" data-hide="#fix1,#red0,#red1,#red2,#red3,#red4" data-ring="r3:off" data-d="1900"><rect class="box gold" x="40" y="355" width="230" height="150" rx="16"/><text class="lbl acc" x="155" y="422" text-anchor="middle">Correctif n°2</text><text class="lbl s" x="155" y="456" text-anchor="middle">refait, sur une copie neuve</text></g>`);
+  step(`<g class="b" data-k="?" data-hide="#fix1,#red0,#red1,#red2,#red3,#red4" data-ring="r3:off" data-d="1900"><rect class="box gold" id="fix2" x="40" y="355" width="230" height="150" rx="16"/><text class="lbl acc" x="155" y="422" text-anchor="middle">Correctif n°2</text><text class="lbl s" x="155" y="456" text-anchor="middle">refait, sur une copie neuve</text></g>`);
   // Les contrôles 1 et 2 rejoués : le point repasse sur le fil et sur le haut de chaque rond, qui pulse à son passage.
   const L1 = 70, A = Math.PI * RR, L2 = 90, L3 = 90; const tot = L1 + A + L2 + A + L3;
   const p1 = ((L1 + A / 2) / tot).toFixed(3), p2 = ((L1 + A + L2 + A / 2) / tot).toFixed(3);
@@ -250,10 +250,15 @@ const s2geo = (function () {
   ring(5, 'data-ring="r5"', 'écrites, jamais cachées', 'Réserves', 1500);
   arrow(`M1330,${RY + RR} L1330,600`);
   step(`<g class="b" data-k="?" data-d="3600"><rect class="box ok" x="1070" y="600" width="520" height="130" rx="16"/><text class="lbl acc" x="1330" y="642" text-anchor="middle">Confirmé · patch + preuves</text><text class="lbl s" x="1330" y="690" text-anchor="middle" style="fill:var(--fg)">un humain applique, ou l'automatique</text></g>`);
-  // Le correctif repart : de Confirmé, il monte à droite, passe sous « Mission Zero part de zéro » de droite à gauche, et arrive
-  // sous « Votre site » : la faille est corrigée en live, automatique (gérant, 30 octobre, 17 h).
-  arrow('M1575,600 L1575,254 L190,254 L190,232', 'data-dur="1700" data-d="1800"');
-  step(`<g class="b" data-k="?" data-d="3200"><rect class="chip ok" x="48" y="146" width="284" height="32" rx="16"/><text class="chip-t" x="190" y="168" text-anchor="middle" style="font-size:16px;font-weight:700">✔ faille corrigée · en live · automatique</text></g>`);
+  // Le correctif repart vers le site en remontant le fil déjà tracé, sans rien croiser : Confirmé → 5 → 4 → 3 → 2 → 1 →
+  // Correctif → Mission Zero part de zéro → scanner → Votre site. Chaque élément repasse au vert à son passage ; à l'arrivée,
+  // tout est vert : la faille est corrigée en live, automatique (gérant, 30 octobre, 17 h).
+  arrow(`M1330,600 L1330,${RY} L270,${RY}`, 'data-dur="2600" data-d="2700" data-pulses="r5@0.138:strong,r4@0.325:strong,r3@0.512:strong,r2@0.699:strong,r1@0.886:strong,fix2@0.995:strong"', 'ghost');
+  arrow('M155,355 C155,290 220,278 330,278 L1100,278 C1170,278 1210,268 1210,230', 'data-dur="1400" data-d="1500" data-pulses="mzBox@0.99:strong"', 'ghost');
+  arrow('M860,135 L780,135', 'data-dur="500" data-d="600"', 'ghost');
+  step(`<g class="b" data-k="?" data-hide="#scan5" data-d="900"><text class="lbl s okt" x="600" y="132" text-anchor="middle">✔ 0 faille</text></g>`);
+  arrow('M420,135 L340,135', 'data-dur="500" data-d="600"', 'ghost');
+  step(`<g class="b" data-k="?" data-hide="#siteBox,#siteT" data-d="3400"><rect class="box ok" x="40" y="40" width="300" height="190" rx="16" style="filter:drop-shadow(0 0 12px rgba(46,230,160,.7))"/><text class="lbl m acc" x="190" y="76" text-anchor="middle">Votre site · 0 faille</text><rect class="chip ok" x="46" y="146" width="288" height="32" rx="16"/><text class="chip-t" x="190" y="167" text-anchor="middle" style="font-size:14.5px;font-weight:700">✔ faille corrigée · en live · automatique</text></g>`);
   step(`<g class="b" data-k="?" data-d="2400"><text class="lbl xs" x="0" y="0"> </text></g>`);
   const cap = ['Le même site, ses cinq failles.', null, 'Un scanner les liste. N’importe lequel.', null,
     '<b>Mission Zero part de zéro.</b> Une copie du site et l’ordre de prouver.', null, 'Un premier correctif, sur une copie.', null,
@@ -263,8 +268,9 @@ const s2geo = (function () {
     '<b class="r">Refusé</b>, par lui-même.', null, '<b>Correctif n°2</b>, sur une copie neuve.',
     'Contrôles 1 et 2 rejoués&nbsp;: toujours verts.', null, 'Contrôle 3&nbsp;: la page est intacte. Vert.', null,
     'Contrôle 4&nbsp;: la relecture. La cause, pas le symptôme. Vert.', null, 'Contrôle 5&nbsp;: les réserves, écrites. Vert.', null,
-    'Cinq verts&nbsp;: <b>confirmé</b>. Un humain applique, ou l’automatique.', null,
-    'Le correctif repart vers le site. <b>La faille est corrigée, en live, en automatique.</b>', 'Il part de zéro, se refuse et confirme. Seul.'];
+    'Cinq verts&nbsp;: <b>confirmé</b>. Un humain applique, ou l’automatique.',
+    'Le correctif repart vers le site&nbsp;: cinq, quatre, trois, deux, un.', null, null, 'Le scanner ne voit plus rien.', null,
+    '<b>La faille est corrigée, en live, en automatique.</b> Tout est vert.', 'Il part de zéro, se refuse et confirme. Seul.'];
   if (cap.length !== k) throw new Error('s2 : ' + k + ' étapes, ' + cap.length + ' légendes');
   const sec = `  <section class="scene" id="s2">
     <header><h2>3 · CORRECTION AVEC MISSION ZERO</h2><span class="t">correction</span></header>
@@ -473,6 +479,7 @@ const extra = `<style>
 .field { fill:#fff; stroke:#999; stroke-width:1.5; } .field.gone { fill:none; stroke:var(--red); stroke-dasharray:5 4; }
 /* Surbrillance au passage du point : une pulsation du contour, rien de plus. Forte quand on revalide. */
 .ring.pulse { animation: ringpulse .6s ease-out; } .ring.pulse.strong { animation: ringpulse-strong 1.2s ease-out; }
+.box.pulse { animation: ringpulse .6s ease-out; } .box.pulse.strong { animation: ringpulse-strong 1.2s ease-out; }
 @keyframes ringpulse { 0% { stroke-width:3; filter:none; } 30% { stroke-width:7; filter:drop-shadow(0 0 10px rgba(46,230,160,.9)); } 100% { stroke-width:3; filter:none; } }
 @keyframes ringpulse-strong { 0% { stroke-width:3; filter:none; } 25% { stroke-width:9; filter:drop-shadow(0 0 18px rgba(46,230,160,1)); } 100% { stroke-width:3; filter:drop-shadow(0 0 6px rgba(46,230,160,.6)); } }
 /* L'alerte prise en compte : le rond rouge clignote. */
