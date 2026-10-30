@@ -32,9 +32,10 @@ svg { width:100%; height:100%; display:block; font-family:"Segoe UI", system-ui,
 .focus { fill:none; stroke:var(--acc); stroke-width:4; stroke-linejoin:round; filter:drop-shadow(0 0 8px rgba(46,230,160,.7)); stroke-dasharray:1; stroke-dashoffset:1; }
 .focus.red { stroke:var(--red); filter:drop-shadow(0 0 8px rgba(255,107,97,.7)); }
 .focus.draw { transition:stroke-dashoffset .35s ease-out; stroke-dashoffset:0; }
-/* Le point : il voyage dans le silence (700 ms), jamais pendant une phrase. */
-.dot { fill:#fff; filter:drop-shadow(0 0 8px var(--acc)) drop-shadow(0 0 16px rgba(46,230,160,.6)); transition:transform .7s cubic-bezier(.45,0,.25,1); }
-.dot.hide { opacity:0; }
+/* Les flèches : épaisses, arrondies, douces ; elles se dessinent dans le silence, le point court devant, puis elles restent. */
+.arrow { stroke:var(--acc2); stroke-width:5; stroke-linecap:round; stroke-linejoin:round; fill:none; stroke-dasharray:1; stroke-dashoffset:1; transition:stroke-dashoffset .8s linear; }
+.arrow.red { stroke:rgba(255,107,97,.8); } .arrow.on { stroke-dashoffset:0; } .arrow.drawn { marker-end:url(#mok); } .arrow.red.drawn { marker-end:url(#mred); }
+.runner { fill:#fff; filter:drop-shadow(0 0 8px var(--acc)) drop-shadow(0 0 16px rgba(46,230,160,.6)); opacity:0; } .runner.go { opacity:1; }
 .sub { position:absolute; left:0; right:0; bottom:2.5%; text-align:center; pointer-events:none; opacity:0; transition:opacity .25s; }
 .sub.on { opacity:1; }
 .sub span { display:inline-block; background:rgba(0,0,0,.72); color:#fff; font-size:clamp(14px, 1.9vw, 30px); padding:.3em 1em; border-radius:10px; max-width:80%; }
@@ -42,12 +43,12 @@ svg { width:100%; height:100%; display:block; font-family:"Segoe UI", system-ui,
 .record body { padding:0; } .record h1, .record .bar, .record .voice { display:none; } .record .wrap { gap:0; max-width:1280px; } .record .stage { border:none; border-radius:0; }
 </style>
 <div class="wrap">
-  <h1>Mission Zero, le film · première minute <small>Présentation animée : chaque élément apparaît une fois et reste. Pendant une phrase, seul l'élément nommé est encadré, tout le reste est figé. Le point ne bouge que dans les silences. Voix française (le fondateur), sous-titre anglais.</small></h1>
+  <h1>Mission Zero, le film · première minute <small>Présentation animée, sur le modèle du 29 octobre : les flèches se dessinent dans les silences, le point court devant, chaque élément apparaît une fois et reste. Pendant une phrase, seul l'élément nommé est encadré, tout le reste est figé. Voix française (le fondateur), sous-titre anglais.</small></h1>
   <div class="bar"><button class="big" id="go">▶ Lancer</button><button data-scene="s0">1 · La boucle</button><button data-scene="sB">· Où l'envoyer ?</button><button data-scene="s1">2 · La sécurité</button><button id="all">Tout afficher</button><span id="clock" style="color:var(--mut)"></span></div>
   <div class="stage">
 
     <section class="scene" id="s0">
-      <svg viewBox="0 0 1600 900" role="img" aria-label="La boucle de Mission Zero">
+      <svg viewBox="0 0 1600 900" role="img" aria-label="La boucle de Mission Zero"><defs><marker id="mok" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="rgba(46,230,160,.9)"/></marker><marker id="mred" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="rgba(255,107,97,.9)"/></marker></defs><g id="ar"></g>
         <g class="b" id="t1"><text class="lbl acc" x="800" y="80" text-anchor="middle" style="font-size:60px;letter-spacing:.06em">MISSION ZERO</text><text class="lbl s" x="800" y="122" text-anchor="middle" style="font-size:24px">un objectif, aucun plan, et l'ordre de prouver</text></g>
         <g class="b" id="orb"><circle class="orbit" cx="800" cy="470" r="200"/></g>
         <g class="b" id="o1"><circle class="ring lit" cx="800" cy="270" r="60"/><text class="lbl m" x="800" y="277" text-anchor="middle">Objectif</text></g>
@@ -58,13 +59,13 @@ svg { width:100%; height:100%; display:block; font-family:"Segoe UI", system-ui,
         <g class="b" id="pr"><circle class="ring lit" cx="800" cy="470" r="70"/><text class="lbl m acc" x="800" y="464" text-anchor="middle">Preuves</text><text class="lbl xs" x="800" y="490" text-anchor="middle">citation exacte, sur la page</text></g>
         <g class="b" id="rf"><text class="lbl red" x="682" y="730" text-anchor="middle" style="font-size:22px">il se refuse lui-même</text></g>
         <g class="b" id="q"><text class="lbl amber" x="800" y="785" text-anchor="middle" style="font-size:30px">Où l'envoyer ?</text></g>
-        <g id="fx"></g><circle class="dot hide" r="11"/>
+        <g id="fx"></g><circle class="runner" r="9"/>
       </svg>
       <div class="sub"><span></span></div>
     </section>
 
     <section class="scene" id="sB">
-      <svg viewBox="0 0 1600 900" role="img" aria-label="La boucle au centre, et autour, tout ce qu'on peut lui demander">
+      <svg viewBox="0 0 1600 900" role="img" aria-label="La boucle au centre, et autour, tout ce qu'on peut lui demander"><defs><marker id="mok" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="rgba(46,230,160,.9)"/></marker><marker id="mred" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="rgba(255,107,97,.9)"/></marker></defs><g id="ar"></g>
         <g class="b" id="links"><line class="link" x1="800" y1="450" x2="800" y2="150"/><line class="link" x1="800" y1="450" x2="1080" y2="190"/><line class="link" x1="800" y1="450" x2="1285" y2="300"/><line class="link" x1="800" y1="450" x2="1360" y2="450"/><line class="link" x1="800" y1="450" x2="1285" y2="600"/><line class="link" x1="800" y1="450" x2="1100" y2="710"/><line class="link" x1="800" y1="450" x2="800" y2="750"/><line class="link" x1="800" y1="450" x2="500" y2="710"/><line class="link" x1="800" y1="450" x2="315" y2="600"/><line class="link" x1="800" y1="450" x2="230" y2="450"/><line class="link" x1="800" y1="450" x2="315" y2="300"/><line class="link" x1="800" y1="450" x2="520" y2="190"/></g>
         <g class="b" id="ctr"><circle class="ring lit" cx="800" cy="450" r="96"/><text class="lbl m acc" x="800" y="443" text-anchor="middle">la boucle</text><text class="lbl xs" x="800" y="468" text-anchor="middle">zéro code · un objectif</text></g>
         <g class="b" id="bS"><rect class="chip next" x="90" y="420" width="280" height="60" rx="30"/><text class="chip-t" x="230" y="458" text-anchor="middle">🛡 La sécurité d'un site</text></g>
@@ -72,13 +73,13 @@ svg { width:100%; height:100%; display:block; font-family:"Segoe UI", system-ui,
         <g class="b" id="bM"><rect class="chip next" x="950" y="160" width="260" height="60" rx="30"/><text class="chip-t" x="1080" y="198" text-anchor="middle">🩺 La médecine</text></g>
         <g class="b" id="bx"><rect class="chip" x="1155" y="270" width="260" height="60" rx="30"/><text class="chip-t" x="1285" y="308" text-anchor="middle">Un chiffre INSEE</text><rect class="chip" x="1230" y="420" width="260" height="60" rx="30"/><text class="chip-t" x="1360" y="458" text-anchor="middle">Une norme</text><rect class="chip" x="1155" y="570" width="260" height="60" rx="30"/><text class="chip-t" x="1285" y="608" text-anchor="middle">Un article de loi</text><rect class="chip" x="970" y="680" width="260" height="60" rx="30"/><text class="chip-t" x="1100" y="718" text-anchor="middle">Une décision de justice</text><rect class="chip" x="670" y="720" width="260" height="60" rx="30"/><text class="chip-t" x="800" y="758" text-anchor="middle">Un appel d'offres</text><rect class="chip" x="370" y="680" width="260" height="60" rx="30"/><text class="chip-t" x="500" y="718" text-anchor="middle">Un rapport annuel</text><rect class="chip" x="185" y="570" width="260" height="60" rx="30"/><text class="chip-t" x="315" y="608" text-anchor="middle">Un brevet</text><rect class="chip" x="185" y="270" width="260" height="60" rx="30"/><text class="chip-t" x="315" y="308" text-anchor="middle">Une norme produit</text><rect class="chip" x="390" y="160" width="260" height="60" rx="30"/><text class="chip-t" x="520" y="198" text-anchor="middle">Votre métier</text></g>
         <g class="b" id="first"><text class="lbl amber" x="800" y="835" text-anchor="middle" style="font-size:26px">Premier voyage : la sécurité d'un site</text></g>
-        <g id="fx"></g><circle class="dot hide" r="11"/>
+        <g id="fx"></g><circle class="runner" r="9"/>
       </svg>
       <div class="sub"><span></span></div>
     </section>
 
     <section class="scene" id="s1">
-      <svg viewBox="0 0 1600 900" role="img" aria-label="La sécurité d'un site : avant, sans Mission Zero ; avec Mission Zero">
+      <svg viewBox="0 0 1600 900" role="img" aria-label="La sécurité d'un site : avant, sans Mission Zero ; avec Mission Zero"><defs><marker id="mok" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="rgba(46,230,160,.9)"/></marker><marker id="mred" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="rgba(255,107,97,.9)"/></marker></defs><g id="ar"></g>
         <g class="b" id="card"><rect class="box red" x="520" y="40" width="560" height="200" rx="16"/><text class="lbl red" x="800" y="110" text-anchor="middle" style="font-size:46px;letter-spacing:.08em">SITE FERMÉ</text><text class="lbl s" x="800" y="152" text-anchor="middle" style="font-size:22px">données clients dans la nature</text><text class="lbl" x="800" y="205" text-anchor="middle" style="font-size:26px">8 sites sur 10 sont exposés</text></g>
         <g class="b" id="lt"><text class="lbl red" x="310" y="300" text-anchor="middle" style="font-size:22px;letter-spacing:.08em">AVANT, SANS MISSION ZERO</text></g>
         <g class="b" id="l1"><rect class="box red" x="60" y="320" width="500" height="70" rx="14"/><text class="lbl m" x="310" y="363" text-anchor="middle">Un scanner trouve 15 failles</text></g>
@@ -103,7 +104,7 @@ svg { width:100%; height:100%; display:block; font-family:"Segoe UI", system-ui,
         <g class="b" id="pro"><rect class="chip ok" x="810" y="560" width="180" height="50" rx="25"/><text class="chip-t" x="900" y="593" text-anchor="middle" style="font-weight:700">PROPOSÉ</text></g>
         <g class="b" id="real"><rect class="box amber" x="610" y="625" width="380" height="110" rx="14"/><text class="lbl xs amber" x="800" y="652" text-anchor="middle" style="letter-spacing:.08em">UN VRAI SITE · 6STEM.COM · LU PAR ARGUS</text><text class="lbl" x="700" y="704" text-anchor="middle" style="font-size:40px">7</text><text class="lbl acc" x="800" y="704" text-anchor="middle" style="font-size:40px">5</text><text class="lbl red" x="900" y="704" text-anchor="middle" style="font-size:40px">2</text><text class="lbl xs" x="700" y="726" text-anchor="middle">constats</text><text class="lbl xs" x="800" y="726" text-anchor="middle">réparés, prouvés</text><text class="lbl xs" x="900" y="726" text-anchor="middle">non certifiés</text></g>
         <g class="b" id="myth"><rect class="box ok" x="60" y="748" width="1480" height="62" rx="14"/><text class="lbl acc" x="300" y="788" text-anchor="middle" style="letter-spacing:.1em">MYTHOZOR</text><text class="lbl m" x="640" y="788" text-anchor="middle">ARGUS surveille</text><text class="lbl m acc" x="920" y="788" text-anchor="middle">Mission Zero répare</text><text class="lbl m" id="val" x="1250" y="788" text-anchor="middle" style="font-weight:800">vous validez</text></g>
-        <g id="fx"></g><circle class="dot hide" r="11"/>
+        <g id="fx"></g><circle class="runner" r="9"/>
       </svg>
       <div class="sub"><span></span></div>
     </section>
@@ -112,59 +113,70 @@ svg { width:100%; height:100%; display:block; font-family:"Segoe UI", system-ui,
   <div class="voice" id="voice"></div>
 </div>
 <script>
-// Le film : une suite de pas. Chaque pas : les éléments qui apparaissent (et restent), l'élément encadré pendant la
-// phrase, où va le point dans le silence, la phrase (FR lue, EN sous-titrée), sa durée. Rien d'autre ne bouge.
+// Le film : une suite de pas. Chaque pas : la flèche qui mène à l'élément (le point court devant, dans le silence), les
+// éléments qui apparaissent et restent, l'élément encadré pendant la phrase, la phrase (FR lue, EN sous-titrée), sa durée.
 var FILM = [
   { scene: 's0', steps: [
-    { show: ['t1'], focus: 't1', dot: [800, 160], fr: 'Mission Zero. Un objectif, et l’ordre de prouver.', en: 'Mission Zero. A goal, and an order: prove it.', ms: 4200 },
-    { show: ['orb', 'o1'], focus: 'o1', dot: 'o1', fr: 'Objectif.', en: 'Goal.', ms: 1500 },
-    { show: ['o2'], focus: 'o2', dot: 'o2', fr: 'Hypothèses.', en: 'Hypotheses.', ms: 1500 },
-    { show: ['o3'], focus: 'o3', dot: 'o3', fr: 'Actions.', en: 'Actions.', ms: 1500 },
-    { show: ['o4'], focus: 'o4', dot: 'o4', fr: 'Évaluation.', en: 'Evaluation.', ms: 1500 },
-    { show: ['o5'], focus: 'o5', dot: 'o5', fr: 'Leçon. Et il recommence.', en: 'Lesson. And again.', ms: 2400 },
-    { show: ['pr'], focus: 'pr', dot: 'pr', fr: 'Jusqu’à la preuve : la citation exacte, sur la page.', en: 'Until the proof: the exact quote, on the page.', ms: 3600 },
-    { show: ['rf'], focus: 'o4', red: true, dot: 'o4', bad: 'o4r', fr: 'Et il se refuse lui-même.', en: 'And it says no to itself.', ms: 3000 },
-    { show: ['q'], focus: 'q', dot: 'q', fr: 'Où l’envoyer ?', en: 'Where do we send it?', ms: 2200 },
+    { show: ['t1'], focus: 't1', at: [430, 70], fr: 'Mission Zero. Un objectif, et l’ordre de prouver.', en: 'Mission Zero. A goal, and an order: prove it.', ms: 4200 },
+    { arrow: 'M800,150 L800,205', show: ['orb', 'o1'], focus: 'o1', fr: 'Objectif.', en: 'Goal.', ms: 1500 },
+    { arrow: 'M860,279 A200,200 0 0,1 963,354', show: ['o2'], focus: 'o2', fr: 'Hypothèses.', en: 'Hypotheses.', ms: 1500 },
+    { arrow: 'M1000,468 A200,200 0 0,1 961,589', show: ['o3'], focus: 'o3', fr: 'Actions.', en: 'Actions.', ms: 1500 },
+    { arrow: 'M863,660 A200,200 0 0,1 737,660', show: ['o4'], focus: 'o4', fr: 'Évaluation.', en: 'Evaluation.', ms: 1500 },
+    { arrow: 'M639,589 A200,200 0 0,1 600,468', show: ['o5'], focus: 'o5', fr: 'Leçon. Et il recommence.', en: 'Lesson. And again.', ms: 2400 },
+    { arrow: 'M667,427 L733,448', show: ['pr'], focus: 'pr', fr: 'Jusqu’à la preuve : la citation exacte, sur la page.', en: 'Until the proof: the exact quote, on the page.', ms: 3600 },
+    { arrow: 'M759,527 L717,584', red: true, show: ['rf'], focus: 'o4', bad: 'o4r', fr: 'Et il se refuse lui-même.', en: 'And it says no to itself.', ms: 3000 },
+    { arrow: 'M682,692 C682,770 800,715 800,758', show: ['q'], focus: 'q', fr: 'Où l’envoyer ?', en: 'Where do we send it?', ms: 2200 },
   ] },
   { scene: 'sB', steps: [
-    { show: ['links', 'ctr', 'bx', 'bS', 'bE', 'bM'], focus: ['bS', 'bE', 'bM'], dot: 'ctr', fr: 'Même boucle, zéro code. Trois voyages.', en: 'Same loop, no code. Three journeys.', ms: 3400 },
-    { show: ['first'], focus: 'bS', dot: 'bS', fr: 'D’abord, la sécurité d’un site.', en: 'First, a website’s security.', ms: 2600 },
+    { arrow: 'M0,880 L640,880 L640,548', show: ['links', 'ctr', 'bx', 'bS', 'bE', 'bM'], focus: ['bS', 'bE', 'bM'], fr: 'Même boucle, zéro code. Trois voyages.', en: 'Same loop, no code. Three journeys.', ms: 3400 },
+    { arrow: 'M704,450 L372,450', show: ['first'], focus: 'bS', fr: 'D’abord, la sécurité d’un site.', en: 'First, a website’s security.', ms: 2600 },
   ] },
   { scene: 's1', steps: [
-    { show: ['card'], focus: 'card', red: true, dot: 'card', fr: 'Une faille. Un site fermé. Huit sites sur dix sont exposés.', en: 'One flaw. A site shut down. Eight sites out of ten are exposed.', ms: 5200 },
-    { show: ['lt', 'l1', 'l2', 'l3', 'l4'], focus: 'l2', red: true, dot: 'l2', fr: 'Quinze failles. D’habitude, on corrige en production. Et on casse autre chose.', en: 'Fifteen flaws. Usually you fix them in production. And break something else.', ms: 5600 },
-    { show: ['rt', 'r1', 'r2', 'r3', 'r4', 'r5'], focus: 'r3', dot: 'r3', fr: 'Mission Zero cherche le correctif, le pose sur une copie, rejoue vos parcours, relance le scanner.', en: 'Mission Zero finds the fix, applies it on a copy, replays your journeys, rescans.', ms: 6200 },
-    { show: ['rej'], focus: 'rej', red: true, dot: 'rej', fr: 'Il casse « suivre ma commande ». Il se refuse.', en: 'It breaks “follow my order”. It refuses itself.', ms: 3400 },
-    { show: ['pro'], focus: 'pro', dot: 'pro', fr: 'Il en propose une autre, qui passe.', en: 'It proposes another one, which passes.', ms: 2800 },
-    { show: ['form'], focus: 'form', dot: 'form', fr: 'Les tests disaient oui.', en: 'The tests said yes.', ms: 2400 },
-    { show: ['look'], focus: 'look', red: true, dot: 'look', gone: ['f1', 'f2', 'f3'], hide: ['formt'], fr: 'Il a regardé la page : refusé.', en: 'It looked at the page: rejected.', ms: 3000 },
-    { show: ['real'], focus: 'real', dot: 'real', fr: 'Sur notre vrai site : sept constats. Cinq réparés avec preuves. Deux qu’il refuse de certifier.', en: 'On our real site: seven findings. Five repaired with proof. Two it refuses to certify.', ms: 6200 },
-    { show: ['myth'], focus: 'val', dot: 'val', fr: 'Chez vous. ARGUS surveille, Mission Zero répare, vous validez.', en: 'On your premises. ARGUS watches, Mission Zero repairs, you approve.', ms: 5200 },
+    { arrow: 'M0,140 L518,140', red: true, show: ['card'], focus: 'card', fr: 'Une faille. Un site fermé. Huit sites sur dix sont exposés.', en: 'One flaw. A site shut down. Eight sites out of ten are exposed.', ms: 5200 },
+    { arrow: 'M520,180 L30,180 L30,440 L58,440', red: true, show: ['lt', 'l1', 'l2', 'l3', 'l4'], focus: 'l2', fr: 'Quinze failles. D’habitude, on corrige en production. Et on casse autre chose.', en: 'Fifteen flaws. Usually you fix them in production. And break something else.', ms: 5600 },
+    { arrow: 'M1080,180 L1570,180 L1570,525 L1542,525', show: ['rt', 'r1', 'r2', 'r3', 'r4', 'r5'], focus: 'r3', fr: 'Mission Zero cherche le correctif, le pose sur une copie, rejoue vos parcours, relance le scanner.', en: 'Mission Zero finds the fix, applies it on a copy, replays your journeys, rescans.', ms: 6200 },
+    { arrow: 'M560,525 L585,525 L585,585 L608,585', red: true, show: ['rej'], focus: 'rej', fr: 'Il casse « suivre ma commande ». Il se refuse.', en: 'It breaks “follow my order”. It refuses itself.', ms: 3400 },
+    { arrow: 'M792,585 L808,585', show: ['pro'], focus: 'pro', fr: 'Il en propose une autre, qui passe.', en: 'It proposes another one, which passes.', ms: 2800 },
+    { arrow: 'M900,558 L900,542', show: ['form'], focus: 'form', fr: 'Les tests disaient oui.', en: 'The tests said yes.', ms: 2400 },
+    { show: ['look'], focus: 'look', red: true, at: [590, 414], gone: ['f1', 'f2', 'f3'], hide: ['formt'], fr: 'Il a regardé la page : refusé.', en: 'It looked at the page: rejected.', ms: 3000 },
+    { arrow: 'M900,612 L900,623', show: ['real'], focus: 'real', fr: 'Sur notre vrai site : sept constats. Cinq réparés avec preuves. Deux qu’il refuse de certifier.', en: 'On our real site: seven findings. Five repaired with proof. Two it refuses to certify.', ms: 6200 },
+    { arrow: 'M1290,732 L1290,746', show: ['myth'], focus: 'val', fr: 'Chez vous. ARGUS surveille, Mission Zero répare, vous validez.', en: 'On your premises. ARGUS watches, Mission Zero repairs, you approve.', ms: 5200 },
   ] },
 ];
-var SILENCE = 800, PAD = 14, timer = null, running = false;
-var $ = function (s, r) { return (r || document).querySelector(s); };
+var SVGNS = 'http://www.w3.org/2000/svg', SILENCE = 850, PAD = 14, timer = null;
+var $ = function (sel, r) { return (r || document).querySelector(sel); };
 var byId = function (sc, id) { return $('#' + sc + ' #' + id); };
 function clearScene(sc) {
-  var root = $('#' + sc); root.querySelectorAll('.b').forEach(function (e) { e.classList.remove('on'); });
+  var root = $('#' + sc); root.querySelectorAll('.b').forEach(function (e) { e.classList.remove('on'); e.style.animation = ''; e.style.opacity = ''; });
   root.querySelectorAll('.ring.bad').forEach(function (e) { e.classList.remove('bad'); e.classList.add('lit'); });
   root.querySelectorAll('.field.gone').forEach(function (e) { e.classList.remove('gone'); });
   root.querySelectorAll('[data-hidden]').forEach(function (e) { e.style.display = ''; delete e.dataset.hidden; });
-  $('#' + sc + ' #fx').innerHTML = ''; $('#' + sc + ' .sub').classList.remove('on'); $('#' + sc + ' .dot').classList.add('hide');
+  $('#' + sc + ' #ar').innerHTML = ''; $('#' + sc + ' #fx').innerHTML = ''; $('#' + sc + ' .sub').classList.remove('on');
+  var r = $('#' + sc + ' .runner'); r.classList.remove('go'); r.innerHTML = ''; r.removeAttribute('transform');
 }
-function showScene(sc) { document.querySelectorAll('.scene').forEach(function (s) { s.classList.toggle('active', s.id === sc); }); }
-function bbox(sc, id) { var e = byId(sc, id); var b = e.getBBox(); return { x: b.x, y: b.y, w: b.width, h: b.height }; }
-function moveDot(sc, to) {
-  var d = $('#' + sc + ' .dot'); var p = Array.isArray(to) ? { x: to[0], y: to[1] } : (function () { var b = bbox(sc, to); return { x: b.x - PAD - 18, y: b.y + b.h / 2 }; })();
-  d.classList.remove('hide'); d.style.transform = 'translate(' + p.x + 'px,' + p.y + 'px)';
+function showScene(sc) { document.querySelectorAll('.scene').forEach(function (x) { x.classList.toggle('active', x.id === sc); }); }
+function bbox(sc, id) { var b = byId(sc, id).getBBox(); return { x: b.x, y: b.y, w: b.width, h: b.height }; }
+// La flèche se dessine (800 ms), le point court devant et s'arrête au bout. Instantané pour les captures.
+function arrow(sc, st, instant) {
+  var r = $('#' + sc + ' .runner');
+  if (!st.arrow) { if (st.at) { r.innerHTML = ''; r.setAttribute('transform', 'translate(' + st.at[0] + ',' + st.at[1] + ')'); r.classList.add('go'); } return; }
+  var p = document.createElementNS(SVGNS, 'path'); p.setAttribute('d', st.arrow); p.setAttribute('pathLength', 1); p.setAttribute('class', 'arrow' + (st.red ? ' red' : '')); p.id = 'ar-' + Math.random().toString(36).slice(2, 8);
+  $('#' + sc + ' #ar').appendChild(p);
+  var end = p.getPointAtLength(p.getTotalLength());
+  if (instant) { p.style.transition = 'none'; p.classList.add('on', 'drawn'); r.innerHTML = ''; r.setAttribute('transform', 'translate(' + end.x + ',' + end.y + ')'); r.classList.add('go'); return; }
+  r.innerHTML = ''; r.removeAttribute('transform');
+  var m = document.createElementNS(SVGNS, 'animateMotion'); m.setAttribute('dur', (SILENCE - 50) + 'ms'); m.setAttribute('begin', 'indefinite'); m.setAttribute('fill', 'freeze');
+  var mp = document.createElementNS(SVGNS, 'mpath'); mp.setAttribute('href', '#' + p.id); m.appendChild(mp); r.appendChild(m); r.classList.add('go');
+  requestAnimationFrame(function () { p.classList.add('on'); try { m.beginElement(); } catch (e) {} });
+  setTimeout(function () { p.classList.add('drawn'); }, SILENCE);
 }
 function frame(sc, ids, red, instant) {
   var fx = $('#' + sc + ' #fx'); fx.innerHTML = '';
   (Array.isArray(ids) ? ids : [ids]).forEach(function (id) {
-    var b = bbox(sc, id); var r = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    var b = bbox(sc, id); var r = document.createElementNS(SVGNS, 'rect');
     r.setAttribute('x', b.x - PAD); r.setAttribute('y', b.y - PAD); r.setAttribute('width', b.w + 2 * PAD); r.setAttribute('height', b.h + 2 * PAD); r.setAttribute('rx', 14); r.setAttribute('pathLength', 1);
     r.setAttribute('class', 'focus' + (red ? ' red' : '')); fx.appendChild(r);
-    if (instant) r.classList.add('draw'); else requestAnimationFrame(function () { requestAnimationFrame(function () { r.classList.add('draw'); }); });
+    if (instant) { r.style.transition = 'none'; r.classList.add('draw'); } else requestAnimationFrame(function () { requestAnimationFrame(function () { r.classList.add('draw'); }); });
   });
 }
 function applyShow(sc, st) {
@@ -177,33 +189,34 @@ function speak(sc, st, on) {
   var sub = $('#' + sc + ' .sub'); if (on) { $('span', sub).textContent = st.en; sub.classList.add('on'); } else sub.classList.remove('on');
   $('#voice').innerHTML = on ? '<b>Voix :</b> ' + st.fr + '<span class="en">' + st.en + '</span>' : '';
 }
-// Jouer : pour chaque pas, le silence (le point voyage, les éléments apparaissent), puis la phrase (le cadre se dessine, tout est figé).
+// Jouer : pour chaque pas, le silence (la flèche se dessine, le point court, les éléments apparaissent), puis la phrase
+// (le cadre se dessine autour de l'élément nommé, tout est figé).
 function play(from) {
-  stop(); running = true; var flat = []; FILM.forEach(function (ch) { ch.steps.forEach(function (st) { flat.push({ sc: ch.scene, st: st }); }); });
+  stop(); var flat = []; FILM.forEach(function (ch) { ch.steps.forEach(function (st) { flat.push({ sc: ch.scene, st: st }); }); });
   var i = from || 0, cur = null, t0 = Date.now();
   (function next() {
-    if (i >= flat.length) { running = false; $('#clock').textContent = 'fin · ' + Math.round((Date.now() - t0) / 100) / 10 + ' s'; return; }
+    if (i >= flat.length) { $('#clock').textContent = 'fin · ' + Math.round((Date.now() - t0) / 100) / 10 + ' s'; return; }
     var x = flat[i]; i += 1;
     if (cur !== x.sc) { if (cur) clearScene(cur); cur = x.sc; clearScene(cur); showScene(cur); }
-    $('#' + cur + ' #fx').innerHTML = ''; speak(cur, x.st, false); applyShow(cur, x.st); moveDot(cur, x.st.dot);
+    $('#' + cur + ' #fx').innerHTML = ''; speak(cur, x.st, false); applyShow(cur, x.st); arrow(cur, x.st, false);
     timer = setTimeout(function () { frame(cur, x.st.focus, x.st.red); speak(cur, x.st, true); $('#clock').textContent = Math.round((Date.now() - t0) / 100) / 10 + ' s'; timer = setTimeout(next, x.st.ms); }, SILENCE);
   })();
 }
-function stop() { clearTimeout(timer); running = false; }
+function stop() { clearTimeout(timer); }
 // Aller à un pas précis, tout posé d'un coup (captures, repères) : ?at=s1:3
 function goto(sc, n) {
   stop(); FILM.forEach(function (ch) { clearScene(ch.scene); }); showScene(sc);
   var ch = FILM.filter(function (c) { return c.scene === sc; })[0];
-  ch.steps.slice(0, n + 1).forEach(function (st) { applyShow(sc, st); $('#' + sc + ' .b.on').forEach && 0; });
+  ch.steps.slice(0, n + 1).forEach(function (st) { applyShow(sc, st); arrow(sc, st, true); });
   $('#' + sc).querySelectorAll('.b.on').forEach(function (e) { e.style.animation = 'none'; e.style.opacity = 1; });
-  var st = ch.steps[n]; moveDot(sc, st.dot); frame(sc, st.focus, st.red, true); speak(sc, st, true);
+  var st = ch.steps[n]; frame(sc, st.focus, st.red, true); speak(sc, st, true);
 }
-function all() { stop(); FILM.forEach(function (ch) { clearScene(ch.scene); ch.steps.forEach(function (st) { applyShow(ch.scene, st); }); }); showScene('s1'); }
+function all() { stop(); FILM.forEach(function (ch) { clearScene(ch.scene); ch.steps.forEach(function (st) { applyShow(ch.scene, st); arrow(ch.scene, st, true); }); }); showScene('s1'); }
 document.getElementById('go').onclick = function () { play(0); };
 document.getElementById('all').onclick = all;
 document.querySelectorAll('[data-scene]').forEach(function (b) { b.onclick = function () { var sc = b.dataset.scene; var idx = 0; FILM.forEach(function (ch, k) { if (ch.scene === sc) idx = FILM.slice(0, k).reduce(function (a, c) { return a + c.steps.length; }, 0); }); play(idx); }; });
 var q = new URLSearchParams(location.search);
 if (q.get('record')) document.documentElement.classList.add('record');
-if (q.get('at')) { var p = q.get('at').split(':'); goto(p[0], Number(p[1]) || 0); } else if (q.get('auto')) play(0); else { showScene('s0'); }
+if (q.get('at')) { var pp = q.get('at').split(':'); goto(pp[0], Number(pp[1]) || 0); } else if (q.get('auto')) play(0); else { showScene('s0'); }
 </script>
 </html>
