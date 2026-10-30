@@ -7,7 +7,7 @@
 // 4. on applique les corrections : le point repasse vite sur les ronds déjà verts (ils se revalident), Évaluation
 //    redevient vert, et « OBJECTIF PROUVÉ » ;
 // 5. toute la boucle rétrécit jusqu'à ne laisser qu'un point blanc, qui repart vers l'écran suivant.
-const CX = 800, CY = 420, R = 190, r = 64;
+const CX = 800, CY = 500, R = 280, r = 92;
 const names = ['Objectif', 'Hypothèses', 'Action', 'Observation', 'Évaluation'];
 const ang = (i) => -Math.PI / 2 + (i * 2 * Math.PI) / 5;
 const P = (a, rad = R) => ({ x: CX + rad * Math.cos(a), y: CY + rad * Math.sin(a) });
@@ -40,16 +40,16 @@ let k = 0, g = [];
 const step = (s) => { k += 1; g.push(s.replace('data-k="?"', `data-k="${k}"`)); return k; };
 const blank = (attrs, d) => step(`<g class="b" data-k="?" ${attrs} data-d="${d}"><text class="lbl xs" x="0" y="0"> </text></g>`);
 
-step(`<g class="b" data-k="?" data-d="2800"><text class="lbl acc" x="800" y="80" text-anchor="middle" style="font-size:56px;letter-spacing:.04em">MISSION ZERO</text><text class="lbl s" x="800" y="118" text-anchor="middle" style="font-size:22px">un objectif, aucun plan et l'ordre de prouver</text></g>`);
+step(`<g class="b" data-k="?" data-d="2800"><text class="lbl acc" x="800" y="58" text-anchor="middle" style="font-size:48px;letter-spacing:.04em">MISSION ZERO</text><text class="lbl s" x="800" y="94" text-anchor="middle" style="font-size:22px">un objectif, aucun plan et l'ordre de prouver</text></g>`);
 g.push('<g id="loop">');
 // 1. Du titre au sommet d'Objectif, puis rond par rond.
-step(`<g class="a" data-k="?" data-d="900" data-dur="800"><path class="arrow" pathLength="1" d="M800,140 L800,${f(centers[0].y - r)}"/></g>`);
+step(`<g class="a" data-k="?" data-d="900" data-dur="800"><path class="arrow" pathLength="1" d="M800,108 L800,${f(centers[0].y - r)}"/></g>`);
 for (let i = 0; i < 5; i++) {
   const c = centers[i], a = i === 0 ? { x: c.x, y: c.y - r } : edge(i, i - 1), b = edge(i, i + 1);
   const [s1, s2] = split(i, a, b);
   // Le zoom : le rond vient au centre, x3,4, au premier plan (il passe en dernier dans le dessin), le reste s'efface.
   const zx = f(CX - c.x), zy = f(CY - c.y);
-  step(`<g class="rg" data-k="?" id="g${i + 1}" data-ring="o${i + 1}" data-d="450" style="transform-origin:${f(c.x)}px ${f(c.y)}px;--zx:${zx}px;--zy:${zy}px"><circle class="ring" id="o${i + 1}" cx="${f(c.x)}" cy="${f(c.y)}" r="${r}"/><text class="lbl m" x="${f(c.x)}" y="${f(c.y + 6)}" text-anchor="middle" style="font-size:18px">${names[i]}</text><g class="a" data-k="${k + 1}" data-d="420" data-dur="360"><path class="arrow split" pathLength="1" d="${s1}"/><path class="arrow split" pathLength="1" d="${s2}"/></g></g>`); k += 1;
+  step(`<g class="rg" data-k="?" id="g${i + 1}" data-ring="o${i + 1}" data-d="450" style="transform-origin:${f(c.x)}px ${f(c.y)}px;--zx:${zx}px;--zy:${zy}px"><circle class="ring" id="o${i + 1}" cx="${f(c.x)}" cy="${f(c.y)}" r="${r}"/><text class="lbl m" x="${f(c.x)}" y="${f(c.y + 6)}" text-anchor="middle" style="font-size:24px">${names[i]}</text><g class="a" data-k="${k + 1}" data-d="420" data-dur="360"><path class="arrow split" pathLength="1" d="${s1}"/><path class="arrow split" pathLength="1" d="${s2}"/></g></g>`); k += 1;
   blank(`data-zoom2="g${i + 1}"`, 2400);
   blank(`data-unzoom="g${i + 1}"`, 550);
   const j = (i + 1) % 5, e = edge(j, i);
@@ -57,8 +57,8 @@ for (let i = 0; i < 5; i++) {
 }
 // 2. Retour sur Objectif : le tour est complet. « Preuve » au centre, puis OBJECTIF VALIDÉ.
 blank(`data-pulse="o1:strong"`, 900);
-step(`<g class="rg" data-k="?" id="gp" data-d="1600" style="transform-origin:800px 420px"><text class="lbl m acc" x="800" y="430" text-anchor="middle" style="font-size:30px">Preuve</text></g>`);
-step(`<g class="rg" data-k="?" id="gv" data-hide="#gp" data-d="2400" style="transform-origin:800px 420px"><text class="lbl acc" x="800" y="412" text-anchor="middle" style="font-size:34px;letter-spacing:.06em">OBJECTIF</text><text class="lbl acc" x="800" y="452" text-anchor="middle" style="font-size:34px;letter-spacing:.06em">VALIDÉ</text></g>`);
+step(`<g class="rg" data-k="?" id="gp" data-d="1600" style="transform-origin:800px 500px"><text class="lbl m acc" x="800" y="510" text-anchor="middle" style="font-size:34px">Preuve</text></g>`);
+step(`<g class="rg" data-k="?" id="gv" data-hide="#gp" data-d="2400" style="transform-origin:800px 500px"><text class="lbl acc" x="800" y="492" text-anchor="middle" style="font-size:38px;letter-spacing:.06em">OBJECTIF</text><text class="lbl acc" x="800" y="536" text-anchor="middle" style="font-size:38px;letter-spacing:.06em">VALIDÉ</text></g>`);
 // 3. Une nouvelle boucle, rien au milieu. Le point repasse sur le fil déjà tracé ; Évaluation devient rouge, son contour
 //    clignote (l'alerte) ; à ce moment seulement, la preuve est rayée, « preuve refusée ».
 const A = pass([0, 1, 2], 3), B = pass([3, 4], 0);
@@ -66,17 +66,17 @@ const below = `x="${f(centers[3].x)}" y="${f(centers[3].y + r + 32)}"`;
 blank(`data-hide="#gv"`, 400);
 step(`<g class="a" data-k="?" data-d="1900" data-dur="1800" data-pulses="${pulses(A.at)}"><path class="arrow ghost" pathLength="1" d="${A.d}"/></g>`);
 step(`<g class="a" data-k="?" data-d="1300" data-dur="1200" data-pulses="${pulses(B.at)}"><path class="arrow ghost" pathLength="1" d="${B.d}"/></g>`);
-step(`<g class="rg" data-k="?" id="gx" data-blink="gxt" data-d="2800" style="transform-origin:800px 420px"><text class="lbl m" x="800" y="406" text-anchor="middle" style="font-size:30px;fill:#8c95a8">Preuve</text><line x1="748" y1="380" x2="852" y2="414" stroke="#ff6b61" stroke-width="7" stroke-linecap="round"/><line x1="852" y1="380" x2="748" y2="414" stroke="#ff6b61" stroke-width="7" stroke-linecap="round"/><text class="lbl red" id="gxt" x="800" y="450" text-anchor="middle" style="font-size:24px;font-weight:700">preuve refusée</text><text class="lbl red" id="gxs" x="800" y="478" text-anchor="middle" style="font-size:19px">une citation ne tient pas</text></g>`);
+step(`<g class="rg" data-k="?" id="gx" data-blink="gxt" data-d="2800" style="transform-origin:800px 500px"><text class="lbl m" x="800" y="486" text-anchor="middle" style="font-size:34px;fill:#8c95a8">Preuve</text><line x1="748" y1="458" x2="852" y2="496" stroke="#ff6b61" stroke-width="7" stroke-linecap="round"/><line x1="852" y1="458" x2="748" y2="496" stroke="#ff6b61" stroke-width="7" stroke-linecap="round"/><text class="lbl red" id="gxt" x="800" y="534" text-anchor="middle" style="font-size:24px;font-weight:700">preuve refusée</text><text class="lbl red" id="gxs" x="800" y="564" text-anchor="middle" style="font-size:19px">une citation ne tient pas</text></g>`);
 // 4. On applique les corrections : le point repasse vite sur les ronds verts, qui se revalident ; Évaluation redevient vert ; OBJECTIF PROUVÉ.
 step(`<g class="a" data-k="?" data-d="1500" data-dur="1400" data-pulses="${pulses(A.at)}"><path class="arrow ghost" pathLength="1" d="${A.d}"/></g>`);
-step(`<g class="b" data-k="?" id="rc" data-hide="#gxs" data-d="1600"><text class="lbl okt" x="800" y="478" text-anchor="middle" style="font-size:22px">il relit la page, réécrit dans ses mots</text></g>`);
+step(`<g class="b" data-k="?" id="rc" data-hide="#gxs" data-d="1600"><text class="lbl okt" x="800" y="564" text-anchor="middle" style="font-size:22px">il relit la page, réécrit dans ses mots</text></g>`);
 step(`<g class="a" data-k="?" data-d="1100" data-dur="1000" data-pulses="${pulses(B.at)}"><path class="arrow ghost" pathLength="1" d="${B.d}"/></g>`);
-step(`<g class="rg" data-k="?" id="gv2" data-hide="#gx,#rc" data-pulse="o1:strong" data-d="2600" style="transform-origin:800px 420px"><text class="lbl acc" x="800" y="412" text-anchor="middle" style="font-size:34px;letter-spacing:.06em">OBJECTIF</text><text class="lbl acc" x="800" y="452" text-anchor="middle" style="font-size:34px;letter-spacing:.06em">PROUVÉ</text></g>`);
+step(`<g class="rg" data-k="?" id="gv2" data-hide="#gx,#rc" data-pulse="o1:strong" data-d="2600" style="transform-origin:800px 500px"><text class="lbl acc" x="800" y="492" text-anchor="middle" style="font-size:38px;letter-spacing:.06em">OBJECTIF</text><text class="lbl acc" x="800" y="536" text-anchor="middle" style="font-size:38px;letter-spacing:.06em">PROUVÉ</text></g>`);
 g.push('</g>');
 // 5. La boucle rétrécit jusqu'au point blanc, qui repart vers l'écran suivant.
-step(`<g class="b" data-k="?" id="dotc" data-shrink="loop" data-d="1100"><circle cx="800" cy="420" r="9" fill="#fff" style="filter:drop-shadow(0 0 8px rgba(46,230,160,.9))"/></g>`);
+step(`<g class="b" data-k="?" id="dotc" data-shrink="loop" data-d="1100"><circle cx="800" cy="500" r="9" fill="#fff" style="filter:drop-shadow(0 0 8px rgba(46,230,160,.9))"/></g>`);
 blank(``, 500);
-step(`<g class="a" data-k="?" data-d="1300" data-dur="1200" data-hide="#dotc"><path class="arrow" pathLength="1" d="M800,420 C960,420 1040,488 1160,488"/></g>`);
+step(`<g class="a" data-k="?" data-d="1300" data-dur="1200" data-hide="#dotc"><path class="arrow" pathLength="1" d="M800,500 C980,500 1020,488 1160,488"/></g>`);
 step(`<g class="b" data-k="?" data-d="2000"><text class="lbl amber" x="1175" y="498" style="font-size:30px">Où l'envoyer ?</text></g>`);
 step(`<g class="a" data-k="?" data-d="900" data-dur="800"><path class="arrow" pathLength="1" d="M1395,488 L1600,488"/></g>`);
 
