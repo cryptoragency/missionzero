@@ -380,7 +380,7 @@ const COURT = [
   ['⚠ aucun en-tête de sécurité', '⚠ en-têtes absents'], ['quand elle a le temps', 'quand elle peut'], ['le soir, après les commandes', 'le soir'], ['⚠ carte bancaire en clair', '⚠ carte en clair'],
   ['⚠ jQuery 2012 · 4 failles connues', '⚠ jQuery 2012'], ['pas les compétences, pas le budget', 'ni budget, ni compétence'], ['⚠ mot de passe faible accepté', '⚠ mot de passe faible'],
   ['sur 26 sites d’entreprises scannés par MYTHOZOR ARGUS, 81 % sans protection contre l’injection de code', '26 sites scannés par MYTHOZOR ARGUS · 81 % sans protection'],
-  ['Ça arrive. C’est certain. La seule question, c’est quand.', 'La seule question : quand.'],
+  ['Ça arrive. C’est certain. La seule question, c’est quand.', ' '],
   ['sur vos serveurs · rien ne sort', 'vos serveurs · rien ne sort'], ['🌿 votre site · votre serveur', '🌿 votre site'], ['35 contrôles, en continu, jour et nuit', '35 contrôles · jour et nuit'],
   ['⚠ nouvelle faille, en direct', '⚠ nouvelle faille'], ['en-têtes : protection sautée', 'en-têtes sautés'], ['Mission Zero, branché', 'Mission Zero'], ['✔ correctif confirmé, sur une copie', '✔ confirmé sur une copie'],
   ['mode manuel : un clic par correctif, dans votre espace', 'manuel : un clic, dans votre espace'], ['appliqué tout seul, vous êtes prévenu, vous pouvez revenir en arrière', 'tout seul · prévenu · retour possible'],
