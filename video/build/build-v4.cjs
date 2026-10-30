@@ -209,79 +209,7 @@ const s1old = `  <section class="scene" id="s1">
 `;
 // La correction (AVEC MISSION ZERO), redessinée au millimètre : chaque fil part du bord d'un élément et arrive au bord du
 // suivant, chaque texte est centré sur sa boîte ou son rond, aucun fil ne traverse un rond, une boîte ou un texte.
-const s2geo = (function () {
-  const RY = 430, RR = 70, X = [410, 640, 870, 1100, 1330];
-  let k = 0; const g = [];
-  const step = (s) => { k += 1; g.push(s.replace('data-k="?"', `data-k="${k}"`)); };
-  const ring = (n, attrs, top, name, d) => step(`<g class="b" data-k="?" ${attrs} data-d="${d || 1100}"><circle class="ring" id="r${n}" cx="${X[n - 1]}" cy="${RY}" r="${RR}"/><text class="lbl m" x="${X[n - 1]}" y="${RY - 7}" text-anchor="middle">${n}</text><text class="lbl s" x="${X[n - 1]}" y="${RY + 23}" text-anchor="middle" style="fill:var(--fg)">${name}</text><text class="lbl s" x="${X[n - 1]}" y="${RY - RR - 25}" text-anchor="middle">${top}</text></g>`);
-  const arrow = (d, attrs, cls) => step(`<g class="a" data-k="?" ${attrs || ''}><path class="arrow${cls ? ' ' + cls : ''}" pathLength="1" d="${d}"/></g>`);
-  // Le site, le scanner, Mission Zero : trois boîtes sur une ligne, le fil d'un bord à l'autre.
-  step(`<g class="b" data-k="?" data-d="1500"><rect class="box red" id="siteBox" x="40" y="40" width="300" height="190" rx="16"/><text class="lbl m red" id="siteT" x="190" y="76" text-anchor="middle">Votre site · 5 failles</text><rect class="tile" x="70" y="96" width="60" height="44" rx="6"/><rect class="tile" x="140" y="96" width="60" height="44" rx="6"/><rect class="tile" x="210" y="96" width="60" height="44" rx="6"/><rect class="tile" x="70" y="150" width="200" height="24" rx="6"/><text class="lbl xs" x="190" y="210" text-anchor="middle">tel qu'il est, en ligne</text></g>`);
-  arrow('M340,135 L420,135');
-  step(`<g class="b" data-k="?" data-d="1600"><rect class="box" x="420" y="40" width="360" height="190" rx="16"/><text class="lbl m" x="600" y="76" text-anchor="middle">Un scanner, n'importe lequel</text><text class="lbl s red" id="scan5" x="600" y="132" text-anchor="middle">⚠ 5 failles listées</text><text class="lbl xs" x="600" y="190" text-anchor="middle">MYTHOZOR ARGUS, CVE, dépendances : même liste</text></g>`);
-  arrow('M780,135 L860,135');
-  step(`<g class="b" data-k="?" data-d="2600"><rect class="box gold" id="mzBox" x="860" y="40" width="700" height="190" rx="16"/><text class="lbl acc" x="1210" y="82" text-anchor="middle" style="font-size:30px">Mission Zero part de zéro</text><text class="lbl s" x="1210" y="160" text-anchor="middle" style="font-size:20px">une copie du site, aucun plan, l'ordre de prouver</text></g>`);
-  // De Mission Zero au correctif : une seule courbe douce, au-dessus des légendes des contrôles.
-  arrow('M1210,230 C1210,268 1170,278 1100,278 L330,278 C220,278 155,290 155,355', 'data-dur="1300" data-d="1400"');
-  step(`<g class="b" data-k="?" id="fix1" data-d="1500"><rect class="box gold" x="40" y="355" width="230" height="150" rx="16"/><text class="lbl acc" x="155" y="422" text-anchor="middle">Correctif n°1</text><text class="lbl s" x="155" y="456" text-anchor="middle">appliqué sur la copie</text></g>`);
-  arrow(`M270,${RY} L340,${RY}`);
-  ring(1, 'data-ring="r1"', 'les tests du client', 'Parcours', 1500);
-  arrow(`M480,${RY} L570,${RY}`);
-  ring(2, 'data-ring="r2"', 'la faille a disparu ?', 'Rescan', 1500);
-  arrow(`M710,${RY} L800,${RY}`);
-  // Le contrôle 3 : le rond apparaît, il regarde la page… puis son contour passe au rouge et clignote : l'alerte.
-  ring(3, '', 'Muse Spark + SAM', 'Regard', 1500);
-  step(`<g class="b" data-k="?" data-ring="r3:bad" data-blink="r3" data-d="1500"><text class="lbl xs" x="0" y="0"> </text></g>`);
-  arrow(`M870,${RY + RR} L870,532`, 'id="red0" data-dur="500" data-d="600"', 'red');
-  step(`<g class="b" data-k="?" id="red1" data-d="4200"><text class="lbl red" x="870" y="560" text-anchor="middle" style="font-size:22px;font-weight:700">✖ le correctif a altéré le HTML de la page de paiement :</text><text class="lbl red" x="870" y="592" text-anchor="middle" style="font-size:24px;font-weight:800">il faut le refaire</text><text class="lbl s" x="870" y="622" text-anchor="middle">le formulaire : 5 champs avant, 2 après</text></g>`);
-  arrow('M870,640 C870,690 760,690 560,690', 'id="red2" data-dur="900" data-d="1000"', 'red');
-  step(`<g class="b" data-k="?" id="red3" data-d="1900"><rect class="box red" x="300" y="645" width="260" height="90" rx="16"/><text class="lbl red" x="430" y="682" text-anchor="middle">Refusé</text><text class="lbl s" x="430" y="715" text-anchor="middle">par lui-même</text></g>`);
-  arrow('M300,690 C200,690 155,660 155,505', 'id="red4" data-dur="900" data-d="1000"', 'red');
-  step(`<g class="b" data-k="?" data-hide="#fix1,#red0,#red1,#red2,#red3,#red4" data-ring="r3:off" data-d="1900"><rect class="box gold" id="fix2" x="40" y="355" width="230" height="150" rx="16"/><text class="lbl acc" x="155" y="422" text-anchor="middle">Correctif n°2</text><text class="lbl s" x="155" y="456" text-anchor="middle">refait, sur une copie neuve</text></g>`);
-  // Les contrôles 1 et 2 rejoués : le point repasse sur le fil et sur le haut de chaque rond, qui pulse à son passage.
-  const L1 = 70, A = Math.PI * RR, L2 = 90, L3 = 90; const tot = L1 + A + L2 + A + L3;
-  const p1 = ((L1 + A / 2) / tot).toFixed(3), p2 = ((L1 + A + L2 + A / 2) / tot).toFixed(3);
-  arrow(`M270,${RY} L340,${RY} A${RR},${RR} 0 0,1 480,${RY} L570,${RY} A${RR},${RR} 0 0,1 710,${RY} L800,${RY}`, `data-dur="1500" data-d="1600" data-pulses="r1@${p1}:strong,r2@${p2}:strong"`, 'ghost');
-  step(`<g class="b" data-k="?" data-d="1200"><text class="lbl xs" x="525" y="${RY + RR + 32}" text-anchor="middle">1 et 2 rejoués, toujours verts</text></g>`);
-  step(`<g class="b" data-k="?" data-ring="r3" data-pulse="r3:strong" data-d="1600"><text class="lbl xs okt" x="870" y="${RY + RR + 32}" text-anchor="middle">page intacte : 5 champs sur 5</text></g>`);
-  arrow(`M940,${RY} L1030,${RY}`);
-  ring(4, 'data-ring="r4"', 'cause ou symptôme ?', 'Relecture', 1500);
-  arrow(`M1170,${RY} L1260,${RY}`);
-  ring(5, 'data-ring="r5"', 'écrites, jamais cachées', 'Réserves', 1500);
-  arrow(`M1330,${RY + RR} L1330,600`);
-  step(`<g class="b" data-k="?" data-d="3600"><rect class="box ok" x="1070" y="600" width="520" height="130" rx="16"/><text class="lbl acc" x="1330" y="642" text-anchor="middle">Confirmé · patch + preuves</text><text class="lbl s" x="1330" y="690" text-anchor="middle" style="fill:var(--fg)">un humain applique, ou l'automatique</text></g>`);
-  // Le correctif repart vers le site en remontant le fil déjà tracé, sans rien croiser : Confirmé → 5 → 4 → 3 → 2 → 1 →
-  // Correctif → Mission Zero part de zéro → scanner → Votre site. Chaque élément repasse au vert à son passage ; à l'arrivée,
-  // tout est vert : la faille est corrigée en live, automatique (gérant, 30 octobre, 17 h).
-  arrow(`M1330,600 L1330,${RY} L270,${RY}`, 'data-dur="2600" data-d="2700" data-pulses="r5@0.138:strong,r4@0.325:strong,r3@0.512:strong,r2@0.699:strong,r1@0.886:strong,fix2@0.995:strong"', 'ghost');
-  arrow('M155,355 C155,290 220,278 330,278 L1100,278 C1170,278 1210,268 1210,230', 'data-dur="1400" data-d="1500" data-pulses="mzBox@0.99:strong"', 'ghost');
-  arrow('M860,135 L780,135', 'data-dur="500" data-d="600"', 'ghost');
-  step(`<g class="b" data-k="?" data-hide="#scan5" data-d="900"><text class="lbl s okt" x="600" y="132" text-anchor="middle">✔ 0 faille</text></g>`);
-  arrow('M420,135 L340,135', 'data-dur="500" data-d="600"', 'ghost');
-  step(`<g class="b" data-k="?" data-hide="#siteBox,#siteT" data-d="3400"><rect class="box ok" x="40" y="40" width="300" height="190" rx="16" style="filter:drop-shadow(0 0 12px rgba(46,230,160,.7))"/><text class="lbl m acc" x="190" y="76" text-anchor="middle">Votre site · 0 faille</text><rect class="chip ok" x="46" y="146" width="288" height="32" rx="16"/><text class="chip-t" x="190" y="167" text-anchor="middle" style="font-size:14.5px;font-weight:700">✔ faille corrigée · en live · automatique</text></g>`);
-  step(`<g class="b" data-k="?" data-d="2400"><text class="lbl xs" x="0" y="0"> </text></g>`);
-  const cap = ['Le même site, ses cinq failles.', null, 'Un scanner les liste. N’importe lequel.', null,
-    '<b>Mission Zero part de zéro.</b> Une copie du site et l’ordre de prouver.', null, 'Un premier correctif, sur une copie.', null,
-    'Contrôle 1&nbsp;: les tests du client. Vert.', null, 'Contrôle 2&nbsp;: le scanner. Vert.', null,
-    'Contrôle 3&nbsp;: il regarde la page…', '<b class="r">Rouge.</b>', null,
-    'Le correctif a altéré le HTML de la page de paiement&nbsp;: <b class="r">il faut le refaire.</b>', null,
-    '<b class="r">Refusé</b>, par lui-même.', null, '<b>Correctif n°2</b>, sur une copie neuve.',
-    'Contrôles 1 et 2 rejoués&nbsp;: toujours verts.', null, 'Contrôle 3&nbsp;: la page est intacte. Vert.', null,
-    'Contrôle 4&nbsp;: la relecture. La cause, pas le symptôme. Vert.', null, 'Contrôle 5&nbsp;: les réserves, écrites. Vert.', null,
-    'Cinq verts&nbsp;: <b>confirmé</b>. Un humain applique, ou l’automatique.',
-    'Le correctif repart vers le site&nbsp;: cinq, quatre, trois, deux, un.', null, null, 'Le scanner ne voit plus rien.', null,
-    '<b>La faille est corrigée, en live, en automatique.</b> Tout est vert.', 'Il part de zéro, se refuse et confirme. Seul.'];
-  if (cap.length !== k) throw new Error('s2 : ' + k + ' étapes, ' + cap.length + ' légendes');
-  const sec = `  <section class="scene" id="s2">
-    <header><h2>3 · CORRECTION AVEC MISSION ZERO</h2><span class="t">correction</span></header>
-    <svg viewBox="0 0 1600 900" role="img" aria-label="Le site et ses failles, un scanner, Mission Zero qui part de zéro, cinq contrôles, un rouge : le correctif a altéré la page de paiement, il le refait, confirmé">
-      ${g.join('\n      ')}
-    </svg>
-    <div class="caption" id="c2"></div>
-  </section>
-`;
-  return { sec, cap };
-})();
+const s2geo = require('./s2-geo.cjs');
 // La boutique : les tuiles un peu plus basses pour libérer une ligne sous l'en-tête ; chaque alerte posée dans un espace libre,
 // alignée sur ce qu'elle désigne (en-tête, prix du Ficus, bouton Payer, ligne jQuery, « Mon compte »).
 const fixS1 = (x) => {
@@ -322,9 +250,11 @@ const fixS3 = (x) => {
 // ARGUS : le fil ressort de « Vous validez » vers la droite, à la hauteur d'entrée de l'écran des choix (488 px à l'écran).
 const addExit3 = (x) => { const i = x.lastIndexOf('\n    </svg>'); return x.slice(0, i) + '\n      <g class="a" data-k="19" data-dur="900" data-d="950"><path class="arrow" pathLength="1" d="M1520,425.3 L1642.2,425.3"/></g>' + x.slice(i); };
 const pick = (id, next) => { let x = src.slice(src.indexOf('<section class="scene" id="' + id + '">'), src.indexOf('<section class="scene" id="' + next + '">')); var i = x.indexOf("<div class=\"bar\">"); if (i >= 0) { var j = x.indexOf("</div>", i) + 7; x = x.slice(0, i) + x.slice(j); } return x; };
+const marks = (sec, n) => { var o = sec.indexOf('<svg viewBox="0 0 1600 900"'); var oe = sec.indexOf('>', o) + 1; var dots = ''; for (var i = 0; i < 6; i++) dots += '<circle class="mark' + (i < n ? ' done' : i === n ? ' now' : '') + '" cx="' + (1420 + i * 26) + '" cy="38" r="6"/>'; return sec.slice(0, oe) + '<g class="marks">' + dots + '</g>' + sec.slice(oe); };
 const titled = (sec, label, cls, sub) => { var o = sec.indexOf('<svg viewBox="0 0 1600 900"'); var oe = sec.indexOf('>', o) + 1; var ce = sec.indexOf('</svg>', oe); var head = '<text class="lbl ' + cls + '" x="800" y="40" text-anchor="middle" style="font-size:26px;letter-spacing:.2em;font-weight:700">' + label + '</text>' + (sub ? '<text class="lbl s" x="800" y="70" text-anchor="middle" style="font-size:20px;letter-spacing:.08em">' + sub + '</text>' : ''); return sec.slice(0, oe) + head + '<g transform="translate(' + (sub ? '40,84) scale(0.95)' : '32,56) scale(0.96)') + '">' + sec.slice(oe, ce) + '</g>' + sec.slice(ce); };
 const sB = titled(sBgeo.sec, 'OÙ L’ENVOYER ?', 'amber'), sE = titled(sEgeo.sec, 'L’ESPACE · AVEC MISSION ZERO', 'acc'), sM = titled(sMgeo.sec, 'LA MÉDECINE · AVEC MISSION ZERO', 'acc'), sZ = sZgeo.sec;
 const s1 = titled(fixS1(pick('s1', 's2')), 'SANS MISSION ZERO', 'red'), s2 = titled(s2geo.sec, 'AVEC MISSION ZERO', 'acc'), s3 = titled((function (x) { var i = x.indexOf('<g class="b" data-k="19"><text class="lbl acc" x="800" y="822"'); if (i < 0) return x; var j = x.indexOf('</g>', i) + 4; return x.slice(0, i) + x.slice(j); })(addExit3(fixS3(pick('s3', 'sE')))), 'EXEMPLE D’UTILISATION AVEC MISSION ZERO', 'acc', 'MYTHOZOR ARGUS · surveillance cybersécurité');
+const S0 = marks(s0, 0), S1 = marks(s1, 1), S2 = marks(s2, 2), S3 = marks(s3, 3), SE = marks(sE, 4), SM = marks(sM, 5);
 const CAP = {
   s0: geo.cap,
   sB: sBgeo.cap.securite, sB2: sBgeo.cap.espace, sB3: sBgeo.cap.medecine,
@@ -479,6 +409,7 @@ const extra = `<style>
 .field { fill:#fff; stroke:#999; stroke-width:1.5; } .field.gone { fill:none; stroke:var(--red); stroke-dasharray:5 4; }
 /* Surbrillance au passage du point : une pulsation du contour, rien de plus. Forte quand on revalide. */
 .ring.pulse { animation: ringpulse .6s ease-out; } .ring.pulse.strong { animation: ringpulse-strong 1.2s ease-out; }
+.mark { fill:none; stroke:var(--mut); stroke-width:2; } .mark.done { fill:var(--acc2); stroke:var(--acc2); } .mark.now { fill:var(--acc); stroke:#fff; stroke-width:2.5; }
 .box.pulse { animation: ringpulse .6s ease-out; } .box.pulse.strong { animation: ringpulse-strong 1.2s ease-out; }
 @keyframes ringpulse { 0% { stroke-width:3; filter:none; } 30% { stroke-width:7; filter:drop-shadow(0 0 10px rgba(46,230,160,.9)); } 100% { stroke-width:3; filter:none; } }
 @keyframes ringpulse-strong { 0% { stroke-width:3; filter:none; } 25% { stroke-width:9; filter:drop-shadow(0 0 18px rgba(46,230,160,1)); } 100% { stroke-width:3; filter:drop-shadow(0 0 6px rgba(46,230,160,.6)); } }
@@ -518,7 +449,7 @@ body.black { background:#000; } body.black .scene { background:#000; } body.blac
 .arrow.ghost { stroke: none; } .a.drawn .arrow.ghost { marker-end: none; }
 @keyframes neon { 0% { opacity:0; } 12% { opacity:1; } 18% { opacity:.15; } 30% { opacity:1; } 36% { opacity:.3; } 50%, 100% { opacity:1; } }
 </style>`;
-const html = `<!doctype html>
+let html = `<!doctype html>
 <html lang="fr">
 <meta charset="utf-8">
 <title>Mission Zero · le film</title>
@@ -527,20 +458,55 @@ ${extra}
 <div class="wrap">
   <h1>Mission Zero, le film · une minute <small>Le modèle du 29 octobre, raccourci : des phrases courtes, les flèches qui se dessinent, le point qui court devant, chaque élément qui apparaît et reste. Voix française (le fondateur), sous-titres anglais incrustés au montage.</small></h1>
   <div class="filmbar"><button class="big" id="go">▶ Lancer le film</button><button data-ch="s0">1 · La boucle</button><button data-ch="sB" data-pass="securite">· Où l'envoyer ?</button><button data-ch="s1">2 · Constat</button><button data-ch="s2">3 · Correction</button><button data-ch="s3">4 · MYTHOZOR ARGUS</button><button data-ch="sB" data-pass="espace">· Choix : l'espace</button><button data-ch="sE">5 · L'espace</button><button data-ch="sB" data-pass="medecine">· Choix : la médecine</button><button data-ch="sM">6 · La médecine</button><button data-ch="sZ">· Fin</button><button id="grid">Voir tous les schémas</button><span id="clock" style="color:var(--mut)"></span></div>
-${typo(s0)}
+${typo(S0)}
 ${typo(sB)}
-${typo(s1)}
-${typo(s2)}
-${typo(s3)}
-${typo(sE)}
-${typo(sM)}
+${typo(S1)}
+${typo(S2)}
+${typo(S3)}
+${typo(SE)}
+${typo(SM)}
 ${typo(sZ)}
 </div>
 ${script}
 </html>
 `;
+// Textes courts, partout (gérant, 30 octobre 18 h 50) : chaque mot compte, on enlève le surplus. Appliqués sur le film assemblé,
+// textes du dessin (entre > et <) et légendes (entre guillemets du JSON).
+const COURT = [
+  ['Premier voyage : la sécurité d’un site.', '1 · La sécurité d’un site.'], ['Deuxième voyage : l’espace.', '2 · L’espace.'], ['Dernier voyage : la médecine.', '3 · La médecine.'], ['🛡 La sécurité d’un site', '🛡 La sécurité'],
+  ['🌿 Maison Verde · boutique en ligne', '🌿 Maison Verde · boutique'], ['une personne, souvent', 'souvent seule'], ['le site, les clients, la sécurité', 'site · clients · sécurité'],
+  ['⚠ aucun en-tête de sécurité', '⚠ en-têtes absents'], ['quand elle a le temps', 'quand elle peut'], ['le soir, après les commandes', 'le soir'], ['⚠ carte bancaire en clair', '⚠ carte en clair'],
+  ['⚠ jQuery 2012 · 4 failles connues', '⚠ jQuery 2012'], ['pas les compétences, pas le budget', 'ni budget, ni compétence'], ['⚠ mot de passe faible accepté', '⚠ mot de passe faible'],
+  ['sur 26 sites d’entreprises scannés par MYTHOZOR ARGUS, 81 % sans protection contre l’injection de code', '26 sites scannés par MYTHOZOR ARGUS · 81 % sans protection'],
+  ['Ça arrive. C’est certain. La seule question, c’est quand.', 'La seule question : quand.'],
+  ['sur vos serveurs · rien ne sort', 'vos serveurs · rien ne sort'], ['🌿 votre site · votre serveur', '🌿 votre site'], ['35 contrôles, en continu, jour et nuit', '35 contrôles · jour et nuit'],
+  ['⚠ nouvelle faille, en direct', '⚠ nouvelle faille'], ['en-têtes : protection sautée', 'en-têtes sautés'], ['Mission Zero, branché', 'Mission Zero'], ['✔ correctif confirmé, sur une copie', '✔ confirmé sur une copie'],
+  ['mode manuel : un clic par correctif, dans votre espace', 'manuel : un clic, dans votre espace'], ['appliqué tout seul, vous êtes prévenu, vous pouvez revenir en arrière', 'tout seul · prévenu · retour possible'],
+  ['les deux existent : c’est vous qui choisissez', 'vous choisissez'], ['et MYTHOZOR ARGUS vérifie à nouveau', 'ARGUS revérifie'], ['✔ corrigé, tout est vert', '✔ tout est vert'], ['le rouge est repassé au vert', ' '],
+  ['« On va quelque part ? » Posée deux fois.', '« On va quelque part ? » · deux fois'], ['Sans Mission Zero · le modèle seul', 'SANS MISSION ZERO'], ['Avec Mission Zero', 'AVEC MISSION ZERO'],
+  ['4 sources sur 5 : personne ne peut les ouvrir', '4 sources sur 5 · introuvables'], ['4 chiffres · 1 dollar · chacun avec sa page', '4 chiffres · 1 dollar · chacun sa page'], ['ce qu’il n’a pas pu lire, il le dit', 'pas lu ? il le dit'],
+  ['km/s · et vous ne sentez rien', 'km/s'], ['Hercule, 19,7 km/s · manuel de 1981', 'Hercule, 19,7 km/s · 1981'], ['Trois vitesses au centième · 2010', '3 vitesses au centième · 2010'],
+  ['Rayon et vitesse de la galaxie · 2014', 'la galaxie · 2014'], ['Le fond du ciel au centième · 2020', 'le fond du ciel · 2020'], ['Hercule, 20 km/s · Univ. du Maryland', 'Hercule, 20 km/s · Maryland'],
+  ['230 km/s · NASA, mot pour mot', '230 km/s · NASA'], ['Univ. du Maryland · vérifié ✔', 'Maryland · vérifié ✔'], ['NASA, mot pour mot · vérifié ✔', 'NASA · vérifié ✔'], ['Tully et al., Nature 2014 · vérifié ✔', 'Nature 2014 · vérifié ✔'],
+  ['pas le temps de les lire', 'pas le temps'], ['il analyse les chiffres, les affiche, et ils sont vrais', 'les chiffres, affichés, vrais'], ['vérifié ✔ · OMS, Global TB Report 2024', 'vérifié ✔ · OMS 2024'],
+  ['la veille · grippe, Sentinelles, pour 100 000', 'la veille · grippe · Sentinelles'], ['3 sources citées · aucun commentaire publié, il le dit', '3 sources · aucun commentaire, il le dit'],
+];
+const COURT_CAP = [
+  ['Une faille : aucun en-tête de sécurité.', 'Une faille : en-têtes absents.'], ['Une autre : le prix changé par le client.', 'Une autre : le prix modifiable.'],
+  ['<b>8 sites sur 10 restent exposés.</b> La seule question, c’est quand.', '<b>8 sites sur 10 exposés.</b> La seule question : quand.'],
+  ['<b>Mission Zero</b> la prend. Copie, correctif, cinq contrôles, patch.', '<b>Mission Zero</b> la prend. Copie, correctif, cinq contrôles.'],
+];
+const court = (h) => {
+  const both = (t) => [t, t.replace(/’/g, "'")];
+  COURT.forEach(([o, n]) => both(o).forEach((x) => { h = h.split('>' + x + '<').join('>' + n + '<'); }));
+  COURT_CAP.forEach(([o, n]) => both(o).forEach((x) => { h = h.split('"' + x + '"').join('"' + n + '"'); }));
+  return h;
+};
+html = court(html);
+const DEV = process.argv.includes('--dev');
+if (DEV) html = html.replace('<title>Mission Zero · le film</title>', '<title>Mission Zero · le film · DEV</title>').replace('Mission Zero, le film · une minute <small>', 'Mission Zero, le film · VERSION DE DEV <small>');
 if (require.main === module) {
-  fs.writeFileSync(__dirname + '/../film-v4.html', html);
+  fs.writeFileSync(__dirname + (DEV ? '/../film-v4-dev.html' : '/../film-v4.html'), html);
   console.log('film-v4.html', html.length, 'octets; s0 steps:', (s0.match(/data-k=/g) || []).length, 'sB steps:', (sB.match(/data-k=/g) || []).length, 's1 steps:', (s1.match(/data-k=/g) || []).length);
 }
 // Source unique du film (décision du gérant, 30 octobre) : build-v4.cjs → film-v4.html.
