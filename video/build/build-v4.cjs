@@ -175,7 +175,9 @@ const script = `<script>
   var SVGNS = 'http://www.w3.org/2000/svg';
   var CAP = ${JSON.stringify(CAP).replace(/'/g, '’')};
   var timers = {}, pass = {}, SPEED = {};
-  function speedOf(el) { var sc = el.closest('.scene'); return (sc && SPEED[sc.id]) || 1; }
+  var RATE = 1;
+  function speedOf(el) { var sc = el.closest('.scene'); return ((sc && SPEED[sc.id]) || 1) * RATE; }
+  document.getElementById('x2').addEventListener('click', function () { RATE = RATE === 1 ? 0.5 : 1; this.textContent = RATE === 1 ? '×2' : '×2 · actif'; this.classList.toggle('big', RATE !== 1); });
   function steps(id) { var p = pass[id] || 'all'; return Array.prototype.slice.call(document.querySelectorAll('#' + id + ' [data-k]')).filter(function (s) { return !s.dataset.pass || p === 'all' || s.dataset.pass === p; }); }
   function capId(id) { return 'c' + id.slice(1); }
   function roundPath(d, maxR) {
@@ -364,7 +366,7 @@ ${style}
 ${extra}
 <div class="wrap">
   <h1>Mission Zero, le film · une minute <small>Le modèle du 29 octobre, raccourci : des phrases courtes, les flèches qui se dessinent, le point qui court devant, chaque élément qui apparaît et reste. Voix française (le fondateur), sous-titres anglais incrustés au montage.</small></h1>
-  <div class="filmbar"><button class="big" id="go">▶ Lancer le film</button><button data-ch="s0">1 · La boucle</button><button data-ch="sB" data-pass="securite">· Où l'envoyer ?</button><button data-ch="s1">2 · Constat</button><button data-ch="s2">3 · Correction</button><button data-ch="s3">4 · MYTHOZOR ARGUS</button><button data-ch="sB" data-pass="espace">· Choix : l'espace</button><button data-ch="sE">5 · L'espace</button><button data-ch="sB" data-pass="medecine">· Choix : la médecine</button><button data-ch="sM">6 · La médecine</button><button data-ch="sZ">· Fin</button><button id="grid">Voir tous les schémas</button><span id="clock" style="color:var(--mut)"></span></div>
+  <div class="filmbar"><button class="big" id="go">▶ Lancer le film</button><button data-ch="s0">1 · La boucle</button><button data-ch="sB" data-pass="securite">· Où l'envoyer ?</button><button data-ch="s1">2 · Constat</button><button data-ch="s2">3 · Correction</button><button data-ch="s3">4 · MYTHOZOR ARGUS</button><button data-ch="sB" data-pass="espace">· Choix : l'espace</button><button data-ch="sE">5 · L'espace</button><button data-ch="sB" data-pass="medecine">· Choix : la médecine</button><button data-ch="sM">6 · La médecine</button><button data-ch="sZ">· Fin</button><button id="grid">Voir tous les schémas</button><button id="x2" title="Lecture deux fois plus vite">×2</button><span id="clock" style="color:var(--mut)"></span></div>
 ${typo(S0)}
 ${typo(sB)}
 ${typo(S1)}
