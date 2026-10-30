@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="fr">
+<meta charset="utf-8">
+<title>Mission Zero film · une minute</title>
+<style>
+/* Ambiance de la carte ARGUS (nuit, menthe, bleu), adoucie : peu de halo, le vert réservé aux titres et aux « OK ». */
+:root { --bg:#0d1526; --fg:#e8edf7; --mut:#a9b4cc; --line:rgba(255,255,255,.16); --card:rgba(255,255,255,.05); --acc:#2ee6a0; --acc2:rgba(46,230,160,.72); --accf:rgba(46,230,160,.12); --blue:#2d55d4; --red:#ff6b61; --redf:rgba(180,35,24,.22); --amber:#ffd27a; --mint:#c9fff0; color-scheme: dark; }
+body { background:var(--bg); color:var(--fg); font-family: "Segoe UI", system-ui, sans-serif; margin:0; padding-block:16px; padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px)); }
+.wrap { max-width: 1700px; margin: 0 auto; display:grid; gap:18px; }
+h1 { font-size: 1.4rem; margin:0; } h1 small { display:block; font-weight:400; color:var(--mut); font-size:.95rem; margin-top:4px; }
+.scene { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:12px; display:grid; gap:8px; min-width:0; }
+.scene header { display:flex; flex-wrap:wrap; gap:10px; align-items:baseline; justify-content:space-between; }
+.scene h2 { margin:0; font-size:1.1rem; } .scene .t { color:var(--acc2); font-size:.8rem; letter-spacing:.06em; text-transform:uppercase; }
+svg { width:100%; height:auto; display:block; font-family: "Segoe UI", system-ui, sans-serif; overflow:visible; }
+.b { opacity:0; transform-box: fill-box; transform-origin: center; }
+.b.on { animation: pop .8s cubic-bezier(.2,.8,.2,1) forwards; }
+.b.focus .box { filter: drop-shadow(0 0 8px rgba(46,230,160,.35)); }
+@keyframes pop { 0% { opacity:0; transform: scale(.86); } 55% { opacity:1; transform: scale(1.06); } 100% { opacity:1; transform: scale(1); } }
+.box { fill:rgba(255,255,255,.05); stroke:var(--line); stroke-width:2; }
+.box.gold { stroke:var(--acc2); stroke-width:2.5; fill:rgba(46,230,160,.06); }
+.box.blue { stroke:rgba(45,85,212,.8); stroke-width:2.5; fill:rgba(45,85,212,.14); }
+.box.ok { stroke:var(--acc2); fill:rgba(46,230,160,.07); } .box.red { stroke:rgba(255,107,97,.8); fill:var(--redf); } .box.amber { stroke:rgba(255,210,122,.8); fill:rgba(255,210,122,.08); }
+.lbl { fill:var(--fg); font-size:26px; font-weight:600; } .lbl.m { font-size:21px; } .lbl.s { font-size:18px; font-weight:400; fill:var(--mut); } .lbl.xs { font-size:15px; font-weight:400; fill:var(--mut); }
+.lbl.acc { fill:var(--acc); } .lbl.red { fill:var(--red); } .lbl.amber { fill:var(--amber); } .lbl.okt { fill:#bff5dd; }
+.code { font-family: Consolas, "Courier New", monospace; font-size:15px; fill:var(--mut); } .code.add { fill:#8fe6c0; } .code.del { fill:#ff9d95; }
+.tile { fill:rgba(255,255,255,.04); stroke:var(--line); stroke-width:1.5; } .leaf { fill:rgba(46,230,160,.28); }
+.badge { fill:var(--redf); stroke:rgba(255,107,97,.85); stroke-width:2; } .badge-t { fill:#ffd2ce; font-size:18px; font-weight:600; }
+.badge.ok { fill:var(--accf); stroke:var(--acc2); } .badge-t.ok { fill:#bff5dd; }
+.pill { stroke-width:2; } .pill.ok { fill:var(--accf); stroke:var(--acc2); } .pill.ko { fill:var(--redf); stroke:rgba(255,107,97,.85); }
+.hidden { display:none; }
+/* Flèches : épaisses, arrondies, douces ; se dessinent avec un point qui court devant ; jamais de croisement. */
+.arrow { stroke:var(--acc2); stroke-width:5; stroke-linecap:round; stroke-linejoin:round; fill:none; stroke-dasharray:1; stroke-dashoffset:1; transition: stroke-dashoffset 1s linear; }
+.arrow.red { stroke:rgba(255,107,97,.8); } .arrow.ghost { stroke:none; }
+.a.on .arrow { stroke-dashoffset:0; } .a.drawn .arrow { marker-end:url(#mok); } .a.drawn .arrow.red { marker-end:url(#mred); } .a.drawn .arrow.ghost { marker-end:none; }
+.runner { fill:#fff; filter: drop-shadow(0 0 6px rgba(46,230,160,.8)); opacity:0; } .runner.go { opacity:1; }
+.ring { fill:rgba(255,255,255,.03); stroke:var(--mut); stroke-width:3; stroke-dasharray:7 9; transition: fill .5s, stroke .5s; }
+.ring.lit { fill:var(--accf); stroke:var(--acc2); stroke-dasharray:none; } .ring.bad { fill:var(--redf); stroke:rgba(255,107,97,.85); stroke-dasharray:none; }
+.mini { fill:rgba(255,255,255,.03); stroke:var(--mut); stroke-width:2; stroke-dasharray:4 5; }
+.chip { fill:rgba(255,255,255,.05); stroke:var(--line); stroke-width:2; transition: fill .5s, stroke .5s; }
+.chip.ok { fill:var(--accf); stroke:var(--acc2); } .chip.ko { fill:var(--redf); stroke:rgba(255,107,97,.85); } .chip.next { stroke:rgba(255,210,122,.7); fill:rgba(255,210,122,.06); }
+.chip-t { font-size:15px; fill:var(--fg); }
+.bar { display:flex; flex-wrap:wrap; gap:8px; } button { background:rgba(255,255,255,.06); color:var(--fg); border:1px solid var(--line); border-radius:8px; padding:8px 12px; font:inherit; cursor:pointer; } button:hover { border-color:var(--acc2); }
+.caption { min-height:2.2em; font-size:1.15rem; } .caption b { color:var(--acc); }
+/* Le film : un seul écran, quatre chapitres, une carte-titre avant chacun. */
+.filmbar { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+.filmbar .big { background:rgba(46,230,160,.14); border-color:var(--acc2); font-weight:600; }
+.film .scene { display:none; } .film .scene.active { display:grid; } .film .scene header, .film .bar { display:none; }
+.card { display:none; aspect-ratio: 16/9; max-height: 70vh; border:1px solid var(--line); border-radius:16px; background: radial-gradient(ellipse at 50% 40%, rgba(45,85,212,.25), transparent 60%), var(--bg); place-items:center; text-align:center; padding: 24px; }
+.card.show { display:grid; }
+.card .n { color:var(--acc); font-size: clamp(28px, 4vw, 56px); font-weight:700; letter-spacing:.06em; }
+.card .h { color:var(--fg); font-size: clamp(30px, 5.2vw, 76px); font-weight:800; line-height:1.1; margin-top:12px; text-wrap: balance; max-width: 18ch; }
+.card .s { color:var(--mut); font-size: clamp(16px, 1.8vw, 26px); margin-top:18px; }
+.card.end .h { color:var(--acc); }
+
+/* Le fil du film : sur chaque carte-titre, le point traverse l'écran, le trait le suit. Jamais de rupture. */
+.card { position:relative; overflow:hidden; }
+.card .trail { position:absolute; left:0; bottom:calc(12% + 5px); height:4px; width:0; background:var(--acc2); border-radius:2px; }
+.card .dot { position:absolute; left:0; bottom:12%; width:14px; height:14px; border-radius:50%; background:#fff; box-shadow:0 0 10px var(--acc); opacity:0; }
+.card.show .trail { animation: grow 2.4s linear forwards; } .card.show .dot { animation: ride 2.4s linear forwards; }
+.card.end .trail, .card.end .dot { display:none; }
+@keyframes grow { from { width:0; } to { width:100%; } } @keyframes ride { 0% { left:0; opacity:1; } 99% { opacity:1; } 100% { left:calc(100% - 14px); opacity:0; } }
+.arrow.orbit { stroke-width:6; } .runner.go { opacity:1; }
+.zoom { animation: zoomin 1.3s cubic-bezier(.2,.8,.2,1) forwards; } .zoom .chip { fill:var(--accf); stroke:var(--acc); }
+@keyframes zoomin { to { transform: scale(1.35); } }
+#stars circle { pointer-events:none; }
+#speed { fill:var(--acc); }
+/* La carte de fin : le fil dessine le zéro, puis CRYPTOR.AGENCY et, dessous, MISSION ZERO. */
+.card .sym { display:none; } .card.end .sym { display:block; width: min(30vh, 200px); margin: 0 auto 6px; }
+.card.end .zero { fill:none; stroke:var(--acc); stroke-width:7; stroke-linecap:round; stroke-dasharray:1; stroke-dashoffset:1; animation: drawzero 2.2s cubic-bezier(.4,0,.2,1) forwards; }
+.card.end .core { fill:#fff; opacity:0; filter: drop-shadow(0 0 8px var(--acc)); animation: corein .5s 2.1s forwards; }
+.card.end .n { color:var(--mut); font-size: clamp(16px, 1.8vw, 24px); font-weight:400; letter-spacing:.02em; opacity:0; animation: fadein .8s 2.4s forwards; }
+.card.end .h { color:var(--fg); font-size: clamp(34px, 6vw, 88px); letter-spacing:.08em; opacity:0; animation: fadein .8s 2.6s forwards; max-width: none; }
+.card.end .s { color:var(--acc); font-size: clamp(22px, 3vw, 44px); letter-spacing:.42em; font-weight:700; margin-top:8px; opacity:0; animation: fadein .8s 3.1s forwards; }
+@keyframes drawzero { to { stroke-dashoffset:0; } } @keyframes corein { to { opacity:1; } } @keyframes fadein { to { opacity:1; } }
+/* Enregistrement vidéo (?record=1) : rien que l'écran du film et sa légende, cadré pour 1280 × 720. */
+.record body { padding:0; } .record h1, .record .filmbar { display:none; } .record .wrap { gap:6px; max-width:1280px; }
+.record .scene { border:none; border-radius:0; padding:6px 10px 0; background:transparent; } .record .scene svg { max-height:640px; margin:0 auto; }
+.record .caption { min-height:2em; font-size:1.05rem; text-align:center; padding:0 12px; } .record .card { max-height:none; aspect-ratio:auto; height:708px; border:none; border-radius:0; }
+</style>
+<style>
+.film .scene { display:none; } .film .scene.active { display:grid; } .film .scene header { display:none; }
+.field { fill:#fff; stroke:#999; stroke-width:1.5; } .field.gone { fill:none; stroke:var(--red); stroke-dasharray:5 4; }
+/* Surbrillance au passage du point : une pulsation du contour, rien de plus. Forte quand on revalide. */
+.ring.pulse { animation: ringpulse .6s ease-out; } .ring.pulse.strong { animation: ringpulse-strong 1.2s ease-out; }
+@keyframes ringpulse { 0% { stroke-width:3; filter:none; } 30% { stroke-width:7; filter:drop-shadow(0 0 10px rgba(46,230,160,.9)); } 100% { stroke-width:3; filter:none; } }
+@keyframes ringpulse-strong { 0% { stroke-width:3; filter:none; } 25% { stroke-width:9; filter:drop-shadow(0 0 18px rgba(46,230,160,1)); } 100% { stroke-width:3; filter:drop-shadow(0 0 6px rgba(46,230,160,.6)); } }
+/* L'alerte prise en compte : le rond rouge clignote. */
+.ring.bad.blink, .chip.ko.blink, .lbl.red.blink { animation: blink .5s steps(2, start) 5; }
+@keyframes blink { to { opacity:.25; } }
+.arrow.ghost { stroke:none; }
+</style>
+<div class="wrap">
+  <h1>Mission Zero, le film · une minute <small>Le modèle du 29 octobre, raccourci : des phrases courtes, les flèches qui se dessinent, le point qui court devant, chaque élément qui apparaît et reste. Voix française (le fondateur), sous-titres anglais incrustés au montage.</small></h1>
+  <div class="filmbar"><button class="big" id="go">▶ Lancer le film</button><button data-ch="s0">1 · La boucle</button><button data-ch="sB">· Où l'envoyer ?</button><button data-ch="s1">2 · Constat</button><button data-ch="s2">3 · Correction</button><button data-ch="s3">4 · MYTHOZOR ARGUS</button><button id="grid">Voir tous les schémas</button><span id="clock" style="color:var(--mut)"></span></div>
+  <section class="scene" id="s0">
+    <header><h2>1 · LA BOUCLE</h2><span class="t">ouverture</span></header>
+    <svg viewBox="0 0 1600 900" role="img" aria-label="La boucle de Mission Zero">
+      <g class="b" data-k="1" data-d="2600"><text class="lbl acc" x="800" y="80" text-anchor="middle" style="font-size:56px;letter-spacing:.04em">MISSION ZERO</text><text class="lbl s" x="800" y="118" text-anchor="middle" style="font-size:22px">un objectif, aucun plan, et l'ordre de prouver</text></g>
+      <g class="a" data-k="2" data-d="60" data-dur="4000"><path class="arrow orbit" pathLength="1" d="M800,230 A190,190 0 1,1 800,610 A190,190 0 1,1 800,230"/></g>
+      <g class="b" data-k="3" data-ring="o1" data-pulse="o1" data-d="800"><circle class="ring" id="o1" cx="800" cy="230" r="58"/><text class="lbl m" x="800" y="237" text-anchor="middle">Objectif</text></g>
+      <g class="b" data-k="4" data-ring="o2" data-pulse="o2" data-d="800"><circle class="ring" id="o2" cx="981" cy="361" r="58"/><text class="lbl m" x="981" y="368" text-anchor="middle">Hypothèses</text></g>
+      <g class="b" data-k="5" data-ring="o3" data-pulse="o3" data-d="800"><circle class="ring" id="o3" cx="912" cy="574" r="58"/><text class="lbl m" x="912" y="581" text-anchor="middle">Actions</text></g>
+      <g class="b" data-k="6" data-ring="o4" data-pulse="o4" data-d="800"><circle class="ring" id="o4" cx="688" cy="574" r="58"/><text class="lbl m" x="688" y="581" text-anchor="middle">Évaluation</text></g>
+      <g class="b" data-k="7" data-ring="o5" data-pulse="o5" data-d="800"><circle class="ring" id="o5" cx="619" cy="361" r="58"/><text class="lbl m" x="619" y="368" text-anchor="middle">Leçons</text></g>
+      <g class="b" data-k="8" data-d="1800"><circle class="ring lit" cx="800" cy="420" r="62"/><text class="lbl m acc" x="800" y="414" text-anchor="middle">Preuves</text><text class="lbl xs" x="800" y="438" text-anchor="middle">citation exacte</text></g>
+      <g class="b" data-k="9" id="rf" data-ring="o4:bad" data-blink="o4" data-d="2400"><text class="lbl red" x="688" y="662" text-anchor="middle" style="font-size:20px">un contrôle échoue</text></g>
+      <g class="a" data-k="10" data-d="60" data-dur="2000"><path class="arrow orbit ghost" pathLength="1" d="M800,230 A190,190 0 1,1 800,610 A190,190 0 1,1 800,230"/></g>
+      <g class="b" data-k="11" data-pulse="o1" data-d="400"><text class="lbl xs" x="0" y="0"> </text></g>
+      <g class="b" data-k="12" data-pulse="o2" data-d="400"><text class="lbl xs" x="0" y="0"> </text></g>
+      <g class="b" data-k="13" data-pulse="o3" data-d="400"><text class="lbl xs" x="0" y="0"> </text></g>
+      <g class="b" data-k="14" data-ring="o4:lit" data-pulse="o4:strong" data-hide="#rf" data-d="1600"><text class="lbl okt" x="688" y="662" text-anchor="middle" style="font-size:20px">validé</text></g>
+      <g class="b" data-k="15" data-pulse="o5" data-d="400"><text class="lbl xs" x="0" y="0"> </text></g>
+      <g class="b" data-k="16" data-d="1800"><text class="lbl amber" x="800" y="790" text-anchor="middle" style="font-size:30px">Où l'envoyer ?</text></g>
+      <g class="a" data-k="17" data-d="1100"><path class="arrow" pathLength="1" d="M800 614 L800 700 L1040 700 L1040 850 L1600 850"/></g>
+    </svg>
+    <div class="caption" id="c0"></div>
+  </section>
+
+<section class="scene" id="sB">
+    <header><h2>OÙ L'ENVOYER ?</h2><span class="t">l'écran des choix</span></header>
+    <svg viewBox="0 0 1600 900" role="img" aria-label="La boucle au centre, et autour, tout ce qu'on peut lui demander : l'espace, la sécurité d'un site, une étude médicale, un chiffre INSEE, une loi, un brevet, votre métier">
+      <g class="a" data-k="1"><path class="arrow" pathLength="1" d="M0 882 L660 882 L660 600 L734 518"/></g>
+      <g class="b" data-k="2"><circle class="ring lit" cx="800" cy="450" r="96"/><text class="lbl m acc" x="800" y="443" text-anchor="middle">la boucle</text><text class="lbl xs" x="800" y="468" text-anchor="middle">chercher · lire · prouver</text><circle class="ring lit" cx="800" cy="354" r="9"/><circle class="ring lit" cx="891" cy="420" r="9"/><circle class="ring lit" cx="856" cy="527" r="9"/><circle class="ring lit" cx="744" cy="527" r="9"/><circle class="ring lit" cx="709" cy="420" r="9"/></g>
+      <g class="b" data-k="3" data-d="350" id="bE"><rect class="chip next" x="670" y="120" width="260" height="60" rx="30"/><text class="chip-t" x="800" y="158" text-anchor="middle" style="font-size:22px">🪐 L'espace</text></g>
+      <g class="b" data-k="4" data-d="350" id="bM"><rect class="chip next" x="950" y="160" width="260" height="60" rx="30"/><text class="chip-t" x="1080" y="198" text-anchor="middle" style="font-size:22px">🩺 La médecine</text></g>
+      <g class="b" data-k="5" data-d="350"><rect class="chip next" x="1155" y="270" width="260" height="60" rx="30"/><text class="chip-t" x="1285" y="308" text-anchor="middle" style="font-size:22px">Un chiffre INSEE</text></g>
+      <g class="b" data-k="6" data-d="350"><rect class="chip next" x="1230" y="420" width="260" height="60" rx="30"/><text class="chip-t" x="1360" y="458" text-anchor="middle" style="font-size:22px">Une norme sanitaire</text></g>
+      <g class="b" data-k="7" data-d="350"><rect class="chip next" x="1155" y="570" width="260" height="60" rx="30"/><text class="chip-t" x="1285" y="608" text-anchor="middle" style="font-size:22px">Un article de loi</text></g>
+      <g class="b" data-k="8" data-d="350"><rect class="chip next" x="970" y="680" width="260" height="60" rx="30"/><text class="chip-t" x="1100" y="718" text-anchor="middle" style="font-size:22px">Une décision de justice</text></g>
+      <g class="b" data-k="9" data-d="350"><rect class="chip next" x="670" y="720" width="260" height="60" rx="30"/><text class="chip-t" x="800" y="758" text-anchor="middle" style="font-size:22px">Un appel d'offres</text></g>
+      <g class="b" data-k="10" data-d="350"><rect class="chip next" x="370" y="680" width="260" height="60" rx="30"/><text class="chip-t" x="500" y="718" text-anchor="middle" style="font-size:22px">Un rapport annuel</text></g>
+      <g class="b" data-k="11" data-d="350"><rect class="chip next" x="185" y="570" width="260" height="60" rx="30"/><text class="chip-t" x="315" y="608" text-anchor="middle" style="font-size:22px">Un brevet</text></g>
+      <g class="b" data-k="12" data-d="350" id="bS"><rect class="chip next" x="90" y="420" width="280" height="60" rx="30"/><text class="chip-t" x="230" y="458" text-anchor="middle" style="font-size:22px">🛡 La sécurité d'un site</text></g>
+      <g class="b" data-k="13" data-d="350"><rect class="chip next" x="185" y="270" width="260" height="60" rx="30"/><text class="chip-t" x="315" y="308" text-anchor="middle" style="font-size:22px">Une norme produit</text></g>
+      <g class="b" data-k="14" data-d="1600"><rect class="chip next" x="390" y="160" width="260" height="60" rx="30"/><text class="chip-t" x="520" y="198" text-anchor="middle" style="font-size:22px">Votre métier</text></g>
+      <g class="b" data-k="15" data-d="1800"><text class="lbl s" x="800" y="836" text-anchor="middle" style="font-size:20px">Tout vient de données gratuites.</text></g>
+      <g class="a" data-k="16" data-zoom="#bS"><path class="arrow" pathLength="1" d="M702 450 L372 450"/></g>
+      <g class="b" data-k="17" data-d="2400"><text class="lbl amber" x="800" y="70" text-anchor="middle" style="font-size:26px">Premier voyage : la sécurité d'un site.</text></g>
+    </svg>
+    <div class="caption" id="cB"></div>
+    
+  </section>
+
+  
+<section class="scene" id="s1">
+    <header><h2>1 · CONSTAT</h2><span class="t">scène 0</span></header>
+    <svg viewBox="0 0 1600 900" role="img" aria-label="Une boutique en ligne, une équipe qui corrige à la main, les failles qui reviennent, 8 sites sur 10 exposés">
+      <g class="b" data-k="1" data-d="900"><rect class="box blue" x="40" y="60" width="1160" height="600" rx="20"/><rect x="40" y="60" width="1160" height="62" rx="20" fill="rgba(45,85,212,.3)"/><text class="lbl" x="80" y="102">🌿 Maison Verde · boutique en ligne</text><text class="lbl s" x="1160" y="102" text-anchor="end">Boutique · Panier · Mon compte</text>
+        <rect class="tile" x="100" y="150" width="320" height="220" rx="14"/><ellipse class="leaf" cx="260" cy="230" rx="90" ry="52"/><text class="lbl m" x="260" y="318" text-anchor="middle">Monstera</text><text class="lbl s" x="260" y="348" text-anchor="middle">49 €</text>
+        <rect class="tile" x="460" y="150" width="320" height="220" rx="14"/><ellipse class="leaf" cx="620" cy="230" rx="90" ry="52"/><text class="lbl m" x="620" y="318" text-anchor="middle">Ficus</text><text class="lbl s" x="620" y="348" text-anchor="middle">120 €</text>
+        <rect class="tile" x="820" y="150" width="320" height="220" rx="14"/><ellipse class="leaf" cx="980" cy="230" rx="90" ry="52"/><text class="lbl m" x="980" y="318" text-anchor="middle">Olivier</text><text class="lbl s" x="980" y="348" text-anchor="middle">89 €</text>
+        <rect class="tile" x="100" y="400" width="1040" height="60" rx="12"/><text class="lbl m" x="130" y="440">🛒 Panier · 3 articles · 258 €</text><rect x="960" y="408" width="160" height="44" rx="10" fill="rgba(46,230,160,.18)" stroke="rgba(46,230,160,.7)" stroke-width="2"/><text class="lbl m acc" x="1040" y="439" text-anchor="middle">Payer</text></g>
+      <g class="b" data-k="2" data-d="450"><text class="lbl s" x="130" y="510">✔ Commande #1001 · payée · 49 €</text></g>
+      <g class="b" data-k="3" data-d="450"><text class="lbl s" x="130" y="545">✔ Commande #1002 · payée · 120 €</text></g>
+      <g class="b" data-k="4" data-d="700"><text class="lbl s" x="130" y="580">✔ Commande #1003 · expédiée · 258 €</text><text class="lbl xs" x="1160" y="640" text-anchor="end" style="fill:rgba(169,180,204,.5)">jQuery 1.8.3 · PHP 7.2</text></g>
+      <g class="b" data-k="5" id="st0"><rect class="pill ok" x="1250" y="70" width="310" height="52" rx="26"/><text class="lbl m okt" x="1405" y="104" text-anchor="middle">● site conforme</text></g>
+      <g class="b" data-k="6"><rect class="box" x="1250" y="180" width="310" height="300" rx="18"/><text class="lbl" x="1405" y="260" text-anchor="middle" style="font-size:54px">👩‍💻</text><text class="lbl m" x="1405" y="312" text-anchor="middle">L'équipe</text><text class="lbl xs" x="1405" y="342" text-anchor="middle">une personne, souvent</text><text class="lbl xs" x="1405" y="366" text-anchor="middle">le site, les clients, la sécurité</text></g>
+      <g class="b" data-k="7" id="f1"><rect class="badge" x="700" y="128" width="430" height="36" rx="18"/><text class="badge-t" x="915" y="153" text-anchor="middle">⚠ aucun en-tête de sécurité</text></g>
+      <g class="b" data-k="8" id="st1" data-hide="#st0"><rect class="pill ko" x="1250" y="70" width="310" height="52" rx="26"/><text class="lbl m red" x="1405" y="104" text-anchor="middle">● 1 faille ouverte</text></g>
+      <g class="b" data-k="9" id="h1" data-d="1500"><text class="lbl xs amber" x="1405" y="420" text-anchor="middle">🔧 corrige à la main</text><text class="lbl xs" x="1405" y="446" text-anchor="middle">quand elle a le temps</text></g>
+      <g class="b" data-k="10" data-hide="#f1,#h1"><rect class="badge ok" x="700" y="128" width="430" height="36" rx="18"/><text class="badge-t ok" x="915" y="153" text-anchor="middle">✔ en-têtes ajoutés</text></g>
+      <g class="b" data-k="11" data-hide="#st1" id="st2"><rect class="pill ok" x="1250" y="70" width="310" height="52" rx="26"/><text class="lbl m okt" x="1405" y="104" text-anchor="middle">● site conforme</text></g>
+      <g class="b" data-k="12" id="f2"><rect class="badge" x="470" y="250" width="300" height="36" rx="18"/><text class="badge-t" x="620" y="275" text-anchor="middle">⚠ prix modifiable</text></g>
+      <g class="b" data-k="13" id="st3" data-hide="#st2"><rect class="pill ko" x="1250" y="70" width="310" height="52" rx="26"/><text class="lbl m red" x="1405" y="104" text-anchor="middle">● 1 faille ouverte</text></g>
+      <g class="b" data-k="14" id="h2" data-d="1500"><text class="lbl xs amber" x="1405" y="420" text-anchor="middle">🔧 corrige à la main</text><text class="lbl xs" x="1405" y="446" text-anchor="middle">le soir, après les commandes</text></g>
+      <g class="b" data-k="15" data-hide="#f2,#h2"><rect class="badge ok" x="470" y="250" width="300" height="36" rx="18"/><text class="badge-t ok" x="620" y="275" text-anchor="middle">✔ prix verrouillé</text></g>
+      <g class="b" data-k="16" data-hide="#st3" id="st4"><rect class="pill ok" x="1250" y="70" width="310" height="52" rx="26"/><text class="lbl m okt" x="1405" y="104" text-anchor="middle">● site conforme</text></g>
+      <g class="b" data-k="17" data-d="500"><rect class="badge" x="600" y="412" width="380" height="36" rx="18"/><text class="badge-t" x="790" y="437" text-anchor="middle">⚠ carte bancaire en clair</text></g>
+      <g class="b" data-k="18" data-d="700"><rect class="badge" x="730" y="600" width="420" height="36" rx="18"/><text class="badge-t" x="940" y="625" text-anchor="middle">⚠ jQuery 2012 · 4 failles connues</text></g>
+      <g class="b" data-k="19" data-hide="#st4" id="st5"><rect class="pill ko" x="1250" y="70" width="310" height="52" rx="26"/><text class="lbl m red" x="1405" y="104" text-anchor="middle">● 2 failles ouvertes</text></g>
+      <g class="b" data-k="20" id="h3" data-d="1600"><text class="lbl xs amber" x="1405" y="420" text-anchor="middle">⏳ pas le temps</text><text class="lbl xs" x="1405" y="446" text-anchor="middle">pas les compétences, pas le budget</text></g>
+      <g class="b" data-k="21" data-d="700"><rect class="badge" x="100" y="128" width="400" height="36" rx="18"/><text class="badge-t" x="300" y="153" text-anchor="middle">⚠ mot de passe faible accepté</text></g>
+      <g class="b" data-k="22" data-hide="#st5" data-d="1600"><rect class="pill ko" x="1250" y="70" width="310" height="52" rx="26"/><text class="lbl m red" x="1405" y="104" text-anchor="middle">● 3 failles ouvertes</text></g>
+      <g class="b" data-k="23"><text class="lbl amber" x="800" y="740" text-anchor="middle" style="font-size:44px">8 sites sur 10 restent exposés</text><text class="lbl s" x="800" y="784" text-anchor="middle" style="font-size:22px">sur 26 sites d'entreprises scannés par MYTHOZOR ARGUS, 81 % sans protection contre l'injection de code</text><text class="lbl" x="800" y="840" text-anchor="middle" style="font-size:30px">Ça arrive. C'est certain. La seule question, c'est quand.</text></g>
+    </svg>
+    <div class="caption" id="c1"></div>
+      </section>
+
+  
+<section class="scene" id="s2">
+    <header><h2>2 · CORRECTION AVEC MISSION ZERO</h2><span class="t">scènes 5 à 9</span></header>
+    <svg viewBox="0 0 1600 900" role="img" aria-label="Le site et ses failles, un scanner, Mission Zero qui part de zéro, cinq contrôles, un rouge, il recommence, confirmé">
+      <g class="b" data-k="1"><rect class="box red" x="40" y="40" width="300" height="190" rx="16"/><text class="lbl m red" x="190" y="76" text-anchor="middle">Votre site · 5 failles</text><rect class="tile" x="70" y="96" width="60" height="44" rx="6"/><rect class="tile" x="140" y="96" width="60" height="44" rx="6"/><rect class="tile" x="210" y="96" width="60" height="44" rx="6"/><rect class="tile" x="70" y="150" width="200" height="24" rx="6"/><text class="lbl xs" x="190" y="210" text-anchor="middle">tel qu'il est, en ligne, aujourd'hui</text></g>
+      <g class="a" data-k="2"><path class="arrow" pathLength="1" d="M342 135 L418 135"/></g>
+      <g class="b" data-k="3"><rect class="box" x="420" y="40" width="360" height="190" rx="16"/><text class="lbl m" x="600" y="76" text-anchor="middle">Un scanner, n'importe lequel</text><text class="lbl xs" x="450" y="110">⚠ aucun en-tête de sécurité</text><text class="lbl xs" x="450" y="134">⚠ prix modifiable · ⚠ carte en clair</text><text class="lbl xs" x="450" y="158">⚠ jQuery 2012 · ⚠ mot de passe faible</text><text class="lbl xs" x="600" y="200" text-anchor="middle">MYTHOZOR ARGUS, CVE, dépendances : même liste</text></g>
+      <g class="a" data-k="4"><path class="arrow" pathLength="1" d="M782 135 L858 135"/></g>
+      <g class="b" data-k="5"><rect class="box gold" x="860" y="40" width="700" height="190" rx="16"/><text class="lbl acc" x="1210" y="82" text-anchor="middle" style="font-size:30px">Mission Zero part de zéro</text><text class="lbl s" x="1210" y="116" text-anchor="middle">aucun plan, aucune mémoire : une copie du site et l'ordre de prouver</text><text class="lbl xs" x="1210" y="150" text-anchor="middle">il cherche le correctif dans les sources primaires (OWASP, MDN, NIST), le cite, l'applique sur la copie</text><text class="lbl xs" x="1210" y="178" text-anchor="middle">puis il le soumet à cinq contrôles, un par un, et se refuse lui-même au premier rouge</text><text class="lbl xs" x="1210" y="210" text-anchor="middle">jamais sur le site lui-même</text></g>
+      <g class="a" data-k="6"><path class="arrow" pathLength="1" d="M1210 232 L1210 262 L155 262 L155 326"/></g>
+      <g class="b" data-k="7" id="fix1"><rect class="box gold" x="40" y="330" width="230" height="150" rx="16"/><text class="lbl acc" x="155" y="385" text-anchor="middle">Correctif n°1</text><text class="lbl s" x="155" y="420" text-anchor="middle">appliqué sur la copie</text></g>
+      <g class="a" data-k="8"><path class="arrow" pathLength="1" d="M272 405 L334 405"/></g>
+      <g class="b" data-k="9" data-ring="r1"><circle class="ring" id="r1" cx="410" cy="405" r="70"/><text class="lbl m" x="410" y="398" text-anchor="middle">1</text><text class="lbl s" x="410" y="428" text-anchor="middle" style="fill:var(--fg)">Parcours</text><text class="lbl s" x="410" y="300" text-anchor="middle">les tests du client</text></g>
+      <g class="a" data-k="10"><path class="arrow" pathLength="1" d="M482 405 L566 405"/></g>
+      <g class="b" data-k="11" data-ring="r2"><circle class="ring" id="r2" cx="640" cy="405" r="70"/><text class="lbl m" x="640" y="398" text-anchor="middle">2</text><text class="lbl s" x="640" y="428" text-anchor="middle" style="fill:var(--fg)">Rescan</text><text class="lbl s" x="640" y="300" text-anchor="middle">la faille a disparu ?</text></g>
+      <g class="a" data-k="12"><path class="arrow" pathLength="1" d="M712 405 L796 405"/></g>
+      <g class="b" data-k="13" data-ring="r3:bad"><circle class="ring" id="r3" cx="870" cy="405" r="70"/><text class="lbl m" x="870" y="398" text-anchor="middle">3</text><text class="lbl s" x="870" y="428" text-anchor="middle" style="fill:var(--fg)">Regard</text><text class="lbl s" x="870" y="300" text-anchor="middle">Muse Spark + SAM</text></g>
+      <g class="b" data-k="14" id="red1"><text class="lbl red" x="870" y="520" text-anchor="middle" style="font-size:22px">✖ le formulaire de paiement a perdu ses champs</text><text class="lbl s" x="870" y="550" text-anchor="middle">SAM : 5 champs avant, 2 après</text></g>
+      <g class="a" data-k="15" id="red2"><path class="arrow red" pathLength="1" d="M870 477 L870 495"/><path class="arrow red" pathLength="1" d="M800 560 L800 620 L566 620"/></g>
+      <g class="b" data-k="16" id="red3"><rect class="box red" x="300" y="580" width="262" height="90" rx="16"/><text class="lbl red" x="431" y="617" text-anchor="middle">Refusé</text><text class="lbl s" x="431" y="650" text-anchor="middle">par lui-même · il lit pourquoi</text></g>
+      <g class="a" data-k="17" id="red4"><path class="arrow red" pathLength="1" d="M298 625 L155 625 L155 484"/></g>
+      <g class="b" data-k="18" data-hide="#fix1,#red1,#red2,#red3,#red4" data-ring="r3:off" data-d="1200"><rect class="box gold" x="40" y="330" width="230" height="150" rx="16"/><text class="lbl acc" x="155" y="385" text-anchor="middle">Correctif n°2</text><text class="lbl s" x="155" y="420" text-anchor="middle">nouveau, copie neuve</text></g>
+      <g class="b" data-k="19" data-d="600"><text class="lbl xs" x="525" y="500" text-anchor="middle">1 et 2 rejoués, toujours verts</text></g>
+      <g class="a" data-k="20" data-d="1300"><path class="arrow ghost" pathLength="1" d="M272 405 L800 405"/></g>
+      <g class="b" data-k="21" data-ring="r3"><text class="lbl s" x="870" y="110" text-anchor="middle" style="opacity:0">.</text></g>
+      <g class="a" data-k="22"><path class="arrow" pathLength="1" d="M942 405 L1026 405"/></g>
+      <g class="b" data-k="23" data-ring="r4"><circle class="ring" id="r4" cx="1100" cy="405" r="70"/><text class="lbl m" x="1100" y="398" text-anchor="middle">4</text><text class="lbl s" x="1100" y="428" text-anchor="middle" style="fill:var(--fg)">Relecture</text><text class="lbl s" x="1100" y="300" text-anchor="middle">cause ou symptôme ?</text></g>
+      <g class="a" data-k="24"><path class="arrow" pathLength="1" d="M1172 405 L1256 405"/></g>
+      <g class="b" data-k="25" data-ring="r5"><circle class="ring" id="r5" cx="1330" cy="405" r="70"/><text class="lbl m" x="1330" y="398" text-anchor="middle">5</text><text class="lbl s" x="1330" y="428" text-anchor="middle" style="fill:var(--fg)">Réserves</text><text class="lbl s" x="1330" y="300" text-anchor="middle">écrites, jamais cachées</text></g>
+      <g class="a" data-k="26"><path class="arrow" pathLength="1" d="M1330 477 L1330 578"/></g>
+      <g class="b" data-k="27"><rect class="box ok" x="1020" y="580" width="560" height="130" rx="16"/><text class="lbl acc" x="1300" y="622" text-anchor="middle">Confirmé · patch + preuves</text><text class="lbl s" x="1300" y="656" text-anchor="middle">cinq contrôles verts, un journal haché</text><text class="lbl s" x="1300" y="686" text-anchor="middle">et c'est un humain qui applique</text></g>
+      <g class="b" data-k="28"><text class="lbl" x="800" y="830" text-anchor="middle" style="font-size:28px">Il part de zéro, se refuse lui-même, et confirme. Seul.</text></g>
+    </svg>
+    <div class="caption" id="c2"></div>
+      </section>
+
+  
+<section class="scene" id="s3">
+    <header><h2>3 · MYTHOZOR ARGUS, DÉTECTION EN DIRECT + CORRECTION AVEC MISSION ZERO</h2><span class="t">scènes 10 et 12</span></header>
+    <svg viewBox="0 0 1600 900" role="img" aria-label="Chez le client : MYTHOZOR ARGUS surveille, une nouvelle faille arrive, Mission Zero la corrige, le client valide ou l'automatique applique, MYTHOZOR ARGUS revérifie">
+      <g class="b" data-k="1"><rect class="box blue" x="30" y="40" width="1540" height="820" rx="24" style="stroke-dasharray:12 10"/><text class="lbl" x="60" y="90">🏠 Chez vous</text><text class="lbl s" x="230" y="90">vos serveurs ou votre cloud · modèle en poids ouverts · secrets masqués · rien ne sort</text></g>
+      <g class="b" data-k="2"><rect class="box" x="180" y="290" width="340" height="310" rx="18"/><rect x="180" y="290" width="340" height="44" rx="18" fill="rgba(45,85,212,.3)"/><text class="lbl s" x="350" y="320" text-anchor="middle" style="fill:var(--fg)">🌿 votre site · votre serveur</text><rect class="tile" x="205" y="356" width="90" height="66" rx="8"/><rect class="tile" x="305" y="356" width="90" height="66" rx="8"/><rect class="tile" x="405" y="356" width="90" height="66" rx="8"/><rect class="tile" x="205" y="440" width="290" height="34" rx="8"/><text class="lbl xs" x="350" y="463" text-anchor="middle">🛒 panier · payer</text><text class="lbl xs" x="350" y="520" text-anchor="middle">✔ commandes · comptes</text><text class="lbl xs" x="350" y="570" text-anchor="middle">en ligne, tous les jours</text></g>
+      <g class="b" data-k="3"><text class="lbl acc" x="350" y="200" text-anchor="middle" style="font-size:30px">👁 MYTHOZOR ARGUS surveille</text><text class="lbl s" x="350" y="232" text-anchor="middle">35 contrôles, en continu, jour et nuit</text></g>
+      <g class="b" data-k="4" data-chip="ch1:ok" data-d="350"><rect class="chip" id="ch1" x="20" y="300" width="150" height="40" rx="20"/><text class="chip-t" x="95" y="326" text-anchor="middle">✔ HTTPS, certificat</text></g>
+      <g class="b" data-k="5" data-chip="ch2:ok" data-d="350"><rect class="chip" id="ch2" x="20" y="352" width="150" height="40" rx="20"/><text class="chip-t" x="95" y="378" text-anchor="middle">✔ cookies</text></g>
+      <g class="b" data-k="6" data-chip="ch3:ok" data-d="350"><rect class="chip" id="ch3" x="20" y="404" width="150" height="40" rx="20"/><text class="chip-t" x="95" y="430" text-anchor="middle">✔ formulaires</text></g>
+      <g class="b" data-k="7" data-chip="ch4:ok" data-d="350"><rect class="chip" id="ch4" x="20" y="456" width="150" height="40" rx="20"/><text class="chip-t" x="95" y="482" text-anchor="middle">✔ mentions légales</text></g>
+      <g class="b" data-k="8" data-chip="ch5:ok" data-d="350"><rect class="chip" id="ch5" x="20" y="508" width="150" height="40" rx="20"/><text class="chip-t" x="95" y="534" text-anchor="middle">✔ en-têtes</text></g>
+      <g class="b" data-k="9" data-chip="ch6:ok" data-d="350"><rect class="chip" id="ch6" x="20" y="560" width="150" height="40" rx="20"/><text class="chip-t" x="95" y="586" text-anchor="middle">✔ scripts, robots</text></g>
+      <g class="b" data-k="10" id="badok1"><rect class="badge ok" x="230" y="252" width="240" height="36" rx="18"/><text class="badge-t ok" x="350" y="277" text-anchor="middle">✔ tout est conforme</text><text class="lbl xs" x="350" y="640" text-anchor="middle">vert = conforme · rouge = à corriger</text></g>
+      <g class="b" data-k="11" data-hide="#badok1" data-chip="ch5:ko" id="badko" data-d="1700"><rect class="badge" x="230" y="252" width="240" height="36" rx="18"/><text class="badge-t" x="350" y="277" text-anchor="middle">⚠ nouvelle faille, en direct</text><text class="lbl xs red" x="350" y="640" text-anchor="middle">en-têtes : la politique de sécurité a sauté</text></g>
+      <g class="a" data-k="12"><path class="arrow" pathLength="1" d="M522 445 L598 445"/></g>
+      <g class="b" data-k="13"><rect class="box gold" x="600" y="290" width="400" height="310" rx="18"/><text class="lbl acc" x="800" y="332" text-anchor="middle" style="font-size:28px">Mission Zero, branché</text>
+        <rect class="mini" x="625" y="360" width="100" height="50" rx="10"/><text class="lbl xs" x="675" y="391" text-anchor="middle" style="fill:var(--fg)">copie du site</text>
+        <path class="arrow" d="M727 385 L752 385" style="stroke-dasharray:none;stroke-dashoffset:0;stroke-width:3" marker-end="url(#mok)"/>
+        <rect class="mini" x="756" y="360" width="100" height="50" rx="10"/><text class="lbl xs" x="806" y="391" text-anchor="middle" style="fill:var(--fg)">correctif</text>
+        <path class="arrow" d="M858 385 L883 385" style="stroke-dasharray:none;stroke-dashoffset:0;stroke-width:3" marker-end="url(#mok)"/>
+        <circle class="ring lit" cx="905" cy="385" r="12"/><circle class="ring lit" cx="933" cy="385" r="12"/><circle class="ring lit" cx="961" cy="385" r="12"/>
+        <text class="lbl xs" x="800" y="440" text-anchor="middle">il la prend aussitôt, sans qu'on le lui demande</text>
+        <text class="lbl xs" x="800" y="468" text-anchor="middle">copie, correctif cité, cinq contrôles, patch, preuves</text>
+        <text class="lbl xs okt" x="800" y="516" text-anchor="middle">✔ correctif confirmé</text>
+        <text class="lbl xs" x="800" y="570" text-anchor="middle">jamais sur le site lui-même</text></g>
+      <g class="a" data-k="14"><path class="arrow" pathLength="1" d="M1002 445 L1078 445"/></g>
+      <g class="b" data-k="15"><rect class="box ok" x="1080" y="290" width="440" height="310" rx="18"/><text class="lbl" x="1300" y="332" text-anchor="middle" style="font-size:28px">Vous validez · ou automatique</text>
+        <rect class="tile" x="1100" y="356" width="400" height="36" rx="8"/><text class="lbl xs" x="1112" y="380">en-têtes CSP · confirmé</text><rect x="1400" y="361" width="90" height="26" rx="7" fill="rgba(46,230,160,.18)" stroke="rgba(46,230,160,.7)" stroke-width="1.5"/><text class="lbl xs acc" x="1445" y="379" text-anchor="middle" style="font-weight:600">Appliquer</text>
+        <text class="lbl xs" x="1300" y="424" text-anchor="middle">mode manuel : un clic par correctif, dans votre espace</text>
+        <rect class="tile" x="1100" y="446" width="400" height="36" rx="8"/><text class="lbl xs" x="1112" y="470">mode automatique</text><rect x="1392" y="451" width="98" height="26" rx="13" fill="rgba(46,230,160,.25)" stroke="rgba(46,230,160,.8)" stroke-width="1.5"/><circle cx="1477" cy="464" r="10" fill="#2ee6a0"/><text class="lbl xs acc" x="1425" y="469" text-anchor="middle" style="font-weight:600">ON</text>
+        <text class="lbl xs" x="1300" y="514" text-anchor="middle">appliqué tout seul, vous êtes prévenu, vous pouvez revenir en arrière</text>
+        <text class="lbl xs" x="1300" y="570" text-anchor="middle">les deux existent : c'est vous qui choisissez</text></g>
+      <g class="a" data-k="16"><path class="arrow" pathLength="1" d="M1300 602 L1300 735 L350 735 L350 602"/></g>
+      <g class="b" data-k="17"><text class="lbl acc" x="825" y="712" text-anchor="middle" style="font-size:24px">et MYTHOZOR ARGUS vérifie à nouveau</text></g>
+      <g class="b" data-k="18" data-hide="#badko" data-chip="ch5:ok" data-d="1500"><rect class="badge ok" x="230" y="252" width="240" height="36" rx="18"/><text class="badge-t ok" x="350" y="277" text-anchor="middle">✔ corrigé, tout est vert</text><text class="lbl xs" x="350" y="640" text-anchor="middle">le rouge est repassé au vert</text></g>
+      <g class="b" data-k="19"><text class="lbl acc" x="800" y="822" text-anchor="middle" style="font-size:30px">MYTHOZOR.com · un produit de CRYPTOR.AGENCY</text></g>
+    </svg>
+    <div class="caption" id="c3"></div>
+      </section>
+
+  
+</div>
+<script>
+(function () {
+  var SVGNS = 'http://www.w3.org/2000/svg', XLINK = 'http://www.w3.org/1999/xlink';
+  var CAP = {"s0":["<b>Mission Zero.</b> Un objectif, et l'ordre de prouver.","Suivez le point.","Objectif.","Hypothèses.","Actions.","Évaluation.","Leçons.","Jusqu'à la <b>preuve</b>&nbsp;: la citation exacte, sur la page.","Un contrôle échoue. <b>Il se refuse lui-même.</b>","Il recommence.",null,null,null,"<b>Validé.</b>",null,"<b>Où l'envoyer&nbsp;?</b>",null],"sB":["Le point arrive. La boucle attend un objectif.","Même boucle, zéro code.","L'espace…","la médecine…","un chiffre de l'INSEE…","une norme…","une loi…","une décision de justice…","un appel d'offres…","un rapport annuel…","un brevet…","la sécurité d'un site…","une norme produit…","votre métier.","Tout vient de données gratuites.",null,"<b>D'abord, la sécurité d'un site.</b>"],"s1":["Une boutique en ligne. Elle tourne.","Les commandes tombent.",null,"Tout va bien.","Conforme. Aujourd’hui.","Une équipe : une personne, souvent.","Une faille : aucun en-tête de sécurité.","Rouge.","Elle corrige à la main.","Corrigé.","Vert.","Une autre : le prix changé par le client.","Rouge.","Elle corrige, le soir.","Corrigé.","Vert.","Deux de plus : la carte bancaire en clair…","…et une bibliothèque de 2012.","Rouge.","Pas le temps. Pas le budget.","Une cinquième. Elle restera ouverte.","Rouge.","<b>8 sites sur 10 restent exposés.</b> La seule question, c’est quand."],"s2":["Le même site, ses cinq failles.",null,"Un scanner les liste. N’importe lequel.",null,"<b>Mission Zero part de zéro.</b> Une copie du site, et l’ordre de prouver.",null,"Un premier correctif, sur une copie.",null,"Contrôle 1 : les tests du client. Vert.",null,"Contrôle 2 : le scanner. Vert.",null,"Contrôle 3 : il regarde la page…","…le formulaire a perdu ses champs. <b>Rouge.</b>",null,"<b>Refusé</b>, par lui-même.",null,"Un second correctif. Le rouge disparaît.","Contrôles 1 et 2 : toujours verts.",null,"Regard : vert.",null,"Relecture : la cause, pas le symptôme. Vert.",null,"Réserves : rien à cacher. Vert.",null,"Cinq verts : <b>confirmé</b>. Patch, preuves, journal haché. Un humain applique.","Il part de zéro, se refuse, et confirme. Seul."],"s3":["Chez vous. Rien ne sort.","Votre site, sur votre serveur.","<b>MYTHOZOR ARGUS</b> surveille, jour et nuit.",null,null,null,null,null,null,"Tout est vert.","Une nouvelle faille. ARGUS la voit. Rouge.",null,"<b>Mission Zero</b> la prend. Copie, correctif, cinq contrôles, patch.",null,"Vous validez d’un clic. Ou en automatique.",null,"ARGUS vérifie à nouveau.","Rouge repassé au vert. Sans vous réveiller.","MYTHOZOR.com, un produit de CRYPTOR.AGENCY."]};
+  var timers = {}, SPEED = { s1: 0.65, s2: 0.65, s3: 0.65 };
+  function speedOf(el) { var sc = el.closest('.scene'); return (sc && SPEED[sc.id]) || 1; }
+  function steps(id) { return Array.prototype.slice.call(document.querySelectorAll('#' + id + ' [data-k]')); }
+  function capId(id) { return 'c' + id.slice(1); }
+  var n = 0;
+  document.querySelectorAll('.a .arrow').forEach(function (p) {
+    n += 1; p.id = p.id || 'p' + n;
+    var orbit = p.classList.contains('orbit'), dur = Math.round((Number(p.parentNode.dataset.dur) || (orbit ? 4000 : 1000)) * speedOf(p));
+    var c = document.createElementNS(SVGNS, 'circle'); c.setAttribute('r', '8'); c.setAttribute('class', 'runner');
+    var m = document.createElementNS(SVGNS, 'animateMotion'); m.setAttribute('dur', dur + 'ms'); m.setAttribute('begin', 'indefinite'); m.setAttribute('fill', 'freeze');
+    var mp = document.createElementNS(SVGNS, 'mpath'); mp.setAttributeNS(XLINK, 'xlink:href', '#' + p.id); mp.setAttribute('href', '#' + p.id);
+    m.appendChild(mp); c.appendChild(m); p.parentNode.appendChild(c);
+    p.style.transitionDuration = dur + 'ms'; p.parentNode.dataset.dur = dur;
+  });
+  function act(step) {
+    (step.dataset.hide || '').split(',').filter(Boolean).forEach(function (h) { document.querySelector(h).classList.add('hidden'); });
+    (step.dataset.ring || '').split(',').filter(Boolean).forEach(function (r) { var id = r.split(':')[0], mode = r.split(':')[1] || 'lit'; var el = document.getElementById(id); el.classList.remove('lit', 'bad'); if (mode !== 'off') el.classList.add(mode); });
+    (step.dataset.chip || '').split(',').filter(Boolean).forEach(function (r) { var id = r.split(':')[0], mode = r.split(':')[1] || 'ok'; var el = document.getElementById(id); if (el) { el.classList.remove('ok', 'ko'); el.classList.add(mode); } });
+    (step.dataset.gone || '').split(',').filter(Boolean).forEach(function (id) { document.getElementById(id).classList.add('gone'); });
+    // Surbrillance au passage (pulse, ou pulse:strong pour une revalidation) ; clignotement d'une alerte prise en compte.
+    (step.dataset.pulse || '').split(',').filter(Boolean).forEach(function (r) { var id = r.split(':')[0], strong = r.split(':')[1] === 'strong'; var el = document.getElementById(id); if (!el) return; el.classList.remove('pulse', 'strong'); void el.getBBox(); el.classList.add('pulse'); if (strong) el.classList.add('strong'); setTimeout(function () { el.classList.remove('pulse', 'strong'); }, strong ? 1300 : 700); });
+    (step.dataset.blink || '').split(',').filter(Boolean).forEach(function (id) { var el = document.getElementById(id); if (!el) return; el.classList.remove('blink'); void el.getBBox(); el.classList.add('blink'); setTimeout(function () { el.classList.remove('blink'); }, 2600); });
+    if (step.dataset.zoom) { var z = document.querySelector(step.dataset.zoom); if (z) setTimeout(function () { z.classList.add('zoom'); }, 900); }
+  }
+  function fire(step) {
+    step.classList.add('on'); act(step);
+    if (step.classList.contains('a')) {
+      var dur = Number(step.dataset.dur) || 1000;
+      step.querySelectorAll('.runner').forEach(function (c) { c.classList.add('go'); var m = c.querySelector('animateMotion'); try { m.beginElement(); } catch (e) {} setTimeout(function () { c.classList.remove('go'); }, dur + 50); });
+      setTimeout(function () { step.classList.add('drawn'); }, dur);
+    }
+  }
+  function reset(id) {
+    steps(id).forEach(function (s) { s.classList.remove('on', 'drawn', 'focus', 'hidden', 'zoom'); });
+    document.querySelectorAll('#' + id + ' .zoom').forEach(function (z) { z.classList.remove('zoom'); });
+    document.querySelectorAll('#' + id + ' .hidden').forEach(function (z) { z.classList.remove('hidden'); });
+    document.querySelectorAll('#' + id + ' .ring').forEach(function (r) { if (r.id) r.classList.remove('lit', 'bad'); });
+    document.querySelectorAll('#' + id + ' .field').forEach(function (r) { r.classList.remove('gone'); });
+    document.querySelectorAll('#' + id + ' .chip').forEach(function (r) { if (r.id) r.classList.remove('ok', 'ko'); });
+    document.querySelectorAll('#' + id + ' .runner').forEach(function (c) { c.classList.remove('go'); });
+    document.querySelectorAll('#' + id + ' .pulse, #' + id + ' .blink').forEach(function (c) { c.classList.remove('pulse', 'strong', 'blink'); });
+    document.getElementById(capId(id)).innerHTML = '';
+  }
+  function caption(id, k) { var t = CAP[id][k - 1]; if (t) document.getElementById(capId(id)).innerHTML = t; }
+  function play(id, done) {
+    clearTimeout(timers[id]); reset(id);
+    var list = steps(id), k = 0;
+    (function next() { if (k >= list.length) { if (done) timers[id] = setTimeout(done, 1800); return; } var s = list[k]; k += 1; fire(s); caption(id, k); var d = Math.round((Number(s.dataset.d) || (s.classList.contains('a') ? 1100 : 1300)) * speedOf(s)); timers[id] = setTimeout(next, d); })();
+  }
+  function all(id) { clearTimeout(timers[id]); reset(id); var list = steps(id); list.forEach(function (s) { s.classList.add('on', 'drawn'); act(s); if (s.querySelector('.orbit')) fire(s); }); caption(id, list.length); }
+  function show(id) { document.querySelectorAll('.scene').forEach(function (s) { s.classList.toggle('active', s.id === id); }); }
+  var t0 = 0, clock = document.getElementById('clock');
+  function tick() { if (t0) clock.textContent = Math.round((Date.now() - t0) / 100) / 10 + ' s'; }
+  setInterval(tick, 200);
+  // Le film d'une minute : la boucle, l'écran des choix, la sécurité. Le fil ne casse pas.
+  function film() {
+    t0 = Date.now(); document.body.classList.add('film');
+    var chain = ['s0', 'sB', 's1', 's2', 's3'], i = 0; (function step() { if (i >= chain.length) { clock.textContent = 'fin · ' + Math.round((Date.now() - t0) / 100) / 10 + ' s'; t0 = 0; return; } var id = chain[i]; i += 1; show(id); play(id, step); })();
+  }
+  document.getElementById('go').addEventListener('click', film);
+  document.querySelectorAll('[data-ch]').forEach(function (b) { b.addEventListener('click', function () { document.body.classList.add('film'); show(b.dataset.ch); play(b.dataset.ch); }); });
+  document.getElementById('grid').addEventListener('click', function () { document.body.classList.remove('film'); ['s0', 'sB', 's1', 's2', 's3'].forEach(all); });
+  var q = new URLSearchParams(location.search);
+  if (q.get('record')) document.documentElement.classList.add('record');
+  if (q.get('auto')) film(); else { document.body.classList.add('film'); show('s0'); }
+})();
+</script>
+</html>
