@@ -8,7 +8,7 @@
 //    redevient vert, et « OBJECTIF PROUVÉ » ;
 // 5. toute la boucle rétrécit jusqu'à ne laisser qu'un point blanc, qui repart vers l'écran suivant.
 const CX = 800, CY = 420, R = 190, r = 64;
-const names = ['Objectif', 'Hypothèses', 'Actions', 'Évaluation', 'Leçons'];
+const names = ['Objectif', 'Hypothèses', 'Action', 'Observation', 'Évaluation'];
 const ang = (i) => -Math.PI / 2 + (i * 2 * Math.PI) / 5;
 const P = (a, rad = R) => ({ x: CX + rad * Math.cos(a), y: CY + rad * Math.sin(a) });
 const f = (v) => Math.round(v * 100) / 100;
@@ -49,8 +49,8 @@ for (let i = 0; i < 5; i++) {
   const [s1, s2] = split(i, a, b);
   // Le zoom : le rond vient au centre, x3,4, au premier plan (il passe en dernier dans le dessin), le reste s'efface.
   const zx = f(CX - c.x), zy = f(CY - c.y);
-  step(`<g class="rg" data-k="?" id="g${i + 1}" data-ring="o${i + 1}" data-d="450" style="transform-origin:${f(c.x)}px ${f(c.y)}px;--zx:${zx}px;--zy:${zy}px"><circle class="ring" id="o${i + 1}" cx="${f(c.x)}" cy="${f(c.y)}" r="${r}"/><text class="lbl m" x="${f(c.x)}" y="${f(c.y + 6)}" text-anchor="middle" style="font-size:18px">${names[i]}</text><g class="a" data-k="${k + 1}" data-d="750" data-dur="650"><path class="arrow split" pathLength="1" d="${s1}"/><path class="arrow split" pathLength="1" d="${s2}"/></g></g>`); k += 1;
-  blank(`data-zoom2="g${i + 1}"`, 1650);
+  step(`<g class="rg" data-k="?" id="g${i + 1}" data-ring="o${i + 1}" data-d="450" style="transform-origin:${f(c.x)}px ${f(c.y)}px;--zx:${zx}px;--zy:${zy}px"><circle class="ring" id="o${i + 1}" cx="${f(c.x)}" cy="${f(c.y)}" r="${r}"/><text class="lbl m" x="${f(c.x)}" y="${f(c.y + 6)}" text-anchor="middle" style="font-size:18px">${names[i]}</text><g class="a" data-k="${k + 1}" data-d="420" data-dur="360"><path class="arrow split" pathLength="1" d="${s1}"/><path class="arrow split" pathLength="1" d="${s2}"/></g></g>`); k += 1;
+  blank(`data-zoom2="g${i + 1}"`, 2400);
   blank(`data-unzoom="g${i + 1}"`, 550);
   const j = (i + 1) % 5, e = edge(j, i);
   step(`<g class="a" data-k="?" data-d="900" data-dur="800"><path class="arrow" pathLength="1" d="M${pt(b)} L${pt(e)}"/></g>`);
@@ -65,12 +65,12 @@ const A = pass([0, 1, 2], 3), B = pass([3, 4], 0);
 const below = `x="${f(centers[3].x)}" y="${f(centers[3].y + r + 32)}"`;
 blank(`data-hide="#gv"`, 400);
 step(`<g class="a" data-k="?" data-d="1900" data-dur="1800" data-pulses="${pulses(A.at)}"><path class="arrow ghost" pathLength="1" d="${A.d}"/></g>`);
-step(`<g class="b" data-k="?" id="rf" data-ring="o4:bad" data-blink="o4" data-d="1800"><text class="lbl red" ${below} text-anchor="middle" style="font-size:20px">un contrôle échoue</text></g>`);
-step(`<g class="rg" data-k="?" id="gx" data-d="2400" style="transform-origin:800px 420px"><text class="lbl m" x="800" y="430" text-anchor="middle" style="font-size:30px;fill:#8c95a8">Preuve</text><line x1="748" y1="404" x2="852" y2="438" stroke="#ff6b61" stroke-width="7" stroke-linecap="round"/><line x1="852" y1="404" x2="748" y2="438" stroke="#ff6b61" stroke-width="7" stroke-linecap="round"/><text class="lbl red" x="800" y="478" text-anchor="middle" style="font-size:22px;font-weight:700">preuve refusée</text></g>`);
+step(`<g class="a" data-k="?" data-d="1300" data-dur="1200" data-pulses="${pulses(B.at)}"><path class="arrow ghost" pathLength="1" d="${B.d}"/></g>`);
+step(`<g class="rg" data-k="?" id="gx" data-blink="gxt" data-d="2800" style="transform-origin:800px 420px"><text class="lbl m" x="800" y="406" text-anchor="middle" style="font-size:30px;fill:#8c95a8">Preuve</text><line x1="748" y1="380" x2="852" y2="414" stroke="#ff6b61" stroke-width="7" stroke-linecap="round"/><line x1="852" y1="380" x2="748" y2="414" stroke="#ff6b61" stroke-width="7" stroke-linecap="round"/><text class="lbl red" id="gxt" x="800" y="450" text-anchor="middle" style="font-size:24px;font-weight:700">preuve refusée</text><text class="lbl red" id="gxs" x="800" y="478" text-anchor="middle" style="font-size:19px">une citation ne tient pas</text></g>`);
 // 4. On applique les corrections : le point repasse vite sur les ronds verts, qui se revalident ; Évaluation redevient vert ; OBJECTIF PROUVÉ.
 step(`<g class="a" data-k="?" data-d="1500" data-dur="1400" data-pulses="${pulses(A.at)}"><path class="arrow ghost" pathLength="1" d="${A.d}"/></g>`);
-step(`<g class="b" data-k="?" data-ring="o4:lit" data-pulse="o4:strong" data-hide="#rf" id="rc" data-d="1300"><text class="lbl okt" ${below} text-anchor="middle" style="font-size:20px">corrigé</text></g>`);
-step(`<g class="a" data-k="?" data-d="1100" data-dur="1000" data-pulses="${pulses(B.at.filter(([i]) => i !== 3))}"><path class="arrow ghost" pathLength="1" d="${B.d}"/></g>`);
+step(`<g class="b" data-k="?" id="rc" data-hide="#gxs" data-d="1600"><text class="lbl okt" x="800" y="478" text-anchor="middle" style="font-size:22px">il relit la page, réécrit dans ses mots</text></g>`);
+step(`<g class="a" data-k="?" data-d="1100" data-dur="1000" data-pulses="${pulses(B.at)}"><path class="arrow ghost" pathLength="1" d="${B.d}"/></g>`);
 step(`<g class="rg" data-k="?" id="gv2" data-hide="#gx,#rc" data-pulse="o1:strong" data-d="2600" style="transform-origin:800px 420px"><text class="lbl acc" x="800" y="412" text-anchor="middle" style="font-size:34px;letter-spacing:.06em">OBJECTIF</text><text class="lbl acc" x="800" y="452" text-anchor="middle" style="font-size:34px;letter-spacing:.06em">PROUVÉ</text></g>`);
 g.push('</g>');
 // 5. La boucle rétrécit jusqu'au point blanc, qui repart vers l'écran suivant.
@@ -89,10 +89,10 @@ const s0 = `  <section class="scene" id="s0">
   </section>
 `;
 const cap = ['<b>Mission Zero.</b> Un objectif et l’ordre de prouver.', null];
-['Objectif.', 'Hypothèses.', 'Actions.', 'Évaluation.', 'Leçons.'].forEach(function (w) { cap.push(null, null, w, null, null); });
-cap.push('Le tour est complet.', 'La <b>preuve</b>&nbsp;: la citation exacte, sur la page.', '<b>Objectif validé.</b>',
-  'Une nouvelle mission.', null, 'Évaluation&nbsp;: <span class="r">un contrôle échoue.</span>', '<b class="r">Preuve refusée.</b> Il se refuse lui-même.',
-  '<b>Il applique les corrections</b> et repasse sur chaque contrôle.', 'Évaluation&nbsp;: corrigé.', null, '<b>Objectif prouvé.</b>',
+['Un objectif. Aucun plan.', 'Des hypothèses.', 'Une action&nbsp;: chercher, lire une page entière.', 'Ce qu’il observe.', 'Il s’évalue&nbsp;: une note, une leçon, un pivot.'].forEach(function (w) { cap.push(null, null, w, null, null); });
+cap.push('Il tourne jusqu’à atteindre l’objectif.', 'La <b>preuve</b>&nbsp;: chaque page citée est relue, citation exacte exigée.', '<b>Objectif validé.</b>',
+  'Une nouvelle mission.', null, null, '<b class="r">Preuve refusée.</b> Une citation ne tient pas. Il se refuse lui-même.',
+  '<b>Il relit la page</b> et réécrit dans ses mots, ou retire.', 'La preuve tient.', null, '<b>Objectif prouvé.</b> Jugé, le meilleur survit.',
   null, null, null, '<b>Où l’envoyer&nbsp;?</b>', null);
 module.exports = { s0, cap, steps: k };
 if (require.main === module) console.log('steps', k, 'captions', cap.length);
