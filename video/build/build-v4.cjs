@@ -250,6 +250,10 @@ const s2geo = (function () {
   ring(5, 'data-ring="r5"', 'écrites, jamais cachées', 'Réserves', 1500);
   arrow(`M1330,${RY + RR} L1330,600`);
   step(`<g class="b" data-k="?" data-d="3600"><rect class="box ok" x="1070" y="600" width="520" height="130" rx="16"/><text class="lbl acc" x="1330" y="642" text-anchor="middle">Confirmé · patch + preuves</text><text class="lbl s" x="1330" y="690" text-anchor="middle" style="fill:var(--fg)">un humain applique, ou l'automatique</text></g>`);
+  // Le correctif repart : de Confirmé, il monte à droite, passe sous « Mission Zero part de zéro » de droite à gauche, et arrive
+  // sous « Votre site » : la faille est corrigée en live, automatique (gérant, 30 octobre, 17 h).
+  arrow('M1575,600 L1575,254 L190,254 L190,232', 'data-dur="1700" data-d="1800"');
+  step(`<g class="b" data-k="?" data-d="3200"><rect class="chip ok" x="48" y="146" width="284" height="32" rx="16"/><text class="chip-t" x="190" y="168" text-anchor="middle" style="font-size:16px;font-weight:700">✔ faille corrigée · en live · automatique</text></g>`);
   step(`<g class="b" data-k="?" data-d="2400"><text class="lbl xs" x="0" y="0"> </text></g>`);
   const cap = ['Le même site, ses cinq failles.', null, 'Un scanner les liste. N’importe lequel.', null,
     '<b>Mission Zero part de zéro.</b> Une copie du site et l’ordre de prouver.', null, 'Un premier correctif, sur une copie.', null,
@@ -259,7 +263,8 @@ const s2geo = (function () {
     '<b class="r">Refusé</b>, par lui-même.', null, '<b>Correctif n°2</b>, sur une copie neuve.',
     'Contrôles 1 et 2 rejoués&nbsp;: toujours verts.', null, 'Contrôle 3&nbsp;: la page est intacte. Vert.', null,
     'Contrôle 4&nbsp;: la relecture. La cause, pas le symptôme. Vert.', null, 'Contrôle 5&nbsp;: les réserves, écrites. Vert.', null,
-    'Cinq verts&nbsp;: <b>confirmé</b>. Un humain applique, ou l’automatique.', 'Il part de zéro, se refuse et confirme. Seul.'];
+    'Cinq verts&nbsp;: <b>confirmé</b>. Un humain applique, ou l’automatique.', null,
+    'Le correctif repart vers le site. <b>La faille est corrigée, en live, en automatique.</b>', 'Il part de zéro, se refuse et confirme. Seul.'];
   if (cap.length !== k) throw new Error('s2 : ' + k + ' étapes, ' + cap.length + ' légendes');
   const sec = `  <section class="scene" id="s2">
     <header><h2>3 · CORRECTION AVEC MISSION ZERO</h2><span class="t">correction</span></header>
