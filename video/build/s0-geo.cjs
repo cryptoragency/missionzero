@@ -74,8 +74,8 @@ step(`<g class="a" data-k="?" data-d="1100" data-dur="1000" data-pulses="${pulse
 step(`<g class="rg" data-k="?" id="gv2" data-hide="#gx,#rc" data-pulse="o1:strong" data-d="2600" style="transform-origin:800px 420px"><text class="lbl acc" x="800" y="412" text-anchor="middle" style="font-size:34px;letter-spacing:.06em">OBJECTIF</text><text class="lbl acc" x="800" y="452" text-anchor="middle" style="font-size:34px;letter-spacing:.06em">PROUVÉ</text></g>`);
 g.push('</g>');
 // 5. La boucle rétrécit jusqu'au point blanc, qui repart vers l'écran suivant.
-blank(`data-shrink="loop"`, 1100);
-step(`<g class="b" data-k="?" id="dotc" data-d="500"><circle cx="800" cy="420" r="9" fill="#fff" style="filter:drop-shadow(0 0 8px rgba(46,230,160,.9))"/></g>`);
+step(`<g class="b" data-k="?" id="dotc" data-shrink="loop" data-d="1100"><circle cx="800" cy="420" r="9" fill="#fff" style="filter:drop-shadow(0 0 8px rgba(46,230,160,.9))"/></g>`);
+blank(``, 500);
 step(`<g class="a" data-k="?" data-d="1300" data-dur="1200" data-hide="#dotc"><path class="arrow" pathLength="1" d="M800,420 C960,420 1040,488 1160,488"/></g>`);
 step(`<g class="b" data-k="?" data-d="2000"><text class="lbl amber" x="1175" y="498" style="font-size:30px">Où l'envoyer ?</text></g>`);
 step(`<g class="a" data-k="?" data-d="900" data-dur="800"><path class="arrow" pathLength="1" d="M1395,488 L1600,488"/></g>`);

@@ -20,10 +20,11 @@ const sBgeo = (function () {
   step('<g class="b" data-k="?" data-d="1600"><circle class="ring lit" cx="' + CX + '" cy="' + CY + '" r="' + RB + '"/><text class="lbl m acc" x="' + CX + '" y="' + (CY - 4) + '" text-anchor="middle">la boucle</text><text class="lbl xs" x="' + CX + '" y="' + (CY + 22) + '" text-anchor="middle">chercher · lire · prouver</text></g>');
   const chips = angs.map((a, i) => { const t = (a * Math.PI) / 180; return { x: CX + RX * Math.cos(t), y: CY + RY * Math.sin(t), label: labels[i] }; });
   chips.forEach((c, i) => step('<g class="fan" data-k="?" data-d="' + (i === 11 ? 1500 : 380) + '"' + (i === 9 ? ' id="bS"' : '') + ' style="transform-origin:' + f(c.x) + 'px ' + f(c.y) + 'px;--fx:' + f(CX - c.x) + 'px;--fy:' + f(CY - c.y) + 'px"><rect class="chip next" x="' + f(c.x - W / 2) + '" y="' + f(c.y - H / 2) + '" width="' + W + '" height="' + H + '" rx="' + H / 2 + '"/><text class="chip-t" x="' + f(c.x) + '" y="' + f(c.y + 7) + '" text-anchor="middle" style="font-size:19px">' + c.label + '</text></g>'));
-  step('<g class="b" data-k="?" data-d="1800"><text class="lbl s" x="800" y="836" text-anchor="middle" style="font-size:20px">Tout vient de données gratuites.</text></g>');
+  step('<g class="b" data-k="?" data-d="1800"><text class="lbl xs" x="0" y="0"> </text></g>'); // « Tout vient de données gratuites. » : en légende seulement
   // Le dernier fil : du bord du rond, droit vers la pastille de la sécurité, arrêté à son contour (pastille = deux demi-cercles).
   const sc = chips[9], dx = sc.x - CX, dy = sc.y - CY, L = Math.hypot(dx, dy), ux = dx / L, uy = dy / L;
-  const inChip = (x, y) => { const qx = Math.max(Math.abs(x - sc.x) - (W / 2 - H / 2), 0), qy = y - sc.y; return Math.hypot(qx, qy) <= H / 2; };
+  const Z = 1.35; // la pastille choisie grossit (zoomin, x1,35) : le fil s'arrête sur le bord de la pastille agrandie, jamais sur son texte
+  const inChip = (x, y) => { const qx = Math.max(Math.abs(x - sc.x) - Z * (W / 2 - H / 2), 0), qy = y - sc.y; return Math.hypot(qx, qy) <= Z * H / 2 + 3; };
   let t = RB; while (!inChip(CX + ux * t, CY + uy * t)) t += 0.5;
   step('<g class="a" data-k="?" data-zoom="#bS" data-dur="1000"><path class="arrow" pathLength="1" d="M' + f(CX + ux * RB) + ',' + f(CY + uy * RB) + ' L' + f(CX + ux * t) + ',' + f(CY + uy * t) + '"/></g>');
   step('<g class="b" data-k="?" data-d="2400"><text class="lbl amber" x="800" y="70" text-anchor="middle" style="font-size:26px">Premier voyage : la sécurité d\'un site.</text></g>');
@@ -79,7 +80,7 @@ const s2geo = (function () {
   // Le site, le scanner, Mission Zero : trois boîtes sur une ligne, le fil d'un bord à l'autre.
   step(`<g class="b" data-k="?" data-d="1500"><rect class="box red" x="40" y="40" width="300" height="190" rx="16"/><text class="lbl m red" x="190" y="76" text-anchor="middle">Votre site · 5 failles</text><rect class="tile" x="70" y="96" width="60" height="44" rx="6"/><rect class="tile" x="140" y="96" width="60" height="44" rx="6"/><rect class="tile" x="210" y="96" width="60" height="44" rx="6"/><rect class="tile" x="70" y="150" width="200" height="24" rx="6"/><text class="lbl xs" x="190" y="210" text-anchor="middle">tel qu'il est, en ligne</text></g>`);
   arrow('M340,135 L420,135');
-  step(`<g class="b" data-k="?" data-d="1600"><rect class="box" x="420" y="40" width="360" height="190" rx="16"/><text class="lbl m" x="600" y="76" text-anchor="middle">Un scanner, n'importe lequel</text><text class="lbl s red" x="600" y="150" text-anchor="middle">⚠ 5 failles listées</text></g>`);
+  step(`<g class="b" data-k="?" data-d="1600"><rect class="box" x="420" y="40" width="360" height="190" rx="16"/><text class="lbl m" x="600" y="76" text-anchor="middle">Un scanner, n'importe lequel</text><text class="lbl s red" x="600" y="132" text-anchor="middle">⚠ 5 failles listées</text><text class="lbl xs" x="600" y="190" text-anchor="middle">MYTHOZOR ARGUS, CVE, dépendances : même liste</text></g>`);
   arrow('M780,135 L860,135');
   step(`<g class="b" data-k="?" data-d="2600"><rect class="box gold" x="860" y="40" width="700" height="190" rx="16"/><text class="lbl acc" x="1210" y="82" text-anchor="middle" style="font-size:30px">Mission Zero part de zéro</text><text class="lbl s" x="1210" y="160" text-anchor="middle" style="font-size:20px">une copie du site, aucun plan, l'ordre de prouver</text></g>`);
   // De Mission Zero au correctif : une seule courbe douce, au-dessus des légendes des contrôles.
@@ -280,12 +281,8 @@ const script = `<script>
   if (q.get('auto')) film(); else { document.body.classList.add('film'); show('s0'); }
 })();
 </script>`;
-const html = `<!doctype html>
-<html lang="fr">
-<meta charset="utf-8">
-<title>Mission Zero film · une minute</title>
-${style}
-<style>
+// Les styles propres au moteur du 30 (surbrillance, alerte, zoom, éventail, rétrécissement) : partagés avec build-v5.cjs.
+const extra = `<style>
 .film .scene { display:none; } .film .scene.active { display:grid; } .film .scene header { display:none; }
 .field { fill:#fff; stroke:#999; stroke-width:1.5; } .field.gone { fill:none; stroke:var(--red); stroke-dasharray:5 4; }
 /* Surbrillance au passage du point : une pulsation du contour, rien de plus. Forte quand on revalide. */
@@ -313,7 +310,15 @@ ${style}
 /* La boucle entière rétrécit jusqu'au point blanc. */
 #loop { transform-box: view-box; transform-origin: 800px 420px; transition: transform 1s cubic-bezier(.4,0,.2,1), opacity 1s; }
 #loop.shrink { transform: scale(0.01); opacity: 0; }
-</style>
+/* Le point blanc naît pendant le rétrécissement, au centre : aucun écran vide entre la boucle et le point. */
+#dotc.on { animation-delay: .25s; }
+</style>`;
+const html = `<!doctype html>
+<html lang="fr">
+<meta charset="utf-8">
+<title>Mission Zero film · une minute</title>
+${style}
+${extra}
 <div class="wrap">
   <h1>Mission Zero, le film · une minute <small>Le modèle du 29 octobre, raccourci : des phrases courtes, les flèches qui se dessinent, le point qui court devant, chaque élément qui apparaît et reste. Voix française (le fondateur), sous-titres anglais incrustés au montage.</small></h1>
   <div class="filmbar"><button class="big" id="go">▶ Lancer le film</button><button data-ch="s0">1 · La boucle</button><button data-ch="sB">· Où l'envoyer ?</button><button data-ch="s1">2 · Constat</button><button data-ch="s2">3 · Correction</button><button data-ch="s3">4 · MYTHOZOR ARGUS</button><button id="grid">Voir tous les schémas</button><span id="clock" style="color:var(--mut)"></span></div>
@@ -326,5 +331,9 @@ ${typo(s3)}
 ${script}
 </html>
 `;
-fs.writeFileSync(__dirname + '/../film-v4.html', html);
-console.log('film-v4.html', html.length, 'octets; s0 steps:', (s0.match(/data-k=/g) || []).length, 'sB steps:', (sB.match(/data-k=/g) || []).length, 's1 steps:', (s1.match(/data-k=/g) || []).length);
+if (require.main === module) {
+  fs.writeFileSync(__dirname + '/../film-v4.html', html);
+  console.log('film-v4.html', html.length, 'octets; s0 steps:', (s0.match(/data-k=/g) || []).length, 'sB steps:', (sB.match(/data-k=/g) || []).length, 's1 steps:', (s1.match(/data-k=/g) || []).length);
+}
+// Pièces réutilisées par build-v5.cjs (le film complet du script du 29 sur le moteur du 30).
+module.exports = { src, style, extra, s0, s1, s2, s3, CAP, titled, typo };

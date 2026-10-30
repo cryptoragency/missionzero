@@ -105,6 +105,8 @@ svg { width:100%; height:auto; display:block; font-family: "Segoe UI", system-ui
 /* La boucle entière rétrécit jusqu'au point blanc. */
 #loop { transform-box: view-box; transform-origin: 800px 420px; transition: transform 1s cubic-bezier(.4,0,.2,1), opacity 1s; }
 #loop.shrink { transform: scale(0.01); opacity: 0; }
+/* Le point blanc naît pendant le rétrécissement, au centre : aucun écran vide entre la boucle et le point. */
+#dotc.on { animation-delay: .25s; }
 </style>
 <div class="wrap">
   <h1>Mission Zero, le film · une minute <small>Le modèle du 29 octobre, raccourci : des phrases courtes, les flèches qui se dessinent, le point qui court devant, chaque élément qui apparaît et reste. Voix française (le fondateur), sous-titres anglais incrustés au montage.</small></h1>
@@ -147,8 +149,8 @@ svg { width:100%; height:auto; display:block; font-family: "Segoe UI", system-ui
       <g class="a" data-k="37" data-d="1100" data-dur="1000" data-pulses="o5@0.640"><path class="arrow ghost" pathLength="1" d="M752.32,573.71 A64,64 0 0,0 668.54,512.85 L639.08,422.15 A64,64 0 0,0 671.08,323.67 L748.22,267.62"/></g>
       <g class="rg" data-k="38" id="gv2" data-hide="#gx,#rc" data-pulse="o1:strong" data-d="2600" style="transform-origin:800px 420px"><text class="lbl acc" x="800" y="412" text-anchor="middle" style="font-size:34px;letter-spacing:.06em">OBJECTIF</text><text class="lbl acc" x="800" y="452" text-anchor="middle" style="font-size:34px;letter-spacing:.06em">PROUVÉ</text></g>
       </g>
-      <g class="b" data-k="39" data-shrink="loop" data-d="1100"><text class="lbl xs" x="0" y="0"> </text></g>
-      <g class="b" data-k="40" id="dotc" data-d="500"><circle cx="800" cy="420" r="9" fill="#fff" style="filter:drop-shadow(0 0 8px rgba(46,230,160,.9))"/></g>
+      <g class="b" data-k="39" id="dotc" data-shrink="loop" data-d="1100"><circle cx="800" cy="420" r="9" fill="#fff" style="filter:drop-shadow(0 0 8px rgba(46,230,160,.9))"/></g>
+      <g class="b" data-k="40"  data-d="500"><text class="lbl xs" x="0" y="0"> </text></g>
       <g class="a" data-k="41" data-d="1300" data-dur="1200" data-hide="#dotc"><path class="arrow" pathLength="1" d="M800,420 C960,420 1040,488 1160,488"/></g>
       <g class="b" data-k="42" data-d="2000"><text class="lbl amber" x="1175" y="498" style="font-size:30px">Où l’envoyer ?</text></g>
       <g class="a" data-k="43" data-d="900" data-dur="800"><path class="arrow" pathLength="1" d="M1395,488 L1600,488"/></g>
@@ -173,8 +175,8 @@ svg { width:100%; height:auto; display:block; font-family: "Segoe UI", system-ui
       <g class="fan" data-k="12" data-d="380" id="bS" style="transform-origin:259.1px 530.2px;--fx:540.9px;--fy:-80.2px"><rect class="chip next" x="139.1" y="502.2" width="240" height="56" rx="28"/><text class="chip-t" x="259.1" y="537.2" text-anchor="middle" style="font-size:19px">🛡 La sécurité d’un site</text></g>
       <g class="fan" data-k="13" data-d="380" style="transform-origin:259.1px 369.8px;--fx:540.9px;--fy:80.2px"><rect class="chip next" x="139.1" y="341.8" width="240" height="56" rx="28"/><text class="chip-t" x="259.1" y="376.8" text-anchor="middle" style="font-size:19px">Une norme produit</text></g>
       <g class="fan" data-k="14" data-d="1500" style="transform-origin:404px 230.8px;--fx:396px;--fy:219.2px"><rect class="chip next" x="284" y="202.8" width="240" height="56" rx="28"/><text class="chip-t" x="404" y="237.8" text-anchor="middle" style="font-size:19px">Votre métier</text></g>
-      <g class="b" data-k="15" data-d="1800"><text class="lbl s" x="800" y="836" text-anchor="middle" style="font-size:20px">Tout vient de données gratuites.</text></g>
-      <g class="a" data-k="16" data-zoom="#bS" data-dur="1000"><path class="arrow" pathLength="1" d="M705,464.1 L373.2,513.3"/></g>
+      <g class="b" data-k="15" data-d="1800"><text class="lbl xs" x="0" y="0"> </text></g>
+      <g class="a" data-k="16" data-zoom="#bS" data-dur="1000"><path class="arrow" pathLength="1" d="M705,464.1 L416.7,506.9"/></g>
       <g class="b" data-k="17" data-d="2400"><text class="lbl amber" x="800" y="70" text-anchor="middle" style="font-size:26px">Premier voyage : la sécurité d’un site.</text></g>
     </g></svg>
     <div class="caption" id="cB"></div>
@@ -220,7 +222,7 @@ svg { width:100%; height:auto; display:block; font-family: "Segoe UI", system-ui
     <svg viewBox="0 0 1600 900" role="img" aria-label="Le site et ses failles, un scanner, Mission Zero qui part de zéro, cinq contrôles, un rouge : le correctif a altéré la page de paiement, il le refait, confirmé"><text class="lbl acc" x="800" y="40" text-anchor="middle" style="font-size:26px;letter-spacing:.2em;font-weight:700">AVEC MISSION ZERO</text><g transform="translate(32,56) scale(0.96)">
       <g class="b" data-k="1" data-d="1500"><rect class="box red" x="40" y="40" width="300" height="190" rx="16"/><text class="lbl m red" x="190" y="76" text-anchor="middle">Votre site · 5 failles</text><rect class="tile" x="70" y="96" width="60" height="44" rx="6"/><rect class="tile" x="140" y="96" width="60" height="44" rx="6"/><rect class="tile" x="210" y="96" width="60" height="44" rx="6"/><rect class="tile" x="70" y="150" width="200" height="24" rx="6"/><text class="lbl xs" x="190" y="210" text-anchor="middle">tel qu’il est, en ligne</text></g>
       <g class="a" data-k="2" ><path class="arrow" pathLength="1" d="M340,135 L420,135"/></g>
-      <g class="b" data-k="3" data-d="1600"><rect class="box" x="420" y="40" width="360" height="190" rx="16"/><text class="lbl m" x="600" y="76" text-anchor="middle">Un scanner, n’importe lequel</text><text class="lbl s red" x="600" y="150" text-anchor="middle">⚠ 5 failles listées</text></g>
+      <g class="b" data-k="3" data-d="1600"><rect class="box" x="420" y="40" width="360" height="190" rx="16"/><text class="lbl m" x="600" y="76" text-anchor="middle">Un scanner, n’importe lequel</text><text class="lbl s red" x="600" y="132" text-anchor="middle">⚠ 5 failles listées</text><text class="lbl xs" x="600" y="190" text-anchor="middle">MYTHOZOR ARGUS, CVE, dépendances : même liste</text></g>
       <g class="a" data-k="4" ><path class="arrow" pathLength="1" d="M780,135 L860,135"/></g>
       <g class="b" data-k="5" data-d="2600"><rect class="box gold" x="860" y="40" width="700" height="190" rx="16"/><text class="lbl acc" x="1210" y="82" text-anchor="middle" style="font-size:30px">Mission Zero part de zéro</text><text class="lbl s" x="1210" y="160" text-anchor="middle" style="font-size:20px">une copie du site, aucun plan, l’ordre de prouver</text></g>
       <g class="a" data-k="6" data-dur="1300" data-d="1400"><path class="arrow" pathLength="1" d="M1210,230 C1210,268 1170,278 1100,278 L330,278 C220,278 155,290 155,355"/></g>
