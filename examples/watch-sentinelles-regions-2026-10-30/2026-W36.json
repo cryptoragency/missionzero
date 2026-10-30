@@ -1,0 +1,137 @@
+{
+  "source": "Sentinelles grippe regions",
+  "page": "https://www.sentiweb.fr/france/fr/?page=maladies&mal=3",
+  "period": "2026-W36",
+  "readings": [
+    {
+      "key": "Influenza-like illness incidence.11",
+      "label": "Influenza-like illness incidence, ILE-DE-FRANCE",
+      "value": 25,
+      "unit": "per 100 000",
+      "low": 14,
+      "high": 36,
+      "thresholdValue": null,
+      "page": "https://www.sentiweb.fr/france/fr/?page=maladies&mal=3"
+    },
+    {
+      "key": "Influenza-like illness incidence.24",
+      "label": "Influenza-like illness incidence, CENTRE-VAL-DE-LOIRE",
+      "value": 9,
+      "unit": "per 100 000",
+      "low": 0,
+      "high": 24,
+      "thresholdValue": null,
+      "page": "https://www.sentiweb.fr/france/fr/?page=maladies&mal=3"
+    },
+    {
+      "key": "Influenza-like illness incidence.27",
+      "label": "Influenza-like illness incidence, BOURGOGNE-FRANCHE-COMTE",
+      "value": 72,
+      "unit": "per 100 000",
+      "low": 26,
+      "high": 118,
+      "thresholdValue": null,
+      "page": "https://www.sentiweb.fr/france/fr/?page=maladies&mal=3"
+    },
+    {
+      "key": "Influenza-like illness incidence.28",
+      "label": "Influenza-like illness incidence, NORMANDIE",
+      "value": 25,
+      "unit": "per 100 000",
+      "low": 0,
+      "high": 58,
+      "thresholdValue": null,
+      "page": "https://www.sentiweb.fr/france/fr/?page=maladies&mal=3"
+    },
+    {
+      "key": "Influenza-like illness incidence.32",
+      "label": "Influenza-like illness incidence, HAUTS-DE-FRANCE",
+      "value": 39,
+      "unit": "per 100 000",
+      "low": 16,
+      "high": 62,
+      "thresholdValue": null,
+      "page": "https://www.sentiweb.fr/france/fr/?page=maladies&mal=3"
+    },
+    {
+      "key": "Influenza-like illness incidence.44",
+      "label": "Influenza-like illness incidence, GRAND EST",
+      "value": 18,
+      "unit": "per 100 000",
+      "low": 5,
+      "high": 31,
+      "thresholdValue": null,
+      "page": "https://www.sentiweb.fr/france/fr/?page=maladies&mal=3"
+    },
+    {
+      "key": "Influenza-like illness incidence.52",
+      "label": "Influenza-like illness incidence, PAYS-DE-LA-LOIRE",
+      "value": 22,
+      "unit": "per 100 000",
+      "low": 0,
+      "high": 46,
+      "thresholdValue": null,
+      "page": "https://www.sentiweb.fr/france/fr/?page=maladies&mal=3"
+    },
+    {
+      "key": "Influenza-like illness incidence.53",
+      "label": "Influenza-like illness incidence, BRETAGNE",
+      "value": 64,
+      "unit": "per 100 000",
+      "low": 31,
+      "high": 97,
+      "thresholdValue": null,
+      "page": "https://www.sentiweb.fr/france/fr/?page=maladies&mal=3"
+    },
+    {
+      "key": "Influenza-like illness incidence.75",
+      "label": "Influenza-like illness incidence, NOUVELLE-AQUITAINE",
+      "value": 52,
+      "unit": "per 100 000",
+      "low": 3,
+      "high": 101,
+      "thresholdValue": null,
+      "page": "https://www.sentiweb.fr/france/fr/?page=maladies&mal=3"
+    },
+    {
+      "key": "Influenza-like illness incidence.76",
+      "label": "Influenza-like illness incidence, OCCITANIE",
+      "value": 52,
+      "unit": "per 100 000",
+      "low": 23,
+      "high": 81,
+      "thresholdValue": null,
+      "page": "https://www.sentiweb.fr/france/fr/?page=maladies&mal=3"
+    },
+    {
+      "key": "Influenza-like illness incidence.84",
+      "label": "Influenza-like illness incidence, AUVERGNE-RHONE-ALPES",
+      "value": 28,
+      "unit": "per 100 000",
+      "low": 13,
+      "high": 43,
+      "thresholdValue": null,
+      "page": "https://www.sentiweb.fr/france/fr/?page=maladies&mal=3"
+    },
+    {
+      "key": "Influenza-like illness incidence.93",
+      "label": "Influenza-like illness incidence, PROVENCE-ALPES-COTE-D-AZUR",
+      "value": 32,
+      "unit": "per 100 000",
+      "low": 0,
+      "high": 72,
+      "thresholdValue": null,
+      "page": "https://www.sentiweb.fr/france/fr/?page=maladies&mal=3"
+    },
+    {
+      "key": "Influenza-like illness incidence.94",
+      "label": "Influenza-like illness incidence, CORSE",
+      "value": 9,
+      "unit": "per 100 000",
+      "low": 0,
+      "high": 24,
+      "thresholdValue": null,
+      "page": "https://www.sentiweb.fr/france/fr/?page=maladies&mal=3"
+    }
+  ]
+}

@@ -1,0 +1,119 @@
+{
+  "source": "Sentinelles grippe regions",
+  "period": "2026-W37",
+  "comparedWith": "2026-W36",
+  "replayed": true,
+  "threshold": 30,
+  "variations": [
+    {
+      "key": "Influenza-like illness incidence.24",
+      "label": "Influenza-like illness incidence, CENTRE-VAL-DE-LOIRE",
+      "kind": "change",
+      "before": 9,
+      "after": 39,
+      "delta": 30,
+      "pct": 333.3,
+      "unit": "per 100 000",
+      "thresholdValue": null,
+      "page": "https://www.sentiweb.fr/france/fr/?page=maladies&mal=3"
+    },
+    {
+      "key": "Influenza-like illness incidence.32",
+      "label": "Influenza-like illness incidence, HAUTS-DE-FRANCE",
+      "kind": "change",
+      "before": 39,
+      "after": 71,
+      "delta": 32,
+      "pct": 82.1,
+      "unit": "per 100 000",
+      "thresholdValue": null,
+      "page": "https://www.sentiweb.fr/france/fr/?page=maladies&mal=3"
+    },
+    {
+      "key": "Influenza-like illness incidence.94",
+      "label": "Influenza-like illness incidence, CORSE",
+      "kind": "change",
+      "before": 9,
+      "after": 16,
+      "delta": 7,
+      "pct": 77.8,
+      "unit": "per 100 000",
+      "thresholdValue": null,
+      "page": "https://www.sentiweb.fr/france/fr/?page=maladies&mal=3"
+    },
+    {
+      "key": "Influenza-like illness incidence.11",
+      "label": "Influenza-like illness incidence, ILE-DE-FRANCE",
+      "kind": "change",
+      "before": 25,
+      "after": 44,
+      "delta": 19,
+      "pct": 76,
+      "unit": "per 100 000",
+      "thresholdValue": null,
+      "page": "https://www.sentiweb.fr/france/fr/?page=maladies&mal=3"
+    },
+    {
+      "key": "Influenza-like illness incidence.28",
+      "label": "Influenza-like illness incidence, NORMANDIE",
+      "kind": "change",
+      "before": 25,
+      "after": 42,
+      "delta": 17,
+      "pct": 68,
+      "unit": "per 100 000",
+      "thresholdValue": null,
+      "page": "https://www.sentiweb.fr/france/fr/?page=maladies&mal=3"
+    },
+    {
+      "key": "Influenza-like illness incidence.27",
+      "label": "Influenza-like illness incidence, BOURGOGNE-FRANCHE-COMTE",
+      "kind": "change",
+      "before": 72,
+      "after": 119,
+      "delta": 47,
+      "pct": 65.3,
+      "unit": "per 100 000",
+      "thresholdValue": null,
+      "page": "https://www.sentiweb.fr/france/fr/?page=maladies&mal=3"
+    },
+    {
+      "key": "Influenza-like illness incidence.76",
+      "label": "Influenza-like illness incidence, OCCITANIE",
+      "kind": "change",
+      "before": 52,
+      "after": 82,
+      "delta": 30,
+      "pct": 57.7,
+      "unit": "per 100 000",
+      "thresholdValue": null,
+      "page": "https://www.sentiweb.fr/france/fr/?page=maladies&mal=3"
+    },
+    {
+      "key": "Influenza-like illness incidence.53",
+      "label": "Influenza-like illness incidence, BRETAGNE",
+      "kind": "change",
+      "before": 64,
+      "after": 92,
+      "delta": 28,
+      "pct": 43.8,
+      "unit": "per 100 000",
+      "thresholdValue": null,
+      "page": "https://www.sentiweb.fr/france/fr/?page=maladies&mal=3"
+    },
+    {
+      "key": "Influenza-like illness incidence.84",
+      "label": "Influenza-like illness incidence, AUVERGNE-RHONE-ALPES",
+      "kind": "change",
+      "before": 28,
+      "after": 37,
+      "delta": 9,
+      "pct": 32.1,
+      "unit": "per 100 000",
+      "thresholdValue": null,
+      "page": "https://www.sentiweb.fr/france/fr/?page=maladies&mal=3"
+    }
+  ],
+  "explanation": null,
+  "at": "2026-10-30T10:08:04.458Z"
+}

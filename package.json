@@ -16,7 +16,8 @@
     "voice": "node --env-file=.env bench/run-voice.js",
     "vision": "node --env-file=.env bench/run-vision.js",
     "repair-replay": "node bench/make-repair-replay.js",
-    "watch": "node --env-file=.env src/watch.js"
+    "watch": "node --env-file=.env src/watch.js",
+    "watch-replay": "node bench/make-watch-replay.js"
   },
   "dependencies": {
     "pdfjs-dist": "^6.4.299"

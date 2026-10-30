@@ -1,0 +1,23 @@
+{
+  "source": "Relevés d'une sonde (exemple)",
+  "period": "2026-10-29",
+  "comparedWith": "2026-10-28",
+  "replayed": true,
+  "threshold": 10,
+  "variations": [
+    {
+      "key": "incubator.temp",
+      "label": "Incubator temperature",
+      "kind": "threshold",
+      "before": 37.1,
+      "after": 37.8,
+      "delta": 0.6999999999999957,
+      "pct": 1.9,
+      "unit": "°C",
+      "thresholdValue": 37.5,
+      "page": "file://lab/incubator-a/log-2026-10-29.csv"
+    }
+  ],
+  "explanation": null,
+  "at": "2026-10-30T10:08:04.580Z"
+}

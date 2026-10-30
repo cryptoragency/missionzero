@@ -1,0 +1,32 @@
+{
+  "source": "Relevés d'une sonde (exemple)",
+  "period": "2026-10-30",
+  "comparedWith": "2026-10-29",
+  "replayed": true,
+  "threshold": 10,
+  "variations": [
+    {
+      "key": "culture.B.status",
+      "label": "Culture B, status",
+      "kind": "status",
+      "before": "growing",
+      "after": "declining",
+      "unit": "",
+      "page": "file://lab/incubator-a/log-2026-10-30.csv"
+    },
+    {
+      "key": "culture.B.density",
+      "label": "Culture B, optical density at 600 nm",
+      "kind": "change",
+      "before": 0.63,
+      "after": 0.44,
+      "delta": -0.19,
+      "pct": -30.2,
+      "unit": "OD",
+      "thresholdValue": null,
+      "page": "file://lab/incubator-a/log-2026-10-30.csv"
+    }
+  ],
+  "explanation": null,
+  "at": "2026-10-30T10:08:04.582Z"
+}

@@ -1,0 +1,23 @@
+{
+  "source": "Sentinelles grippe regions",
+  "period": "2026-W42",
+  "comparedWith": "2026-W41",
+  "replayed": true,
+  "threshold": 30,
+  "variations": [
+    {
+      "key": "Influenza-like illness incidence.32",
+      "label": "Influenza-like illness incidence, HAUTS-DE-FRANCE",
+      "kind": "change",
+      "before": 125,
+      "after": 84,
+      "delta": -41,
+      "pct": -32.8,
+      "unit": "per 100 000",
+      "thresholdValue": null,
+      "page": "https://www.sentiweb.fr/france/fr/?page=maladies&mal=3"
+    }
+  ],
+  "explanation": null,
+  "at": "2026-10-30T10:08:04.471Z"
+}

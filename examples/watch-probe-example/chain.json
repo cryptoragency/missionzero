@@ -1,0 +1,71 @@
+{
+  "entries": [
+    {
+      "n": 1,
+      "file": "2026-10-27.json",
+      "fileHash": "4d1033c282bcc6aa7ea6526461cfc0397db0649ad528dd5e7dffb61754e7500d",
+      "prev": "0000000000000000000000000000000000000000000000000000000000000000",
+      "hash": "13d7712ba520d754f0629ee9e866f954a0dda00a9ba3dab421093175eda79478",
+      "at": "2026-10-30T10:08:04.573Z",
+      "step": "snapshot"
+    },
+    {
+      "n": 2,
+      "file": "2026-10-28.json",
+      "fileHash": "d7e9cd2fbffe619c051a063393562c9d19a1d1c56a2c37e56aeb9fb03e1d19d6",
+      "prev": "13d7712ba520d754f0629ee9e866f954a0dda00a9ba3dab421093175eda79478",
+      "hash": "6cf9cecdd5761168d83fa13e5efe14f6949448b441c932f60a5159af6e7a24c3",
+      "at": "2026-10-30T10:08:04.577Z",
+      "step": "snapshot"
+    },
+    {
+      "n": 3,
+      "file": "report-2026-10-28.json",
+      "fileHash": "90ac0d5713ea4a46e4f2d24ebdcaa8094b5063f95c511cb09b91fb14d3e310b0",
+      "prev": "6cf9cecdd5761168d83fa13e5efe14f6949448b441c932f60a5159af6e7a24c3",
+      "hash": "e51e914ba3de843568fdc3899b9c649e8aaba0218bd56679fdc10c0a315af383",
+      "at": "2026-10-30T10:08:04.577Z",
+      "step": "report",
+      "variations": 1
+    },
+    {
+      "n": 4,
+      "file": "2026-10-29.json",
+      "fileHash": "5d613f163e6fcbd4f4bded5aa5e0a037709cf55cdd68771086ef1cab9fe6bc87",
+      "prev": "e51e914ba3de843568fdc3899b9c649e8aaba0218bd56679fdc10c0a315af383",
+      "hash": "eb783c7934468de4f3e042222fa86bf908f459bd1a9e4d210a9a799bf2d1e31b",
+      "at": "2026-10-30T10:08:04.581Z",
+      "step": "snapshot"
+    },
+    {
+      "n": 5,
+      "file": "report-2026-10-29.json",
+      "fileHash": "bb250db618a09b8e648ad82d2851b0bc07b6f7eeb970475537fb1b694e64ea4d",
+      "prev": "eb783c7934468de4f3e042222fa86bf908f459bd1a9e4d210a9a799bf2d1e31b",
+      "hash": "08157527190b058c811e78f471b865f07bd11831941a3f898a0f32252a59d95e",
+      "at": "2026-10-30T10:08:04.582Z",
+      "step": "report",
+      "variations": 1
+    },
+    {
+      "n": 6,
+      "file": "2026-10-30.json",
+      "fileHash": "c43f9007b98cbc5ed09947392d5f59cebeaf6115ac9124dda37620b3e62b0a20",
+      "prev": "08157527190b058c811e78f471b865f07bd11831941a3f898a0f32252a59d95e",
+      "hash": "936154af022ebfb9d1e60353d9bb3d862059edffc39f786a55754b95f0e0bc87",
+      "at": "2026-10-30T10:08:04.584Z",
+      "step": "snapshot"
+    },
+    {
+      "n": 7,
+      "file": "report-2026-10-30.json",
+      "fileHash": "cb9e6d19c960a58a4e42ea6fcbdc616ed491735f59095c232e3856ba9982fff0",
+      "prev": "936154af022ebfb9d1e60353d9bb3d862059edffc39f786a55754b95f0e0bc87",
+      "hash": "6f6dd67fd643b2ef334cfb7a8f805bf3594c1f296ceae5983bdc48050f26e005",
+      "at": "2026-10-30T10:08:04.584Z",
+      "step": "report",
+      "variations": 2
+    }
+  ],
+  "head": "6f6dd67fd643b2ef334cfb7a8f805bf3594c1f296ceae5983bdc48050f26e005"
+}

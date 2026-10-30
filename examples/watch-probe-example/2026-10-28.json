@@ -1,0 +1,31 @@
+{
+  "source": "Incubator A, bench 3 (example export)",
+  "page": "file://lab/incubator-a/log-2026-10-28.csv",
+  "period": "2026-10-28",
+  "readings": [
+    {
+      "key": "incubator.temp",
+      "label": "Incubator temperature",
+      "value": 37.1,
+      "unit": "°C",
+      "thresholdValue": 37.5
+    },
+    {
+      "key": "incubator.co2",
+      "label": "CO2",
+      "value": 5,
+      "unit": "%"
+    },
+    {
+      "key": "culture.B.density",
+      "label": "Culture B, optical density at 600 nm",
+      "value": 0.61,
+      "unit": "OD"
+    },
+    {
+      "key": "culture.B.status",
+      "label": "Culture B, status",
+      "value": "growing"
+    }
+  ]
+}
