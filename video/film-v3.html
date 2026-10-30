@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="fr">
+<meta charset="utf-8">
+<title>Mission Zero film · une minute</title>
+<style>
+/* Ambiance de la carte ARGUS (nuit, menthe, bleu), adoucie : peu de halo, le vert réservé aux titres et aux « OK ». */
+:root { --bg:#0d1526; --fg:#e8edf7; --mut:#a9b4cc; --line:rgba(255,255,255,.16); --card:rgba(255,255,255,.05); --acc:#2ee6a0; --acc2:rgba(46,230,160,.72); --accf:rgba(46,230,160,.12); --blue:#2d55d4; --red:#ff6b61; --redf:rgba(180,35,24,.22); --amber:#ffd27a; --mint:#c9fff0; color-scheme: dark; }
+body { background:var(--bg); color:var(--fg); font-family: "Segoe UI", system-ui, sans-serif; margin:0; padding-block:16px; padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px)); }
+.wrap { max-width: 1700px; margin: 0 auto; display:grid; gap:18px; }
+h1 { font-size: 1.4rem; margin:0; } h1 small { display:block; font-weight:400; color:var(--mut); font-size:.95rem; margin-top:4px; }
+.scene { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:12px; display:grid; gap:8px; min-width:0; }
+.scene header { display:flex; flex-wrap:wrap; gap:10px; align-items:baseline; justify-content:space-between; }
+.scene h2 { margin:0; font-size:1.1rem; } .scene .t { color:var(--acc2); font-size:.8rem; letter-spacing:.06em; text-transform:uppercase; }
+svg { width:100%; height:auto; display:block; font-family: "Segoe UI", system-ui, sans-serif; overflow:visible; }
+.b { opacity:0; transform-box: fill-box; transform-origin: center; }
+.b.on { animation: pop .8s cubic-bezier(.2,.8,.2,1) forwards; }
+.b.focus .box { filter: drop-shadow(0 0 8px rgba(46,230,160,.35)); }
+@keyframes pop { 0% { opacity:0; transform: scale(.86); } 55% { opacity:1; transform: scale(1.06); } 100% { opacity:1; transform: scale(1); } }
+.box { fill:rgba(255,255,255,.05); stroke:var(--line); stroke-width:2; }
+.box.gold { stroke:var(--acc2); stroke-width:2.5; fill:rgba(46,230,160,.06); }
+.box.blue { stroke:rgba(45,85,212,.8); stroke-width:2.5; fill:rgba(45,85,212,.14); }
+.box.ok { stroke:var(--acc2); fill:rgba(46,230,160,.07); } .box.red { stroke:rgba(255,107,97,.8); fill:var(--redf); } .box.amber { stroke:rgba(255,210,122,.8); fill:rgba(255,210,122,.08); }
+.lbl { fill:var(--fg); font-size:26px; font-weight:600; } .lbl.m { font-size:21px; } .lbl.s { font-size:18px; font-weight:400; fill:var(--mut); } .lbl.xs { font-size:15px; font-weight:400; fill:var(--mut); }
+.lbl.acc { fill:var(--acc); } .lbl.red { fill:var(--red); } .lbl.amber { fill:var(--amber); } .lbl.okt { fill:#bff5dd; }
+.code { font-family: Consolas, "Courier New", monospace; font-size:15px; fill:var(--mut); } .code.add { fill:#8fe6c0; } .code.del { fill:#ff9d95; }
+.tile { fill:rgba(255,255,255,.04); stroke:var(--line); stroke-width:1.5; } .leaf { fill:rgba(46,230,160,.28); }
+.badge { fill:var(--redf); stroke:rgba(255,107,97,.85); stroke-width:2; } .badge-t { fill:#ffd2ce; font-size:18px; font-weight:600; }
+.badge.ok { fill:var(--accf); stroke:var(--acc2); } .badge-t.ok { fill:#bff5dd; }
+.pill { stroke-width:2; } .pill.ok { fill:var(--accf); stroke:var(--acc2); } .pill.ko { fill:var(--redf); stroke:rgba(255,107,97,.85); }
+.hidden { display:none; }
+/* Flèches : épaisses, arrondies, douces ; se dessinent avec un point qui court devant ; jamais de croisement. */
+.arrow { stroke:var(--acc2); stroke-width:5; stroke-linecap:round; stroke-linejoin:round; fill:none; stroke-dasharray:1; stroke-dashoffset:1; transition: stroke-dashoffset 1s linear; }
+.arrow.red { stroke:rgba(255,107,97,.8); } .arrow.ghost { stroke:none; }
+.a.on .arrow { stroke-dashoffset:0; } .a.drawn .arrow { marker-end:url(#mok); } .a.drawn .arrow.red { marker-end:url(#mred); } .a.drawn .arrow.ghost { marker-end:none; }
+.runner { fill:#fff; filter: drop-shadow(0 0 6px rgba(46,230,160,.8)); opacity:0; } .runner.go { opacity:1; }
+.ring { fill:rgba(255,255,255,.03); stroke:var(--mut); stroke-width:3; stroke-dasharray:7 9; transition: fill .5s, stroke .5s; }
+.ring.lit { fill:var(--accf); stroke:var(--acc2); stroke-dasharray:none; } .ring.bad { fill:var(--redf); stroke:rgba(255,107,97,.85); stroke-dasharray:none; }
+.mini { fill:rgba(255,255,255,.03); stroke:var(--mut); stroke-width:2; stroke-dasharray:4 5; }
+.chip { fill:rgba(255,255,255,.05); stroke:var(--line); stroke-width:2; transition: fill .5s, stroke .5s; }
+.chip.ok { fill:var(--accf); stroke:var(--acc2); } .chip.ko { fill:var(--redf); stroke:rgba(255,107,97,.85); } .chip.next { stroke:rgba(255,210,122,.7); fill:rgba(255,210,122,.06); }
+.chip-t { font-size:15px; fill:var(--fg); }
+.bar { display:flex; flex-wrap:wrap; gap:8px; } button { background:rgba(255,255,255,.06); color:var(--fg); border:1px solid var(--line); border-radius:8px; padding:8px 12px; font:inherit; cursor:pointer; } button:hover { border-color:var(--acc2); }
+.caption { min-height:2.2em; font-size:1.15rem; } .caption b { color:var(--acc); }
+/* Le film : un seul écran, quatre chapitres, une carte-titre avant chacun. */
+.filmbar { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+.filmbar .big { background:rgba(46,230,160,.14); border-color:var(--acc2); font-weight:600; }
+.film .scene { display:none; } .film .scene.active { display:grid; } .film .scene header, .film .bar { display:none; }
+.card { display:none; aspect-ratio: 16/9; max-height: 70vh; border:1px solid var(--line); border-radius:16px; background: radial-gradient(ellipse at 50% 40%, rgba(45,85,212,.25), transparent 60%), var(--bg); place-items:center; text-align:center; padding: 24px; }
+.card.show { display:grid; }
+.card .n { color:var(--acc); font-size: clamp(28px, 4vw, 56px); font-weight:700; letter-spacing:.06em; }
+.card .h { color:var(--fg); font-size: clamp(30px, 5.2vw, 76px); font-weight:800; line-height:1.1; margin-top:12px; text-wrap: balance; max-width: 18ch; }
+.card .s { color:var(--mut); font-size: clamp(16px, 1.8vw, 26px); margin-top:18px; }
+.card.end .h { color:var(--acc); }
+
+/* Le fil du film : sur chaque carte-titre, le point traverse l'écran, le trait le suit. Jamais de rupture. */
+.card { position:relative; overflow:hidden; }
+.card .trail { position:absolute; left:0; bottom:calc(12% + 5px); height:4px; width:0; background:var(--acc2); border-radius:2px; }
+.card .dot { position:absolute; left:0; bottom:12%; width:14px; height:14px; border-radius:50%; background:#fff; box-shadow:0 0 10px var(--acc); opacity:0; }
+.card.show .trail { animation: grow 2.4s linear forwards; } .card.show .dot { animation: ride 2.4s linear forwards; }
+.card.end .trail, .card.end .dot { display:none; }
+@keyframes grow { from { width:0; } to { width:100%; } } @keyframes ride { 0% { left:0; opacity:1; } 99% { opacity:1; } 100% { left:calc(100% - 14px); opacity:0; } }
+.arrow.orbit { stroke-width:6; } .runner.go { opacity:1; }
+.zoom { animation: zoomin 1.3s cubic-bezier(.2,.8,.2,1) forwards; } .zoom .chip { fill:var(--accf); stroke:var(--acc); }
+@keyframes zoomin { to { transform: scale(1.35); } }
+#stars circle { pointer-events:none; }
+#speed { fill:var(--acc); }
+/* La carte de fin : le fil dessine le zéro, puis CRYPTOR.AGENCY et, dessous, MISSION ZERO. */
+.card .sym { display:none; } .card.end .sym { display:block; width: min(30vh, 200px); margin: 0 auto 6px; }
+.card.end .zero { fill:none; stroke:var(--acc); stroke-width:7; stroke-linecap:round; stroke-dasharray:1; stroke-dashoffset:1; animation: drawzero 2.2s cubic-bezier(.4,0,.2,1) forwards; }
+.card.end .core { fill:#fff; opacity:0; filter: drop-shadow(0 0 8px var(--acc)); animation: corein .5s 2.1s forwards; }
+.card.end .n { color:var(--mut); font-size: clamp(16px, 1.8vw, 24px); font-weight:400; letter-spacing:.02em; opacity:0; animation: fadein .8s 2.4s forwards; }
+.card.end .h { color:var(--fg); font-size: clamp(34px, 6vw, 88px); letter-spacing:.08em; opacity:0; animation: fadein .8s 2.6s forwards; max-width: none; }
+.card.end .s { color:var(--acc); font-size: clamp(22px, 3vw, 44px); letter-spacing:.42em; font-weight:700; margin-top:8px; opacity:0; animation: fadein .8s 3.1s forwards; }
+@keyframes drawzero { to { stroke-dashoffset:0; } } @keyframes corein { to { opacity:1; } } @keyframes fadein { to { opacity:1; } }
+/* Enregistrement vidéo (?record=1) : rien que l'écran du film et sa légende, cadré pour 1280 × 720. */
+.record body { padding:0; } .record h1, .record .filmbar { display:none; } .record .wrap { gap:6px; max-width:1280px; }
+.record .scene { border:none; border-radius:0; padding:6px 10px 0; background:transparent; } .record .scene svg { max-height:640px; margin:0 auto; }
+.record .caption { min-height:2em; font-size:1.05rem; text-align:center; padding:0 12px; } .record .card { max-height:none; aspect-ratio:auto; height:708px; border:none; border-radius:0; }
+</style>
+<style>.film .scene { display:none; } .film .scene.active { display:grid; } .film .scene header { display:none; } .field { fill:#fff; stroke:#999; stroke-width:1.5; } .field.gone { fill:none; stroke:var(--red); stroke-dasharray:5 4; }</style>
+<div class="wrap">
+  <h1>Mission Zero, le film · une minute <small>Le modèle du 29 octobre, raccourci : des phrases courtes, les flèches qui se dessinent, le point qui court devant, chaque élément qui apparaît et reste. Voix française (le fondateur), sous-titres anglais incrustés au montage.</small></h1>
+  <div class="filmbar"><button class="big" id="go">▶ Lancer le film</button><button data-ch="s0">1 · La boucle</button><button data-ch="sB">· Où l'envoyer ?</button><button data-ch="s1">2 · La sécurité</button><button id="grid">Voir tous les schémas</button><span id="clock" style="color:var(--mut)"></span></div>
+<section class="scene" id="s0">
+    <header><h2>1 · LA BOUCLE</h2><span class="t">ouverture</span></header>
+    <svg viewBox="0 0 1600 900" role="img" aria-label="La boucle de Mission Zero : un point qui tourne sans s'arrêter par Objectif, Hypothèses, Actions, Évaluation, Leçons, jusqu'à la preuve">
+      <g class="b" data-k="1" data-d="2200"><text class="lbl acc" x="800" y="80" text-anchor="middle" style="font-size:56px;letter-spacing:.04em">MISSION ZERO</text><text class="lbl s" x="800" y="118" text-anchor="middle" style="font-size:22px">un objectif, aucun plan, et l'ordre de prouver</text></g>
+      <g class="a" data-k="2" data-d="100"><path class="arrow orbit" pathLength="1" d="M800,230 A190,190 0 1,1 800,610 A190,190 0 1,1 800,230"/></g>
+      <g class="b" data-k="3" data-ring="o1" data-d="1200"><circle class="ring" id="o1" cx="800" cy="230" r="58"/><text class="lbl m" x="800" y="237" text-anchor="middle">Objectif</text></g>
+      <g class="b" data-k="4" data-ring="o2" data-d="1200"><circle class="ring" id="o2" cx="981" cy="361" r="58"/><text class="lbl m" x="981" y="368" text-anchor="middle">Hypothèses</text></g>
+      <g class="b" data-k="5" data-ring="o3" data-d="1200"><circle class="ring" id="o3" cx="912" cy="574" r="58"/><text class="lbl m" x="912" y="581" text-anchor="middle">Actions</text></g>
+      <g class="b" data-k="6" data-ring="o4" data-d="1200"><circle class="ring" id="o4" cx="688" cy="574" r="58"/><text class="lbl m" x="688" y="581" text-anchor="middle">Évaluation</text></g>
+      <g class="b" data-k="7" data-ring="o5" data-d="1200"><circle class="ring" id="o5" cx="619" cy="361" r="58"/><text class="lbl m" x="619" y="368" text-anchor="middle">Leçons</text></g>
+      <g class="b" data-k="8" data-d="2000"><circle class="ring lit" cx="800" cy="420" r="62"/><text class="lbl m acc" x="800" y="414" text-anchor="middle">Preuves</text><text class="lbl xs" x="800" y="438" text-anchor="middle">citation exacte</text></g>
+      <g class="b" data-k="14" data-d="2400"><text class="lbl amber" x="800" y="790" text-anchor="middle" style="font-size:30px">Où l'envoyer ?</text></g>
+      <g class="a" data-k="15" data-d="1400"><path class="arrow" pathLength="1" d="M800 614 L800 700 L1040 700 L1040 850 L1600 850"/></g>
+    </svg>
+    <div class="caption" id="c0"></div>
+    
+  </section>
+
+  
+<section class="scene" id="sB">
+    <header><h2>OÙ L'ENVOYER ?</h2><span class="t">l'écran des choix</span></header>
+    <svg viewBox="0 0 1600 900" role="img" aria-label="La boucle au centre, et autour, tout ce qu'on peut lui demander : l'espace, la sécurité d'un site, une étude médicale, un chiffre INSEE, une loi, un brevet, votre métier">
+      <g class="a" data-k="1"><path class="arrow" pathLength="1" d="M0 882 L660 882 L660 600 L734 518"/></g>
+      <g class="b" data-k="2"><circle class="ring lit" cx="800" cy="450" r="96"/><text class="lbl m acc" x="800" y="443" text-anchor="middle">la boucle</text><text class="lbl xs" x="800" y="468" text-anchor="middle">chercher · lire · prouver</text><circle class="ring lit" cx="800" cy="354" r="9"/><circle class="ring lit" cx="891" cy="420" r="9"/><circle class="ring lit" cx="856" cy="527" r="9"/><circle class="ring lit" cx="744" cy="527" r="9"/><circle class="ring lit" cx="709" cy="420" r="9"/></g>
+      <g class="b" data-k="3" data-d="350" id="bE"><rect class="chip next" x="670" y="120" width="260" height="60" rx="30"/><text class="chip-t" x="800" y="158" text-anchor="middle" style="font-size:22px">🪐 L'espace</text></g>
+      <g class="b" data-k="4" data-d="350" id="bM"><rect class="chip next" x="950" y="160" width="260" height="60" rx="30"/><text class="chip-t" x="1080" y="198" text-anchor="middle" style="font-size:22px">🩺 La médecine</text></g>
+      <g class="b" data-k="5" data-d="350"><rect class="chip next" x="1155" y="270" width="260" height="60" rx="30"/><text class="chip-t" x="1285" y="308" text-anchor="middle" style="font-size:22px">Un chiffre INSEE</text></g>
+      <g class="b" data-k="6" data-d="350"><rect class="chip next" x="1230" y="420" width="260" height="60" rx="30"/><text class="chip-t" x="1360" y="458" text-anchor="middle" style="font-size:22px">Une norme sanitaire</text></g>
+      <g class="b" data-k="7" data-d="350"><rect class="chip next" x="1155" y="570" width="260" height="60" rx="30"/><text class="chip-t" x="1285" y="608" text-anchor="middle" style="font-size:22px">Un article de loi</text></g>
+      <g class="b" data-k="8" data-d="350"><rect class="chip next" x="970" y="680" width="260" height="60" rx="30"/><text class="chip-t" x="1100" y="718" text-anchor="middle" style="font-size:22px">Une décision de justice</text></g>
+      <g class="b" data-k="9" data-d="350"><rect class="chip next" x="670" y="720" width="260" height="60" rx="30"/><text class="chip-t" x="800" y="758" text-anchor="middle" style="font-size:22px">Un appel d'offres</text></g>
+      <g class="b" data-k="10" data-d="350"><rect class="chip next" x="370" y="680" width="260" height="60" rx="30"/><text class="chip-t" x="500" y="718" text-anchor="middle" style="font-size:22px">Un rapport annuel</text></g>
+      <g class="b" data-k="11" data-d="350"><rect class="chip next" x="185" y="570" width="260" height="60" rx="30"/><text class="chip-t" x="315" y="608" text-anchor="middle" style="font-size:22px">Un brevet</text></g>
+      <g class="b" data-k="12" data-d="350" id="bS"><rect class="chip next" x="90" y="420" width="280" height="60" rx="30"/><text class="chip-t" x="230" y="458" text-anchor="middle" style="font-size:22px">🛡 La sécurité d'un site</text></g>
+      <g class="b" data-k="13" data-d="350"><rect class="chip next" x="185" y="270" width="260" height="60" rx="30"/><text class="chip-t" x="315" y="308" text-anchor="middle" style="font-size:22px">Une norme produit</text></g>
+      <g class="b" data-k="14" data-d="1600"><rect class="chip next" x="390" y="160" width="260" height="60" rx="30"/><text class="chip-t" x="520" y="198" text-anchor="middle" style="font-size:22px">Votre métier</text></g>
+      <g class="b" data-k="15" data-d="1800"><text class="lbl s" x="800" y="836" text-anchor="middle" style="font-size:20px">Tout vient de données gratuites.</text></g>
+      <g class="a" data-k="16" data-zoom="#bS"><path class="arrow" pathLength="1" d="M702 450 L372 450"/></g>
+      <g class="b" data-k="17" data-d="2400"><text class="lbl amber" x="800" y="70" text-anchor="middle" style="font-size:26px">Premier voyage : la sécurité d'un site.</text></g>
+    </svg>
+    <div class="caption" id="cB"></div>
+    
+  </section>
+
+  
+  <section class="scene" id="s1">
+    <header><h2>2 · LA SÉCURITÉ D'UN SITE</h2><span class="t">premier voyage</span></header>
+    <svg viewBox="0 0 1600 900" role="img" aria-label="La sécurité d'un site : avant, sans Mission Zero ; avec Mission Zero">
+      <g class="a" data-k="1" data-d="900"><path class="arrow red" pathLength="1" d="M0 140 L518 140"/></g>
+      <g class="b" data-k="2" data-d="2600"><rect class="box red" x="520" y="40" width="560" height="200" rx="16"/><text class="lbl red" x="800" y="110" text-anchor="middle" style="font-size:46px;letter-spacing:.08em">SITE FERMÉ</text><text class="lbl s" x="800" y="152" text-anchor="middle" style="font-size:22px">données clients dans la nature</text><text class="lbl" x="800" y="205" text-anchor="middle" style="font-size:26px">8 sites sur 10 sont exposés</text></g>
+      <g class="a" data-k="3" data-d="900"><path class="arrow red" pathLength="1" d="M520 180 L30 180 L30 355 L58 355"/></g>
+      <g class="b" data-k="4" data-d="1300"><text class="lbl red" x="310" y="300" text-anchor="middle" style="font-size:22px;letter-spacing:.08em">AVANT, SANS MISSION ZERO</text><rect class="box red" x="60" y="320" width="500" height="70" rx="14"/><text class="lbl m" x="310" y="363" text-anchor="middle">Un scanner trouve 15 failles</text></g>
+      <g class="a" data-k="5" data-d="500"><path class="arrow red" pathLength="1" d="M310 392 L310 403"/></g>
+      <g class="b" data-k="6" data-d="1600"><rect class="box red" x="60" y="405" width="500" height="70" rx="14"/><text class="lbl m" x="310" y="448" text-anchor="middle">On corrige à la main, en production</text></g>
+      <g class="a" data-k="7" data-d="500"><path class="arrow red" pathLength="1" d="M310 477 L310 488"/></g>
+      <g class="b" data-k="8" data-d="1300"><rect class="box red" x="60" y="490" width="500" height="70" rx="14"/><text class="lbl m" x="310" y="533" text-anchor="middle">Autre chose casse, personne ne relit</text></g>
+      <g class="a" data-k="9" data-d="500"><path class="arrow red" pathLength="1" d="M310 562 L310 573"/></g>
+      <g class="b" data-k="10" data-d="1600"><rect class="box red" x="60" y="575" width="500" height="70" rx="14"/><text class="lbl m" x="310" y="618" text-anchor="middle" style="font-weight:800">Site fermé, données dans la nature</text></g>
+      <g class="a" data-k="11" data-d="1000"><path class="arrow" pathLength="1" d="M1080 180 L1570 180 L1570 355 L1542 355"/></g>
+      <g class="b" data-k="12" data-d="1300"><text class="lbl acc" x="1290" y="300" text-anchor="middle" style="font-size:22px;letter-spacing:.08em">AVEC MISSION ZERO</text><rect class="box ok" x="1040" y="320" width="500" height="70" rx="14"/><text class="lbl m" x="1290" y="363" text-anchor="middle">Le même constat, format générique</text></g>
+      <g class="a" data-k="13" data-d="500"><path class="arrow" pathLength="1" d="M1290 392 L1290 403"/></g>
+      <g class="b" data-k="14" data-d="1300"><rect class="box ok" x="1040" y="405" width="500" height="70" rx="14"/><text class="lbl m" x="1290" y="448" text-anchor="middle">Correctif cherché, sources citées</text></g>
+      <g class="a" data-k="15" data-d="500"><path class="arrow" pathLength="1" d="M1290 477 L1290 488"/></g>
+      <g class="b" data-k="16" data-d="1600"><rect class="box ok" x="1040" y="490" width="500" height="70" rx="14"/><text class="lbl m" x="1290" y="533" text-anchor="middle">Patch sur une copie, jamais le site</text></g>
+      <g class="a" data-k="17" data-d="500"><path class="arrow" pathLength="1" d="M1290 562 L1290 573"/></g>
+      <g class="b" data-k="18" data-d="1300"><rect class="box ok" x="1040" y="575" width="500" height="70" rx="14"/><text class="lbl m" x="1290" y="618" text-anchor="middle">7 parcours rejoués, rescan, regard</text></g>
+      <g class="a" data-k="19" data-d="500"><path class="arrow" pathLength="1" d="M1290 647 L1290 658"/></g>
+      <g class="b" data-k="20" data-d="1600"><rect class="box ok" x="1040" y="660" width="500" height="70" rx="14"/><text class="lbl m" x="1290" y="703" text-anchor="middle" style="font-weight:800">Un humain applique</text></g>
+      <g class="a" data-k="21" data-d="900"><path class="arrow red" pathLength="1" d="M560 525 L585 525 L585 585 L608 585"/></g>
+      <g class="b" data-k="22" data-d="2200"><rect class="chip ko" x="610" y="560" width="180" height="50" rx="25"/><text class="chip-t" x="700" y="593" text-anchor="middle" style="font-weight:700">REJETÉ</text></g>
+      <g class="a" data-k="23" data-d="500"><path class="arrow" pathLength="1" d="M792 585 L808 585"/></g>
+      <g class="b" data-k="24" data-d="2000"><rect class="chip ok" x="810" y="560" width="180" height="50" rx="25"/><text class="chip-t" x="900" y="593" text-anchor="middle" style="font-weight:700">PROPOSÉ</text></g>
+      <g class="a" data-k="25" data-d="700"><path class="arrow" pathLength="1" d="M900 558 L900 542"/></g>
+      <g class="b" data-k="26" data-d="1800"><rect class="box" x="610" y="290" width="380" height="250" rx="14"/><text class="lbl m" x="630" y="322">Paiement</text><text class="lbl xs" x="630" y="356">Numéro de carte</text><rect class="field" id="f1" x="790" y="340" width="180" height="24" rx="4"/><text class="lbl xs" x="630" y="392">Expiration</text><rect class="field" id="f2" x="790" y="376" width="180" height="24" rx="4"/><text class="lbl xs" x="630" y="428">Cryptogramme</text><rect class="field" id="f3" x="790" y="412" width="180" height="24" rx="4"/><text class="lbl xs" x="630" y="464">Nom</text><rect class="field" x="790" y="448" width="180" height="24" rx="4"/><text class="lbl xs" x="630" y="500">E-mail</text><rect class="field" x="790" y="484" width="180" height="24" rx="4"/><text class="lbl xs okt" x="800" y="530" text-anchor="middle" id="formt">tests HTTP : 7 parcours verts</text></g>
+      <g class="b" data-k="27" data-d="2600" data-gone="f1,f2,f3" data-hide="#formt"><text class="lbl red" x="800" y="530" text-anchor="middle" style="font-size:17px;font-weight:700">il a regardé la page · 5 champs avant, 2 après · REFUSÉ</text></g>
+      <g class="a" data-k="28" data-d="600"><path class="arrow" pathLength="1" d="M900 612 L900 623"/></g>
+      <g class="b" data-k="29" data-d="3200"><rect class="box amber" x="610" y="625" width="380" height="110" rx="14"/><text class="lbl xs amber" x="800" y="652" text-anchor="middle" style="letter-spacing:.08em">UN VRAI SITE · 6STEM.COM · LU PAR ARGUS</text><text class="lbl" x="700" y="704" text-anchor="middle" style="font-size:40px">7</text><text class="lbl acc" x="800" y="704" text-anchor="middle" style="font-size:40px">5</text><text class="lbl red" x="900" y="704" text-anchor="middle" style="font-size:40px">2</text><text class="lbl xs" x="700" y="726" text-anchor="middle">constats</text><text class="lbl xs" x="800" y="726" text-anchor="middle">réparés, prouvés</text><text class="lbl xs" x="900" y="726" text-anchor="middle">non certifiés</text></g>
+      <g class="a" data-k="30" data-d="600"><path class="arrow" pathLength="1" d="M1290 732 L1290 758"/></g>
+      <g class="b" data-k="31" data-d="3200"><rect class="box ok" x="60" y="760" width="1480" height="62" rx="14"/><text class="lbl acc" x="300" y="800" text-anchor="middle" style="letter-spacing:.1em">MYTHOZOR</text><text class="lbl m" x="640" y="800" text-anchor="middle">ARGUS surveille</text><text class="lbl m acc" x="920" y="800" text-anchor="middle">Mission Zero répare</text><text class="lbl m" x="1250" y="800" text-anchor="middle" style="font-weight:800">vous validez</text></g>
+    </svg>
+    <div class="caption" id="c1"></div>
+  </section>
+
+</div>
+<script>
+(function () {
+  var SVGNS = 'http://www.w3.org/2000/svg', XLINK = 'http://www.w3.org/1999/xlink';
+  var CAP = {"s0":["<b>Mission Zero.</b> Un objectif, et l'ordre de prouver.","Suivez le point.","Objectif.","Hypothèses.","Actions.","Évaluation.","Leçon. Et il recommence.","Jusqu'à la <b>preuve</b>&nbsp;: la citation exacte, sur la page.","<b>Où l'envoyer&nbsp;?</b>",null],"sB":["Le point arrive. La boucle attend un objectif.","Même boucle, zéro code.","L'espace…","la médecine…","un chiffre de l'INSEE…","une norme…","une loi…","une décision de justice…","un appel d'offres…","un rapport annuel…","un brevet…","la sécurité d'un site…","une norme produit…","votre métier.","Tout vient de données gratuites.",null,"<b>D'abord, la sécurité d'un site.</b>"],"s1":[null,"<b>Une faille. Un site fermé.</b> Huit sites sur dix sont exposés.",null,"Quinze failles.",null,"D'habitude, on corrige en production.",null,"Et on casse autre chose.",null,"Jusqu'au jour où le site ferme.",null,"<b>Mission Zero</b> prend le même constat.",null,"Il cherche le correctif, sources citées.",null,"Il le pose sur une copie. Jamais sur le site.",null,"Il rejoue vos parcours, relance le scanner, regarde la page.",null,"Et c'est un humain qui applique.",null,"Il casse «&nbsp;suivre ma commande&nbsp;». <b>Il se refuse.</b>",null,"Il en propose une autre, qui passe.",null,"Les tests disaient oui.","Il a regardé la page&nbsp;: <b>refusé.</b>",null,"Sur notre vrai site&nbsp;: sept constats. Cinq réparés avec preuves. Deux qu'il refuse de certifier.",null,"<b>Chez vous.</b> ARGUS surveille, Mission Zero répare, vous validez."]};
+  var timers = {};
+  function steps(id) { return Array.prototype.slice.call(document.querySelectorAll('#' + id + ' [data-k]')); }
+  function capId(id) { return 'c' + id.slice(1); }
+  var n = 0;
+  document.querySelectorAll('.a .arrow').forEach(function (p) {
+    n += 1; p.id = p.id || 'p' + n;
+    var orbit = p.classList.contains('orbit');
+    var c = document.createElementNS(SVGNS, 'circle'); c.setAttribute('r', '8'); c.setAttribute('class', 'runner');
+    var m = document.createElementNS(SVGNS, 'animateMotion'); m.setAttribute('dur', orbit ? '6s' : '1s'); m.setAttribute('begin', 'indefinite'); m.setAttribute('fill', 'freeze'); if (orbit) m.setAttribute('repeatCount', 'indefinite');
+    var mp = document.createElementNS(SVGNS, 'mpath'); mp.setAttributeNS(XLINK, 'xlink:href', '#' + p.id); mp.setAttribute('href', '#' + p.id);
+    m.appendChild(mp); c.appendChild(m); p.parentNode.appendChild(c);
+    if (orbit) p.style.transitionDuration = '6s';
+  });
+  function act(step) {
+    (step.dataset.hide || '').split(',').filter(Boolean).forEach(function (h) { document.querySelector(h).classList.add('hidden'); });
+    (step.dataset.ring || '').split(',').filter(Boolean).forEach(function (r) { var id = r.split(':')[0], mode = r.split(':')[1] || 'lit'; var el = document.getElementById(id); el.classList.remove('lit', 'bad'); if (mode !== 'off') el.classList.add(mode); });
+    (step.dataset.gone || '').split(',').filter(Boolean).forEach(function (id) { document.getElementById(id).classList.add('gone'); });
+    if (step.dataset.zoom) { var z = document.querySelector(step.dataset.zoom); if (z) setTimeout(function () { z.classList.add('zoom'); }, 900); }
+  }
+  function fire(step) {
+    step.classList.add('on'); act(step);
+    if (step.classList.contains('a')) {
+      var orbit = !!step.querySelector('.orbit');
+      step.querySelectorAll('.runner').forEach(function (c) { c.classList.add('go'); var m = c.querySelector('animateMotion'); try { m.beginElement(); } catch (e) {} if (!orbit) setTimeout(function () { c.classList.remove('go'); }, 1050); });
+      setTimeout(function () { step.classList.add('drawn'); }, orbit ? 6000 : 1000);
+    } else { step.classList.add('focus'); setTimeout(function () { step.classList.remove('focus'); }, 1200); }
+  }
+  function reset(id) {
+    steps(id).forEach(function (s) { s.classList.remove('on', 'drawn', 'focus', 'hidden', 'zoom'); });
+    document.querySelectorAll('#' + id + ' .zoom').forEach(function (z) { z.classList.remove('zoom'); });
+    document.querySelectorAll('#' + id + ' .hidden').forEach(function (z) { z.classList.remove('hidden'); });
+    document.querySelectorAll('#' + id + ' .ring').forEach(function (r) { if (r.id) r.classList.remove('lit', 'bad'); });
+    document.querySelectorAll('#' + id + ' .field').forEach(function (r) { r.classList.remove('gone'); });
+    document.querySelectorAll('#' + id + ' .runner').forEach(function (c) { c.classList.remove('go'); });
+    document.getElementById(capId(id)).innerHTML = '';
+  }
+  function caption(id, k) { var t = CAP[id][k - 1]; if (t) document.getElementById(capId(id)).innerHTML = t; }
+  function play(id, done) {
+    clearTimeout(timers[id]); reset(id);
+    var list = steps(id), k = 0;
+    (function next() { if (k >= list.length) { if (done) timers[id] = setTimeout(done, 1800); return; } var s = list[k]; k += 1; fire(s); caption(id, k); var d = Number(s.dataset.d) || (s.classList.contains('a') ? 1100 : 1300); timers[id] = setTimeout(next, d); })();
+  }
+  function all(id) { clearTimeout(timers[id]); reset(id); var list = steps(id); list.forEach(function (s) { s.classList.add('on', 'drawn'); act(s); if (s.querySelector('.orbit')) fire(s); }); caption(id, list.length); }
+  function show(id) { document.querySelectorAll('.scene').forEach(function (s) { s.classList.toggle('active', s.id === id); }); }
+  var t0 = 0, clock = document.getElementById('clock');
+  function tick() { if (t0) clock.textContent = Math.round((Date.now() - t0) / 100) / 10 + ' s'; }
+  setInterval(tick, 200);
+  // Le film d'une minute : la boucle, l'écran des choix, la sécurité. Le fil ne casse pas.
+  function film() {
+    t0 = Date.now(); document.body.classList.add('film');
+    show('s0'); play('s0', function () { show('sB'); play('sB', function () { show('s1'); play('s1', function () { clock.textContent = 'fin · ' + Math.round((Date.now() - t0) / 100) / 10 + ' s'; t0 = 0; }); }); });
+  }
+  document.getElementById('go').addEventListener('click', film);
+  document.querySelectorAll('[data-ch]').forEach(function (b) { b.addEventListener('click', function () { document.body.classList.add('film'); show(b.dataset.ch); play(b.dataset.ch); }); });
+  document.getElementById('grid').addEventListener('click', function () { document.body.classList.remove('film'); ['s0', 'sB', 's1'].forEach(all); });
+  var q = new URLSearchParams(location.search);
+  if (q.get('record')) document.documentElement.classList.add('record');
+  if (q.get('auto')) film(); else { document.body.classList.add('film'); show('s0'); }
+})();
+</script>
+</html>
