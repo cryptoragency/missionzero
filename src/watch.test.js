@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdtempSync, readFileSync, existsSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { diffReadings, describeVariation, sentinellesSnapshots, clinicalTrialsSnapshot, fileSnapshots, buildReport, watch } from './watch.js';
+import { diffReadings, describeVariation, sentinellesSnapshots, clinicalTrialsSnapshot, fileSnapshots, buildReport, watch, provenSources, fetchJson } from './watch.js';
 import { verifyChain } from './chain.js';
 
 const snap = (period, readings) => ({ source: 'S', page: 'https://example.org/bulletin', period, readings });
@@ -70,4 +70,28 @@ test('the report says Mission Zero did not act', () => {
 test('file snapshots accept a single snapshot or an array', () => {
   assert.equal(fileSnapshots({ period: 'a', readings: [] }).length, 1);
   assert.equal(fileSnapshots([{ period: 'a' }, { period: 'b' }]).length, 2);
+});
+
+test('an explanation keeps only the sources the verifier found on the page, with the quote it found', () => {
+  const sources = [{ url: 'https://a.example/1', contribution: 'ILI rose to 94 per 100 000' }, { url: 'https://b.example/2', contribution: 'invented figure' }];
+  const verification = [
+    { url: 'https://a.example/1', claim: 'ILI rose to 94 per 100 000', verdict: 'supported', detail: 'incidence was estimated at 94 cases per 100,000' },
+    { url: 'https://b.example/2', claim: 'invented figure', verdict: 'unsupported', detail: 'nearest passages: « … »' },
+  ];
+  const kept = provenSources(sources, verification);
+  assert.deepEqual(kept, [{ url: 'https://a.example/1', contribution: 'ILI rose to 94 per 100 000', quote: 'incidence was estimated at 94 cases per 100,000' }]);
+  const md = buildReport({ source: { name: 'S', threshold: 20, attribution: 'Réseau Sentinelles, Inserm / Sorbonne Université, sentiweb.fr' }, previous: snap('W1', []), current: snap('W2', []), variations: [], explanation: { judge: 8, green: 1, usd: 0.01, summary: 'x', sources: kept } });
+  assert.match(md, /« incidence was estimated at 94 cases per 100,000 »/);
+  assert.match(md.split('\n').slice(0, 4).join('\n'), /Data: Réseau Sentinelles, Inserm \/ Sorbonne Université, sentiweb\.fr\./);
+  assert.doesNotMatch(md, /invented figure/);
+});
+
+test('every source in watch/sources.json names its attribution', () => {
+  const sources = JSON.parse(readFileSync('watch/sources.json', 'utf8'));
+  for (const s of sources.filter((x) => x.kind !== 'file' || /flunet/.test(x.path))) assert.ok(s.attribution, s.name);
+});
+
+test('fetchJson gives up on a source that hangs', async () => {
+  const hang = (url, init) => new Promise((_, reject) => init.signal.addEventListener('abort', () => reject(init.signal.reason)));
+  await assert.rejects(() => fetchJson('https://slow.example/api', { timeoutMs: 20, fetchFn: hang }), /timeout|aborted/i);
 });

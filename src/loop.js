@@ -3,11 +3,24 @@
 import { refinePlan } from './contradict.js';
 import { readFileSync, writeFileSync, existsSync, appendFileSync } from 'node:fs';
 
-const JSON_RE = /\{[\s\S]*\}/;
+// The first balanced JSON object in the text: braces are counted outside strings, so a sentence after the JSON
+// that holds a brace ("the set {a, b}") no longer swallows the answer as the greedy /\{[\s\S]*\}/ did.
+// An object that does not parse is skipped and the search goes on from the next brace.
 export function readJson(text) {
-  const m = String(text || '').match(JSON_RE);
-  if (!m) return null;
-  try { return JSON.parse(m[0]); } catch { return null; }
+  const t = String(text || '');
+  for (let start = t.indexOf('{'); start >= 0; start = t.indexOf('{', start + 1)) {
+    let depth = 0; let inStr = false; let esc = false;
+    for (let i = start; i < t.length; i += 1) {
+      const c = t[i];
+      if (inStr) { if (esc) esc = false; else if (c === '\\') esc = true; else if (c === '"') inStr = false; continue; }
+      if (c === '"') inStr = true;
+      else if (c === '{') depth += 1;
+      else if (c === '}' && (depth -= 1) === 0) {
+        try { return JSON.parse(t.slice(start, i + 1)); } catch { break; }
+      }
+    }
+  }
+  return null;
 }
 
 export function loadMemory(path) {
@@ -16,11 +29,13 @@ export function loadMemory(path) {
 }
 
 const PLAN_PROMPT = 'You are Mission Zero. You reach a goal through successive experiments. Allowed actions, and only these: '
-  + '{"type":"web_search","query":"3 to 8 keywords, not a sentence"}, {"type":"read_page","url":"a URL already seen in a search result","find":"the exact facts to locate in the page, as keywords and numbers"} to read a whole page (long reports come back as the passages matching find), or {"type":"create_page","name":"","content":"complete HTML"}. '
+  + '{"type":"web_search","query":"3 to 8 keywords, not a sentence"}, {"type":"read_page","url":"a URL already seen in a search result or given in the goal","find":"the exact facts to locate in the page, as keywords and numbers"} to read a whole page (long reports come back as the passages matching find), or {"type":"create_page","name":"","content":"complete HTML"}. '
   + 'Prefer reading primary institutional or study pages over snippets, and count sources by independent institution. '
   + 'No cost and no real-world action (costUsd 0, real false) unless indispensable. After an empty search, change the keywords. '
   + 'Answer ONLY in JSON: {"hypotheses":[""],"action":{"type":"","query":"","url":"","find":"","name":"","content":"","costUsd":0,"real":false},"expected":""}.';
-const EVAL_PROMPT = 'Evaluate honestly, lesson and pivot in one sentence each, no prose outside the JSON. JSON: {"score":0-10,"reached":false,"lesson":"","uncertainties":[""],"pivot":""}.';
+const EVAL_PROMPT = 'Score 0 to 10 how much the observation moves the goal (10 = the exact figures are in a page that was read). '
+  + 'reached = true only when the goal can be answered now from pages read. lesson and pivot: one sentence each. No prose outside the JSON. '
+  + 'JSON: {"score":7,"reached":false,"lesson":"","uncertainties":[""],"pivot":""}.';
 
 export async function run({ goal, constraints = [], lessons = [], budgetUsd = 100, maxTurns = 6, contradictions = 0, escalate = true, ask, execute, approve, help = null, memoryPath = null, journalPath = null }) {
   const memory = loadMemory(memoryPath);

@@ -3,8 +3,11 @@
 import { readFileSync } from 'node:fs';
 import { basename } from 'node:path';
 import { createRequire } from 'node:module';
+import { metaFetch, META_BASE, META_KEY } from './meta.js';
 
-const BASE = 'https://api.meta.ai/v1';
+// Transcription is billed by audio time: $0.18 per hour (Meta price list, 30 October 2026). The answer gives
+// audioDurationMs; when it does not, the call counts 0 rather than a guess.
+const VOICE_USD_PER_HOUR = 0.18;
 
 // The service wants mono, 16-bit, 16 000 or 24 000 Hz. The header is read here; anything else is resampled with ffmpeg
 // (MZ_FFMPEG or `ffmpeg` on the PATH) into a temporary file, so a phone recording or a Windows voice works as is.
@@ -34,8 +37,7 @@ export function ensureAcceptedWav(path) {
 }
 const requireSync = (m) => createRequire(import.meta.url)(m);
 
-export async function transcribeWav(path, { key = process.env.MODEL_API_KEY, model = 'muse-voice-transcribe-1.0', fetchFn = fetch } = {}) {
-  if (!key) throw new Error('MODEL_API_KEY is missing (.env file)');
+export async function transcribeWav(path, { key, model = 'muse-voice-transcribe-1.0', fetchFn = fetch } = {}) {
   const wav = ensureAcceptedWav(path);
   const bytes = wav.bytes;
   if (bytes.length > 32 * 1024 * 1024) throw new Error('recording over 32 MB');
@@ -43,9 +45,7 @@ export async function transcribeWav(path, { key = process.env.MODEL_API_KEY, mod
   form.append('request', new Blob([JSON.stringify({ model, audioEncoding: 'WAV', mode: 'PUSH_TO_TALK' })], { type: 'application/json' }));
   form.append('audio', new Blob([bytes], { type: 'audio/wav' }), basename(path));
   const t0 = Date.now();
-  const r = await fetchFn(`${BASE}/asr/transcribe`, { method: 'POST', headers: { authorization: `Bearer ${key}`, accept: 'application/json' }, body: form });
-  const body = await r.text();
-  if (!r.ok) throw new Error(`Meta voice ${r.status}: ${body.slice(0, 300)}`);
+  const { body } = await metaFetch('/asr/transcribe', { method: 'POST', headers: { accept: 'application/json' }, body: form }, { base: META_BASE, key: key || META_KEY, keyName: 'MODEL_API_KEY', fetchFn, cost: (j) => (Number(j?.audioDurationMs) > 0 ? (Number(j.audioDurationMs) / 3.6e6) * VOICE_USD_PER_HOUR : 0) });
   const j = JSON.parse(body);
   return { transcript: String(j.transcript || '').trim(), durationMs: j.audioDurationMs, sessionId: j.sessionId, ms: Date.now() - t0, converted: wav.converted, format: wav.format };
 }

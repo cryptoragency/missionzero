@@ -118,7 +118,7 @@ function turnScene(t) {
   const ev = '<div class="score"><div class="bar"><i data-w="' + score * 10 + '"></i></div><b>' + score + ' / 10</b>' + (e.reached ? '<span class="pill" style="color:var(--ok);border-color:var(--ok)">goal reached</span>' : '') + '</div>'
     + '<div style="margin-top:6px"><span style="color:var(--mut)">lesson:</span> ' + esc(e.lesson) + '</div>' + (e.pivot && !e.reached ? '<div><span style="color:var(--mut)">pivot:</span> ' + esc(e.pivot) + '</div>' : '');
   return '<div class="turnhead"><h2>Turn ' + t.turn + '</h2><span>hypothesis → action → observation → evaluation</span></div>'
-    + step('hypothesis', esc((t.hypotheses || [])[0] || '—')) + step('action', act) + step('observation', obs) + step('evaluation', ev);
+    + step('hypothesis', esc((t.hypotheses || [])[0] || 'n/a')) + step('action', act) + step('observation', obs) + step('evaluation', ev);
 }
 function draftScene() { return '<div class="turnhead"><h2>Draft answer</h2><span>written only from what was seen</span></div><div class="answer" id="ans"></div><div style="color:var(--mut)">' + DATA.final.sources.length + ' source' + (DATA.final.sources.length > 1 ? 's' : '') + ' cited · a URL that was never read cannot be cited</div>'; }
 function verifyScene() {

@@ -18,7 +18,8 @@ export async function synthesize({ goal, evidence, ask }) {
     { role: 'system', content: 'Write the final answer in English. Cite ONLY URLs from the provided list, copied exactly. '
       + 'For each source, "contribution" is the FACT that page supports, with its figure, close to the page\'s own words (e.g. "12,195 confirmed breaches were analyzed"), never a description of the source. '
       + 'ONE FIGURE PER CONTRIBUTION: several figures from the same page make several entries with the same url, each verified on its own. '
-      + 'Answer in JSON: {"answer":"","sources":[{"url":"","contribution":""}],"confidence":0-10,"uncertainties":[""]}.' },
+      + 'Use ONLY facts present in seenSources. Every figure in "answer" must also appear in one "contribution". '
+      + 'Answer in JSON: {"answer":"","sources":[{"url":"","contribution":""}],"confidence":7,"uncertainties":[""]}.' },
     { role: 'user', content: JSON.stringify({ goal, seenSources: sources, lessons: evidence.filter((p) => p.step === 'evaluation').map((p) => p.lesson) }) },
   ], { max_tokens: 5000, tag: 'synthesize' }); // reasoning is billed inside the cap
   const j = readJson(r.text) || { answer: '', sources: [], confidence: 0, uncertainties: ['unreadable synthesis'] };

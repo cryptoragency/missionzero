@@ -6,7 +6,7 @@ import { seenUrls } from './synthesis.js';
 
 const RESEARCH_PROMPT = 'An objection says the final answer lacks something. Pick ONE free action that would fetch it: '
   + '{"type":"read_page","url":"a seen URL, prefer the primary report","find":"the exact facts to locate, as keywords and numbers"} or {"type":"web_search","query":"3 to 8 keywords"}. '
-  + 'JSON: {"action":{"type":"","url":"","find":"","query":"","costUsd":0,"real":false},"why":""}.';
+  + 'No prose outside the JSON. JSON: {"action":{"type":"","url":"","find":"","query":"","costUsd":0,"real":false},"why":""}.';
 
 // Objections worth a research turn: a missing figure, or a primary source seen but not read.
 const TRIGGER = /RED:|not supported|missing|lack|absent|no figure|zero figures|not read|secondary source|primary (source|report|page|study) .*(seen|available|exist)|without edition|unverified|instead of|rather than|not (to )?the .* itself|snapshot|subset|summary|draft/i;
@@ -25,7 +25,11 @@ export function makeResearch({ ask, execute, evidence = null, note = null }) {
       action = readJson(r.text)?.action;
     } catch { return []; }
     if (!action?.type || action.real || Number(action.costUsd) > 0) return []; // never a paid or real action from here
-    const key = /read/i.test(action.type) ? String(action.url || '') : '';
+    // Only the two read-only actions, and a page only if it was already seen: the model cannot send the executor
+    // to an address it made up (or to create_page) from an objection.
+    if (action.type !== 'read_page' && action.type !== 'web_search') return [];
+    if (action.type === 'read_page' && !(seen || []).some((s) => s?.url && s.url === action.url)) return [];
+    const key = action.type === 'read_page' ? String(action.url || '') : '';
     if (key && read.has(key)) return []; // already read: the rewrite already has its text
     let obs;
     try { obs = await execute(action); } catch (e) { obs = { ok: false, error: e.message }; }

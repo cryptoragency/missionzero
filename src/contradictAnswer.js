@@ -6,15 +6,16 @@ import { readJson } from './loop.js';
 import { MAX_ROUNDS, GOOD_ENOUGH } from './contradict.js';
 
 const CONTRADICT_PROMPT = 'You are the contradictor. Attack this final answer against the goal: a claim its source does not support (see verification), '
-  + 'a missing figure, a secondary source where a primary one was seen, a number without edition year or definition. If you find no real flaw, say so. '
+  + 'a missing figure, a secondary source where a primary one was seen, a number without edition year or definition. A claim whose verdict is not "supported" is RED. If you find no real flaw, say so. '
   + 'At most 4 objections of one sentence each, no prose outside the JSON. JSON: {"objections":["concrete flaw"],"flawless":false}.';
 const REVISE_PROMPT = 'Rewrite the final answer so it answers every objection. Cite ONLY URLs from seenSources, copied exactly; drop any claim you cannot back with one of them. '
   + 'A RED verdict comes with the nearest passages of the page: first try to restate the claim in the page\'s own words (SHOULD is not SHALL, a listing date is not a version) before dropping the source; prefer the latest primary edition over drafts. '
   + 'ONE FIGURE PER CONTRIBUTION: a claim that bundles several figures is split into one entry per figure (same url), so a wrong figure never drags the right ones down. Keep every figure the nearest passages confirm. '
+  + 'If a source is confirmed for one figure and not another, split it and keep the confirmed figure. '
   + 'Answer in at most 120 words. Each "contribution" is the FACT that page supports, with its figure, close to the page\'s own words, never a description of the source. No prose outside the JSON. '
-  + 'JSON: {"answer":"","sources":[{"url":"","contribution":""}],"confidence":0-10,"uncertainties":[""]}.';
-const JUDGE_PROMPT = 'You are the judge. Score this final answer from 0 to 10 against the goal, using the verification: a GREEN claim is confirmed by its page, a RED one is not. '
-  + 'Be strict: precision of figures, primary sources, every claim backed. Reason in at most 25 words, no prose outside the JSON. JSON: {"score":0-10,"reason":""}.';
+  + 'JSON: {"answer":"","sources":[{"url":"","contribution":""}],"confidence":7,"uncertainties":[""]}.';
+const JUDGE_PROMPT = 'You are the judge. Score this final answer from 0 to 10 against the goal, using the verification: a GREEN claim is confirmed by its page. A claim whose verdict is not "supported" is RED. '
+  + 'Be strict: precision of figures, primary sources, every claim backed. Reason in at most 25 words, no prose outside the JSON. JSON: {"score":7,"reason":""}.';
 export const STAGNATION = 2; // rounds without a better note before the contradictor stops (the best version is kept anyway)
 export const RED_CAP = 5; // an answer with an unsupported claim can never score above this
 export const NO_SOURCE_CAP = 2; // an answer without any source is not an answer
@@ -22,7 +23,10 @@ export const NO_SOURCE_CAP = 2; // an answer without any source is not an answer
 const clampRounds = (n) => Math.max(0, Math.min(MAX_ROUNDS, Math.floor(Number(n)) || 0));
 
 async function grade({ goal, answer, ask, verify }) {
-  const check = await verify(answer.sources || []);
+  // A verifier that throws (network, cap) must not end the refinement and lose the versions already graded:
+  // this version is judged without verification and can never score above RED_CAP, so the best graded one stays.
+  let check; let failed = '';
+  try { check = await verify(answer.sources || []); } catch (e) { check = { results: [], green: 0, red: 0 }; failed = 'verification failed: ' + String(e.message || e).slice(0, 160); }
   let score = 0;
   let reason = '';
   // The judge reasons before it answers and the reasoning is billed inside the cap: a cut answer is unreadable, and an
@@ -39,7 +43,8 @@ async function grade({ goal, answer, ask, verify }) {
     reason = String(j?.reason || '').slice(0, 300);
     break;
   } catch (e) { score = 0; reason = 'judge failed: ' + String(e.message || e).slice(0, 120); }
-  if (check.red > 0) score = Math.min(score, RED_CAP);
+  if (check.red > 0 && score > RED_CAP) { score = RED_CAP; reason = `${reason} (capped at ${RED_CAP}: red claim)`.trim(); }
+  if (failed) { score = Math.min(score, RED_CAP); reason = `${failed}; ${reason}`; }
   if (!(answer.sources || []).length) score = Math.min(score, NO_SOURCE_CAP);
   const verification = (check.results || []).map(({ url, claim, verdict, detail }) => ({ url, claim, verdict, detail }));
   return { score, green: check.green, red: check.red, reason, verification };
@@ -103,7 +108,7 @@ export async function refineAnswer({ goal, answer, seen, ask, verify, research =
       ], { max_tokens: 5000, tag: 'rewrite' });
       revised = readJson(r.text);
     } catch { break; }
-    if (!revised?.answer) continue;
+    if (!revised?.answer) { flat += 1; continue; } // an unreadable rewrite is a round without progress
     current = keepSeen(revised);
     const v = { round, ...(await grade({ goal, answer: current, ask, verify })), objections, fetched, reread: rereadN, answer: current };
     versions.push(v);

@@ -12,7 +12,7 @@ const REVISE_PROMPT = 'Revise the plan so it answers every objection. Keep the s
   + '{"hypotheses":[""],"action":{"type":"","query":"","url":"","name":"","content":"","costUsd":0,"real":false},"expected":""}. '
   + 'A web_search query stays 3 to 8 keywords, never a sentence or a boolean expression. Keep costUsd 0 and real false.';
 const JUDGE_PROMPT = 'You are the judge. Score this plan from 0 to 10 for how likely it is to move the goal forward at no cost and with checkable evidence. '
-  + 'Be strict: an unanswered objection lowers the score. JSON: {"score":0-10,"reason":""}.';
+  + 'Be strict: an unanswered objection lowers the score. JSON: {"score":7,"reason":""}.';
 
 const clampRounds = (n) => Math.max(0, Math.min(MAX_ROUNDS, Math.floor(Number(n)) || 0));
 

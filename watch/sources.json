@@ -4,6 +4,7 @@
     "kind": "sentinelles",
     "api": "https://www.sentiweb.fr/api/v1/datasets/rest/incidence?indicator=3&geo=PAY&span=all",
     "page": "https://www.sentiweb.fr/france/fr/?page=maladies&mal=3",
+    "attribution": "Réseau Sentinelles, Inserm / Sorbonne Université, sentiweb.fr",
     "indicatorLabel": "Influenza-like illness incidence",
     "thresholdValue": 150,
     "threshold": 20,
@@ -14,6 +15,7 @@
     "kind": "sentinelles",
     "api": "https://www.sentiweb.fr/api/v1/datasets/rest/incidence?indicator=3&geo=RDD&span=all",
     "page": "https://www.sentiweb.fr/france/fr/?page=maladies&mal=3",
+    "attribution": "Réseau Sentinelles, Inserm / Sorbonne Université, sentiweb.fr",
     "indicatorLabel": "Influenza-like illness incidence",
     "threshold": 30
   },
@@ -22,6 +24,7 @@
     "kind": "file",
     "path": "watch/flunet-monde.json",
     "page": "https://www.who.int/tools/flunet",
+    "attribution": "WHO FluNet (GISRS), who.int/tools/flunet, used under WHO's terms for data; WHO does not endorse this project",
     "threshold": 10,
     "note": "WHO FluNet (GISRS): influenza-positive specimens reported each ISO week by about 190 countries, world total, positivity rate, countries reporting, and the six WHO regions. Rows pulled from the public API (xmart-api-public.who.int/FLUMART/VIW_FNT) on 2026-10-30 and turned into readings by bench/make-flunet-readings.js. The last weeks are always incomplete: countries report late."
   },
@@ -30,6 +33,7 @@
     "kind": "clinicaltrials",
     "api": "https://clinicaltrials.gov/api/v2/studies?query.cond=tuberculosis&query.intr=vaccine&pageSize=100&fields=NCTId,BriefTitle,OverallStatus,LastUpdatePostDate,Phase",
     "page": "https://clinicaltrials.gov/search?cond=tuberculosis&intr=vaccine",
+    "attribution": "ClinicalTrials.gov, U.S. National Library of Medicine",
     "note": "ClinicalTrials.gov: every registered study of a tuberculosis vaccine and its status. A status that changes (recruiting, completed, terminated) is a variation."
   },
   {

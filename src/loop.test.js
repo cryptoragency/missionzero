@@ -10,6 +10,14 @@ test('readJson tolerates text around the JSON', () => {
   assert.equal(readJson('nothing'), null);
 });
 
+test('readJson takes the first balanced object, even when a sentence with a brace follows', () => {
+  assert.deepEqual(readJson('{"score":7,"reason":"ok"} Note: the set {a, b} was skipped.'), { score: 7, reason: 'ok' });
+  assert.deepEqual(readJson('{"a":"a } inside a string","b":{"c":1}} trailing }'), { a: 'a } inside a string', b: { c: 1 } });
+  assert.deepEqual(readJson('{"q":"say \\"{\\""} x'), { q: 'say "{"' });
+  assert.deepEqual(readJson('{not json} then {"ok":true}'), { ok: true }); // a broken first object does not hide a good one
+  assert.equal(readJson('{"open":1'), null);
+});
+
 test('fails, learns, pivots, then reaches the goal', async () => {
   const ask = script([
     '{"hypotheses":["A"],"action":{"type":"web_search","query":"x","costUsd":0,"real":false},"expected":"hits"}',
@@ -130,7 +138,8 @@ test('an objection about a missing figure triggers one research action and the r
   let executed = null;
   const execute = async (a) => { executed = a; return { ok: true, url: a.url, text: 'x'.repeat(300) }; };
   const research = makeResearch({ ask, execute });
-  const r = await refineAnswer({ goal: 'g', answer: { answer: 'no figure', sources: [] }, seen: [], ask, verify: async () => ({ results: [], green: 1, red: 0 }), research, rounds: 1, escalate: false });
+  const seen = [{ url: 'https://primary.example/report', title: 'search hit', snippet: 'Hiscox report' }]; // read_page only reads a seen URL
+  const r = await refineAnswer({ goal: 'g', answer: { answer: 'no figure', sources: [] }, seen, ask, verify: async () => ({ results: [], green: 1, red: 0 }), research, rounds: 1, escalate: false });
   assert.equal(executed.type, 'read_page');
   assert.equal(r.answer.sources[0].url, 'https://primary.example/report'); // newly seen: kept, not rejected
   assert.equal(r.versions[1].fetched, 1);
@@ -206,4 +215,59 @@ test('a red claim sends the agent back to the cited page with the claim as targe
   assert.equal(r.score, 10);
   // the same (url, claim) is never re-read twice in a run
   assert.deepEqual(await reread({ reds: [{ url, claim: 'about 11 million sick', verdict: 'unsupported' }], seen }), []);
+});
+
+test('an unreadable judge, twice, is never a silent 0: the reason says it', async () => {
+  const { refineAnswer } = await import('./contradictAnswer.js');
+  const ask = script(['the judge rambled and was cut', 'still no JSON']);
+  const r = await refineAnswer({ goal: 'g', answer: { answer: 'x', sources: [{ url: 'https://a.example/1', contribution: 'c' }] }, seen: [{ url: 'https://a.example/1' }], ask, verify: async () => ({ results: [], green: 1, red: 0 }), rounds: 0 });
+  assert.equal(r.score, 0);
+  assert.match(r.versions[0].reason, /unreadable/);
+});
+
+test('an answer without any source never scores above NO_SOURCE_CAP, and a red claim says it was capped', async () => {
+  const { refineAnswer, NO_SOURCE_CAP, RED_CAP } = await import('./contradictAnswer.js');
+  const none = await refineAnswer({ goal: 'g', answer: { answer: 'x', sources: [] }, seen: [], ask: script(['{"score":10,"reason":"great"}']), verify: async () => ({ results: [], green: 0, red: 0 }), rounds: 0 });
+  assert.equal(none.score, NO_SOURCE_CAP);
+  const red = await refineAnswer({ goal: 'g', answer: { answer: 'x', sources: [{ url: 'https://a.example/1', contribution: 'c' }] }, seen: [{ url: 'https://a.example/1' }], ask: script(['{"score":9,"reason":"precise"}']), verify: async () => ({ results: [], green: 0, red: 1 }), rounds: 0 });
+  assert.equal(red.score, RED_CAP);
+  assert.equal(red.versions[0].reason, 'precise (capped at 5: red claim)');
+});
+
+test('a verifier that throws keeps the best version already graded', async () => {
+  const { refineAnswer, RED_CAP } = await import('./contradictAnswer.js');
+  const A = '{"answer":"y","sources":[{"url":"https://a.example/1","contribution":"c2"}],"confidence":5}';
+  const ask = script(['{"score":6}', '{"objections":["x"]}', A, '{"score":9}', '{"objections":["x"]}', A, '{"score":9}', '{"objections":["x"]}']);
+  let n = 0;
+  const verify = async () => { n += 1; if (n > 1) throw new Error('Daily cap of $5 reached.'); return { results: [], green: 1, red: 0 }; };
+  const r = await refineAnswer({ goal: 'g', answer: { answer: 'x', sources: [{ url: 'https://a.example/1', contribution: 'c' }] }, seen: [{ url: 'https://a.example/1' }], ask, verify, rounds: 3, escalate: false });
+  assert.equal(r.score, 6); // the failed versions were capped at RED_CAP and the first one stays
+  assert.equal(r.answer.answer, 'x');
+  assert.ok(r.versions[1].score <= RED_CAP);
+  assert.match(r.versions[1].reason, /^verification failed: Daily cap/);
+});
+
+test('an unreadable rewrite counts as a round without progress', async () => {
+  const { refineAnswer, STAGNATION } = await import('./contradictAnswer.js');
+  let rewrites = 0;
+  const base = script(['{"score":3}']);
+  const ask = async (m, o) => { if (o.tag === 'rewrite') { rewrites += 1; return { text: 'no json' }; } if (o.tag === 'contradict') return { text: '{"objections":["o"]}' }; return base(); };
+  const r = await refineAnswer({ goal: 'g', answer: { answer: 'x', sources: [] }, seen: [], ask, verify: async () => ({ results: [], green: 0, red: 0 }), rounds: 5 });
+  assert.equal(rewrites, STAGNATION);
+  assert.equal(r.rounds, 0);
+});
+
+test('research never reads an unseen URL nor runs another action type', async () => {
+  const { makeResearch } = await import('./research.js');
+  let executed = 0;
+  const execute = async () => { executed += 1; return { ok: true }; };
+  const objections = ['missing figure'];
+  const seen = [{ url: 'https://seen.example/a' }];
+  for (const action of ['{"type":"read_page","url":"https://invented.example/z"}', '{"type":"create_page","name":"x","content":"<p>"}']) {
+    const research = makeResearch({ ask: async () => ({ text: '{"action":' + action + '}' }), execute });
+    assert.deepEqual(await research({ goal: 'g', objections, seen }), []);
+  }
+  assert.equal(executed, 0);
+  await makeResearch({ ask: async () => ({ text: '{"action":{"type":"read_page","url":"https://seen.example/a"}}' }), execute })({ goal: 'g', objections, seen });
+  assert.equal(executed, 1);
 });

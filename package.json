@@ -3,21 +3,25 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": ">=22.13"
+  },
   "description": "Donnez-lui un objectif. Laissez-la découvrir le chemin. Exigez des preuves.",
   "scripts": {
+    "mission": "node --env-file-if-exists=.env src/run.js",
     "web": "node web/server.js",
-    "check-key": "node --env-file=.env src/check-key.js",
-    "test": "node --test src/evidenceDir.test.js src/meta.test.js src/loop.test.js src/pdf.test.js src/secrets.test.js src/media.test.js src/zero.test.js src/watch.test.js src/repair.test.js src/scanner.test.js web/server.test.js demo-site/server.test.js demo-site/journeys.test.js",
-    "demo": "node --env-file=.env bench/run-demo.js",
-    "effort-sweep": "node --env-file=.env bench/run-effort-sweep.js",
+    "check-key": "node --env-file-if-exists=.env src/check-key.js",
+    "test": "node --test src/chain.test.js src/tools.test.js src/verify.test.js src/evidenceDir.test.js src/meta.test.js src/memory.test.js src/loop.test.js src/pdf.test.js src/secrets.test.js src/media.test.js src/zero.test.js src/watch.test.js src/repair.test.js src/scanner.test.js web/server.test.js demo-site/server.test.js demo-site/journeys.test.js",
+    "demo": "node --env-file-if-exists=.env bench/run-demo.js",
+    "effort-sweep": "node --env-file-if-exists=.env bench/run-effort-sweep.js",
     "demo-site": "node demo-site/server.js",
-    "repair": "node --env-file=.env bench/run-repair.js",
+    "repair": "node --env-file-if-exists=.env bench/run-repair.js",
     "repair-report": "node bench/make-repair-report.js",
     "verify-chain": "node bench/verify-chain.js",
-    "voice": "node --env-file=.env bench/run-voice.js",
-    "vision": "node --env-file=.env bench/run-vision.js",
+    "voice": "node --env-file-if-exists=.env bench/run-voice.js",
+    "vision": "node --env-file-if-exists=.env bench/run-vision.js",
     "repair-replay": "node bench/make-repair-replay.js",
-    "watch": "node --env-file=.env src/watch.js",
+    "watch": "node --env-file-if-exists=.env src/watch.js",
     "watch-replay": "node bench/make-watch-replay.js"
   },
   "dependencies": {

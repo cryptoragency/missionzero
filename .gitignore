@@ -10,6 +10,8 @@ logs/
 
 # watch mode outputs (versioned runs go to examples/)
 watch/*/
+# raw downloads (FluNet rows, about 620 KB): re-fetched with the command in bench/make-flunet-readings.js
+watch/*-brut-*.json
 
 # film (Remotion): dependencies and renders stay out; sources are versioned
 film/node_modules/

@@ -2,15 +2,87 @@
 // reading public pages and creating files in the evidence folder. Anything else needs a human approval.
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
+import { lookup as dnsLookup } from 'node:dns/promises';
+import { isIP } from 'node:net';
 import { pdfToText, PDF_MAX_BYTES } from './pdf.js';
 import { relevantPassages } from './passages.js';
 
 const clean = (s) => s.replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/&#x27;|&#39;/g, "'").replace(/&quot;/g, '"').replace(/\s+/g, ' ').trim();
 
-export async function webSearch(query, { fetchFn = fetch, max = 8 } = {}) {
-  const r = await fetchFn('https://html.duckduckgo.com/html/?q=' + encodeURIComponent(query), { headers: { 'user-agent': 'Mozilla/5.0 (compatible; MissionZero/0.1)' } });
+// The address a page names comes from the model, the search results or a redirect: it can point at this machine or its
+// network (127.0.0.1, 169.254.169.254, a router). Every address, and every redirect hop, is resolved and refused when it
+// lands on a non-public IP. MZ_ALLOW_LOCAL=1 lifts the rule (a local test site); the scanner and the repair mode test
+// local sites with their own fetch, not through these tools.
+export function isPrivateAddress(ip) {
+  let a = String(ip || '').replace(/^\[|\]$/g, '').toLowerCase();
+  const mapped = a.match(/^::ffff:(\d+\.\d+\.\d+\.\d+)$/); if (mapped) a = mapped[1];
+  if (isIP(a) === 4) {
+    const [x, y] = a.split('.').map(Number);
+    return x === 0 || x === 10 || x === 127 || (x === 169 && y === 254) || (x === 172 && y >= 16 && y <= 31) || (x === 192 && y === 168)
+      || (x === 100 && y >= 64 && y <= 127) || x >= 224; // shared (CGNAT), multicast and reserved ranges are not the public web either
+  }
+  if (isIP(a) === 6) return a === '::' || a === '::1' || /^f[cd]/.test(a) || /^fe[89ab]/.test(a) || /^ff/.test(a) || /^::ffff:/.test(a);
+  return true; // not an IP at all: refused
+}
+const lookupAll = async (host) => (await dnsLookup(host, { all: true, verbatim: true })).map((x) => x.address);
+
+// { ok: true } or { ok: false, why }. `lookup` = null skips the name resolution (an injected fetch resolves nothing itself).
+export async function checkUrl(url, { lookup = lookupAll, allowLocal = process.env.MZ_ALLOW_LOCAL === '1' } = {}) {
+  let u; try { u = new URL(String(url)); } catch { return { ok: false, why: 'invalid url' }; }
+  if (u.protocol !== 'http:' && u.protocol !== 'https:') return { ok: false, why: 'scheme not allowed: ' + u.protocol };
+  if (allowLocal) return { ok: true };
+  const host = u.hostname.replace(/^\[|\]$/g, '');
+  if (/^localhost$|\.localhost$/i.test(host)) return { ok: false, why: 'refused: ' + host + ' is this machine' };
+  if (isIP(host)) return isPrivateAddress(host) ? { ok: false, why: 'refused: ' + host + ' is not a public address' } : { ok: true };
+  if (!lookup) return { ok: true };
+  let ips; try { ips = await lookup(host); } catch (e) { return { ok: false, why: 'dns: ' + host + ' does not resolve (' + (e.code || e.message) + ')' }; }
+  const bad = (ips || []).find(isPrivateAddress);
+  if (!ips?.length || bad) return { ok: false, why: 'refused: ' + host + ' resolves to ' + (bad || 'nothing') + ', not a public address' };
+  return { ok: true };
+}
+
+// fetch with the address checked, redirects followed by hand (max 5, each hop checked again) and one deadline for all.
+const MAX_REDIRECTS = 5;
+export async function safeFetch(url, init = {}, { fetchFn = fetch, lookup, timeoutMs = 30000 } = {}) {
+  const resolveNames = lookup !== undefined ? lookup : (fetchFn === fetch ? lookupAll : null); // a test double hits no network
+  const signal = init.signal || AbortSignal.timeout(timeoutMs);
+  let current = String(url);
+  for (let hop = 0; hop <= MAX_REDIRECTS; hop += 1) {
+    const c = await checkUrl(current, { lookup: resolveNames });
+    if (!c.ok) return { refused: c.why, url: current };
+    const r = await fetchFn(current, { ...init, redirect: 'manual', signal });
+    const location = r.status >= 300 && r.status < 400 ? r.headers?.get?.('location') : null;
+    if (!location) return { response: r, url: current };
+    r.body?.cancel?.().catch(() => {});
+    current = new URL(location, current).href;
+  }
+  return { refused: 'more than ' + MAX_REDIRECTS + ' redirects', url: current };
+}
+
+// Reads a body with a byte counter: past `max` the stream is cancelled before anything is parsed.
+// `truncate`: keep the first `max` bytes (a web page) instead of refusing (a PDF cut in the middle is unreadable).
+export async function readBody(r, max, { truncate = false } = {}) {
+  const declared = Number(r.headers?.get?.('content-length') || 0);
+  if (declared > max && !truncate) { r.body?.cancel?.().catch(() => {}); return { tooLarge: true, bytes: declared }; }
+  if (!r.body?.getReader) { const b = Buffer.from(await r.arrayBuffer()); return b.length > max ? (truncate ? { buf: b.subarray(0, max) } : { tooLarge: true, bytes: b.length }) : { buf: b }; }
+  const reader = r.body.getReader(); const chunks = []; let n = 0;
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    n += value.byteLength; chunks.push(value);
+    if (n > max) { reader.cancel().catch(() => {}); if (!truncate) return { tooLarge: true, bytes: n }; break; }
+  }
+  const buf = Buffer.concat(chunks.map((c) => Buffer.from(c.buffer, c.byteOffset, c.byteLength)));
+  return { buf: buf.length > max ? buf.subarray(0, max) : buf };
+}
+export const HTML_MAX_BYTES = 1500000;
+
+export async function webSearch(query, { fetchFn = fetch, max = 8, lookup } = {}) {
+  const got = await safeFetch('https://html.duckduckgo.com/html/?q=' + encodeURIComponent(query), { headers: { 'user-agent': 'Mozilla/5.0 (compatible; MissionZero/0.1)' } }, { fetchFn, lookup, timeoutMs: 20000 });
+  if (got.refused) return { ok: false, error: 'search ' + got.refused };
+  const r = got.response;
   if (!r.ok) return { ok: false, error: 'search ' + r.status };
-  const html = await r.text();
+  const html = (await readBody(r, HTML_MAX_BYTES, { truncate: true })).buf.toString('utf8');
   const blocks = html.split('class="result results_links').slice(1, max + 1);
   const results = blocks.map((b) => ({
     title: clean((b.match(/result__a[^>]*>([\s\S]*?)<\/a>/) || [])[1] || ''),
@@ -34,28 +106,30 @@ export function officialMirror(url) {
 }
 const BOT_CHALLENGE = /awsWafCookieDomainList|gokuProps|cf-challenge|_cf_chl_|Just a moment|Enable JavaScript and cookies to continue/i;
 
-export async function readPage(url, { fetchFn = fetch, maxChars = 6000 } = {}) {
+export async function readPage(url, { fetchFn = fetch, maxChars = 6000, lookup } = {}) {
   if (!/^https?:\/\//i.test(String(url || ''))) return { ok: false, error: 'invalid url' };
   try {
     const mirror = officialMirror(url);
     // The Publications Office negotiates on Accept: anything broader than XHTML returns the metadata notice instead of the text.
     const accept = mirror ? 'application/xhtml+xml,text/html' : 'text/html,application/xhtml+xml,application/pdf,*/*;q=0.8';
-    const r = await fetchFn(mirror || url, { headers: { 'user-agent': 'Mozilla/5.0 (compatible; MissionZero/0.1)', accept, 'accept-language': 'en' }, redirect: 'follow', signal: AbortSignal.timeout(30000) });
+    const got = await safeFetch(mirror || url, { headers: { 'user-agent': 'Mozilla/5.0 (compatible; MissionZero/0.1)', accept, 'accept-language': 'en' } }, { fetchFn, lookup, timeoutMs: 30000 });
+    if (got.refused) return { ok: false, url, error: got.refused };
+    const r = got.response;
     if (r.status === 202 || r.status === 403 || r.status === 429) {
-      const peek = await r.text().catch(() => '');
+      const peek = (await readBody(r, 200000, { truncate: true }).catch(() => ({ buf: Buffer.alloc(0) }))).buf.toString('utf8');
       if (BOT_CHALLENGE.test(peek) || r.status !== 202) return { ok: false, url, error: `blocked: bot challenge (http ${r.status}), a browser would be needed` };
     }
-    if (!r.ok) return { ok: false, url, error: 'http ' + r.status };
+    if (!r.ok) { r.body?.cancel?.().catch(() => {}); return { ok: false, url, error: 'http ' + r.status }; }
     const type = r.headers.get('content-type') || '';
     if (/pdf/i.test(type) || /\.pdf(\?|$)/i.test(url)) {
-      // A primary report is usually a PDF: read its text (first pages first, capped).
-      const buf = await r.arrayBuffer();
-      if (buf.byteLength > PDF_MAX_BYTES) return { ok: false, url, error: 'pdf too large: ' + Math.round(buf.byteLength / 1048576) + ' MB' };
-      const { text, pages, pagesRead } = await pdfToText(buf, { maxChars });
+      // A primary report is usually a PDF: read its text (first pages first, capped). Too large = refused before parsing.
+      const b = await readBody(r, PDF_MAX_BYTES);
+      if (b.tooLarge) return { ok: false, url, error: 'pdf too large: more than ' + Math.round(PDF_MAX_BYTES / 1048576) + ' MB' };
+      const { text, pages, pagesRead } = await pdfToText(b.buf, { maxChars });
       return { ok: text.length > 200, url, text: text.slice(0, maxChars), pdf: { pages, pagesRead } };
     }
-    if (!/text|html|xml|json/i.test(type)) return { ok: false, url, error: 'not text: ' + type.slice(0, 40) };
-    const raw = (await r.text()).slice(0, 1500000);
+    if (!/text|html|xml|json/i.test(type)) { r.body?.cancel?.().catch(() => {}); return { ok: false, url, error: 'not text: ' + type.slice(0, 40) }; }
+    const raw = (await readBody(r, HTML_MAX_BYTES, { truncate: true })).buf.toString('utf8'); // a page past 1.5 MB is read up to there
     if (BOT_CHALLENGE.test(raw.slice(0, 5000))) return { ok: false, url, error: 'blocked: bot challenge, a browser would be needed' };
     const text = clean(raw.replace(/<(script|style|nav|footer|header)[\s\S]*?<\/\1>/gi, ' ')).slice(0, maxChars);
     return { ok: text.length > 200, url, text, ...(mirror ? { readVia: mirror } : {}) };

@@ -79,8 +79,9 @@ export function fileSnapshots(json) {
   return Array.isArray(json) ? json : [json];
 }
 
-async function fetchJson(url) {
-  const r = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0 (Mission Zero watch)', Accept: 'application/json' } });
+// A source that hangs must not hang the watch: 60 s, then the run fails with the URL.
+export async function fetchJson(url, { timeoutMs = 60000, fetchFn = fetch } = {}) {
+  const r = await fetchFn(url, { headers: { 'User-Agent': 'Mozilla/5.0 (Mission Zero watch)', Accept: 'application/json' }, signal: AbortSignal.timeout(timeoutMs) });
   if (!r.ok) throw new Error(`${url}: HTTP ${r.status}`);
   return r.json();
 }
@@ -99,8 +100,20 @@ export function lastStored(dir) {
   return files.length ? JSON.parse(readFileSync(join(dir, files[files.length - 1]), 'utf8')) : null;
 }
 
+// The sources of an explanation, kept only when the verifier found their claim on the page ("supported"), each with
+// the exact quote it found (verification.detail). The answer itself never carries quote nor verified.
+export function provenSources(sources, verification) {
+  const proven = [];
+  for (const s of sources || []) {
+    const v = (verification || []).find((x) => x.url === s.url && x.verdict === 'supported' && (x.claim === undefined || x.claim === s.contribution));
+    if (v) proven.push({ ...s, quote: String(v.detail || '').slice(0, 400) });
+  }
+  return proven;
+}
+
 export function buildReport({ source, previous, current, variations, replayed = false, explanation = null }) {
   const lines = [`# ${source.name}, ${current.period}${replayed ? ' (replayed from the public history)' : ''}`, '',
+    ...(source.attribution ? [`Data: ${source.attribution}.`, ''] : []),
     previous ? `Compared with ${previous.period}: ${variations.length} variation${variations.length === 1 ? '' : 's'} (threshold ${source.threshold ?? 20} %).` : 'First reading: nothing to compare yet.', ''];
   for (const v of variations) lines.push(`- ${describeVariation(v)} · [page](${v.page})`);
   if (variations.length) lines.push('', `Figures read in the source's dataset${source.api ? ' (' + source.api + ')' : ''}; the rows are kept in ${current.period}.json and chained.`);
@@ -134,7 +147,7 @@ async function explain({ source, previous, current, variation, dir, capUsd }) {
   const refined = await refineAnswer({ goal, answer: draft, seen: [...seenUrls(result.evidence).values()], ask, verify, research, rounds: 1 });
   const final = { goal, ...refined.answer, judge: refined.score, green: refined.green, red: refined.red, usd: client.counter.usd, calls: client.counter.calls };
   writeFileSync(join(mdir, 'final-answer.json'), JSON.stringify(final, null, 2));
-  return { summary: refined.answer.summary || refined.answer.answer || '', sources: (refined.answer.sources || []).filter((s) => s.verified !== false), unproven: refined.answer.uncertainties || [], judge: refined.score, green: refined.green, usd: client.counter.usd, folder: mdir };
+  return { summary: refined.answer.summary || refined.answer.answer || '', sources: provenSources(refined.answer.sources, refined.verification), unproven: refined.answer.uncertainties || [], judge: refined.score, green: refined.green, usd: client.counter.usd, folder: mdir };
 }
 
 export async function watch({ source, replay = 0, until = null, explainTop = false, root = 'watch', capUsd = Number(process.env.MZ_WATCH_CAP_USD) || 0.25 }) {

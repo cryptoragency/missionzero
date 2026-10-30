@@ -11,7 +11,7 @@ const money = (n) => '$' + (Number(n) || 0).toFixed(3);
 const ORDER = { critical: 0, high: 1, medium: 2, low: 3 };
 const STATUS = {
   proposed: ['ok', 'Proposed', 'journeys pass, flaw gone on the copy: a human applies it'],
-  reserved: ['warn', 'Proposed with reservation', 'mechanically green, but the agent has a reservation written below'],
+  reserved: ['warn', 'Proposed with reservation', 'all checks pass, but the agent wrote a reservation below'],
   rejected: ['red', 'Rejected', 'the fix broke a vital journey or the site'],
   ineffective: ['warn', 'Ineffective', 'journeys pass but the scanner still sees the flaw'],
   unverified: ['warn', 'Unverified', 'journeys pass, but no rescan could confirm the fix (no probe for this type, or the scanners disagree): a human verifies before applying'],
@@ -94,7 +94,7 @@ footer{color:var(--mut);font-size:13px;margin-top:30px;border-top:1px solid var(
 <p class="lead">A scanner reported ${run.findings} finding${run.findings === 1 ? '' : 's'} on <b>${esc(target)}</b>. For each one, Mission Zero researched the fix from primary sources, proposed exact edits, applied them to a copy, replayed the vital journeys and rescanned the copy. Nothing was changed on the site itself: a human applies each proposed fix.</p>
 <div class="meters"><span>${summaryRow}</span><span>cost <b>${money(run.cost.usd)}</b></span><span>model calls <b>${run.cost.calls ?? '?'}</b></span><span>run <b>${esc(run.folder)}</b></span>${run.chain && run.chain.why !== 'no chain file' ? `<span>evidence journal <b class="${run.chain.ok ? 'okc' : 'redc'}">${run.chain.ok ? 'intact · ' + run.chain.entries + ' records · ' + esc(String(run.chain.head).slice(0, 12)) : 'BROKEN: ' + esc(run.chain.why)}</b></span>` : ''}</div>
 ${cards}
-<footer>Severity order: critical, high, medium, low. A green dot is a source whose cited passage was found on the page by the verifier; red is a contradiction; amber is unverified. Edits are exact-string replacements: each "find" occurs once in the file, or the edit is refused.</footer>
+<footer>Severity order: critical, high, medium, low. A green dot is a source whose cited passage was found on the page by the verifier; red = quote not found or source contradicts; amber is unverified. Self-review of a patch: cause = removes the cause · hides = hides the symptom · partial = incomplete. Edits are exact-string replacements: each "find" occurs once in the file, or the edit is refused.</footer>
 </main></body></html>`;
 }
 

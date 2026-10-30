@@ -26,7 +26,9 @@ mkdirSync(folder, { recursive: true });
 // Same memory for every run: what the agent knows before the sweep is put back after each mission.
 const keep = ['memory/lessons.json', 'memory/outcomes.json'].filter(existsSync);
 const saved = keep.map((f) => { const b = `${folder}/${f.split('/').pop()}.before`; copyFileSync(f, b); return [f, b]; });
-const restore = () => saved.forEach(([f, b]) => copyFileSync(b, f));
+// A file absent before the sweep (first run on this machine) is removed after each run, so no run learns from another.
+const absent = ['memory/lessons.json', 'memory/outcomes.json'].filter((f) => !existsSync(f));
+const restore = () => { saved.forEach(([f, b]) => copyFileSync(b, f)); absent.forEach((f) => rmSync(f, { force: true })); };
 const sum = (byTag, k) => Object.values(byTag || {}).reduce((n, b) => n + (b[k] || 0), 0);
 
 const rows = [];
@@ -34,7 +36,7 @@ for (const effort of [...new Set(efforts)]) {
   const env = { ...process.env, MZ_ZERO: 'off', MZ_CAP_USD: String(cap) };
   if (effort === 'per-role') delete env.MZ_EFFORT; else env.MZ_EFFORT = effort;
   const t0 = Date.now();
-  const r = spawnSync(process.execPath, ['--env-file=.env', 'src/run.js', goal.goal, String(turns), String(rounds)], { encoding: 'utf8', maxBuffer: 50 * 1024 * 1024, env });
+  const r = spawnSync(process.execPath, ['--env-file-if-exists=.env', 'src/run.js', goal.goal, String(turns), String(rounds)], { encoding: 'utf8', maxBuffer: 50 * 1024 * 1024, env });
   const out = (r.stdout || '') + (r.stderr || '');
   const m = out.match(/\{[\s\S]*\n\}/);
   let s = null; try { s = m ? JSON.parse(m[0]) : null; } catch { s = null; }
@@ -49,7 +51,7 @@ for (const effort of [...new Set(efforts)]) {
   if (!s && /cap of .* reached/i.test(out) && /Daily/.test(out)) { console.log('Daily cap reached: stopping.'); break; }
 }
 const md = ['| effort | judge | green | red | turns | calls | output tokens | reasoning tokens | truncated | cost | seconds |', '|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|',
-  ...rows.map((r) => `| ${r.effort} | ${r.judge ?? '–'} | ${r.green ?? '–'} | ${r.red ?? '–'} | ${r.turns ?? '–'} | ${r.calls ?? '–'} | ${r.output ?? '–'} | ${r.reasoning ?? '–'} | ${r.truncated ?? '–'} | ${r.usd === null ? r.error : '$' + r.usd} | ${r.sec} |`)].join('\n');
+  ...rows.map((r) => `| ${r.effort} | ${r.judge ?? 'n/a'} | ${r.green ?? 'n/a'} | ${r.red ?? 'n/a'} | ${r.turns ?? 'n/a'} | ${r.calls ?? 'n/a'} | ${r.output ?? 'n/a'} | ${r.reasoning ?? 'n/a'} | ${r.truncated ?? 'n/a'} | ${r.usd === null ? r.error : '$' + r.usd} | ${r.sec} |`)].join('\n');
 writeFileSync(`${folder}/sweep.json`, JSON.stringify({ goal, turns, rounds, cap, efforts, rows, memory: 'same lessons and outcomes restored after every run, resets off' }, null, 2));
 writeFileSync(`${folder}/sweep.md`, `# Effort sweep · goal ${goal.id}\n\n${goal.goal}\n\n${turns} turns, ${rounds} contradiction rounds, cap $${cap} per run, same memory for every run.\n\n${md}\n`);
 saved.forEach(([, b]) => rmSync(b, { force: true }));

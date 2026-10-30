@@ -58,35 +58,50 @@ async function mission({ lessons, dir }) {
   return { result, draft, refined, final, verifyCache, usd: client.counter.usd - usdBefore, dir };
 }
 
-// 1) The mission with what the agent knows.
-const first = await mission({ lessons: approvedTexts(past), dir: folder });
-let kept = first; let zero = null;
-const outcomes = recordOutcome(outcomesPath, { goal, judgeScore: first.refined.score, green: first.refined.green, red: first.refined.red, lessonsUsed: approvedTexts(past).length, folder });
+// summary.json is written whatever happens (cap reached, network down, a bug): a partial summary with `error` and the
+// money already spent is better than a folder without one.
+let summary = { goal, provider: provider(), model: client.model };
+let failure = null;
+try {
+  // 1) The mission with what the agent knows.
+  const first = await mission({ lessons: approvedTexts(past), dir: folder });
+  let kept = first; let zero = null;
+  summary = { ...summary, judgeScore: first.refined.score, verifiedGreen: first.refined.green, verifiedRed: first.refined.red, partial: 'first mission done' };
+  const outcomes = recordOutcome(outcomesPath, { goal, judgeScore: first.refined.score, green: first.refined.green, red: first.refined.red, lessonsUsed: approvedTexts(past).length, folder });
 
-// 2) The agent decides whether its memory is hurting; if so it archives it ITSELF, says why, and starts again from zero.
-const decision = process.env.MZ_ZERO === 'off' ? { reset: false, rule: null, reason: 'MZ_ZERO=off' } : decideReset(outcomes, { forced: process.argv.includes('--from-zero') });
-note(folder)({ step: 'zero', decision });
-if (decision.reset) {
-  const archive = archiveLessons(lessonsPath, { reason: decision.reason, rule: decision.rule, goal });
-  console.log(`Mission Zero returns to zero (${decision.rule}): ${decision.reason}. ${archive.count} lessons archived in ${archive.archived}.`);
-  const second = await mission({ lessons: [], dir: folder + '/from-zero' });
-  const cmp = compareRuns({ score: first.refined.score, green: first.refined.green, red: first.refined.red }, { score: second.refined.score, green: second.refined.green, red: second.refined.red });
-  kept = cmp.kept === 'from-zero' ? second : first;
-  zero = { decision, archive, withMemory: { score: first.refined.score, green: first.refined.green, red: first.refined.red, usd: first.usd }, fromZero: { score: second.refined.score, green: second.refined.green, red: second.refined.red, usd: second.usd }, kept: cmp.kept, why: cmp.why };
-  note(folder)({ step: 'zero', compared: zero });
-  recordOutcome(outcomesPath, { goal, judgeScore: second.refined.score, green: second.refined.green, red: second.refined.red, lessonsUsed: 0, folder: second.dir, fromZero: true, kept: cmp.kept });
-  writeFileSync(folder + '/zero.json', JSON.stringify(zero, null, 2));
-  console.log(`Kept: ${cmp.kept} (${cmp.why}).`);
+  // 2) The agent decides whether its memory is hurting; if so it archives it ITSELF, says why, and starts again from zero.
+  const decision = process.env.MZ_ZERO === 'off' ? { reset: false, rule: null, reason: 'MZ_ZERO=off' } : decideReset(outcomes, { forced: process.argv.includes('--from-zero') });
+  note(folder)({ step: 'zero', decision });
+  if (decision.reset) {
+    const archive = archiveLessons(lessonsPath, { reason: decision.reason, rule: decision.rule, goal });
+    console.log(`Memory reset (rule ${decision.rule}): ${decision.reason}. ${archive.count} lessons archived in ${archive.archived}; re-running the mission with no memory.`);
+    const second = await mission({ lessons: [], dir: folder + '/from-zero' });
+    const cmp = compareRuns({ score: first.refined.score, green: first.refined.green, red: first.refined.red }, { score: second.refined.score, green: second.refined.green, red: second.refined.red });
+    kept = cmp.kept === 'from-zero' ? second : first;
+    zero = { decision, archive, withMemory: { score: first.refined.score, green: first.refined.green, red: first.refined.red, usd: first.usd }, fromZero: { score: second.refined.score, green: second.refined.green, red: second.refined.red, usd: second.usd }, kept: cmp.kept, why: cmp.why };
+    note(folder)({ step: 'zero', compared: zero });
+    recordOutcome(outcomesPath, { goal, judgeScore: second.refined.score, green: second.refined.green, red: second.refined.red, lessonsUsed: 0, folder: second.dir, fromZero: true, kept: cmp.kept });
+    writeFileSync(folder + '/zero.json', JSON.stringify(zero, null, 2));
+    console.log(`Kept the answer from: ${cmp.kept === 'from-zero' ? 'from zero' : 'with memory'} (${cmp.why}).`);
+  }
+
+  // 3) Relearn from the answer that was kept. After a reset: if the from-zero answer won, the memory starts from that mission
+  // alone; if the memory did no harm, the archived lessons come back (the archive stays, as the trace of the decision).
+  const base = decision.reset && zero.kept === 'from-zero' ? [] : past;
+  if (decision.reset && zero.kept !== 'from-zero') { note(folder)({ step: 'zero', restored: past.length }); console.log(`Memory restored: ${past.length} lessons back (the archive stays).`); }
+  const learned = mergeLessons(base, await distill({ goal, evidence: kept.result.evidence, ask }));
+  saveLessons(lessonsPath, learned.lessons);
+  writeFileSync(folder + '/final-answer.json', JSON.stringify(kept.final, null, 2));
+  summary = { goal, provider: provider(), model: client.model, reached: kept.result.reached, turns: kept.result.turns, best: kept.result.best, confidence: kept.final.confidence, judgeScore: kept.refined.score, verifiedGreen: kept.refined.green, verifiedRed: kept.refined.red, contradictionRounds: kept.refined.rounds, verifiedSources: kept.final.sources.length, rejectedSources: kept.final.rejectedSources, cost: client.counter, verificationsCached: [...kept.verifyCache.keys()].length, lessonsUsed: decision.reset && kept !== first ? 0 : approvedTexts(past).length, lessonsLearned: learned.added.length, zero: zero ? { rule: zero.decision.rule, reason: zero.decision.reason, kept: zero.kept, withMemory: zero.withMemory.score, fromZero: zero.fromZero.score } : { reset: false, reason: decision.reason } };
+} catch (e) {
+  failure = e;
+  summary = { ...summary, error: String(e?.message || e).slice(0, 500) };
+} finally {
+  summary.cost = client.counter; // never forget what was spent, even on a failed run
+  try { writeFileSync(folder + '/summary.json', JSON.stringify(summary, null, 2)); } catch (e) { console.error('summary.json could not be written:', e.message); }
 }
-
-// 3) Relearn from the answer that was kept. After a reset: if the from-zero answer won, the memory starts from that mission
-// alone; if the memory did no harm, the archived lessons come back (the archive stays, as the trace of the decision).
-const base = decision.reset && zero.kept === 'from-zero' ? [] : past;
-if (decision.reset && zero.kept !== 'from-zero') { note(folder)({ step: 'zero', restored: past.length }); console.log(`Memory restored: ${past.length} lessons back (the archive stays).`); }
-const learned = mergeLessons(base, await distill({ goal, evidence: kept.result.evidence, ask }));
-saveLessons(lessonsPath, learned.lessons);
-writeFileSync(folder + '/final-answer.json', JSON.stringify(kept.final, null, 2));
-const summary = { goal, provider: provider(), model: client.model, reached: kept.result.reached, turns: kept.result.turns, best: kept.result.best, confidence: kept.final.confidence, judgeScore: kept.refined.score, verifiedGreen: kept.refined.green, verifiedRed: kept.refined.red, contradictionRounds: kept.refined.rounds, verifiedSources: kept.final.sources.length, rejectedSources: kept.final.rejectedSources, cost: client.counter, verificationsCached: [...kept.verifyCache.keys()].length, lessonsUsed: decision.reset && kept !== first ? 0 : approvedTexts(past).length, lessonsLearned: learned.added.length, zero: zero ? { rule: zero.decision.rule, reason: zero.decision.reason, kept: zero.kept, withMemory: zero.withMemory.score, fromZero: zero.fromZero.score } : { reset: false, reason: decision.reason } };
-writeFileSync(folder + '/summary.json', JSON.stringify(summary, null, 2));
-console.log(JSON.stringify(summary, null, 2));
+// The pretty JSON on stdout is what bench/run-demo.js parses as a finished run: a failed run prints its error instead.
+if (failure) console.error('Mission stopped:', summary.error);
+else console.log(JSON.stringify(summary, null, 2));
 console.log('Evidence folder:', folder);
+if (failure) process.exitCode = 1;

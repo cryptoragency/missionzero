@@ -3,6 +3,11 @@
 // positive detections, the positivity rate, the number of reporting countries, and the positives by WHO region.
 // node bench/make-flunet-readings.js <raw.json from the API> [watch/flunet-monde.json] [--from=30] [--to=42]
 // API: https://xmart-api-public.who.int/FLUMART/VIW_FNT?$filter=ISO_YEAR eq 2026 and ISO_WEEK ge 30&$select=COUNTRY_CODE,WHOREGION,ISO_YEAR,ISO_WEEK,ISO_WEEKSTARTDATE,SPEC_PROCESSED_NB,INF_ALL
+// The raw rows (about 620 KB) are not versioned (watch/*-brut-*.json in .gitignore); only the derived watch/flunet-monde.json is.
+// To fetch them again (the file of 30 October 2026 was saved as watch/flunet-monde-brut-2026-10-30.json):
+//   curl -s -o watch/flunet-monde-brut-$(date +%F).json "https://xmart-api-public.who.int/FLUMART/VIW_FNT?%24filter=ISO_YEAR%20eq%202026%20and%20ISO_WEEK%20ge%2030&%24select=COUNTRY_CODE,WHOREGION,ISO_YEAR,ISO_WEEK,ISO_WEEKSTARTDATE,SPEC_PROCESSED_NB,INF_ALL"
+//   node bench/make-flunet-readings.js watch/flunet-monde-brut-$(date +%F).json
+// Data: WHO FluNet (GISRS), who.int/tools/flunet, used under WHO's terms for data; WHO does not endorse this project.
 import { readFileSync, writeFileSync } from 'node:fs';
 
 const args = process.argv.slice(2);
@@ -11,6 +16,7 @@ const out = args.filter((a) => !a.startsWith('--'))[1] || 'watch/flunet-monde.js
 const opt = (k, d) => { const a = args.find((x) => x.startsWith(`--${k}=`)); return a ? Number(a.slice(k.length + 3)) : d; };
 const from = opt('from', 30), to = opt('to', 42);
 const REGION = { AFR: 'Africa', AMR: 'Americas', EMR: 'Eastern Mediterranean', EUR: 'Europe', SEAR: 'South-East Asia', WPR: 'Western Pacific' };
+if (!raw) { console.error('Usage: node bench/make-flunet-readings.js <raw.json from the API> [out.json] [--from=30] [--to=42]; see the header of this file to download the raw rows.'); process.exit(1); }
 const rows = JSON.parse(readFileSync(raw, 'utf8')).value;
 const weeks = new Map();
 for (const r of rows) {

@@ -27,9 +27,9 @@ mkdirSync(folder, { recursive: true });
 // Findings from any scanner's URL: a JSON document in the generic format ({ findings: [...] }).
 export async function fetchFindings(url, key = process.env.MZ_SCANNER_KEY) {
   const r = await fetch(url, { headers: key ? { authorization: 'Bearer ' + key, accept: 'application/json' } : { accept: 'application/json' } });
-  if (!r.ok) throw new Error('scanner answered ' + r.status);
+  if (!r.ok) throw new Error(`The scanner at ${url} answered ${r.status}; check MZ_SCANNER_KEY.`);
   const j = await r.json();
-  if (!Array.isArray(j.findings)) throw new Error('no findings array in the scanner\'s answer');
+  if (!Array.isArray(j?.findings)) throw new Error('The scanner\'s answer has no "findings" array (expected { "findings": [...] }).');
   return j;
 }
 
@@ -39,7 +39,7 @@ if (process.argv.includes('--scan') || (!file && !from)) {
   try { const r = await scan('http://127.0.0.1:' + port, { login, policy: process.argv.includes('--policy') }); findings = r.findings; writeFileSync(join(folder, 'findings.json'), JSON.stringify(r, null, 2)); } finally { site.stop(); }
 } else if (from) {
   const r = await fetchFindings(from); findings = r.findings; writeFileSync(join(folder, 'findings.json'), JSON.stringify(r, null, 2));
-  console.log('findings fetched from the scanner:', findings.length);
+  console.log(`Fetched ${findings.length} findings from the scanner.`);
 } else { const r = JSON.parse(readFileSync(file, 'utf8')); findings = r.findings; writeFileSync(join(folder, 'findings.json'), JSON.stringify(r, null, 2)); }
 appendChain(folder, 'findings.json', { step: 'input' }); // the input is the first link of the run's hashed journal
 
@@ -53,4 +53,4 @@ console.table(rows);
 writeFileSync(join(folder, 'report.json'), JSON.stringify({ findings: findings.length, results, cost: client.counter }, null, 2));
 appendChain(folder, 'report.json', { step: 'report' });
 const chain = verifyChain(folder);
-console.log('cost', client.counter.usd.toFixed(3), '$ · report:', join(folder, 'report.json'), '· chain', chain.ok ? 'intact, head ' + chain.head.slice(0, 16) : 'BROKEN');
+console.log(`Cost $${client.counter.usd.toFixed(3)}. Report: ${join(folder, 'report.json')}. Evidence journal: ${chain.ok ? 'intact' : 'BROKEN'}.`);

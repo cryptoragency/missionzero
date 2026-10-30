@@ -25,11 +25,32 @@ const hash = (s) => createHash('sha256').update('mz|' + s).digest('hex').slice(0
 const clean = (s, n) => String(s || '').replace(/[<>]/g, '').replace(/\s+/g, ' ').trim().slice(0, n);
 
 const hits = new Map(); // memory only: hashed caller -> timestamps
-function limited(caller) {
-  const now = Date.now();
+const FORGET_MS = 10 * 60000;
+let lastPurge = 0;
+// A caller seen once must not stay in memory forever: every minute, callers silent for 10 minutes are forgotten.
+export function purgeHits(now = Date.now()) {
+  lastPurge = now;
+  for (const [caller, list] of hits) if (!list.length || now - list[list.length - 1] >= FORGET_MS) hits.delete(caller);
+  return hits.size;
+}
+function limited(caller, now = Date.now()) {
+  if (now - lastPurge >= 60000) purgeHits(now);
   const list = (hits.get(caller) || []).filter((t) => now - t < 60000);
   list.push(now); hits.set(caller, list);
   return list.length > 30;
+}
+export const hitsSize = () => hits.size;
+
+// A body that is valid JSON but not an object ("null", "3", "[]") is treated as empty, never as a crash.
+export function parseBody(raw) {
+  let body = null;
+  try { body = raw ? JSON.parse(raw) : null; } catch { body = null; }
+  return body && typeof body === 'object' && !Array.isArray(body) ? body : {};
+}
+// x-forwarded-for is written by whoever calls: it is only believed behind our own proxy (MZ_TRUST_PROXY=1).
+export function callerOf(req, trustProxy = process.env.MZ_TRUST_PROXY === '1') {
+  const fwd = trustProxy ? String(req.headers?.['x-forwarded-for'] || '').split(',')[0].trim() : '';
+  return fwd || req.socket?.remoteAddress || '';
 }
 
 export function counts() {
@@ -40,8 +61,9 @@ export function counts() {
   return c;
 }
 
-export function handle(method, path, body, caller) {
-  if (limited(hash(caller))) return [429, { error: 'slow down' }];
+export function handle(method, path, body, caller, now = Date.now()) {
+  if (!body || typeof body !== 'object' || Array.isArray(body)) body = {};
+  if (limited(hash(caller), now)) return [429, { error: 'slow down' }];
   if (method === 'GET' && path === '/api/poll') return [200, { questions: QUESTIONS, research: RESEARCH, counts: counts() }];
   if (method === 'POST' && path === '/api/answer') {
     const token = clean(body.token, 80);
@@ -67,8 +89,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     let raw = '';
     req.on('data', (c) => { raw += c; if (raw.length > 5000) req.destroy(); });
     req.on('end', () => {
-      let body = {}; try { body = raw ? JSON.parse(raw) : {}; } catch { /* ignore */ }
-      const [code, out] = handle(req.method, path, body, req.socket.remoteAddress || '');
+      const [code, out] = handle(req.method, path, parseBody(raw), callerOf(req));
       res.writeHead(code, { 'content-type': 'application/json' }); res.end(JSON.stringify(out));
     });
   }).listen(port, '127.0.0.1', () => console.log('Mission Zero community page on http://127.0.0.1:' + port));

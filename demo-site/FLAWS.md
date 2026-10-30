@@ -3,6 +3,7 @@
 `demo-site/` is a fictional online shop (Maison Verde) built with the flaws that scanners find on most e-commerce
 sites. It runs locally only (`node demo-site/server.js`, http://127.0.0.1:8098). It is the target of the repair
 mode: a scanner reports the flaws, Mission Zero proposes each fix with a primary-source citation, a human applies it.
+Maison Verde is an invented name; any resemblance to a real business is unintended.
 
 | # | Flaw | Where | Expected fix (what a green proof must support) |
 |---|------|-------|-----------------------------------------------|

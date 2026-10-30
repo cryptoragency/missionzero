@@ -3,8 +3,10 @@
 // POST /v1/responses with model sam-3.1, an input_text concept and an input_image; the answer is text made of tokens:
 // <0f>0<|box;x1=..;y1=..;x2=..;y2=..;w=..;h=..|><|mask;...|>  (one box token + one mask token per match).
 import { readJson } from './loop.js';
+import { metaFetch, META_BASE, META_KEY } from './meta.js';
 
-const BASE = 'https://api.meta.ai/v1';
+// SAM 3.1 is billed per image: $2.50 per 1,000 images (Meta price list, 30 October 2026).
+const SAM_USD_PER_IMAGE = 2.5 / 1000;
 
 export function parseBoxes(text) {
   const boxes = [];
@@ -15,16 +17,13 @@ export function parseBoxes(text) {
   return boxes;
 }
 
-export async function segment({ dataUrl, concept, key = process.env.MODEL_API_KEY, fetchFn = fetch }) {
-  if (!key) throw new Error('MODEL_API_KEY is missing (.env file)');
+export async function segment({ dataUrl, concept, key, fetchFn = fetch }) {
   const t0 = Date.now();
-  const r = await fetchFn(`${BASE}/responses`, {
+  const { body } = await metaFetch('/responses', {
     method: 'POST',
-    headers: { 'content-type': 'application/json', authorization: `Bearer ${key}` },
+    headers: { 'content-type': 'application/json' },
     body: JSON.stringify({ model: 'sam-3.1', input: [{ type: 'message', role: 'user', content: [{ type: 'input_text', text: concept }, { type: 'input_image', image_url: dataUrl }] }], metadata: { include_confidence: 'true', mask_encoding: 'one_bit' } }),
-  });
-  const body = await r.text();
-  if (!r.ok) throw new Error(`Meta SAM ${r.status}: ${body.slice(0, 300)}`);
+  }, { base: META_BASE, key: key || META_KEY, keyName: 'MODEL_API_KEY', fetchFn, cost: () => SAM_USD_PER_IMAGE });
   const j = readJson(body) || {};
   // The Responses API returns output items; the segmentation text is the output_text of the message item.
   const text = j.output_text || (j.output || []).flatMap((o) => (o.content || [])).map((c) => c.text || '').join('') || '';

@@ -1,7 +1,7 @@
 // Demo bench: plays the goals of demo-goals.json one after the other, each as a full Mission Zero run
 // (4 research turns, 3 contradiction rounds on the final answer), and prints one table for the video.
 // Usage: node --env-file=.env bench/run-demo.js [--only=1,3] [--turns=4] [--rounds=3] [--dry]
-// Cost: about 0.5 USD per goal; the daily cap in .env stops everything when reached.
+// Cost: about $0.03 to $0.15 per goal (30 October runs); the daily cap in .env stops everything when reached.
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { evidenceFolder } from '../src/evidenceDir.js';
@@ -24,7 +24,7 @@ mkdirSync(folder, { recursive: true });
 const rows = [];
 for (const g of chosen) {
   const t0 = Date.now();
-  const r = spawnSync(process.execPath, ['--env-file=.env', 'src/run.js', g.goal, String(turns), String(rounds)], { encoding: 'utf8', maxBuffer: 50 * 1024 * 1024 });
+  const r = spawnSync(process.execPath, ['--env-file-if-exists=.env', 'src/run.js', g.goal, String(turns), String(rounds)], { encoding: 'utf8', maxBuffer: 50 * 1024 * 1024, timeout: 30 * 60000 }); // a stuck goal is killed after 30 min
   const out = (r.stdout || '') + (r.stderr || '');
   const m = out.match(/\{[\s\S]*\n\}/);
   let s = null;
