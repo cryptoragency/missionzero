@@ -39,6 +39,8 @@ goal ──► plan (hypotheses + ONE free action) ──► action ──► ob
                                                  │
                         verifier: re-reads each cited page, exact quote required
                                                  │  green = the page says it · red caps the score at 5
+           red claim ──► the cited page is read AGAIN with the claim as target (added 30 October)
+                                                 │
                       contradictor ──► targeted research ──► rewrite ──► verifier ──► judge
                                                  │  up to 5 rounds, stops on stagnation
                                        best version kept ──► evidence folder
@@ -48,6 +50,7 @@ goal ──► plan (hypotheses + ONE free action) ──► action ──► ob
 - **Everything comes from freely accessible data.** A paid source (a journal behind a paywall, a dataset)? The agent asks, you set the budget, it pays and cites. It never spends on its own.
 - **Reading a 250 000-character report** is cheap: the page is read once per run, cached, and reduced to its opening plus the passages relevant to what the planner asked for. Numbers written in words ("eight characters") count as numbers.
 - **A claim is green only with a quote** that really appears in the cited page. "Supported" without a quote is not trusted.
+- **A red claim is not left to the rewrite alone.** Since 30 October the cited page is read again with the claim itself as the target, so the rewrite sees the passages that carry the figure and restates the claim in the page's words, cites another page it saw, or drops it. A red claim is an objection by itself, even when the contradictor finds no flaw. Before that, two missions of 30 October (16 citations, 4 red) stayed capped at 5/10 with a sound answer inside: the cap is the rule, the loop is what lifts it.
 - **Memory**: each mission ends with generic lessons (never about a company or a person), 30 at most, reused by the next mission. Winning objections of the contradictor become lessons too.
 - **Hard budget caps**: per run (`MZ_CAP_USD`) and per day (`MZ_DAILY_CAP_USD`). The run stops when either is reached.
 

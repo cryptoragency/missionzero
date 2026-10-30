@@ -178,3 +178,32 @@ test('a verified claim is not checked twice in the same run', async () => {
   assert.equal(a.green, 1);
   assert.equal(b.results[0].cached, true);
 });
+
+test('a red claim sends the agent back to the cited page with the claim as target, even when the contradictor finds no flaw', async () => {
+  const { refineAnswer } = await import('./contradictAnswer.js');
+  const { makeReread } = await import('./research.js');
+  const url = 'https://who.example/report';
+  const seen = [{ url, title: 'snippet', snippet: 'short' }];
+  let verdict = 'unsupported';
+  const verify = async (sources) => ({ results: sources.map((s) => ({ url: s.url, claim: s.contribution, verdict, color: verdict === 'supported' ? 'green' : 'red', detail: 'nearest passages: « 10.8 million »' })), green: verdict === 'supported' ? sources.length : 0, red: verdict === 'supported' ? 0 : sources.length });
+  const ask = script([
+    '{"score":8}',                                   // judge v0: 8 but capped at 5 by the red claim
+    '{"objections":[],"flawless":true}',             // contradictor: no flaw, yet the red claim is an objection
+    '{"answer":"10.8 million fell ill in 2023","sources":[{"url":"https://who.example/report","contribution":"an estimated 10.8 million people fell ill with TB in 2023"}],"confidence":9}', // rewrite in the page's words
+    '{"score":10}',                                  // judge v1
+  ]);
+  const executed = [];
+  const execute = async (a) => { executed.push(a); verdict = 'supported'; return { ok: true, url: a.url, text: 'an estimated 10.8 million people fell ill with TB in 2023 '.repeat(10) }; };
+  const reread = makeReread({ execute });
+  const r = await refineAnswer({ goal: 'g', answer: { answer: 'about 11 million', sources: [{ url, contribution: 'about 11 million sick' }] }, seen, ask, verify, reread, rounds: 1, escalate: false });
+  assert.equal(executed.length, 1);
+  assert.equal(executed[0].type, 'read_page');
+  assert.equal(executed[0].url, url);
+  assert.equal(executed[0].find, 'about 11 million sick'); // the claim itself is the target
+  assert.equal(r.versions[0].score, 5); // capped
+  assert.equal(r.versions[1].reread, 1);
+  assert.ok(r.versions[1].objections.some((o) => o.startsWith('RED:')));
+  assert.equal(r.score, 10);
+  // the same (url, claim) is never re-read twice in a run
+  assert.deepEqual(await reread({ reds: [{ url, claim: 'about 11 million sick', verdict: 'unsupported' }], seen }), []);
+});

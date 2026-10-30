@@ -6,7 +6,7 @@ import { makeExecutor } from './tools.js';
 import { synthesize, seenUrls } from './synthesis.js';
 import { refineAnswer } from './contradictAnswer.js';
 import { verifyReport } from './verify.js';
-import { makeResearch } from './research.js';
+import { makeResearch, makeReread } from './research.js';
 import { loadLessons, saveLessons, mergeLessons, distill, approvedTexts } from './memory.js';
 import { recordOutcome, loadOutcomes, decideReset, archiveLessons, compareRuns } from './zero.js';
 import { evidenceFolder } from './evidenceDir.js';
@@ -51,7 +51,8 @@ async function mission({ lessons, dir }) {
   const verifyCache = new Map();
   const verify = (sources) => verifyReport({ items: sources.map((s) => ({ claim: s.contribution, url: s.url })), ask, cache: verifyCache });
   const research = makeResearch({ ask, execute, evidence: result.evidence, note: note(dir) });
-  const refined = await refineAnswer({ goal, answer: draft, seen: [...seenUrls(result.evidence).values()], ask, verify, research, rounds: contradictions });
+  const reread = makeReread({ execute, evidence: result.evidence, note: note(dir) });
+  const refined = await refineAnswer({ goal, answer: draft, seen: [...seenUrls(result.evidence).values()], ask, verify, research, reread, rounds: contradictions });
   const final = { ...refined.answer, rejectedSources: draft.rejectedSources, judge: { score: refined.score, green: refined.green, red: refined.red, rounds: refined.rounds, versions: refined.versions } };
   writeFileSync(dir + '/final-answer.json', JSON.stringify(final, null, 2));
   return { result, draft, refined, final, verifyCache, usd: client.counter.usd - usdBefore, dir };

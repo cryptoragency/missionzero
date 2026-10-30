@@ -47,7 +47,13 @@ async function grade({ goal, answer, ask, verify }) {
 
 // Returns the best version of the answer, its grade and the trace of every version.
 // `research` (optional) is called with the objections and may return newly seen sources: they become citable.
-export async function refineAnswer({ goal, answer, seen, ask, verify, research = null, rounds = 0, escalate = true }) {
+// `reread` (optional) is called with the RED claims of the last version: it reads each cited page again with the
+// claim as target (research.js makeReread), and a red claim is an objection by itself, even when the contradictor
+// finds nothing: the rewrite must restate it in the page's words, cite another seen page, or drop it.
+export const redObjection = (r) => `RED: the claim « ${String(r.claim || '').slice(0, 200)} » is not supported by ${r.url} (verdict: ${r.verdict}); restate it in the words of the re-read passages of that page, or cite another seen page that states it, or drop it`;
+const redsOf = (v) => (v?.verification || []).filter((r) => r.verdict && r.verdict !== 'supported');
+
+export async function refineAnswer({ goal, answer, seen, ask, verify, research = null, reread = null, rounds = 0, escalate = true }) {
   const base = clampRounds(rounds);
   const max = escalate && base > 0 ? MAX_ROUNDS : base;
   seen = [...(seen || [])];
@@ -62,6 +68,9 @@ export async function refineAnswer({ goal, answer, seen, ask, verify, research =
   const done = () => ({ answer: best.answer, score: best.score, green: best.green, red: best.red, verification: best.verification, rounds: versions.length - 1, versions: versions.map(({ answer: _a, ...r }) => r) });
   if (base === 0) return done();
 
+  // A source fetched by research or reread becomes citable; a page read in full replaces the search snippet of the same URL.
+  const merge = (list) => { let n = 0; for (const s of list || []) { if (!s?.url) continue; const i = seen.findIndex((x) => x.url === s.url); if (i >= 0) { if (s.title === 'page read in full' && seen[i].title !== s.title) { seen[i] = s; n += 1; } } else { seen.push(s); seenUrls.add(s.url); n += 1; } } return n; };
+
   let flat = 0; // rounds in a row without a better note
   for (let round = 1; round <= max; round += 1) {
     if (round > base && best.score >= GOOD_ENOUGH) break; // beyond the base rounds, only while the note is bad
@@ -74,22 +83,17 @@ export async function refineAnswer({ goal, answer, seen, ask, verify, research =
       ], { max_tokens: 1500, tag: 'contradict' });
       found = readJson(r.text);
     } catch { break; }
-    const objections = Array.isArray(found?.objections) ? found.objections.filter(Boolean) : [];
-    if (found?.flawless || !objections.length) break; // nothing left to contradict
+    const reds = redsOf(last);
+    const objections = [...(Array.isArray(found?.objections) ? found.objections.filter(Boolean) : []), ...reds.map(redObjection)];
+    if (!objections.length) break; // nothing left to contradict, and nothing red
+
+    // Red claim: back to the cited page with the claim as target, before anything else.
+    let rereadN = 0;
+    if (reread && reds.length) { try { rereadN = merge(await reread({ reds, seen })); } catch { /* the rewrite goes on with the nearest passages */ } }
 
     // The objection says what is missing: go and get it before rewriting.
     let fetched = 0;
-    if (research) {
-      try {
-        for (const s of (await research({ goal, answer: current, objections, seen })) || []) {
-          if (!s?.url) continue;
-          const i = seen.findIndex((x) => x.url === s.url);
-          // A page read in full replaces the search snippet of the same URL: the rewrite gets the real text.
-          if (i >= 0) { if (s.title === 'page read in full' && seen[i].title !== s.title) { seen[i] = s; fetched += 1; } }
-          else { seen.push(s); seenUrls.add(s.url); fetched += 1; }
-        }
-      } catch { /* the rewrite goes on with what was seen */ }
-    }
+    if (research) { try { fetched = merge(await research({ goal, answer: current, objections, seen })); } catch { /* the rewrite goes on with what was seen */ } }
 
     let revised = null;
     try {
@@ -101,7 +105,7 @@ export async function refineAnswer({ goal, answer, seen, ask, verify, research =
     } catch { break; }
     if (!revised?.answer) continue;
     current = keepSeen(revised);
-    const v = { round, ...(await grade({ goal, answer: current, ask, verify })), objections, fetched, answer: current };
+    const v = { round, ...(await grade({ goal, answer: current, ask, verify })), objections, fetched, reread: rereadN, answer: current };
     versions.push(v);
     last = v;
     if (v.score > best.score) { best = v; flat = 0; } else flat += 1; // strictly better only: an earlier version wins ties
