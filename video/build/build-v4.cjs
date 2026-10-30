@@ -60,114 +60,16 @@ const sBgeo = (function () {
 // L'ESPACE (scène sE du 29, légendes du brief) : la même question posée deux fois, le panneau rouge (le modèle seul) et le
 // panneau vert (Mission Zero) ; puis la sensation : les étoiles viennent vers vous, le compteur monte, le fil va de boîte en
 // boîte (Hercule, la galaxie, le Grand Attracteur) et ressort à droite à y = 450, la hauteur d'entrée de l'écran suivant.
-const sEgeo = (function () {
-  let k = 0; const g = [];
-  const step = (s) => { k += 1; g.push(s.replace('data-k="?"', 'data-k="' + k + '"')); };
-  // Une ligne lisible par source : le texte, puis son statut.
-  const row = (x, y, txt, ok, label) => '<text class="lbl" x="' + x + '" y="' + y + '" style="font-size:20px;font-weight:400">' + txt + '</text><rect class="chip ' + (ok ? 'ok' : 'ko') + '" x="' + (x + 470) + '" y="' + (y - 23) + '" width="160" height="34" rx="17"/><text class="chip-t" x="' + (x + 550) + '" y="' + (y + 1) + '" text-anchor="middle" style="font-size:17px">' + label + '</text>';
-  g.push('<g id="stars"></g>');
-  step('<g class="b" data-k="?" id="q0" data-stars="1" data-d="2600"><text class="lbl acc" x="800" y="80" text-anchor="middle" style="font-size:34px">« On va quelque part ? » Posée deux fois.</text></g>');
-  g.push('<g id="vs">');
-  // Le fil entre à gauche, tout droit jusqu'au bord du panneau rouge.
-  step('<g class="a" data-k="?" data-dur="900" data-d="1000"><path class="arrow" pathLength="1" d="M-33.3,450 L58,450"/></g>');
-  step('<g class="b" data-k="?" data-d="3400"><rect class="box red" x="60" y="150" width="700" height="500" rx="16"/><text class="lbl m red" x="410" y="196" text-anchor="middle">Sans Mission Zero · le modèle seul</text><text class="lbl s" x="410" y="230" text-anchor="middle" style="font-size:20px">12 chiffres · 1 centime · 20 secondes</text>'
-    + row(90, 300, 'Hercule, 19,7 km/s · manuel de 1981', false, 'sans adresse') + row(90, 360, 'Trois vitesses au centième · 2010', false, 'injoignable')
-    + row(90, 420, 'Rayon et vitesse de la galaxie · 2014', true, 'vérifié ✔') + row(90, 480, '600 km/s vers le Grand Attracteur', false, 'injoignable')
-    + row(90, 540, 'Le fond du ciel au centième · 2020', false, 'injoignable') + '</g>');
-  step('<g class="b" data-k="?" data-d="3000"><text class="lbl amber" x="410" y="612" text-anchor="middle" style="font-size:22px">4 sources sur 5 : personne ne peut les ouvrir</text></g>');
-  step('<g class="a" data-k="?" data-dur="700" data-d="800"><path class="arrow" pathLength="1" d="M760,450 L838,450"/></g>');
-  step('<g class="b" data-k="?" data-d="3800"><rect class="box ok" x="840" y="150" width="700" height="500" rx="16"/><text class="lbl m acc" x="1190" y="196" text-anchor="middle">Avec Mission Zero</text><text class="lbl s" x="1190" y="230" text-anchor="middle" style="font-size:20px">4 chiffres · 1 dollar · chacun avec sa page</text>'
-    + row(870, 300, 'Hercule, 20 km/s · Univ. du Maryland', true, 'vérifié ✔') + row(870, 360, '230 km/s · NASA, mot pour mot', true, 'vérifié ✔')
-    + row(870, 420, '369 km/s · Cambridge', true, 'vérifié ✔') + row(870, 480, '631 km/s · Tully, 2014', true, 'vérifié ✔')
-    + '<text class="lbl okt" x="1190" y="612" text-anchor="middle" style="font-size:22px">ce qu\'il n\'a pas pu lire, il le dit</text></g>');
-  g.push('</g>');
-  // Les panneaux s'effacent ; le fil continue de là où il était, au-dessus des futures boîtes, jusqu'au bord haut de la boîte Hercule.
-  step('<g class="a" data-k="?" data-hide="#vs,#q0" data-dur="1500" data-d="1600"><path class="arrow" pathLength="1" d="M838,450 L838,470 L240,470 L240,678"/></g>');
-  const box = (x, y, title, speed, q1, src) => '<rect class="box gold" x="' + x + '" y="' + y + '" width="400" height="150" rx="16"/><text class="lbl acc" x="' + (x + 200) + '" y="' + (y + 36) + '" text-anchor="middle" style="font-size:19px">' + title + '</text><text class="lbl" x="' + (x + 200) + '" y="' + (y + 74) + '" text-anchor="middle" style="font-size:30px">' + speed + '</text><text class="lbl xs" x="' + (x + 200) + '" y="' + (y + 104) + '" text-anchor="middle">' + q1 + '</text><text class="lbl xs okt" x="' + (x + 200) + '" y="' + (y + 132) + '" text-anchor="middle">' + src + '</text>';
-  step('<g class="b" data-k="?" data-speed="20" data-d="3800"><text class="lbl s" x="60" y="170" style="font-size:20px">déplacement du système solaire</text><text class="lbl" x="60" y="240" style="font-size:64px;font-weight:800" id="speed">0</text><text class="lbl s" x="60" y="276" style="font-size:20px">km/s · et vous ne sentez rien</text>' + box(40, 680, 'Le système solaire va vers Hercule', '20 km/s', '« toward which the Sun is moving »', 'Univ. du Maryland · vérifié ✔') + '</g>');
-  step('<g class="a" data-k="?" data-dur="1100" data-d="1150"><path class="arrow" pathLength="1" d="M440,755 L720,755 L720,652"/></g>');
-  step('<g class="b" data-k="?" data-speed="230" data-d="3800">' + box(520, 500, 'Il tourne autour de la galaxie', '230 km/s', '« an average velocity of 828,000 km/hr »', 'NASA, mot pour mot · vérifié ✔') + '</g>');
-  step('<g class="a" data-k="?" data-dur="1100" data-d="1150"><path class="arrow" pathLength="1" d="M920,575 L960,575 L960,395 L998,395"/></g>');
-  step('<g class="b" data-k="?" data-speed="631" data-d="3400">' + box(1000, 320, 'Avec la galaxie, vers le Grand Attracteur', '631 km/s', '« motion of the Local Group of 631 km/s »', 'Tully et al., Nature 2014 · vérifié ✔') + '</g>');
-  step('<g class="b" data-k="?" data-d="3400"><text class="lbl amber" x="1200" y="515" text-anchor="middle" style="font-size:22px">caché derrière notre galaxie</text><text class="lbl xs" x="1200" y="543" text-anchor="middle">on y va, on ne le voit pas</text></g>');
-  step('<g class="b" data-k="?" data-d="3000"><text class="lbl" x="800" y="860" text-anchor="middle" style="font-size:26px">Mesuré, pas vu, pas tranché.</text></g>');
-  // Le titre de fin, et la sensation d'accélération derrière.
-  step('<g class="b" data-k="?" data-rush="1" data-d="4600"><text class="lbl acc" x="800" y="80" text-anchor="middle" style="font-size:36px;font-weight:700">Le système solaire se déplace.</text><text class="lbl" x="800" y="124" text-anchor="middle" style="font-size:26px">Vous allez à 631 km/s vers quelque chose que personne n\'a vu.</text></g>');
-  step('<g class="a" data-k="?" data-dur="1000" data-d="1050"><path class="arrow" pathLength="1" d="M1400,450 L1633.3,450"/></g>');
-  const cap = ['On va quelque part&nbsp;? Posée deux fois.', null, 'Le modèle seul&nbsp;: <span class="r">douze chiffres, un centime.</span>', 'Quatre sources sur cinq, personne ne peut les ouvrir.', null,
-    '<b>Mission Zero</b>&nbsp;: quatre chiffres, un dollar. Chacun avec sa page.', null, '<b>Le système solaire se déplace.</b> Vingt kilomètres par seconde vers Hercule.', null,
-    'Il tourne autour de la galaxie&nbsp;: deux cent trente. La NASA, mot pour mot.', null, 'Avec la galaxie, six cent trente et un vers le Grand Attracteur.',
-    'Caché derrière notre galaxie. On y va. On ne le voit pas.', 'Mesuré, pas vu, pas tranché. <b>Il n\'invente pas la suite.</b>',
-    'Vous allez à <b>six cent trente et un kilomètres par seconde</b> vers quelque chose que personne n\'a vu.', null];
-  if (cap.length !== k) throw new Error('sE : ' + k + ' étapes, ' + cap.length + ' légendes');
-  const sec = '  <section class="scene" id="sE">\n    <header><h2>L\'ESPACE</h2><span class="t">une vraie mission de Mission Zero</span></header>\n    <svg viewBox="0 0 1600 900" role="img" aria-label="La même question posée deux fois, puis un ciel d\'étoiles, un compteur qui monte, un fil qui va de boîte en boîte : le système solaire vers Hercule, autour de la galaxie, vers le Grand Attracteur ; chaque chiffre avec sa page">\n      ' + g.join('\n      ') + '\n    </svg>\n    <div class="caption" id="cE"></div>\n  </section>\n';
-  return { sec, cap };
-})();
+const sEgeo = require('./sE-geo.cjs');
 
 // LA MÉDECINE (scène sM du 29, légendes du brief) : le fil entre à y = 450 et arrive sur le panneau rouge (avant) ; puis il
 // devient un électrocardiogramme : trois battements, chaque pointe s'arrête à 10 px de sa boîte ; puis la veille (une courbe,
 // son seuil, un point rouge en semaine 38) ; le futur ; et il ressort à droite vers la fin.
-const sMgeo = (function () {
-  let k = 0; const g = [];
-  const step = (s) => { k += 1; g.push(s.replace('data-k="?"', 'data-k="' + k + '"')); };
-  const box = (cls, x, y, numCls, num, t) => '<rect class="box ' + cls + '" x="' + x + '" y="' + y + '" width="380" height="120" rx="16"/><text class="lbl ' + numCls + '" x="' + (x + 190) + '" y="' + (y + 50) + '" text-anchor="middle" style="font-size:44px;font-weight:700">' + num + '</text><text class="lbl s" x="' + (x + 190) + '" y="' + (y + 80) + '" text-anchor="middle" style="font-size:20px">' + t + '</text><text class="lbl xs okt" x="' + (x + 190) + '" y="' + (y + 106) + '" text-anchor="middle">vérifié ✔ · OMS, Global TB Report 2024</text>';
-  const beat = (x0, x1, dur) => '<g class="a" data-k="?" data-dur="' + dur + '" data-d="' + (dur + 100) + '"><path class="arrow" pathLength="1" data-round="10" d="M' + x0 + ',450 L' + (x1 - 90) + ',450 L' + (x1 - 70) + ',400 L' + (x1 - 50) + ',500 L' + (x1 - 30) + ',450 L' + x1 + ',450"/></g>';
-  step('<g class="a" data-k="?" data-dur="900" data-d="1000"><path class="arrow" pathLength="1" d="M-33.3,450 L40,450"/></g>');
-  step('<g class="b" data-k="?" data-d="4200"><rect class="box red" x="40" y="370" width="260" height="160" rx="16"/><text class="lbl xs red" x="170" y="398" text-anchor="middle" style="font-weight:700;letter-spacing:.08em">SANS MISSION ZERO</text><text class="lbl" x="170" y="436" text-anchor="middle" style="font-size:24px">100 publications</text><text class="lbl xs" x="170" y="464" text-anchor="middle">pas le temps de les lire</text><text class="lbl xs red" x="170" y="500" text-anchor="middle">une IA : un chiffre, sans page</text></g>');
-  step('<g class="b" data-k="?" data-d="3600"><text class="lbl acc" x="800" y="110" text-anchor="middle" style="font-size:34px;font-weight:700">Demain, avec Mission Zero</text><text class="lbl" x="800" y="150" text-anchor="middle" style="font-size:24px">il analyse les chiffres, les affiche, et ils sont vrais</text></g>');
-  step(beat(300, 600, 1500));
-  step('<g class="b" data-k="?" data-d="3000">' + box('amber', 340, 240, 'amber', '10,8 millions', 'de malades en 2023') + '</g>');
-  step(beat(600, 1030, 1200));
-  step('<g class="b" data-k="?" data-d="3000">' + box('red', 770, 560, 'red', '1,25 million', 'de morts en 2023') + '</g>');
-  step(beat(1030, 1480, 1300));
-  step('<g class="b" data-k="?" data-d="3800">' + box('ok', 1200, 240, 'acc', '88 %', 'guéris, quand on soigne') + '</g>');
-  // La veille : le fil descend sur le graphique ; une courbe hebdomadaire et le point rouge de la semaine 38 (pas de seuil : c'est la hausse qui alerte).
-  step('<g class="a" data-k="?" data-dur="900" data-d="1000"><path class="arrow" pathLength="1" d="M1480,450 L1530,450 L1530,563"/></g>');
-  const weeks = [['35', 27], ['36', 38], ['37', 55], ['38', 77], ['39', 88], ['40', 94], ['41', 92], ['42', 85], ['43', 94]];
-  const X = (i) => 1215 + i * 42, Y = (v) => Math.round(800 - v * 1.6);
-  const curve = 'M' + weeks.map(([, v], i) => X(i) + ',' + Y(v)).join(' L');
-  step('<g class="b" data-k="?" data-d="3600"><rect class="box" x="1180" y="565" width="400" height="250" rx="16"/><text class="lbl xs" x="1380" y="592" text-anchor="middle" style="fill:var(--fg)">la veille · grippe, Sentinelles, pour 100 000</text><path d="' + curve + '" fill="none" stroke="var(--acc2)" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>' + weeks.map(([, v], i) => '<circle cx="' + X(i) + '" cy="' + Y(v) + '" r="3.5" fill="#fff"/>').join('') + weeks.map(([w], i) => '<text class="lbl xs" x="' + X(i) + '" y="806" text-anchor="middle" style="font-size:13px">S' + w + '</text>').join('') + '</g>');
-  step('<g class="b" data-k="?" data-d="3200"><circle cx="' + X(3) + '" cy="' + Y(77) + '" r="9" fill="rgba(255,59,48,.35)" stroke="#ff3b30" stroke-width="3" style="filter:drop-shadow(0 0 8px rgba(255,59,48,1))"/><text class="lbl red" x="1380" y="628" text-anchor="middle" style="font-size:18px;font-weight:700">S38 · 55 → 77 · +40 %</text></g>');
-  step('<g class="b" data-k="?" data-d="3600"><text class="lbl xs okt" x="1380" y="844" text-anchor="middle">3 sources citées · aucun commentaire publié, il le dit</text></g>');
-  step('<g class="a" data-k="?" data-dur="1200" data-d="1300"><path class="arrow" pathLength="1" d="M1180,780 C1000,780 900,810 762,810"/></g>');
-  step('<g class="b" data-k="?" data-d="3400"><text class="lbl" x="750" y="818" text-anchor="end" style="font-size:24px">Demain : les relevés d\'un laboratoire.</text></g>');
-  step('<g class="b" data-k="?" data-d="3000"><text class="lbl amber" x="800" y="870" text-anchor="middle" style="font-size:30px">On sait soigner. Reste à chercher.</text></g>');
-  step('<g class="a" data-k="?" data-dur="800" data-d="850"><path class="arrow" pathLength="1" d="M1580,700 L1633.3,700"/></g>');
-  const cap = [null, 'Un chercheur n\'a pas le temps de lire cent publications. <span class="r">Une IA lui sort un chiffre, sans page.</span>',
-    '<b>Demain, Mission Zero analyse les chiffres et les affiche.</b> Ils sont vrais.', null,
-    'Dix millions huit cent mille malades en 2023. Vérifié.', null, '<span class="r">Un million deux cent cinquante mille morts.</span> Vérifié.', null,
-    'Quatre-vingt-huit pour cent guéris, quand on soigne. <b>Chaque chiffre a sa page.</b>', null,
-    'Chaque semaine, il compare et ne signale que ce qui bouge.', 'Semaine 38&nbsp;: <b class="r">plus quarante pour cent.</b>', 'Il cite la méthode et dit qu\'aucun commentaire n\'existe.', null,
-    'Demain, sur les relevés d\'un laboratoire. <b>Le chercheur tranche.</b>', '<b>On sait soigner. Reste à chercher.</b>', null];
-  if (cap.length !== k) throw new Error('sM : ' + k + ' étapes, ' + cap.length + ' légendes');
-  const sec = '  <section class="scene" id="sM">\n    <header><h2>LA MÉDECINE</h2><span class="t">une vraie mission de Mission Zero</span></header>\n    <svg viewBox="0 0 1600 900" role="img" aria-label="Le fil devient un battement de cœur ; à chaque battement, un chiffre vérifié ; puis la veille hebdomadaire">\n      ' + g.join('\n      ') + '\n    </svg>\n    <div class="caption" id="cM"></div>\n  </section>\n';
-  return { sec, cap };
-})();
+const sMgeo = require('./sM-geo.cjs');
 
 // LA FIN (le fil arrive verticalement au bord gauche du zéro, dans le sens du cercle : aucun angle) : le fil entre à la hauteur où la médecine l'a laissé (728 px), dessine le zéro, le point se pose au centre ; silence ;
 // coupure au noir ; « WHAT DO YOU NEED ? » blanc plein écran, « CRYPTOR.AGENCY » dessous, « MISSION ZERO » néon en dernier.
-const sZgeo = (function () {
-  let k = 0; const g = [];
-  const step = (s) => { k += 1; g.push(s.replace('data-k="?"', 'data-k="' + k + '"')); };
-  const hand = (id, y, size, weight, spacing, cls, txt, delay) => '<text id="' + id + '" class="hand' + (cls ? ' ' + cls : '') + '" x="800" y="' + y + '" text-anchor="middle" style="font-size:' + size + 'px;font-weight:' + weight + ';letter-spacing:' + spacing + '">' + txt.split('').map((ch, i) => '<tspan style="transition-delay:' + (i * delay).toFixed(2) + 's">' + (ch === ' ' ? '\u00a0' : ch) + '</tspan>').join('') + '</text>';
-  step('<g class="a" data-k="?" id="zin" data-dur="1300" data-d="1400"><path class="arrow" pathLength="1" d="M0,728 C380,728 690,640 690,400"/></g>');
-  step('<g class="a" data-k="?" id="zz" data-dur="2200" data-d="2400"><path class="arrow zero" pathLength="1" d="M690,400 A110,110 0 1,1 910,400 A110,110 0 1,1 690,400"/></g>');
-  step('<g class="b" data-k="?" id="zdot" data-d="2000"><circle cx="800" cy="400" r="11" fill="#fff" style="filter:drop-shadow(0 0 8px rgba(46,230,160,.9))"/></g>');
-  step('<g class="b" data-k="?" data-cls="black" data-hide="#zin,#zz,#zdot" data-d="700"><text class="lbl xs" x="0" y="0"> </text></g>');
-  g.push(hand('w1', 420, 120, 900, '.02em', '', 'WHAT DO YOU NEED ?', 0.11));
-  g.push(hand('w2', 520, 40, 600, '.3em', '', 'CRYPTOR.AGENCY', 0.09));
-  g.push(hand('w3', 620, 58, 800, '.35em', 'neonw', 'MISSION ZERO', 0.14));
-  // Le point court le long de chaque ligne et l'écrit ; entre deux lignes, il descend en courbe.
-  step('<g class="a" data-k="?" data-dur="2100" data-d="2500" data-write="w1"><path class="arrow ghost" pathLength="1" d="M150,428 L1450,428"/></g>');
-  step('<g class="a" data-k="?" data-dur="800" data-d="850"><path class="arrow ghost" pathLength="1" d="M1450,428 L1450,480 L560,480 L560,528"/></g>');
-  step('<g class="a" data-k="?" data-dur="1300" data-d="1600" data-write="w2"><path class="arrow ghost" pathLength="1" d="M560,528 L1040,528"/></g>');
-  step('<g class="a" data-k="?" data-dur="800" data-d="850"><path class="arrow ghost" pathLength="1" d="M1040,528 L1040,580 L540,580 L540,628"/></g>');
-  step('<g class="a" data-k="?" data-dur="1800" data-d="4800" data-write="w3"><path class="arrow ghost" pathLength="1" d="M540,628 L1060,628"/></g>');
-  const cap = [null, null, null, null, null, null, null, null, null];
-  if (cap.length !== k) throw new Error('sZ : ' + k + ' étapes, ' + cap.length + ' légendes');
-  const sec = '  <section class="scene" id="sZ">\n    <header><h2>LA FIN</h2><span class="t">le zéro</span></header>\n    <svg viewBox="0 0 1600 900" role="img" aria-label="Le fil dessine un zéro, puis le point écrit : WHAT DO YOU NEED ? CRYPTOR.AGENCY. MISSION ZERO.">\n      ' + g.join('\n      ') + '\n    </svg>\n    <div class="caption" id="cZ"></div>\n  </section>\n';
-  return { sec, cap };
-})();
+const sZgeo = require('./sZ-geo.cjs');
 // La sécurité, condensée : la carte du choc, la colonne rouge, la colonne verte, rejeté puis proposé, le regard, le vrai site, MYTHOZOR.
 const s1old = `  <section class="scene" id="s1">
     <header><h2>2 · LA SÉCURITÉ D'UN SITE</h2><span class="t">premier voyage</span></header>
