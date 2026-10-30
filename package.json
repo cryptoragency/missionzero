@@ -7,8 +7,9 @@
   "scripts": {
     "web": "node web/server.js",
     "check-key": "node --env-file=.env src/check-key.js",
-    "test": "node --test src/loop.test.js src/pdf.test.js src/secrets.test.js src/media.test.js src/zero.test.js src/watch.test.js src/repair.test.js src/scanner.test.js web/server.test.js demo-site/server.test.js demo-site/journeys.test.js",
+    "test": "node --test src/meta.test.js src/loop.test.js src/pdf.test.js src/secrets.test.js src/media.test.js src/zero.test.js src/watch.test.js src/repair.test.js src/scanner.test.js web/server.test.js demo-site/server.test.js demo-site/journeys.test.js",
     "demo": "node --env-file=.env bench/run-demo.js",
+    "effort-sweep": "node --env-file=.env bench/run-effort-sweep.js",
     "demo-site": "node demo-site/server.js",
     "repair": "node --env-file=.env bench/run-repair.js",
     "repair-report": "node bench/make-repair-report.js",
