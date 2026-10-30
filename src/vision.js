@@ -7,7 +7,7 @@ import { readJson } from './loop.js';
 export const toDataUrl = (path, type = 'image/png') => `data:${type};base64,${readFileSync(path).toString('base64')}`;
 
 const LOOK_PROMPT = 'You check screenshots of a small online shop after a security fix. Answer from what is VISIBLE only. '
-  + 'JSON: {"ok":true|false,"problems":["..."],"seen":["at most 4 short items"]}. "ok" is false if the page is blank, '
+  + 'JSON: {"ok":true,"problems":["..."],"seen":["at most 4 short items"]}. ok is a boolean: false if the page is blank, '
   + 'shows an error or stack trace, lost its product cards, its forms or its navigation, or shows raw code. Minor styling is fine. A page that now says access denied, forbidden, not found or asks to log in is NOT a problem when the fix restricts access: judge the shop by its other pages.';
 
 // `ask` is the Meta client's ask (messages, opts). Content parts carry the text and the image(s).

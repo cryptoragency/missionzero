@@ -44,7 +44,7 @@ export async function verifyClaim({ claim, url, ask, fetchPage = (u) => readPage
   const problem = verdict === 'supported' ? quoteProblem(j.quote, claim, passages) : null;
   const final = problem ? 'unsupported' : verdict;
   // On a red verdict, the closest passage goes back to the writer: the fix is usually to say what the page says (SHOULD, not SHALL).
-  const detail = final === 'supported' ? j.quote : (problem ? problem + '; ' : '') + 'nearest passages: ' + passages.slice(0, 3).map((p) => '« ' + p.slice(0, 220) + ' »').join(' ');
+  const detail = final === 'supported' ? j.quote : (problem ? problem + '; ' : '') + 'nearest passages: ' + passages.slice(0, 3).map((p) => '"' + p.slice(0, 220) + '"').join(' ');
   return { claim, url, verdict: final, color: final === 'supported' ? 'green' : 'red', detail };
 }
 

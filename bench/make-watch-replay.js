@@ -1,7 +1,7 @@
 // Turns a watch folder (snapshots + reports) into one self-contained page, in the three forms researchers read at a glance:
 // the curve with its threshold (few series), the heatmap of series by period (many series), the control chart for a
 // probe (a value with a limit), and under them the variations reported, with the cited explanation when there is one.
-// node bench/make-watch-replay.js watch/<source> [out.html]
+// node bench/make-watch-replay.js watch/<source>[/replay-<time>] [out.html]
 import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 
@@ -26,7 +26,7 @@ const fmt = (v) => (typeof v === 'number' ? (Number.isInteger(v) ? String(v) : v
 const sign = (v) => (v.pct == null ? '' : (v.pct > 0 ? '+' : '') + (v.pct === Infinity ? '∞' : v.pct) + ' %');
 
 // One curve: the value by period, the confidence band when the source gives one, the threshold as a dashed line,
-// the reported variations as red dots. The dot of the film only lights where something moved.
+// the reported variations as red dots. The dot only lights where something moved.
 function curve(s, flags, { w = 720, h = 220 } = {}) {
   const pad = { l: 56, r: 64, t: 28, b: 36 };
   const pts = s.points.filter((p) => typeof p.value === 'number');

@@ -14,13 +14,13 @@ function shop(token, seen = []) {
   };
 }
 
-test('a local address is owned by definition', () => {
+test('a local address (localhost) is treated as yours', () => {
   assert.ok(isLocal('http://127.0.0.1:3000')); assert.ok(isLocal('http://localhost:3000'));
   assert.ok(!isLocal('https://shop.example')); assert.ok(!isLocal('not a url'));
 });
 
 test('a remote host is refused without an owner token: no probe runs', async () => {
-  await assert.rejects(() => scan('https://shop.example.invalid', { ownerToken: '' }), /scan refused: https:\/\/shop.example.invalid is not a site you proved you own \(no owner token/);
+  await assert.rejects(() => scan('https://shop.example.invalid', { ownerToken: '' }), /scan refused: https:\/\/shop.example.invalid is not a host you proved you control \(no owner token/);
   await assert.rejects(() => scan('https://shop.example.invalid', { ownerToken: 'short' }), /no owner token of 16 characters/);
 });
 
@@ -71,4 +71,14 @@ test('burst: false skips the 40-request burst; F14 resolves the script address a
   urls.length = 0;
   const cdn = await f14.run('https://shop.example', { fetchFn: page('https://code.jquery.com/jquery-1.12.4.min.js') });
   assert.equal(urls.length, 1, 'the third-party script is not fetched'); assert.match(cdn.evidence, /jQuery 1\.12/);
+});
+
+test('the token file is read up to 200 bytes: an endless body does not hold the scanner', async () => {
+  let pulls = 0;
+  const endless = async () => new Response(new ReadableStream({ pull(c) { pulls += 1; c.enqueue(new TextEncoder().encode('x'.repeat(64))); } }));
+  const p = await proveOwnership('https://shop.example', TOKEN, { fetchFn: endless, lookup: PUBLIC });
+  assert.equal(p.ok, false); assert.match(p.why, /not yours/);
+  assert.ok(pulls < 10, String(pulls));
+  const ok = await proveOwnership('https://shop.example', TOKEN, { fetchFn: async () => new Response(TOKEN + '\n'), lookup: PUBLIC });
+  assert.equal(ok.ok, true);
 });

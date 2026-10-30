@@ -1,6 +1,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readPage, checkUrl, isPrivateAddress, safeFetch, webSearch, readBody } from './tools.js';
+import { readPage, checkUrl, isPrivateAddress, safeFetch, webSearch, readBody, createPage } from './tools.js';
+
+// The test doubles below play hosts under .example, which no DNS resolves: the name check is skipped explicitly.
+const NO_DNS = { lookup: null };
 
 test('readPage refuses this machine before any request: 127.0.0.1, localhost, ::1', async () => {
   for (const url of ['http://127.0.0.1:1', 'http://localhost:8098/', 'http://[::1]/', 'http://169.254.169.254/latest/meta-data/', 'http://0.0.0.0/']) {
@@ -29,13 +32,13 @@ test('a public name that resolves to a private address is refused; other schemes
 test('a redirect to a private address is refused at the hop, and more than 5 redirects are refused', async () => {
   const hops = [];
   const toMeta = async (u) => { hops.push(u); return new Response('', { status: 302, headers: { location: 'http://169.254.169.254/latest/meta-data/' } }); };
-  const r = await readPage('https://public.example/a', { fetchFn: toMeta });
+  const r = await readPage('https://public.example/a', { fetchFn: toMeta, ...NO_DNS });
   assert.equal(r.ok, false); assert.match(r.error, /169\.254\.169\.254 is not a public address/); assert.equal(hops.length, 1);
   let n = 0;
   const loop = async () => new Response('', { status: 301, headers: { location: '/next' + (n++) } });
-  const l = await safeFetch('https://public.example/', {}, { fetchFn: loop });
+  const l = await safeFetch('https://public.example/', {}, { fetchFn: loop, ...NO_DNS });
   assert.match(l.refused, /more than 5 redirects/); assert.equal(n, 6);
-  const ok = await safeFetch('https://public.example/', {}, { fetchFn: async (u) => (u.endsWith('/final') ? new Response('fine') : new Response('', { status: 302, headers: { location: '/final' } })) });
+  const ok = await safeFetch('https://public.example/', {}, { fetchFn: async (u) => (u.endsWith('/final') ? new Response('fine') : new Response('', { status: 302, headers: { location: '/final' } })), ...NO_DNS });
   assert.equal(ok.url, 'https://public.example/final'); assert.equal(await ok.response.text(), 'fine');
 });
 
@@ -47,14 +50,54 @@ test('a body larger than the cap is cut while streaming (page) or refused (decla
   const declared = new Response('x', { headers: { 'content-length': String(30 * 1024 * 1024) } });
   assert.equal((await readBody(declared, 1024)).tooLarge, true);
   const html = 'A page sentence long enough to be kept as text by the reader of Mission Zero. '.repeat(30000); // about 2.3 MB
-  const page = await readPage('https://big.example/', { fetchFn: async () => new Response(html, { headers: { 'content-type': 'text/html' } }), maxChars: 10 ** 7 });
+  const page = await readPage('https://big.example/', { fetchFn: async () => new Response(html, { headers: { 'content-type': 'text/html' } }), maxChars: 10 ** 7, ...NO_DNS });
   assert.equal(page.ok, true); assert.ok(page.text.length <= 1500000, String(page.text.length));
 });
 
 test('webSearch goes through the same guard and parses the results', async () => {
   const html = '<div class="result results_links"><a class="result__a" href="x">OWASP</a><a class="result__snippet">Cheat sheet</a> uddg=https%3A%2F%2Fowasp.org%2Fx&amp;</div>';
   let init = null;
-  const r = await webSearch('csp', { fetchFn: async (u, i) => { init = i; return new Response(html, { headers: { 'content-type': 'text/html' } }); } });
+  const r = await webSearch('csp', { fetchFn: async (u, i) => { init = i; return new Response(html, { headers: { 'content-type': 'text/html' } }); }, lookup: async () => ['52.142.124.215'] });
   assert.equal(r.ok, true); assert.equal(r.results[0].url, 'https://owasp.org/x');
   assert.equal(init.redirect, 'manual'); assert.ok(init.signal, 'a deadline is set');
+});
+
+test('an injected fetch does not skip the name check: a name that resolves to this machine is refused before the fetch', async () => {
+  let fetched = 0;
+  const fetchFn = async () => { fetched += 1; return new Response('<html>' + 'x'.repeat(300) + '</html>', { headers: { 'content-type': 'text/html' } }); };
+  const r = await readPage('https://rebind.example/', { fetchFn, lookup: async () => ['127.0.0.1'] });
+  assert.equal(r.ok, false); assert.match(r.error, /resolves to 127\.0\.0\.1/); assert.equal(fetched, 0);
+  const g = await safeFetch('https://rebind.example/', {}, { fetchFn, lookup: async () => { throw Object.assign(new Error('x'), { code: 'ENOTFOUND' }); } });
+  assert.match(g.refused, /does not resolve \(ENOTFOUND\)/); assert.equal(fetched, 0);
+});
+
+test('the reserved ranges added after the review are refused: IETF protocol, TEST-NET-1, benchmarking, NAT64, 6to4, site-local', () => {
+  for (const ip of ['192.0.0.1', '192.0.0.255', '192.0.2.10', '198.18.0.1', '198.19.255.255', '64:ff9b::7f00:1', '64:ff9b::808:808', '2002:7f00:1::1', '2002::', 'fec0::1', 'feff::1', '::ffff:7f00:1', '0:0:0:0:0:0:0:1'])
+    assert.equal(isPrivateAddress(ip), true, ip);
+  for (const ip of ['192.0.1.1', '192.0.3.1', '198.17.0.1', '198.20.0.1', '2001:4860:4860::8888', '::ffff:8.8.8.8']) assert.equal(isPrivateAddress(ip), false, ip);
+});
+
+test('MZ_ALLOW_LOCAL=1 lets through this machine only, never the link-local or private network', async () => {
+  for (const url of ['http://127.0.0.1:3000/', 'http://localhost:3000/', 'http://[::1]:3000/']) assert.equal((await checkUrl(url, { allowLocal: true })).ok, true, url);
+  for (const url of ['http://169.254.169.254/latest/meta-data/', 'http://10.0.0.1/', 'http://192.168.1.1/', 'http://172.16.0.1/', 'http://[fe80::1]/', 'http://127.0.0.2/'])
+    assert.equal((await checkUrl(url, { allowLocal: true, lookup: null })).ok, false, url);
+  assert.equal((await checkUrl('https://evil.example/', { allowLocal: true, lookup: async () => ['10.0.0.5'] })).ok, false);
+});
+
+test('a 202 that is not a challenge is read from the body already peeked (no second read of a spent stream)', async () => {
+  const text = 'A plain accepted page with enough words to be kept as text by the reader. '.repeat(10);
+  const r = await readPage('https://accepted.example/', { fetchFn: async () => new Response('<html><body>' + text + '</body></html>', { status: 202, headers: { 'content-type': 'text/html' } }), ...NO_DNS });
+  assert.equal(r.ok, true, r.error); assert.match(r.text, /A plain accepted page/);
+});
+
+test('createPage keeps every name inside the evidence folder: ../../x, C:/x, a/b', async () => {
+  const { mkdtempSync, existsSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const { join, resolve, sep, dirname } = await import('node:path');
+  const folder = mkdtempSync(join(tmpdir(), 'mz-page-'));
+  for (const name of ['../../x', 'C:/x', 'a/b', '..\..\y', '/etc/z']) {
+    const r = createPage(name, '<p>x</p>', folder);
+    assert.equal(dirname(resolve(r.file)), resolve(folder), name);
+    assert.ok(resolve(r.file).startsWith(resolve(folder) + sep) && existsSync(r.file), name);
+  }
 });

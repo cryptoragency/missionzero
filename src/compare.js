@@ -47,7 +47,7 @@ async function missionZero(client) {
 // One neutral judge scores both answers blindly (A/B in random order) on the same rubric.
 async function judgeOnce(client, answers, order) {
   const r = await client.ask([
-    { role: 'system', content: 'You are a strict, neutral judge. Score each answer from 0 to 10 on: directly answers the goal, concrete and quantified, sources really support the claims, honesty about limits. JSON: {"A":0-10,"B":0-10,"why":""}.' },
+    { role: 'system', content: 'You are a strict, neutral judge. Score each answer from 0 to 10 on: directly answers the goal, concrete and quantified, sources really support the claims, honesty about limits. A and B are integers from 0 to 10. JSON: {"A":0,"B":0,"why":""}.' },
     { role: 'user', content: JSON.stringify({ goal, A: answers[order[0]], B: answers[order[1]] }) },
   ], { max_tokens: 6000 });
   const j = readJson(r.text) || { A: 0, B: 0, why: 'unreadable' };

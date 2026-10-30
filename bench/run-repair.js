@@ -5,7 +5,8 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { createClient } from '../src/meta.js';
-import { repairAll, freePort, startSite } from '../src/repair.js';
+import { repairAll, freePort, startSite, diskRecord, siteSecrets } from '../src/repair.js';
+import { maskDeep } from '../src/secrets.js';
 import { scan } from '../src/scanner.js';
 import { appendChain, verifyChain } from '../src/chain.js';
 import { loadLessons, approvedTexts } from '../src/memory.js';
@@ -21,8 +22,14 @@ const loginArg = arg('login', 'admin:maisonverde2019');
 const login = loginArg === 'none' ? null : { user: loginArg.split(':')[0], password: loginArg.split(':').slice(1).join(':') };
 // --files=server.js,index.html: the files the model may edit (default: server.js). --policy: the generic policy probes join --scan.
 const files = arg('files', 'server.js').split(',').map((s) => s.trim()).filter(Boolean);
+// The key is checked before anything is scanned or written: no key = one line, no stack, no empty evidence folder.
+let client;
+try { client = createClient(); } catch (e) { console.error(e.message); process.exit(1); }
 const folder = evidenceFolder('repair-');
 mkdirSync(folder, { recursive: true });
+
+// The findings are written masked: a leaked .env line in a scanner's evidence is not copied in clear into the run folder.
+const saveFindings = (r) => writeFileSync(join(folder, 'findings.json'), JSON.stringify(maskDeep(r).value, null, 2));
 
 // Findings from any scanner's URL: a JSON document in the generic format ({ findings: [...] }).
 export async function fetchFindings(url, key = process.env.MZ_SCANNER_KEY) {
@@ -36,21 +43,27 @@ export async function fetchFindings(url, key = process.env.MZ_SCANNER_KEY) {
 let findings;
 if (process.argv.includes('--scan') || (!file && !from)) {
   const port = await freePort(); const site = await startSite(siteDir, port);
-  try { const r = await scan('http://127.0.0.1:' + port, { login, policy: process.argv.includes('--policy') }); findings = r.findings; writeFileSync(join(folder, 'findings.json'), JSON.stringify(r, null, 2)); } finally { site.stop(); }
+  try { const r = await scan('http://127.0.0.1:' + port, { login, policy: process.argv.includes('--policy') }); findings = r.findings; saveFindings(r); } finally { await site.stop(); }
 } else if (from) {
-  const r = await fetchFindings(from); findings = r.findings; writeFileSync(join(folder, 'findings.json'), JSON.stringify(r, null, 2));
+  const r = await fetchFindings(from); findings = r.findings; saveFindings(r);
   console.log(`Fetched ${findings.length} findings from the scanner.`);
-} else { const r = JSON.parse(readFileSync(file, 'utf8')); findings = r.findings; writeFileSync(join(folder, 'findings.json'), JSON.stringify(r, null, 2)); }
+} else { const r = JSON.parse(readFileSync(file, 'utf8')); findings = r.findings; saveFindings(r); }
 appendChain(folder, 'findings.json', { step: 'input' }); // the input is the first link of the run's hashed journal
 
-const client = createClient();
 const ask = (messages, opts) => client.ask(messages, { max_tokens: 3500, ...opts });
 // --vision: Muse Spark looks at the repaired pages as a customer, SAM 3.1 counts the text fields before and after.
 const vision = process.argv.includes('--vision') ? { ask, playwrightPath: process.env.MZ_PLAYWRIGHT || 'playwright' } : null;
 const results = await repairAll({ findings, siteDir, ask, folder, login, only, vision, files, turns: Number(arg('turns', 2)), rounds: Number(arg('rounds', 1)), retries: Number(arg('retries', 1)), lessons: approvedTexts(loadLessons('memory/lessons.json')) });
 const rows = results.map((r) => ({ id: r.finding.id, severity: r.finding.severity, status: r.status, sources: r.recommendation ? r.recommendation.green + ' green' : '', journeys: r.journeysAfter ? r.journeysAfter.pass + '/' + (r.journeysAfter.pass + r.journeysAfter.fail) : '', masked: r.fix ? r.fix.secretsMasked : '', why: String(r.why || '').slice(0, 70) }));
 console.table(rows);
-writeFileSync(join(folder, 'report.json'), JSON.stringify({ findings: findings.length, results, cost: client.counter }, null, 2));
+// report.json holds the same masked records as each repair.json (the raw patches stay in the local fix.patch files).
+// The journal's head and length go into the report and on screen: whoever keeps them catches a journal cut at the end
+// (npm run verify-chain -- <folder> --head=<hash> --count=<n>). The report itself is the last record, so the values
+// written in it are those of the journal before it; the line on screen gives the final ones.
+const before = verifyChain(folder);
+const known = siteSecrets(siteDir, files, findings);
+writeFileSync(join(folder, 'report.json'), JSON.stringify({ findings: findings.length, results: results.map((r) => diskRecord(r, known)), cost: client.counter, journal: { head: before.head, entries: before.entries, note: 'before this report was added; the final head and count are printed at the end of the run' } }, null, 2));
 appendChain(folder, 'report.json', { step: 'report' });
 const chain = verifyChain(folder);
-console.log(`Cost $${client.counter.usd.toFixed(3)}. Report: ${join(folder, 'report.json')}. Evidence journal: ${chain.ok ? 'intact' : 'BROKEN'}.`);
+console.log(`Cost $${client.counter.usd.toFixed(3)}. Report: ${join(folder, 'report.json')}.`);
+console.log(chain.ok ? `Evidence journal: intact, head ${String(chain.head).slice(0, 12)}, ${chain.entries} entries` : `Evidence journal: BROKEN (${chain.why})`);

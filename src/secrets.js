@@ -5,15 +5,21 @@
 
 // A name is secret when one of its parts (split on _ - . and camelCase) is a secret word, or when it glues one in
 // (dbpassword, apikey). Parts, not substrings: "design", "passenger" or "assign" are not secrets.
-const SECRET_PARTS = new Set(['pass', 'passwd', 'password', 'passphrase', 'pwd', 'credential', 'credentials', 'creds', 'secret', 'secrets', 'sign', 'signing', 'signature', 'salt', 'token']);
-const SECRET_GLUED = /password|passwd|passphrase|apikey|privatekey|authkey|accesskey|secretkey|signingkey|clientsecret|credential/;
+const SECRET_PARTS = new Set(['pass', 'passwd', 'password', 'passphrase', 'pwd', 'pw', 'credential', 'credentials', 'creds', 'secret', 'secrets', 'sign', 'signing', 'signature', 'salt', 'token']);
+const SECRET_GLUED = /password|passwd|passphrase|apikey|privatekey|authkey|accesskey|secretkey|signingkey|clientsecret|credential|accountkey/;
+const partsOf = (name) => String(name || '').replace(/^["'`]|["'`]$/g, '').replace(/([a-z0-9])([A-Z])/g, '$1_$2').toLowerCase().split(/[_.\-$]+/).filter(Boolean);
 export function isSecretName(name) {
   const n = String(name || '').replace(/^["'`]|["'`]$/g, '');
-  const parts = n.replace(/([a-z0-9])([A-Z])/g, '$1_$2').toLowerCase().split(/[_.\-$]+/).filter(Boolean);
+  const parts = partsOf(n);
   if (parts.some((p) => SECRET_PARTS.has(p))) return true;
   const glued = n.toLowerCase().replace(/[^a-z]/g, '');
   return SECRET_GLUED.test(glued) || /(?:^|_|-)(?:api|private|auth|access)_?key$/i.test(n);
 }
+// ENCRYPTION_KEY, JWT_KEY, stripeKey: a name ending in "key" holds a secret when its value looks like one (long, no space,
+// letters and digits). "key" alone, primary_key: 'id' or sort_key: 'name' stay as they are.
+const isKeyName = (name) => { const p = partsOf(name); return p.length >= 2 && p[p.length - 1] === 'key'; };
+const looksLikeKey = (v) => String(v).length >= 16 && !/\s/.test(v) && /\d/.test(v) && /[A-Za-z]/.test(v);
+const isSecretPair = (name, value) => isSecretName(name) || (isKeyName(name) && looksLikeKey(value));
 
 const COOKIE_ATTRS = new Set(['path', 'domain', 'expires', 'max-age', 'samesite', 'priority', 'secure', 'httponly', 'partitioned']);
 
@@ -31,6 +37,14 @@ const PATTERNS = [
   { re: /\bgh[pousr]_[A-Za-z0-9]{20,}\b/g }, // GitHub tokens
   { re: /\bxox[baprs]-[A-Za-z0-9-]{10,}/g }, // Slack tokens
   { re: /\bAIza[0-9A-Za-z_-]{30,}/g }, // Google API keys
+  { re: /\bglpat-[A-Za-z0-9_-]{20,}/g }, // GitLab personal access tokens
+  { re: /\bhf_[A-Za-z0-9]{30,}\b/g }, // Hugging Face tokens
+  { re: /(hooks\.slack\.com\/services\/)([A-Za-z0-9/_-]{20,})/g, fn: (g, mask) => g[0] + mask(g[1]) }, // Slack webhook: the path is the secret
+  { re: /(AccountKey=)([A-Za-z0-9+/]{20,}={0,2})/gi, fn: (g, mask) => g[0] + mask(g[1]) }, // Azure storage connection strings
+  // A private key cut in two (its BEGIN in one string, its END in another): each half is masked to its string's end or start.
+  // In one whole text the complete block above matches first; these only catch what is left of a cut key.
+  { re: /-----BEGIN [A-Z ]*PRIVATE KEY-----(?![\s\S]*-----END [A-Z ]*PRIVATE KEY-----)[\s\S]*$/g },
+  { re: /^(?![\s\S]*-----BEGIN [A-Z ]*PRIVATE KEY-----)[\s\S]*?-----END [A-Z ]*PRIVATE KEY-----/g },
   { re: /\beyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}/g }, // JWTs
   // Credentials inside a URL: scheme://user:password@host (the password only).
   { re: /(\b[a-z][a-z0-9+.-]*:\/\/[^\s:@/"'<>]+:)([^\s@/"'<>]{3,})(@)/gi, fn: (g, mask) => g[0] + mask(g[1]) + g[2] },
@@ -44,24 +58,24 @@ const PATTERNS = [
   // PHP defines: define('X_PASSWORD', 'value').
   { re: /(define\(\s*["'][A-Z0-9_]*(?:PASSWORD|SECRET|KEY|SALT|TOKEN)[A-Z0-9_]*["']\s*,\s*)(["'])([^"'\n]{4,})\2/g, fn: (g, mask) => g[0] + g[1] + mask(g[2]) + g[1] },
   // Quoted values of a secret name, in any syntax: JSON "password": "x", JS password: 'x', p.password === 'x', YAML key: "x".
-  { re: /((?:^|[^\w$.-])(["']?)([A-Za-z_$][\w$.-]*)\2\s*(?:===?|==|:|=)\s*)(["'`])([^"'`\n]{4,})\4/g, fn: (g, mask) => (isSecretName(g[2]) ? g[0] + g[3] + mask(g[4]) + g[3] : null) },
+  { re: /((?:^|[^\w$.-])(["']?)([A-Za-z_$][\w$.-]*)\2\s*(?:===?|==|:|=)\s*)(["'`])([^"'`\n]{4,})\4/g, fn: (g, mask) => (isSecretPair(g[2], g[4]) ? g[0] + g[3] + mask(g[4]) + g[3] : null) },
   // .env lines, also inside a JS string ('...\nKEY=value\n...'): the value runs to the end of the token, # included.
   // UPPER_CASE names anywhere; lower-case names only at the start of a line (an .ini file, not `password = req.body.x`).
   { re: /((?:^|[\s,;{(]|\\n)([A-Za-z0-9_.-]+)\s*=\s*)([^\s"'`\\]{4,})/gm, fn: (g, mask) => {
     const lineStart = g[0].startsWith(g[1]) || g[0].startsWith('\\n') || /^\r?\n/.test(g[0]);
-    return isSecretName(g[1]) && (/^[A-Z0-9_]+$/.test(g[1]) || lineStart) && !/^[\w$.]+\(/.test(g[2]) ? g[0] + mask(g[2]) : null;
+    return isSecretPair(g[1], g[2]) && (/^[A-Z0-9_]+$/.test(g[1]) || lineStart) && !/^[\w$.]+\(/.test(g[2]) ? g[0] + mask(g[2]) : null;
   } },
   // YAML without quotes: "  password: value" at the start of a line (not a JS object line such as `password: hash(p),`).
-  { re: /^([ \t]*-?[ \t]*([A-Za-z0-9_.-]+):[ \t]+)([^\s"'`|>{[][^\n]{3,}?)[ \t]*$/gm, fn: (g, mask) => (isSecretName(g[1]) && !/[(),;]\s*$|\(/.test(g[2]) ? g[0] + mask(g[2]) : null) },
+  { re: /^([ \t]*-?[ \t]*([A-Za-z0-9_.-]+):[ \t]+)([^\s"'`|>{[][^\n]{3,}?)[ \t]*$/gm, fn: (g, mask) => (isSecretPair(g[1], g[2]) && !/[(),;]\s*$|\(/.test(g[2]) ? g[0] + mask(g[2]) : null) },
   // Query strings and form bodies: ?key=, &access_token=, &sig=, password=…
   { re: /([?&](?:key|api_key|apikey|access_token|token|sig|signature|secret|password|passwd|pwd)=)([^&\s"'#\\]{4,})/gi, fn: (g, mask) => g[0] + mask(g[1]) },
   { re: /((?:^|[^\w])(?:password|passwd|secret|token|api_key|apikey)=)([^&\s"'\\\n]{4,})/gi, fn: (g, mask) => g[0] + mask(g[1]) },
 ];
 const PLACEHOLDER = /^«SECRET_\d+»$/;
 
-export function maskSecrets(text) {
-  const map = new Map(); // placeholder -> original
-  const byValue = new Map(); // original -> placeholder
+// `state` lets several texts share one numbering and one restore (maskDeep, string by string).
+export function maskSecrets(text, state = { map: new Map(), byValue: new Map() }) {
+  const { map, byValue } = state; // placeholder -> original, original -> placeholder
   const mask = (value) => {
     if (PLACEHOLDER.test(value) || value.includes('«SECRET_')) return value; // already masked by an earlier pattern
     if (byValue.has(value)) return byValue.get(value);
@@ -85,8 +99,16 @@ export function maskDeep(value) {
   const collect = (v) => { if (typeof v === 'string') texts.push(v); else if (Array.isArray(v)) v.forEach(collect); else if (v && typeof v === 'object') Object.values(v).forEach(collect); };
   collect(value);
   const SEP = '\n\u0000\n';
-  const joined = maskSecrets(texts.join(SEP));
-  const parts = joined.text.split(SEP); let i = 0;
+  let joined = maskSecrets(texts.join(SEP));
+  let parts = joined.text.split(SEP);
+  // A secret that spans two strings (a private key cut between two fields) swallows the separator: the parts no longer
+  // line up with the fields and would shift every value after it. Then each string is masked on its own, one numbering.
+  if (parts.length !== texts.length) {
+    const state = { map: new Map(), byValue: new Map() };
+    parts = texts.map((t) => maskSecrets(t, state).text);
+    joined = maskSecrets('', state);
+  }
+  let i = 0;
   const rebuild = (v) => {
     if (typeof v === 'string') return parts[i++];
     if (Array.isArray(v)) return v.map(rebuild);

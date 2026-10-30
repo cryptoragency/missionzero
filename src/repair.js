@@ -6,7 +6,7 @@
 import { mkdtempSync, cpSync, readFileSync, writeFileSync, existsSync, mkdirSync, rmSync, lstatSync, realpathSync } from 'node:fs';
 import { spawn, spawnSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
-import { join, resolve, sep, basename } from 'node:path';
+import { join, resolve, sep, basename, posix } from 'node:path';
 import { createServer } from 'node:net';
 import { run, readJson } from './loop.js';
 import { synthesize, seenUrls } from './synthesis.js';
@@ -20,7 +20,16 @@ import { appendChain } from './chain.js';
 export const freePort = () => new Promise((res) => { const s = createServer(); s.listen(0, '127.0.0.1', () => { const p = s.address().port; s.close(() => res(p)); }); });
 // node_modules is not copied: the copy runs the site's own code, and a big dependency tree would be copied per attempt.
 export const copySite = (dir) => { const t = mkdtempSync(join(tmpdir(), 'mz-repair-')); cpSync(dir, t, { recursive: true, filter: (src) => basename(src) !== 'node_modules' }); return t; };
-const removeCopy = (dir) => { if (dir && resolve(dir).startsWith(resolve(tmpdir()) + sep) && basename(dir).startsWith('mz-repair-')) rmSync(dir, { recursive: true, force: true }); };
+// Retries: on Windows a file of the copy stays locked for a moment after its server exits (EPERM on a cold first run).
+const removeCopy = (dir) => { if (dir && resolve(dir).startsWith(resolve(tmpdir()) + sep) && basename(dir).startsWith('mz-repair-')) rmSync(dir, { recursive: true, force: true, maxRetries: 8, retryDelay: 150 }); };
+// A temporary copy's path says nothing to a reader and changes on every run: test outputs name it <copy>.
+export const scrubCopyPaths = (s) => String(s ?? '').replace(/(?:\b[A-Za-z]:)?[\\/][^\s'"()<>]*?mz-repair-[A-Za-z0-9]+/g, '<copy>');
+
+// Waits for the process to be gone (at most 3 s), so the copy can be removed right after: a killed child still holds its files.
+const stopChild = (child) => new Promise((res) => {
+  if (child.exitCode !== null || child.signalCode !== null) return res();
+  const t = setTimeout(res, 3000); child.once('exit', () => { clearTimeout(t); res(); }); child.kill();
+});
 
 // The copied site and its journeys run code the model edited: they get what a process needs to start, never the keys of
 // Mission Zero (MODEL_API_KEY, MZ_SCANNER_KEY, MZ_OWNER_TOKEN, BASETEN_API_KEY…) that sit in this process's environment.
@@ -37,7 +46,7 @@ export function startSite(dir, port) {
     const child = spawn(process.execPath, ['server.js'], { cwd: dir, env: siteEnv({ PORT: String(port) }), stdio: ['ignore', 'pipe', 'pipe'] });
     let out = ''; let settled = false;
     // Every way out settles once: a site that never says "on http" is killed, not left running in the background.
-    const finish = (err) => { if (settled) return; settled = true; clearTimeout(timer); if (err) { child.kill(); reject(err); } else resolve({ stop: () => child.kill(), log: () => out }); };
+    const finish = (err) => { if (settled) return; settled = true; clearTimeout(timer); if (err) { child.kill(); reject(err); } else resolve({ stop: () => stopChild(child), log: () => out }); };
     const timer = setTimeout(() => (/on http/.test(out) ? finish() : finish(new Error('site start timeout: ' + out.slice(0, 300)))), 8000);
     child.stdout.on('data', (d) => { out += d; if (/on http/.test(out)) finish(); });
     child.stderr.on('data', (d) => { out += d; });
@@ -55,13 +64,13 @@ export function runJourneys(dir) {
   const fail = Number((stdout.match(/^ℹ fail (\d+)/m) || [])[1] || 0);
   // Both reporters of node --test: "not ok 1 - journey: x" (tap) and "✖ journey: x (3ms)" (spec).
   const broken = [...new Set([...stdout.matchAll(/^\s*(?:not ok \d+ - |✖ )journey: (.+?)(?: \(\d+(?:\.\d+)?ms\))?\s*$/gm)].map((m) => m[1]))];
-  return { ok: r.status === 0 && fail === 0 && pass > 0, pass, fail, broken, output: (stdout + stderr + (r.error ? '\n' + r.error.message : '')).slice(-2000) };
+  return { ok: r.status === 0 && fail === 0 && pass > 0, pass, fail, broken, output: scrubCopyPaths(stdout + stderr + (r.error ? '\n' + r.error.message : '')).slice(-2000) };
 }
 
 // Which file an edit may touch: one of the files given to the model, inside the copy, never a test file (the journeys
 // are the referee: a fix that rewrites them would pass by definition), never through a symbolic link.
 function editTarget(dir, name, allowed) {
-  const rel = String(name || '').replace(/\\/g, '/');
+  const rel = normFile(name);
   if (!rel) return { why: 'missing file' };
   const root = resolve(dir); const file = resolve(root, rel);
   if (!file.startsWith(root + sep)) return { why: 'file outside the site: ' + rel };
@@ -75,18 +84,27 @@ function editTarget(dir, name, allowed) {
   return { file };
 }
 
+// "./server.js", "server.js" and "a\..\server.js" are one file: one name in the record and in the patch.
+const normFile = (name) => { const s = String(name || '').replace(/\\/g, '/'); return s ? posix.normalize(s) : ''; };
+// The fixed code is imported by the referee (journeys.test.js) in its own process: code that reaches the test runner,
+// assert or the process's exit could make a broken journey report green. Such a replace is refused, whatever it claims.
+const REFEREE_REACH = /node:assert|node:test|process\.stdout|process\.exit|require\(\s*['"]assert|from\s+['"]assert/;
+const isEdit = (e) => !!e && typeof e === 'object' && !Array.isArray(e);
+
 // Exact-string edits: each `find` must occur exactly once in the file, or the edit is refused (no guessing on code).
 // `allowed` = the files the model was shown (attemptFix passes its list).
 export function applyEdits(dir, edits, allowed = ['server.js']) {
   const applied = []; const refused = [];
-  for (const e of edits || []) {
-    if (typeof e.find !== 'string' || typeof e.replace !== 'string' || !e.find) { refused.push({ ...e, why: 'missing file or strings' }); continue; }
-    const t = editTarget(dir, e.file, allowed);
-    if (!t.file) { refused.push({ file: e.file, find: e.find.slice(0, 80), why: t.why }); continue; }
+  for (const e of Array.isArray(edits) ? edits : []) {
+    if (!isEdit(e) || typeof e.find !== 'string' || typeof e.replace !== 'string' || !e.find) { refused.push({ ...(isEdit(e) ? e : {}), why: 'missing file or strings' }); continue; }
+    const file = normFile(e.file);
+    if (REFEREE_REACH.test(e.replace)) { refused.push({ file, find: e.find.slice(0, 80), why: 'the new code reaches the test runner, assert or the process exit: refused' }); continue; }
+    const t = editTarget(dir, file, allowed);
+    if (!t.file) { refused.push({ file, find: e.find.slice(0, 80), why: t.why }); continue; }
     const text = readFileSync(t.file, 'utf8'); const parts = text.split(e.find); const n = parts.length - 1;
-    if (n !== 1) { refused.push({ file: e.file, find: e.find.slice(0, 80), why: n === 0 ? 'text not found' : 'text found ' + n + ' times' }); continue; }
+    if (n !== 1) { refused.push({ file, find: e.find.slice(0, 80), why: n === 0 ? 'text not found' : 'text found ' + n + ' times' }); continue; }
     writeFileSync(t.file, parts.join(e.replace)); // not String.replace: "$&", "$'" or "$$" in the new code would be expanded
-    applied.push({ file: e.file, find: e.find, replace: e.replace });
+    applied.push({ file, find: e.find, replace: e.replace });
   }
   return { applied, refused };
 }
@@ -122,7 +140,7 @@ export async function knowledge({ finding, ask, folder, turns = 2, rounds = 1, l
 
 const FIX_PROMPT = 'You repair a small website. You get one scanner finding, the recommended fix with its sources, the site\'s code and the list of vital journeys that MUST keep working. '
   + 'Propose the smallest code change that removes the flaw without changing what the journeys do. Edits are exact-string replacements: "find" must be copied EXACTLY from the code, once; "replace" is the new text. '
-  + 'Prefer fixing the cause (escape output, look prices up server-side, require a session, add headers, refuse the path) over hiding it. Never change the journeys file. '
+  + 'Prefer fixing the cause (escape output, look prices up server-side, require a session, add headers, refuse the path only for a file that must never be served) over hiding it. Never change the journeys file. '
   + 'The journeys are given as code: read what each one sends and expects, and keep exactly that working (a journey that carries no session must keep working without one). '
   + 'If "previous" is present, your earlier fix was refused for the reason given: propose a DIFFERENT fix that fixes the reason given and keeps every journey working, never the same edits again. '
   + 'Placeholders like «SECRET_1» stand for secrets; copy them unchanged in find and replace. The code may be cut; only edit text you can see. '
@@ -140,7 +158,8 @@ export async function proposeFix({ finding, recommendation, siteDir, files = ['s
     { role: 'user', content: JSON.stringify(value) },
   ], { max_tokens: 7000, tag: 'fix' }); // reasoning is billed inside the cap: a header fix with a long CSP was cut at 4000
   const j = readJson(r.text) || {};
-  const edits = (Array.isArray(j.edits) ? j.edits : []).map((e) => ({ ...e, find: restore(e.find), replace: restore(e.replace) }));
+  // An answer like [null, {...}] keeps its usable edits: one malformed element is not a reason to lose the attempt.
+  const edits = (Array.isArray(j.edits) ? j.edits : []).filter((e) => isEdit(e) && typeof e.find === 'string' && typeof e.replace === 'string').map((e) => ({ ...e, find: restore(e.find), replace: restore(e.replace) }));
   // When nothing usable comes back, the start of the raw answer is kept: a truncated JSON and a refusal look different.
   return { edits, summary: restore(j.summary || ''), risk: restore(j.risk || ''), secretsMasked: masked, raw: edits.length ? undefined : String(r.text || '').slice(0, 400), truncated: r.finish_reason === 'length' || undefined };
 }
@@ -148,10 +167,12 @@ export async function proposeFix({ finding, recommendation, siteDir, files = ['s
 // The proposed fix as a unified diff between the site and its repaired copy (what a reviewer applies with `git apply`).
 // git writes the absolute paths it was given (C:/Users/... on Windows, /tmp/... elsewhere): the header lines of each file,
 // up to its first hunk, are rewritten to a/<file> and b/<file> so the patch applies from the site's folder on any OS.
+// The first line says what the patch is; git apply ignores any text before the first "diff --git".
+export const PATCH_HEADER = '# Proposed by Mission Zero (an AI model, Muse Spark). Not applied. Review before use.';
 export function makePatch(original, copy, files) {
   const chunks = [];
-  for (const f of files) {
-    const rel = String(f).replace(/\\/g, '/').replace(/^\/+/, '');
+  for (const f of [...new Set(files.map(normFile))]) {
+    const rel = f.replace(/^\/+/, '');
     const o = join(original, f).replace(/\\/g, '/'); const c = join(copy, f).replace(/\\/g, '/');
     const r = spawnSync('git', ['-c', 'core.quotepath=false', 'diff', '--no-index', '--no-color', '--', o, c], { encoding: 'utf8' });
     if (r.error) return null; // no git: no patch, the edits in repair.json remain
@@ -166,7 +187,7 @@ export function makePatch(original, copy, files) {
     }).join('\n');
     if (text.trim()) chunks.push(text);
   }
-  return chunks.join('');
+  return chunks.length ? PATCH_HEADER + '\n' + chunks.join('') : '';
 }
 // The same patch with every secret back to a placeholder: the one to share (a fix on a login line carries the password).
 // The diff marker (+, -, space) is set apart for the masking so "-DB_PASSWORD=x" reads as the .env line it is.
@@ -220,7 +241,7 @@ async function attemptFix({ finding, rec, siteDir, journeys, before, previous, p
       // A policy that forbids the page's own inline scripts breaks the page silently: HTTP tests pass, a screenshot looks fine.
       broken = await policyBreaksPage('http://127.0.0.1:' + port);
       if (!broken && !unverifiable) { rescan = await scan('http://127.0.0.1:' + port, { login, only: [finding.id, finding.type] }); gone = rescan.findings.length === 0; }
-    } finally { site.stop(); }
+    } finally { await site.stop(); }
   } catch (e) { return { ...record, status: 'rejected', why: 'the fixed site does not start: ' + e.message.slice(0, 200) }; }
   if (broken) return { ...record, status: 'rejected', why: 'the fix breaks the page: ' + broken };
   if (!unverifiable) {
@@ -251,6 +272,7 @@ async function attemptFix({ finding, rec, siteDir, journeys, before, previous, p
 
 const REVIEW_PROMPT = 'Review this patch as an independent reviewer. You get the scanner finding, the recommended fix with its cited sources, and the patch. '
   + 'Answer ONE question: does the patch remove the CAUSE the recommendation describes, or does it HIDE the symptom so that a scanner stops seeing it (removing a feature instead of fixing it, hiding a header instead of updating the software, special-casing the probe, blocking a path instead of protecting it)? '
+  + 'Blocking a path counts as hiding unless the file should never be served (a .env, a backup, a key). '
   + 'Use "partial" only when the cause is removed for the reported case but a related case stays open; then fill "missing". Be concrete and short. JSON: {"verdict":"cause|hides|partial","reason":"one sentence","missing":"what a complete fix would add, or empty"}.';
 
 // The agent's review of its own patch, against the recommendation it researched. Secrets are masked like everywhere else.
@@ -275,7 +297,7 @@ export async function visualCheck({ siteDir, copy, finding, vision }) {
   const pages = [{ name: 'home', path: '/' }, ...(isAsset ? [] : [{ name: 'finding', path: fp }])];
   const shoot = async (dir, sub) => {
     const port = await freePort(); const site = await startSite(dir, port);
-    try { return await screenshotPages('http://127.0.0.1:' + port, pages, join(vision.folder || copy, sub), { playwrightPath: vision.playwrightPath }); } finally { site.stop(); }
+    try { return await screenshotPages('http://127.0.0.1:' + port, pages, join(vision.folder || copy, sub), { playwrightPath: vision.playwrightPath }); } finally { await site.stop(); }
   };
   const before = await shoot(siteDir, 'shots-before');
   const after = await shoot(copy, 'shots-after');
@@ -308,7 +330,7 @@ export async function repairOne({ finding, siteDir, ask, folder = null, login = 
     // Is the finding reproduced on the untouched copy by the probe of its id or type? (null: no probe, or the site did not start)
     let confirmed = null;
     if (hasProbe(finding)) {
-      try { const port = await freePort(); const site = await startSite(siteDir, port); try { const r0 = await scan('http://127.0.0.1:' + port, { login, only: [finding.id, finding.type] }); confirmed = r0.findings.length > 0; } finally { site.stop(); } } catch { confirmed = null; }
+      try { const port = await freePort(); const site = await startSite(siteDir, port); try { const r0 = await scan('http://127.0.0.1:' + port, { login, only: [finding.id, finding.type] }); confirmed = r0.findings.length > 0; } finally { await site.stop(); } } catch { confirmed = null; }
     }
     const attempts = [];
     let previous = null; let r;
@@ -329,26 +351,62 @@ export async function repairOne({ finding, siteDir, ask, folder = null, login = 
   } finally { for (const c of new Set(copies)) if (c !== keep) removeCopy(c); }
 }
 
+// The secret values of the site (its code, its journeys, the findings' evidence), as the filter sees them. The model's
+// prose (summary, risk, review) comes back with the placeholders restored, i.e. with the bare value, which no pattern
+// recognises any more: diskRecord removes these exact values wherever they appear.
+export function siteSecrets(siteDir, files = ['server.js'], findings = []) {
+  const texts = [];
+  for (const f of new Set([...files, 'journeys.test.js'])) { try { texts.push(readFileSync(join(siteDir, f), 'utf8')); } catch { /* a missing file has no secret */ } }
+  const { masked, restore } = maskDeep({ texts, findings });
+  const values = Array.from({ length: masked }, (_, i) => restore('«SECRET_' + (i + 1) + '»'));
+  return [...new Set(values)].filter((v) => v.length >= 4).sort((a, b) => b.length - a.length);
+}
+
+// What is written to disk (repair.json, report.json): every string masked, the site's known secret values removed, the
+// patch in its redacted form, no temporary path. The raw patch lives in fix.patch only (a local file, for the human who applies it).
+export function diskRecord(r, known = []) {
+  const { value } = maskDeep({ ...r, patch: r.patch ? redactPatch(r.patch) : r.patch });
+  const clean = (s) => { let t = scrubCopyPaths(s); known.forEach((v, i) => { t = t.split(v).join('«SECRET_SITE_' + (i + 1) + '»'); }); return t; };
+  const scrub = (v) => (typeof v === 'string' ? clean(v) : Array.isArray(v) ? v.map(scrub) : v && typeof v === 'object' ? Object.fromEntries(Object.entries(v).map(([k, x]) => [k, scrub(x)])) : v);
+  return scrub(value);
+}
+
+// The id comes from the scanner: it names a folder, so it is reduced to a plain name ("../x" or "C:" go nowhere), and two
+// findings never share one ("a/b" and "a_b", "F01" and "f01" on a case-insensitive disk, two without an id): -2, -3…
+export function findingDirName(id, folder, used = new Set()) {
+  const base = String(id ?? 'finding').replace(/[^\w.-]/g, '_').replace(/^\.+/, '_') || 'finding';
+  let name = base;
+  for (let n = 2; used.has(name.toLowerCase()) || (folder && existsSync(join(folder, name))); n += 1) name = base + '-' + n;
+  used.add(name.toLowerCase());
+  return name;
+}
+
 const ORDER = { critical: 0, high: 1, medium: 2, low: 3 };
 export async function repairAll({ findings, siteDir, ask, folder, login = null, only = null, ...rest }) {
   const list = findings.filter((f) => !only || only.includes(f.id)).sort((a, b) => (ORDER[a.severity] ?? 9) - (ORDER[b.severity] ?? 9));
-  const results = [];
+  const results = []; const used = new Set();
+  const known = folder ? siteSecrets(siteDir, rest.files || ['server.js'], findings) : [];
   for (const finding of list) {
-    // The id comes from the scanner: it names a folder, so it is reduced to a plain name ("../x" or "C:" go nowhere).
-    const dirName = String(finding.id ?? 'finding').replace(/[^\w.-]/g, '_').replace(/^\.+/, '_') || 'finding';
-    const sub = folder ? join(folder, dirName) : null; if (sub) mkdirSync(sub, { recursive: true });
+    const dirName = findingDirName(finding.id, folder, used);
+    const sub = folder ? join(folder, dirName) : null;
     let r;
-    try { r = await repairOne({ finding, siteDir, ask, folder: sub, login, ...rest }); } catch (e) { r = { finding, status: 'error', why: String(e.message || e).slice(0, 300) }; }
+    // One finding that fails (its repair, or writing its record) is recorded as an error; the next findings still run.
+    try {
+      if (sub) mkdirSync(sub, { recursive: true });
+      r = await repairOne({ finding, siteDir, ask, folder: sub, login, ...rest });
+    } catch (e) { r = { finding, status: 'error', why: String(e.message || e).slice(0, 300) }; }
     if (sub) {
-      // Every record goes into the hashed journal of the run: altered or missing afterwards = the chain breaks.
-      writeFileSync(join(sub, 'repair.json'), JSON.stringify(r, null, 2));
-      appendChain(folder, dirName + '/repair.json', { finding: finding.id, status: r.status });
-      if (r.patch) {
-        writeFileSync(join(sub, 'fix.patch'), r.patch); appendChain(folder, dirName + '/fix.patch', { finding: finding.id });
-        writeFileSync(join(sub, 'fix.redacted.patch'), redactPatch(r.patch)); appendChain(folder, dirName + '/fix.redacted.patch', { finding: finding.id, redacted: true });
-      }
+      try {
+        // Every record goes into the hashed journal of the run: altered or missing afterwards = the chain breaks.
+        writeFileSync(join(sub, 'repair.json'), JSON.stringify(diskRecord(r, known), null, 2));
+        appendChain(folder, dirName + '/repair.json', { finding: finding.id, status: r.status });
+        if (r.patch) {
+          writeFileSync(join(sub, 'fix.patch'), r.patch); appendChain(folder, dirName + '/fix.patch', { finding: finding.id });
+          writeFileSync(join(sub, 'fix.redacted.patch'), redactPatch(r.patch)); appendChain(folder, dirName + '/fix.redacted.patch', { finding: finding.id, redacted: true });
+        }
+      } catch (e) { r = { ...r, recordError: String(e.message || e).slice(0, 300) }; }
     }
-    results.push(r);
+    results.push({ ...r, dir: dirName });
   }
   return results;
 }

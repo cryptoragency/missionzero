@@ -47,10 +47,45 @@ export function parseBody(raw) {
   try { body = raw ? JSON.parse(raw) : null; } catch { body = null; }
   return body && typeof body === 'object' && !Array.isArray(body) ? body : {};
 }
-// x-forwarded-for is written by whoever calls: it is only believed behind our own proxy (MZ_TRUST_PROXY=1).
+// x-forwarded-for is written by whoever calls: it is only believed behind our own proxy (MZ_TRUST_PROXY=1), and then
+// only its LAST value, the one our proxy appended (the first ones are whatever the caller sent).
 export function callerOf(req, trustProxy = process.env.MZ_TRUST_PROXY === '1') {
-  const fwd = trustProxy ? String(req.headers?.['x-forwarded-for'] || '').split(',')[0].trim() : '';
+  const fwd = trustProxy ? String(req.headers?.['x-forwarded-for'] || '').split(',').map((s) => s.trim()).filter(Boolean).pop() || '' : '';
   return fwd || req.socket?.remoteAddress || '';
+}
+
+// The page runs one inline script and one inline style: they are allowed by their hash, nothing else inline, no other origin.
+const sha = (s) => "'sha256-" + createHash('sha256').update(s).digest('base64') + "'";
+export function securityHeaders(html = '') {
+  const inline = (tag) => [...String(html).matchAll(new RegExp(`<${tag}>([\\s\\S]*?)</${tag}>`, 'g'))].map((m) => sha(m[1])).join(' ');
+  const scripts = inline('script'); const styles = inline('style');
+  return {
+    'content-security-policy': `default-src 'self'; script-src 'self'${scripts ? ' ' + scripts : ''}; style-src 'self'${styles ? ' ' + styles : ''}; img-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'`,
+    'x-frame-options': 'DENY',
+    'x-content-type-options': 'nosniff',
+    'referrer-policy': 'no-referrer',
+  };
+}
+
+// The HTTP server, separate from listen() so the tests run it on a free port. The page and the logo are read once, at
+// start; a missing logo is a 404, not a server that does not start.
+export function makeServer({ pagePath = join(here, 'index.html'), logoPath = join(here, '..', 'assets', 'logo.png') } = {}) {
+  const page = readFileSync(pagePath);
+  let logo = null;
+  try { logo = readFileSync(logoPath); } catch { logo = null; }
+  const headers = securityHeaders(page.toString('utf8'));
+  return http.createServer((req, res) => {
+    const path = (req.url || '/').split('?')[0];
+    const send = (code, type, body, extra = {}) => { res.writeHead(code, { ...headers, 'content-type': type, ...extra }); res.end(body); };
+    if (req.method === 'GET' && (path === '/' || path === '/index.html')) return send(200, 'text/html; charset=utf-8', page, { 'cache-control': 'no-store' });
+    if (req.method === 'GET' && path === '/logo.png') return logo ? send(200, 'image/png', logo) : send(404, 'application/json', JSON.stringify({ error: 'not found' }));
+    let raw = '';
+    req.on('data', (c) => { raw += c; if (raw.length > 5000) req.destroy(); });
+    req.on('end', () => {
+      const [code, out] = handle(req.method, path, parseBody(raw), callerOf(req));
+      send(code, 'application/json', JSON.stringify(out));
+    });
+  });
 }
 
 export function counts() {
@@ -81,16 +116,5 @@ export function handle(method, path, body, caller, now = Date.now()) {
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const port = Number(process.env.PORT) || 8099;
-  const page = readFileSync(join(here, 'index.html'));
-  http.createServer((req, res) => {
-    const path = (req.url || '/').split('?')[0];
-    if (req.method === 'GET' && (path === '/' || path === '/index.html')) { res.writeHead(200, { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store' }); return res.end(page); }
-    if (req.method === 'GET' && path === '/logo.png') { res.writeHead(200, { 'content-type': 'image/png' }); return res.end(readFileSync(join(here, '..', 'assets', 'logo.png'))); }
-    let raw = '';
-    req.on('data', (c) => { raw += c; if (raw.length > 5000) req.destroy(); });
-    req.on('end', () => {
-      const [code, out] = handle(req.method, path, parseBody(raw), callerOf(req));
-      res.writeHead(code, { 'content-type': 'application/json' }); res.end(JSON.stringify(out));
-    });
-  }).listen(port, '127.0.0.1', () => console.log('Mission Zero community page on http://127.0.0.1:' + port));
+  makeServer().listen(port, '127.0.0.1', () => console.log('Mission Zero community page on http://127.0.0.1:' + port));
 }

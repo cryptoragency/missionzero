@@ -119,7 +119,7 @@ export function buildReport({ source, previous, current, variations, replayed = 
   if (variations.length) lines.push('', `Figures read in the source's dataset${source.api ? ' (' + source.api + ')' : ''}; the rows are kept in ${current.period}.json and chained.`);
   if (explanation) {
     lines.push('', `## Why (Mission Zero, ${explanation.judge}/10, ${explanation.green} verified source${explanation.green === 1 ? '' : 's'}, $${explanation.usd.toFixed(3)})`, '', explanation.summary || '');
-    for (const s of explanation.sources || []) lines.push(`- ${s.contribution} · [${s.url}](${s.url})${s.quote ? ` · « ${s.quote} »` : ''}`);
+    for (const s of explanation.sources || []) lines.push(`- ${s.contribution} · [${s.url}](${s.url})${s.quote ? ` · "${s.quote}"` : ''}`);
     if (explanation.unproven?.length) { lines.push('', 'Not proven:'); for (const u of explanation.unproven) lines.push(`- ${u}`); }
   }
   lines.push('', 'Mission Zero read and compared. It did not act on the source. A human decides.');
@@ -150,6 +150,11 @@ async function explain({ source, previous, current, variation, dir, capUsd }) {
   return { summary: refined.answer.summary || refined.answer.answer || '', sources: provenSources(refined.answer.sources, refined.verification), unproven: refined.answer.uncertainties || [], judge: refined.score, green: refined.green, usd: client.counter.usd, folder: mdir };
 }
 
+// The files a folder's chain already vouches for: rewriting one of them would break the chain (each report carries `at`).
+function chained(dir) {
+  try { return new Set((JSON.parse(readFileSync(join(dir, 'chain.json'), 'utf8')).entries || []).map((e) => e.file)); } catch { return new Set(); }
+}
+
 export async function watch({ source, replay = 0, until = null, explainTop = false, root = 'watch', capUsd = Number(process.env.MZ_WATCH_CAP_USD) || 0.25 }) {
   const dir = join(root, source.name.replace(/[^\w-]+/g, '-').toLowerCase());
   mkdirSync(dir, { recursive: true });
@@ -159,25 +164,43 @@ export async function watch({ source, replay = 0, until = null, explainTop = fal
   const { appendChain } = await import('./chain.js');
   const threshold = source.threshold ?? 20;
   const reports = [];
+  // --until alone is the watch as it would have run at that period: a replay of one period, compared with the one before.
+  const n = replay > 0 ? replay : until ? 1 : 0;
+  const replayed = n > 0;
+  // A replay is written to a fresh folder with its own chain: replaying the same history twice is two records, never an
+  // overwrite of the first (the live watch's folder and chain are not touched).
+  let out = dir;
+  if (replayed) {
+    const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+    out = join(dir, 'replay-' + stamp);
+    for (let k = 2; existsSync(out); k += 1) out = join(dir, `replay-${stamp}-${k}`);
+    mkdirSync(out, { recursive: true });
+  }
+  const done = chained(out);
+  const write = (file, text) => {
+    if (done.has(file)) throw new Error(`${join(out, file)} is already in the evidence chain of ${out}: it is not overwritten (move the folder aside, or replay with --replay)`);
+    writeFileSync(join(out, file), text);
+  };
   // Replay: the last N periods one after another, each compared with the one before (oldest first).
-  const play = replay > 0 ? snapshots.slice(-(replay + 1)) : [snapshots[snapshots.length - 1]];
-  let previous = replay > 0 ? play.shift() : lastStored(dir);
-  if (replay > 0) { writeFileSync(join(dir, previous.period + '.json'), JSON.stringify(previous, null, 2)); appendChain(dir, previous.period + '.json', { step: 'snapshot' }); }
+  const play = replayed ? snapshots.slice(-(n + 1)) : [snapshots[snapshots.length - 1]];
+  let previous = replayed ? play.shift() : lastStored(dir);
+  if (replayed && previous) { write(previous.period + '.json', JSON.stringify(previous, null, 2)); appendChain(out, previous.period + '.json', { step: 'snapshot' }); }
   for (let i = 0; i < play.length; i++) {
     const current = play[i];
-    if (previous && previous.period === current.period && replay === 0) { console.log(`${source.name}: ${current.period} already read, nothing new.`); return reports; }
+    if (previous && previous.period === current.period && !replayed) { console.log(`${source.name}: ${current.period} already read, nothing new.`); return reports; }
     const variations = previous ? diffReadings(previous, current, { threshold }) : [];
     let explanation = null;
-    if (explainTop && variations.length && i === play.length - 1 && previous) explanation = await explain({ source, previous, current, variation: variations[0], dir, capUsd });
-    const report = { source: source.name, period: current.period, comparedWith: previous?.period || null, replayed: replay > 0, threshold, variations, explanation, at: new Date().toISOString() };
-    writeFileSync(join(dir, current.period + '.json'), JSON.stringify(current, null, 2));
-    writeFileSync(join(dir, 'report-' + current.period + '.json'), JSON.stringify(report, null, 2));
-    writeFileSync(join(dir, 'report-' + current.period + '.md'), buildReport({ source, previous, current, variations, replayed: replay > 0, explanation }));
-    appendChain(dir, current.period + '.json', { step: 'snapshot' }); appendChain(dir, 'report-' + current.period + '.json', { step: 'report', variations: variations.length });
+    if (explainTop && variations.length && i === play.length - 1 && previous) explanation = await explain({ source, previous, current, variation: variations[0], dir: out, capUsd });
+    const report = { source: source.name, period: current.period, comparedWith: previous?.period || null, replayed, threshold, variations, explanation, at: new Date().toISOString() };
+    write(current.period + '.json', JSON.stringify(current, null, 2));
+    write('report-' + current.period + '.json', JSON.stringify(report, null, 2));
+    write('report-' + current.period + '.md', buildReport({ source, previous, current, variations, replayed, explanation }));
+    appendChain(out, current.period + '.json', { step: 'snapshot' }); appendChain(out, 'report-' + current.period + '.json', { step: 'report', variations: variations.length });
     console.log(`${source.name} ${current.period}${previous ? ' vs ' + previous.period : ''}: ${variations.length} variation(s)` + (variations[0] ? ` · ${describeVariation(variations[0])}` : ''));
-    reports.push(report);
+    reports.push({ ...report, folder: out });
     previous = current;
   }
+  if (replayed) console.log(`Replay written to ${out} (its own evidence chain).`);
   return reports;
 }
 

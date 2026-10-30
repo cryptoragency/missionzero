@@ -5,7 +5,7 @@ import { readJson } from './loop.js';
 import { seenUrls } from './synthesis.js';
 
 const RESEARCH_PROMPT = 'An objection says the final answer lacks something. Pick ONE free action that would fetch it: '
-  + '{"type":"read_page","url":"a seen URL, prefer the primary report","find":"the exact facts to locate, as keywords and numbers"} or {"type":"web_search","query":"3 to 8 keywords"}. '
+  + '{"type":"read_page","url":"a URL copied exactly from seenSources, prefer the primary report","find":"the exact facts to locate, as keywords and numbers"} or {"type":"web_search","query":"3 to 8 keywords"}. '
   + 'No prose outside the JSON. JSON: {"action":{"type":"","url":"","find":"","query":"","costUsd":0,"real":false},"why":""}.';
 
 // Objections worth a research turn: a missing figure, or a primary source seen but not read.

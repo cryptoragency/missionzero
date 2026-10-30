@@ -78,3 +78,40 @@ test('names that only look like secret words, and code that is not a value, stay
   const t = "const design = 'modern-look';\nconst passenger = 'Marie Curie';\nif (password === req.body.password) ok();\nreturn { password: hash(p), signup: '/register' };";
   assert.equal(maskSecrets(t).text, t);
 });
+
+// Second review: one case per new shape.
+const MORE = [
+  ['PW name', 'DB_PW=hunter22xyz', 'hunter22xyz'],
+  ['pwd in JSON', '{"pwd": "s3cr3t-value"}', 's3cr3t-value'],
+  ['ENCRYPTION_KEY with a long value', 'ENCRYPTION_KEY=9f8e7d6c5b4a39281706f5e4', '9f8e7d6c5b4a39281706f5e4'],
+  ['JWT_KEY with a long value', "JWT_KEY='a1b2c3d4e5f6g7h8i9j0'", 'a1b2c3d4e5f6g7h8i9j0'],
+  ['stripeKey in JS', "const cfg = { stripeKey: 'k7Zq2LmP9xR4tV8wY3bN' };", 'k7Zq2LmP9xR4tV8wY3bN'],
+  ['accountKey in JSON', '{"accountKey": "c2VjcmV0LWtleQ"}', 'c2VjcmV0LWtleQ'],
+  ['AccountKey in a connection string', 'DefaultEndpointsProtocol=https;AccountName=shop;AccountKey=Zm9vYmFyYmF6cXV4MTIzNDU2Nzg5MA==;EndpointSuffix=core.windows.net', 'Zm9vYmFyYmF6cXV4MTIzNDU2Nzg5MA=='],
+  ['GitLab glpat- token', 'token glpat-AbCdEfGhIjKlMnOpQrSt12 here', 'glpat-AbCdEfGhIjKlMnOpQrSt12'],
+  ['Hugging Face hf_ token', 'HF hf_AbCdEfGhIjKlMnOpQrStUvWxYz012345', 'hf_AbCdEfGhIjKlMnOpQrStUvWxYz012345'],
+  ['Slack webhook URL', 'post to https://hooks.slack.com/services/T0000AAAA/B1111BBBB/abcdefghijklmnopqrstuvwx', 'T0000AAAA/B1111BBBB/abcdefghijklmnopqrstuvwx'],
+];
+for (const [name, text, secret] of MORE) {
+  test('masked: ' + name, () => {
+    const { text: out, masked, restore } = maskSecrets(text);
+    assert.ok(!out.includes(secret), out);
+    assert.ok(masked >= 1);
+    assert.equal(restore(out), text);
+  });
+}
+
+test('a name ending in key with a short or plain value, and key alone, stay as they are', () => {
+  const t = "const k = { key: 'a1b2c3d4e5f6g7h8i9j0', primary_key: 'id', sort_key: 'created_at_desc_order' };\nCACHE_KEY=users";
+  assert.equal(maskSecrets(t).text, t);
+});
+
+test('maskDeep: a private key cut between two strings does not shift the other fields, and both halves are masked', () => {
+  const v = { a: 'before -----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEA1234', b: 'abcdXYZ\n-----END RSA PRIVATE KEY----- after', c: 'plain text', d: ['DB_PASSWORD=Verde2019!'] };
+  const { value, restore } = maskDeep(v);
+  assert.equal(value.c, 'plain text');
+  assert.ok(value.a.startsWith('before ') && !value.a.includes('MIIE'), value.a);
+  assert.ok(value.b.endsWith(' after') && !value.b.includes('abcdXYZ'), value.b);
+  assert.ok(!value.d[0].includes('Verde2019!'), value.d[0]);
+  assert.equal(restore(value.a), v.a); assert.equal(restore(value.b), v.b); assert.equal(restore(value.d[0]), v.d[0]);
+});

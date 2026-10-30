@@ -2,7 +2,7 @@
 // (demo-site/findings.example.json) that the repair mode reads. Any real scanner can replace it: the repair
 // mode only needs the findings. It runs the same probes AFTER a fix, to say whether the flaw is gone.
 // Mostly GETs, but some probes act. Active probes: one POST to the cart, two login attempts, a 40-request burst (F21,
-// skipped with burst: false). That is why a scan runs only on a site whose owner proved it (see proveOwnership below).
+// skipped with burst: false). That is why a scan runs only on a host whose owner proved control of it (see proveOwnership below).
 import { lookup as dnsLookup } from 'node:dns/promises';
 import { isIP } from 'node:net';
 import { isPrivateAddress } from './tools.js';
@@ -134,9 +134,9 @@ export const POLICY_PROBES = [
 export const ALL_PROBES = [...PROBES, ...POLICY_PROBES];
 export const hasProbe = (f) => ALL_PROBES.some((p) => p.id === f.id || p.type === f.type);
 
-// The scanner probes only a site you own. A local address is yours by definition. Any other host must serve
-// /.well-known/mission-zero.txt containing the owner token (opts.ownerToken or MZ_OWNER_TOKEN, 16 characters or more):
-// the same proof a registrar asks for a domain. Without it the scan is refused before a single probe runs.
+// The scanner probes only a host you proved you control. A local address (localhost) is treated as yours. Any other host
+// must serve /.well-known/mission-zero.txt containing the owner token (opts.ownerToken or MZ_OWNER_TOKEN, 16 characters or
+// more): the same kind of proof a certificate authority asks (ACME HTTP-01). Without it the scan is refused before a single probe runs.
 const LOCAL_HOSTS = new Set(['127.0.0.1', 'localhost', '::1', '[::1]']);
 export function isLocal(base) { try { return LOCAL_HOSTS.has(new URL(base).hostname); } catch { return false; } }
 
@@ -150,6 +150,19 @@ export function targetOf(base) {
   return { ok: true, origin: u.origin };
 }
 const lookupAll = async (host) => (await dnsLookup(host, { all: true, verbatim: true })).map((x) => x.address);
+
+// The token file is read up to 200 bytes: a host that answers with an endless body cannot hold the scanner.
+const TOKEN_MAX_BYTES = 200;
+async function getToken(fetchFn, url) {
+  try {
+    const r = await (fetchFn || fetch)(url, { headers: UA, redirect: 'manual', signal: AbortSignal.timeout(8000) });
+    if (!r.body?.getReader) return { status: r.status, body: String(await r.text()).slice(0, TOKEN_MAX_BYTES) };
+    const reader = r.body.getReader(); const chunks = []; let n = 0;
+    while (n < TOKEN_MAX_BYTES) { const { done, value } = await reader.read(); if (done) break; chunks.push(value); n += value.length; }
+    reader.cancel().catch(() => {});
+    return { status: r.status, body: Buffer.concat(chunks.map((c) => Buffer.from(c))).subarray(0, TOKEN_MAX_BYTES).toString('utf8') };
+  } catch (e) { return { status: 0, body: '', error: e.message }; }
+}
 
 // `fetchFn` and `lookup` can be replaced (tests). The name is resolved once, before the token is fetched: a public name
 // that points at 127.0.0.1 or a private network is refused, the proof would come from somewhere else than the internet.
@@ -166,7 +179,7 @@ export async function proveOwnership(base, token = process.env.MZ_OWNER_TOKEN, {
   if (!isIP(host)) { try { ips = await lookup(host); } catch (e) { return { ok: false, why: host + ' does not resolve (' + (e.code || e.message) + ')' }; } }
   const bad = (ips || []).find(isPrivateAddress);
   if (!ips?.length || bad) return { ok: false, why: host + ' points to ' + (bad || 'nothing') + ', a private or local address: refused (a local site is scanned by its local address)' };
-  const r = await get({ fetchFn }, origin, '/.well-known/mission-zero.txt');
+  const r = await getToken(fetchFn, origin + '/.well-known/mission-zero.txt');
   if (r.status === 200 && r.body.trim() === t) return { ok: true, how: '/.well-known/mission-zero.txt', origin };
   return { ok: false, why: r.status === 200 ? 'the token served at /.well-known/mission-zero.txt is not yours' : '/.well-known/mission-zero.txt answered ' + (r.status || r.error) };
 }
@@ -174,7 +187,7 @@ export async function proveOwnership(base, token = process.env.MZ_OWNER_TOKEN, {
 // opts: login, only, policy, ownerToken, burst (false skips the 40-request burst), fetchFn and lookup (tests).
 export async function scan(base, opts = {}) {
   const owner = await proveOwnership(base, opts.ownerToken, { fetchFn: opts.fetchFn, lookup: opts.lookup });
-  if (!owner.ok) throw new Error('scan refused: ' + base + ' is not a site you proved you own (' + owner.why + ')');
+  if (!owner.ok) throw new Error('scan refused: ' + base + ' is not a host you proved you control (' + owner.why + ')');
   const origin = owner.origin; // every probe goes to the origin the proof was read from, nowhere else
   const findings = [];
   for (const p of (opts.policy || opts.only ? ALL_PROBES : PROBES)) {

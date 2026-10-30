@@ -30,9 +30,18 @@ const OPEN = PROVIDERS.find((p) => p.test.test(BASE));
 const KEY_NAME = OPEN ? OPEN.key : 'MODEL_API_KEY';
 const KEY = process.env.MZ_API_KEY || process.env[KEY_NAME];
 export const provider = () => (OPEN ? OPEN.name : /api\.meta\.ai/.test(BASE) ? 'meta' : new URL(BASE).hostname);
-// A typo in MZ_BASE_URL would hand the key to whoever answers there: say it once, loudly.
+// A typo in MZ_BASE_URL would hand the key to whoever answers there: an unknown host or a plain-http URL is refused at the
+// first call, unless MZ_ALLOW_CUSTOM_BASE=1 says it is meant (then a warning still says where the key goes).
 const KNOWN_HOSTS = ['api.meta.ai', 'inference.baseten.co', 'api.fireworks.ai'];
-try { const host = new URL(BASE).hostname; if (!KNOWN_HOSTS.includes(host)) console.warn(`Warning: MZ_BASE_URL is not a known provider; ${process.env.MZ_API_KEY ? 'MZ_API_KEY' : KEY_NAME} will be sent to ${host}.`); } catch { /* new URL fails later, with its own message */ }
+function baseProblem(base) {
+  let u; try { u = new URL(base); } catch { return `MZ_BASE_URL is not a URL: ${base}`; }
+  if (u.protocol === 'https:' && KNOWN_HOSTS.includes(u.hostname)) return null;
+  return `MZ_BASE_URL (${u.protocol}//${u.hostname}) is not a known https provider (${KNOWN_HOSTS.join(', ')}): the key would be sent there. Set MZ_ALLOW_CUSTOM_BASE=1 if this endpoint is yours.`;
+}
+const BASE_PROBLEM = baseProblem(BASE);
+const CUSTOM_BASE = process.env.MZ_ALLOW_CUSTOM_BASE === '1';
+if (BASE_PROBLEM && CUSTOM_BASE) { try { console.warn(`Warning: MZ_BASE_URL is not a known provider; ${process.env.MZ_API_KEY ? 'MZ_API_KEY' : KEY_NAME} will be sent to ${new URL(BASE).hostname}.`); } catch { /* not a URL: the call fails with its own message */ } }
+const checkBase = (base) => { if (base === BASE && BASE_PROBLEM && !CUSTOM_BASE) throw new Error(BASE_PROBLEM); };
 
 // Daily ledger, one per machine: { date, usd }. The day is the UTC day: a daily cap resets at midnight UTC (see .env.example).
 // Each call re-reads the file and adds ITS delta, written to a temporary file then renamed, so several clients or
@@ -62,11 +71,18 @@ function retryAfterMs(r) {
   const ms = Number.isFinite(s) ? s * 1000 : Date.parse(h) - Date.now();
   return Number.isFinite(ms) && ms >= 0 ? Math.min(ms, 60000) : null;
 }
-// One request with a timeout, retried on 429 and 5xx. Returns the last response and its body text.
+// One request with a timeout, retried on 429, 5xx, a network error and a timeout. Returns the last response and its body.
 async function send(url, init, { fetchFn = fetch, sleep = wait, timeoutMs = TIMEOUT_MS } = {}) {
   for (let attempt = 0; ; attempt += 1) {
-    const r = await fetchFn(url, { ...init, signal: AbortSignal.timeout(timeoutMs) });
-    const body = await r.text();
+    let r; let body;
+    try {
+      r = await fetchFn(url, { ...init, signal: AbortSignal.timeout(timeoutMs) });
+      body = await r.text();
+    } catch (e) {
+      // A dropped connection or a slow answer is as passing as a 503: tried again, then reported as it is.
+      if (attempt >= BACKOFF_MS.length) throw e;
+      await sleep(BACKOFF_MS[attempt]); continue;
+    }
     const retriable = r.status === 429 || r.status >= 500;
     if (r.ok || !retriable || attempt >= BACKOFF_MS.length) return { r, body };
     await sleep(retryAfterMs(r) ?? BACKOFF_MS[attempt]);
@@ -75,6 +91,8 @@ async function send(url, init, { fetchFn = fetch, sleep = wait, timeoutMs = TIME
 
 // Spend of this process outside any chat client (SAM, voice): it counts against the run cap and the daily ledger.
 export const sideCounter = { calls: 0, usd: 0 };
+// Spend of every chat client of this process: the run cap holds on chat + side calls together, from either side.
+export const chatSpend = { usd: 0 };
 // metaFetch: any other call to the provider (SAM, voice). It sets the key, the timeout and the retries, checks the caps
 // before the call, and adds what `cost(json)` says the call cost. Throws on an HTTP error; returns { status, body, json }.
 // SAM and voice exist only on Meta's API: they always go to META_BASE with MODEL_API_KEY, whatever MZ_BASE_URL says
@@ -83,7 +101,8 @@ export const META_BASE = 'https://api.meta.ai/v1';
 export const META_KEY = process.env.MODEL_API_KEY;
 export async function metaFetch(path, init = {}, { base = BASE, key = KEY, keyName = KEY_NAME, fetchFn = fetch, sleep = wait, cost = () => 0, capUsd = RUN_CAP, dailyCapUsd = DAILY_CAP, ledgerPath = LEDGER } = {}) {
   if (!key) throw new Error(keyName + ' is missing (.env file)');
-  if (sideCounter.usd >= capUsd) throw runCapError(capUsd);
+  checkBase(base);
+  if (chatSpend.usd + sideCounter.usd >= capUsd) throw runCapError(capUsd);
   if (dailyCapUsd && spentToday(ledgerPath) >= dailyCapUsd) throw dailyCapError(dailyCapUsd);
   const { r, body } = await send(`${base}${path}`, { ...init, headers: { ...(init.headers || {}), authorization: `Bearer ${key}` } }, { fetchFn, sleep });
   if (!r.ok) throw new Error(`${base === BASE ? provider() : 'meta'} ${r.status}: ${body.slice(0, 300)}`);
@@ -101,7 +120,8 @@ export function createClient({ key = KEY, model = process.env.MZ_MODEL || (OPEN 
   // Each role gets the effort it needs (minimal, low, medium, high, xhigh, max); MZ_EFFORT=low forces one level for all.
   const effortFor = (tag) => process.env.MZ_EFFORT || EFFORT[tag] || 'low';
   async function ask(messages, { max_tokens = 1500, temperature = 0.7, tag = 'other', reasoning_effort = effortFor(tag) } = {}) {
-    if (counter.usd >= capUsd) throw runCapError(capUsd);
+    checkBase(BASE);
+    if (counter.usd + sideCounter.usd >= capUsd) throw runCapError(capUsd);
     // The ledger is read again before each call: another client or process may have spent since.
     if (dailyCapUsd && spentToday(ledgerPath) >= dailyCapUsd) throw dailyCapError(dailyCapUsd);
     const t0 = Date.now();
@@ -120,7 +140,7 @@ export function createClient({ key = KEY, model = process.env.MZ_MODEL || (OPEN 
     const finish = j.choices?.[0]?.finish_reason ?? null;
     counter.calls += 1; counter.input += input; counter.output += output; counter.cached += cached;
     counter.totalMs += Date.now() - t0;
-    counter.usd += usd;
+    counter.usd += usd; chatSpend.usd += usd;
     const b = counter.byTag[tag] || (counter.byTag[tag] = { calls: 0, input: 0, output: 0, reasoning: 0, truncated: 0 });
     b.calls += 1; b.input += input; b.output += output;
     b.reasoning += u.completion_tokens_details?.reasoning_tokens || 0;

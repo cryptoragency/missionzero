@@ -6,13 +6,13 @@ export const MAX_ROUNDS = 5;
 export const GOOD_ENOUGH = 7; // below this best score, the contradictor gets one more round, up to MAX_ROUNDS
 
 const CONTRADICT_PROMPT = 'You are the contradictor. Attack the proposed plan against the goal: wrong assumption, weak source, '
-  + 'a cheaper or more direct action, a missing check. If you find no real flaw, say so. '
+  + 'a cheaper or more direct action, a missing check. If you find no real flaw, return {"objections":[],"flawless":true}. '
   + 'JSON: {"objections":["concrete flaw"],"flawless":false}.';
 const REVISE_PROMPT = 'Revise the plan so it answers every objection. Keep the same JSON shape: '
-  + '{"hypotheses":[""],"action":{"type":"","query":"","url":"","name":"","content":"","costUsd":0,"real":false},"expected":""}. '
+  + '{"hypotheses":[""],"action":{"type":"","query":"","url":"","find":"","name":"","content":"","costUsd":0,"real":false},"expected":""}. '
   + 'A web_search query stays 3 to 8 keywords, never a sentence or a boolean expression. Keep costUsd 0 and real false.';
 const JUDGE_PROMPT = 'You are the judge. Score this plan from 0 to 10 for how likely it is to move the goal forward at no cost and with checkable evidence. '
-  + 'Be strict: an unanswered objection lowers the score. JSON: {"score":7,"reason":""}.';
+  + 'Be strict: an unanswered objection lowers the score. score is an integer from 0 to 10. JSON: {"score":0,"reason":""}.';
 
 const clampRounds = (n) => Math.max(0, Math.min(MAX_ROUNDS, Math.floor(Number(n)) || 0));
 

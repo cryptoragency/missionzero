@@ -53,13 +53,36 @@ test('the example probe export replays day by day and flags the incubator drift 
   const source = { name: 'Probe', kind: 'file', path: 'watch/readings.example.json', threshold: 10 };
   const reports = await watch({ source, replay: 3, root });
   assert.equal(reports.length, 3);
+  const out = reports[0].folder;
+  assert.match(out, /probe[\\/]replay-/);
   assert.equal(reports[0].period, '2026-10-28'); assert.equal(reports[0].variations.length, 1); assert.equal(reports[0].variations[0].key, 'culture.B.density');
   assert.equal(reports[1].variations[0].key, 'incubator.temp'); assert.equal(reports[1].variations[0].kind, 'threshold');
   const last = reports[2];
   assert.deepEqual(last.variations.map((v) => v.key), ['culture.B.status', 'culture.B.density']);
-  assert.ok(existsSync(join(root, 'probe', 'report-2026-10-30.md')));
-  assert.match(readFileSync(join(root, 'probe', 'report-2026-10-30.md'), 'utf8'), /replayed from the public history/);
-  assert.equal(verifyChain(join(root, 'probe')).ok, true);
+  assert.ok(existsSync(join(out, 'report-2026-10-30.md')));
+  assert.match(readFileSync(join(out, 'report-2026-10-30.md'), 'utf8'), /replayed from the public history/);
+  assert.equal(verifyChain(out).ok, true);
+});
+
+test('the same history replayed twice gives two folders with intact chains; the live folder never overwrites a chained file', async () => {
+  const { writeFileSync, mkdirSync } = await import('node:fs');
+  const { appendChain } = await import('./chain.js');
+  const root = mkdtempSync(join(tmpdir(), 'mz-watch-'));
+  const source = { name: 'Probe', kind: 'file', path: 'watch/readings.example.json', threshold: 10 };
+  const a = await watch({ source, replay: 2, root });
+  const b = await watch({ source, replay: 2, root });
+  const c = await watch({ source, until: '2026-10-29', root });
+  assert.notEqual(a[0].folder, b[0].folder);
+  for (const f of [a[0].folder, b[0].folder, c[0].folder]) assert.equal(verifyChain(f).ok, true, f);
+  assert.equal(c.length, 1); assert.equal(c[0].period, '2026-10-29'); assert.equal(c[0].replayed, true);
+  // Live: the period about to be written is already chained in the live folder (an older one stored after it): refused.
+  const live = join(root, 'probe'); mkdirSync(live, { recursive: true });
+  const all = JSON.parse(readFileSync('watch/readings.example.json', 'utf8'));
+  const last = all[all.length - 1];
+  writeFileSync(join(live, last.period + '.json'), JSON.stringify(last)); appendChain(live, last.period + '.json', { step: 'snapshot' });
+  writeFileSync(join(live, '2099-01-01.json'), JSON.stringify({ ...last, period: '2099-01-01' })); // makes the stored "previous" differ
+  await assert.rejects(() => watch({ source, root }), /already in the evidence chain/);
+  assert.equal(verifyChain(live).ok, true);
 });
 
 test('the report says Mission Zero did not act', () => {
@@ -76,12 +99,12 @@ test('an explanation keeps only the sources the verifier found on the page, with
   const sources = [{ url: 'https://a.example/1', contribution: 'ILI rose to 94 per 100 000' }, { url: 'https://b.example/2', contribution: 'invented figure' }];
   const verification = [
     { url: 'https://a.example/1', claim: 'ILI rose to 94 per 100 000', verdict: 'supported', detail: 'incidence was estimated at 94 cases per 100,000' },
-    { url: 'https://b.example/2', claim: 'invented figure', verdict: 'unsupported', detail: 'nearest passages: « … »' },
+    { url: 'https://b.example/2', claim: 'invented figure', verdict: 'unsupported', detail: 'nearest passages: "…"' },
   ];
   const kept = provenSources(sources, verification);
   assert.deepEqual(kept, [{ url: 'https://a.example/1', contribution: 'ILI rose to 94 per 100 000', quote: 'incidence was estimated at 94 cases per 100,000' }]);
   const md = buildReport({ source: { name: 'S', threshold: 20, attribution: 'Réseau Sentinelles, Inserm / Sorbonne Université, sentiweb.fr' }, previous: snap('W1', []), current: snap('W2', []), variations: [], explanation: { judge: 8, green: 1, usd: 0.01, summary: 'x', sources: kept } });
-  assert.match(md, /« incidence was estimated at 94 cases per 100,000 »/);
+  assert.match(md, /"incidence was estimated at 94 cases per 100,000"/);
   assert.match(md.split('\n').slice(0, 4).join('\n'), /Data: Réseau Sentinelles, Inserm \/ Sorbonne Université, sentiweb\.fr\./);
   assert.doesNotMatch(md, /invented figure/);
 });

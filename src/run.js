@@ -19,13 +19,15 @@ const maxTurns = Number(args[1]) || 3;
 // Rounds on the plan lost the A/B of 2026-10-27; they stay available through MZ_PLAN_CONTRADICTIONS (default 0).
 const contradictions = Math.max(0, Math.min(5, Number(args[2] ?? 3) || 0));
 const planContradictions = Math.max(0, Math.min(5, Number(process.env.MZ_PLAN_CONTRADICTIONS) || 0));
+// The key is checked first: a missing key is one line on stderr, and no empty evidence folder is left behind.
+let client;
+try { client = createClient(); } catch (e) { console.error(e.message); process.exit(1); }
 const folder = evidenceFolder('');
 mkdirSync(folder, { recursive: true });
 
 const lessonsPath = 'memory/lessons.json';
 const outcomesPath = 'memory/outcomes.json';
 const past = loadLessons(lessonsPath);
-const client = createClient();
 const ask = (messages, opts) => client.ask(messages, { max_tokens: 3500, ...opts });
 const note = (dir) => (e) => appendFileSync(dir + '/journal.jsonl', JSON.stringify({ t: new Date().toISOString(), ...e }) + '\n');
 
@@ -82,7 +84,7 @@ try {
     note(folder)({ step: 'zero', compared: zero });
     recordOutcome(outcomesPath, { goal, judgeScore: second.refined.score, green: second.refined.green, red: second.refined.red, lessonsUsed: 0, folder: second.dir, fromZero: true, kept: cmp.kept });
     writeFileSync(folder + '/zero.json', JSON.stringify(zero, null, 2));
-    console.log(`Kept the answer from: ${cmp.kept === 'from-zero' ? 'from zero' : 'with memory'} (${cmp.why}).`);
+    console.log(`Kept: the answer ${cmp.kept === 'from-zero' ? 'from zero' : 'with memory'} (${cmp.why}).`);
   }
 
   // 3) Relearn from the answer that was kept. After a reset: if the from-zero answer won, the memory starts from that mission

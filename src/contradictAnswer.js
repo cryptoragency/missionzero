@@ -6,16 +6,16 @@ import { readJson } from './loop.js';
 import { MAX_ROUNDS, GOOD_ENOUGH } from './contradict.js';
 
 const CONTRADICT_PROMPT = 'You are the contradictor. Attack this final answer against the goal: a claim its source does not support (see verification), '
-  + 'a missing figure, a secondary source where a primary one was seen, a number without edition year or definition. A claim whose verdict is not "supported" is RED. If you find no real flaw, say so. '
+  + 'a missing figure, a secondary source where a primary one was seen, a number without edition year or definition. A claim whose verdict is not "supported" is RED. If you find no real flaw, return {"objections":[],"flawless":true}. '
   + 'At most 4 objections of one sentence each, no prose outside the JSON. JSON: {"objections":["concrete flaw"],"flawless":false}.';
 const REVISE_PROMPT = 'Rewrite the final answer so it answers every objection. Cite ONLY URLs from seenSources, copied exactly; drop any claim you cannot back with one of them. '
-  + 'A RED verdict comes with the nearest passages of the page: first try to restate the claim in the page\'s own words (SHOULD is not SHALL, a listing date is not a version) before dropping the source; prefer the latest primary edition over drafts. '
+  + 'A RED verdict comes with the nearest passages of the page: first try to restate the claim in the page\'s own words (SHOULD is not SHALL, a recommendation is not a requirement, a listing date is not an edition) before dropping the source; prefer the latest primary edition over drafts. '
   + 'ONE FIGURE PER CONTRIBUTION: a claim that bundles several figures is split into one entry per figure (same url), so a wrong figure never drags the right ones down. Keep every figure the nearest passages confirm. '
   + 'If a source is confirmed for one figure and not another, split it and keep the confirmed figure. '
-  + 'Answer in at most 120 words. Each "contribution" is the FACT that page supports, with its figure, close to the page\'s own words, never a description of the source. No prose outside the JSON. '
-  + 'JSON: {"answer":"","sources":[{"url":"","contribution":""}],"confidence":7,"uncertainties":[""]}.';
+  + 'The "answer" field has at most 120 words. Each "contribution" is the FACT that page supports, with its figure, close to the page\'s own words, never a description of the source. No prose outside the JSON. '
+  + 'confidence is an integer from 0 to 10. JSON: {"answer":"","sources":[{"url":"","contribution":""}],"confidence":0,"uncertainties":[""]}.';
 const JUDGE_PROMPT = 'You are the judge. Score this final answer from 0 to 10 against the goal, using the verification: a GREEN claim is confirmed by its page. A claim whose verdict is not "supported" is RED. '
-  + 'Be strict: precision of figures, primary sources, every claim backed. Reason in at most 25 words, no prose outside the JSON. JSON: {"score":7,"reason":""}.';
+  + 'Be strict: precision of figures, primary sources, every claim backed. Reason in at most 25 words, no prose outside the JSON. score is an integer from 0 to 10. JSON: {"score":0,"reason":""}.';
 export const STAGNATION = 2; // rounds without a better note before the contradictor stops (the best version is kept anyway)
 export const RED_CAP = 5; // an answer with an unsupported claim can never score above this
 export const NO_SOURCE_CAP = 2; // an answer without any source is not an answer
@@ -55,7 +55,7 @@ async function grade({ goal, answer, ask, verify }) {
 // `reread` (optional) is called with the RED claims of the last version: it reads each cited page again with the
 // claim as target (research.js makeReread), and a red claim is an objection by itself, even when the contradictor
 // finds nothing: the rewrite must restate it in the page's words, cite another seen page, or drop it.
-export const redObjection = (r) => `RED: the claim « ${String(r.claim || '').slice(0, 200)} » is not supported by ${r.url} (verdict: ${r.verdict}); restate it in the words of the re-read passages of that page, or cite another seen page that states it, or drop it`;
+export const redObjection = (r) => `RED: the claim "${String(r.claim || '').slice(0, 200)}" is not supported by ${r.url} (verdict: ${r.verdict}); restate it in the words of the re-read passages of that page, or cite another seen page that states it, or drop it`;
 const redsOf = (v) => (v?.verification || []).filter((r) => r.verdict && r.verdict !== 'supported');
 
 export async function refineAnswer({ goal, answer, seen, ask, verify, research = null, reread = null, rounds = 0, escalate = true }) {
@@ -94,7 +94,8 @@ export async function refineAnswer({ goal, answer, seen, ask, verify, research =
 
     // Red claim: back to the cited page with the claim as target, before anything else.
     let rereadN = 0;
-    if (reread && reds.length) { try { rereadN = merge(await reread({ reds, seen })); } catch { /* the rewrite goes on with the nearest passages */ } }
+    // Counted as pages read again, not as new entries of seen: a page already read in full and read again is still a re-read.
+    if (reread && reds.length) { try { const got = await reread({ reds, seen }); rereadN = (got || []).length; merge(got); } catch { /* the rewrite goes on with the nearest passages */ } }
 
     // The objection says what is missing: go and get it before rewriting.
     let fetched = 0;

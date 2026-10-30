@@ -194,7 +194,7 @@ test('a red claim sends the agent back to the cited page with the claim as targe
   const url = 'https://who.example/report';
   const seen = [{ url, title: 'snippet', snippet: 'short' }];
   let verdict = 'unsupported';
-  const verify = async (sources) => ({ results: sources.map((s) => ({ url: s.url, claim: s.contribution, verdict, color: verdict === 'supported' ? 'green' : 'red', detail: 'nearest passages: « 10.8 million »' })), green: verdict === 'supported' ? sources.length : 0, red: verdict === 'supported' ? 0 : sources.length });
+  const verify = async (sources) => ({ results: sources.map((s) => ({ url: s.url, claim: s.contribution, verdict, color: verdict === 'supported' ? 'green' : 'red', detail: 'nearest passages: "10.8 million"' })), green: verdict === 'supported' ? sources.length : 0, red: verdict === 'supported' ? 0 : sources.length });
   const ask = script([
     '{"score":8}',                                   // judge v0: 8 but capped at 5 by the red claim
     '{"objections":[],"flawless":true}',             // contradictor: no flaw, yet the red claim is an objection
@@ -270,4 +270,16 @@ test('research never reads an unseen URL nor runs another action type', async ()
   assert.equal(executed, 0);
   await makeResearch({ ask: async () => ({ text: '{"action":{"type":"read_page","url":"https://seen.example/a"}}' }), execute })({ goal: 'g', objections, seen });
   assert.equal(executed, 1);
+});
+
+test('a page read again counts as a re-read even when it was already in seen as read in full', async () => {
+  const { refineAnswer } = await import('./contradictAnswer.js');
+  const url = 'https://who.example/report';
+  const page = { url, title: 'page read in full', snippet: 'an estimated 10.8 million people fell ill' };
+  let verdict = 'unsupported';
+  const verify = async (sources) => ({ results: sources.map((s) => ({ url: s.url, claim: s.contribution, verdict, detail: 'x' })), green: verdict === 'supported' ? sources.length : 0, red: verdict === 'supported' ? 0 : sources.length });
+  const ask = script(['{"score":8}', '{"objections":[],"flawless":true}', '{"answer":"10.8 million","sources":[{"url":"https://who.example/report","contribution":"an estimated 10.8 million people fell ill"}],"confidence":9}', '{"score":9}']);
+  const reread = async () => { verdict = 'supported'; return [page]; }; // the same page, already read in full: merge adds nothing
+  const r = await refineAnswer({ goal: 'g', answer: { answer: 'about 11 million', sources: [{ url, contribution: 'about 11 million sick' }] }, seen: [page], ask, verify, reread, rounds: 1, escalate: false });
+  assert.equal(r.versions[1].reread, 1);
 });

@@ -171,7 +171,7 @@ test('a policy that forbids the inline scripts the page itself runs is detected 
   assert.equal(inlineScriptsBlocked("default-src 'self'", '<script src="a.js"></script>'), null);
 });
 
-test('an edit can only touch a listed file inside the copy: no ../, no absolute path, no journeys or test file, no link', async () => {
+test('an edit can only touch a listed file inside the copy: no ../, no absolute path, no journeys or test file, no link', async (t) => {
   const { symlinkSync, writeFileSync } = await import('node:fs');
   const { tmpdir } = await import('node:os');
   const copy = copySite(SITE);
@@ -183,7 +183,9 @@ test('an edit can only touch a listed file inside the copy: no ../, no absolute 
   assert.equal(readFileSync(outside, 'utf8'), 'const a = 1;');
   let linked = false;
   try { symlinkSync(outside, join(copy, 'linked.js')); linked = true; } catch { /* no symlink right (Windows without developer mode) */ }
-  if (linked) { const l = applyEdits(copy, [edit('linked.js')], ['linked.js']); assert.match(l.refused[0].why, /symbolic link/); assert.equal(readFileSync(outside, 'utf8'), 'const a = 1;'); }
+  // Without the right to create a link, the link case is reported as skipped, never as a green check of nothing.
+  if (!linked) { t.skip('no symlink right on this machine'); return; }
+  const l = applyEdits(copy, [edit('linked.js')], ['linked.js']); assert.match(l.refused[0].why, /symbolic link/); assert.equal(readFileSync(outside, 'utf8'), 'const a = 1;');
 });
 
 test('the replace text is written as is: $&, $\' and $$ are not expanded', () => {
@@ -248,4 +250,83 @@ test('a finding id cannot name a folder outside the run', async () => {
   await repairAll({ findings: [{ ...F02, id: '../../escape' }], siteDir: SITE, ask: null, folder, know, propose, review: null });
   assert.ok(existsSync(join(folder, '__.._escape', 'repair.json'))); // slashes become _, leading dots too
   assert.ok(!existsSync(join(folder, '..', '..', 'escape')));
+});
+
+test('a replace that reaches assert, the test runner or the process exit is refused (the referee runs the fixed code)', () => {
+  const copy = copySite(SITE);
+  const find = "'x-powered-by': 'PHP/7.2.24 WooCommerce/3.5.1', ";
+  const bad = ["import assert from 'node:assert'; ", "require('assert').ok = () => {}; ", "import { test } from 'node:test'; ", 'process.exit(0); ', "process.stdout.write('ok'); ", "import a from 'assert'; "];
+  const r = applyEdits(copy, bad.map((replace) => ({ file: 'server.js', find, replace })));
+  assert.equal(r.applied.length, 0);
+  assert.equal(r.refused.length, bad.length);
+  for (const x of r.refused) assert.match(x.why, /reaches the test runner, assert or the process exit/);
+  assert.ok(readFileSync(join(copy, 'server.js'), 'utf8').includes('WooCommerce/3.5.1'));
+});
+
+test('a malformed edit list keeps its usable edits; ./server.js is server.js, and the patch names it once', async () => {
+  const { proposeFix, makePatch } = await import('./repair.js');
+  const ask = async () => ({ text: JSON.stringify({ edits: [null, 7, 'x', { file: 'server.js' }, { ...HEADER_FIX, file: './server.js' }], summary: 's', risk: '' }) });
+  const fix = await proposeFix({ finding: F02, recommendation: { answer: 'x', sources: [] }, siteDir: SITE, ask });
+  assert.equal(fix.edits.length, 1);
+  const copy = copySite(SITE);
+  const r = applyEdits(copy, [null, ...fix.edits]);
+  assert.equal(r.applied.length, 1); assert.equal(r.applied[0].file, 'server.js'); assert.equal(r.refused.length, 1);
+  const patch = makePatch(SITE, copy, ['./server.js', 'server.js', 'a/../server.js']);
+  assert.equal(patch.split('\n').filter((l) => l.startsWith('diff --git')).length, 1, patch.slice(0, 300));
+});
+
+test('the patch opens with a line saying it is a proposal, and git apply still accepts it', async () => {
+  const { makePatch, redactPatch, PATCH_HEADER } = await import('./repair.js');
+  const { spawnSync } = await import('node:child_process');
+  const { writeFileSync } = await import('node:fs');
+  const copy = copySite(SITE);
+  applyEdits(copy, [HEADER_FIX]);
+  const patch = makePatch(SITE, copy, ['server.js']);
+  assert.equal(patch.split('\n')[0], '# Proposed by Mission Zero (an AI model, Muse Spark). Not applied. Review before use.');
+  assert.equal(PATCH_HEADER, patch.split('\n')[0]);
+  assert.ok(redactPatch(patch).startsWith(PATCH_HEADER + '\n'));
+  const target = copySite(SITE); const file = join(target, 'fix.patch'); writeFileSync(file, patch);
+  const git = spawnSync('git', ['apply', '--check', 'fix.patch'], { cwd: target, encoding: 'utf8' });
+  if (git.error) return; // no git on this machine: makePatch returns null there anyway
+  assert.equal(git.status, 0, git.stderr);
+});
+
+test('repair.json and report records are masked: no secret, no temporary path; the raw values stay in fix.patch only', async () => {
+  const { mkdtempSync, readFileSync: read, readdirSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const { repairAll, diskRecord, siteSecrets } = await import('./repair.js');
+  const folder = mkdtempSync(join(tmpdir(), 'mz-mask-'));
+  const finding = { ...F02, evidence: 'x-powered-by: PHP/7.2.24 and DB_PASSWORD=Verde2019! in /.env' };
+  // The model's prose comes back with the secret restored as a bare word: only the known-values pass can catch it.
+  const propose = async () => ({ edits: [HEADER_FIX, { file: 'server.js', find: "p.password === 'maisonverde2019'", replace: "p.password === 'maisonverde2019' /* same check */" }], summary: 'keeps maisonverde2019 as it is', risk: 'Verde2019! is still in .env' });
+  const review = async () => ({ verdict: 'cause', reason: 'the password maisonverde2019 is untouched', missing: '' });
+  const [r] = await repairAll({ findings: [finding], siteDir: SITE, ask: null, folder, know, propose, review });
+  assert.equal(r.status, 'proposed', r.why);
+  const disk = read(join(folder, 'F02', 'repair.json'), 'utf8');
+  for (const s of ['maisonverde2019', 'Verde2019!', 'mz-repair-']) assert.ok(!disk.includes(s), s + ' in repair.json');
+  assert.ok(read(join(folder, 'F02', 'fix.patch'), 'utf8').includes('maisonverde2019'));
+  assert.ok(!read(join(folder, 'F02', 'fix.redacted.patch'), 'utf8').includes('maisonverde2019'));
+  const rec = JSON.parse(disk);
+  assert.ok(rec.patch.startsWith('# Proposed by Mission Zero') && rec.patch.includes('«SECRET_'), 'repair.json keeps the redacted patch');
+  assert.ok(!rec.journeysAfter.output.includes(tmpdir()), 'the temporary path is named <copy>');
+  const report = JSON.stringify(diskRecord(r, siteSecrets(SITE, ['server.js'], [finding])));
+  assert.ok(!report.includes('maisonverde2019') && !report.includes('Verde2019!'));
+  assert.deepEqual(readdirSync(folder).sort(), ['F02', 'chain.json']);
+});
+
+test('two findings never share a folder (a/b and a_b, F01 and f01, no id), and one that fails does not stop the others', async () => {
+  const { mkdtempSync, existsSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const { repairAll } = await import('./repair.js');
+  const { verifyChain } = await import('./chain.js');
+  const folder = mkdtempSync(join(tmpdir(), 'mz-dirs-'));
+  const fail = async () => { throw new Error('no research in this test'); };
+  const findings = [{ id: 'a/b' }, { id: 'a_b' }, { id: 'F01' }, { id: 'f01' }, {}, {}, { id: 'big', n: 1n }, { id: 'last' }].map((f) => ({ severity: 'low', type: 't', ...f }));
+  const results = await repairAll({ findings, siteDir: SITE, ask: null, folder, know: fail, propose: null, review: null });
+  assert.equal(results.length, 8);
+  assert.deepEqual(results.map((r) => r.dir), ['a_b', 'a_b-2', 'F01', 'f01-2', 'finding', 'finding-2', 'big', 'last']);
+  for (const r of results) assert.equal(r.status, 'error');
+  for (const d of ['a_b', 'a_b-2', 'F01', 'f01-2', 'finding', 'finding-2', 'last']) assert.ok(existsSync(join(folder, d, 'repair.json')), d);
+  assert.match(results[6].recordError, /BigInt/); // its record could not be written; the next finding still ran
+  assert.equal(verifyChain(folder).ok, true); assert.equal(verifyChain(folder).entries, 7);
 });

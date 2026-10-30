@@ -1,11 +1,14 @@
 // Demo bench: plays the goals of demo-goals.json one after the other, each as a full Mission Zero run
-// (4 research turns, 3 contradiction rounds on the final answer), and prints one table for the video.
+// (4 research turns, 3 contradiction rounds on the final answer), and prints one table.
 // Usage: node --env-file=.env bench/run-demo.js [--only=1,3] [--turns=4] [--rounds=3] [--dry]
-// Cost: about $0.03 to $0.15 per goal (30 October runs); the daily cap in .env stops everything when reached.
+// Cost: about $0.04 to $0.09 per goal (the five demo goals); the daily cap in .env stops everything when reached.
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { evidenceFolder } from '../src/evidenceDir.js';
 
+// Both caps of src/meta.js ("Spending cap of $x reached for this run", "Daily cap of $x reached"): src/meta.test.js reads
+// this line and checks the real error messages against it.
+const CAP_REACHED = /cap of .* reached/i;
 const args = Object.fromEntries(process.argv.slice(2).map((a) => { const m = a.match(/^--([^=]+)(?:=(.*))?$/); return m ? [m[1], m[2] ?? true] : [a, true]; }));
 const goals = JSON.parse(readFileSync(new URL('./demo-goals.json', import.meta.url), 'utf8'));
 const only = args.only ? String(args.only).split(',').map(Number) : null;
@@ -36,7 +39,7 @@ for (const g of chosen) {
     evidence, error: s ? '' : out.split('\n').filter(Boolean).slice(-2).join(' ').slice(0, 160),
   });
   console.table(rows);
-  if (!s && /cap of .* reached/i.test(out)) { console.log('Daily cap reached: stopping.'); break; }
+  if (!s && CAP_REACHED.test(out)) { console.log('Spending cap reached: stopping.'); break; }
 }
 writeFileSync(`${folder}/demo.json`, JSON.stringify({ turns, rounds, goals: chosen, rows }, null, 2));
 console.log('Saved:', `${folder}/demo.json`);

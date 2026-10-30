@@ -22,24 +22,26 @@ footer{text-align:center;color:var(--mut);font-size:14px;margin-top:24px}footer 
 <body>
 <main>
 <div class="lang"><button id="en" aria-pressed="true">EN</button> <button id="fr" aria-pressed="false">FR</button></div>
-<header><img src="logo.png" alt="CRYPTOR.AGENCY"><h1>Mission Zero</h1><p class="tag" id="tag"></p></header>
+<header><img src="logo.png" alt="CRYPTOR.AGENCY"><h1>Mission Zero</h1><p class="tag" id="ctx"></p><p class="tag" id="tag"></p></header>
 <section id="card" aria-live="polite"></section>
 <footer id="foot"></footer>
 </main>
 <script>
 const T = {
   en: {
+    ctx: 'One-question poll behind Mission Zero\'s community question. A random identifier in your browser counts one answer per person.',
     tag: 'Vote to compare your answer with the studies.',
     q: 'What blocks AI the most in your company?',
     o: { 'data-leak': 'Fear of data leaks', 'no-results': 'Fear of getting no result', 'data-ready': 'Data not ready', governance: 'Rules and compliance', skills: 'Lack of skills', cost: 'Cost' },
-    same: 'You are like the studies', diff: 'You are different from the studies', studies: 'The studies point to: ', share: 'You chose: ',
+    same: 'Your answer matches the studies', diff: 'Your answer differs from the studies', studies: 'The studies point to: ', share: 'You chose: ',
     foot: 'Built for the Meta Global AI Developer Hackathon by <a href="https://cryptor.agency">CRYPTOR.AGENCY</a><br>No name, no email, no IP address stored; a random identifier kept in your browser counts one answer per person.',
   },
   fr: {
+    ctx: 'Sondage à une question, derrière la question communautaire de Mission Zero. Un identifiant aléatoire gardé dans votre navigateur compte une réponse par personne.',
     tag: 'Votez pour comparer votre réponse aux études.',
     q: 'Qu’est-ce qui bloque le plus l’IA dans votre entreprise ?',
     o: { 'data-leak': 'Peur des fuites de données', 'no-results': 'Peur de ne pas avoir de résultat', 'data-ready': 'Données pas prêtes', governance: 'Règles et conformité', skills: 'Manque de compétences', cost: 'Coût' },
-    same: 'Vous êtes comme les études', diff: 'Vous êtes différent des études', studies: 'Les études désignent : ', share: 'Votre choix : ',
+    same: 'Votre réponse rejoint celle des études', diff: 'Votre réponse diffère de celle des études', studies: 'Les études pointent : ', share: 'Votre choix : ',
     foot: 'Construit pour le hackathon mondial d’IA de Meta par <a href="https://cryptor.agency">CRYPTOR.AGENCY</a><br>Ni nom, ni e-mail, ni adresse IP conservés ; un identifiant aléatoire gardé dans votre navigateur compte une réponse par personne.',
   },
 };
@@ -65,7 +67,7 @@ function show() {
   });
 }
 function text() {
-  const t = T[lang]; document.documentElement.lang = lang; $('tag').textContent = t.tag; $('foot').innerHTML = t.foot;
+  const t = T[lang]; document.documentElement.lang = lang; $('ctx').textContent = t.ctx; $('tag').textContent = t.tag; $('foot').innerHTML = t.foot;
   $('en').setAttribute('aria-pressed', lang === 'en'); $('fr').setAttribute('aria-pressed', lang === 'fr'); show();
 }
 function setLang(l) { lang = l; try { localStorage.setItem('mz-lang', l); } catch (e) { /* ignore */ } text(); }

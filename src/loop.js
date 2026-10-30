@@ -31,11 +31,11 @@ export function loadMemory(path) {
 const PLAN_PROMPT = 'You are Mission Zero. You reach a goal through successive experiments. Allowed actions, and only these: '
   + '{"type":"web_search","query":"3 to 8 keywords, not a sentence"}, {"type":"read_page","url":"a URL already seen in a search result or given in the goal","find":"the exact facts to locate in the page, as keywords and numbers"} to read a whole page (long reports come back as the passages matching find), or {"type":"create_page","name":"","content":"complete HTML"}. '
   + 'Prefer reading primary institutional or study pages over snippets, and count sources by independent institution. '
-  + 'No cost and no real-world action (costUsd 0, real false) unless indispensable. After an empty search, change the keywords. '
+  + 'No cost and no real-world action (costUsd 0, real false). Never plan a paid or real-world action: it is refused. After an empty search, change the keywords. '
   + 'Answer ONLY in JSON: {"hypotheses":[""],"action":{"type":"","query":"","url":"","find":"","name":"","content":"","costUsd":0,"real":false},"expected":""}.';
 const EVAL_PROMPT = 'Score 0 to 10 how much the observation moves the goal (10 = the exact figures are in a page that was read). '
   + 'reached = true only when the goal can be answered now from pages read. lesson and pivot: one sentence each. No prose outside the JSON. '
-  + 'JSON: {"score":7,"reached":false,"lesson":"","uncertainties":[""],"pivot":""}.';
+  + 'score is an integer from 0 to 10. JSON: {"score":0,"reached":false,"lesson":"","uncertainties":[""],"pivot":""}.';
 
 export async function run({ goal, constraints = [], lessons = [], budgetUsd = 100, maxTurns = 6, contradictions = 0, escalate = true, ask, execute, approve, help = null, memoryPath = null, journalPath = null }) {
   const memory = loadMemory(memoryPath);

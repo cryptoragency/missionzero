@@ -1,6 +1,6 @@
 // Voice: a goal spoken into a WAV file becomes the mission's goal (Meta muse-voice-transcribe-1.0).
 // POST /v1/asr/transcribe, multipart: `request` (JSON settings) + `audio` (WAV only, 10 minutes max, 32 MB max).
-import { readFileSync } from 'node:fs';
+import { readFileSync, rmSync } from 'node:fs';
 import { basename } from 'node:path';
 import { createRequire } from 'node:module';
 import { metaFetch, META_BASE, META_KEY } from './meta.js';
@@ -29,11 +29,14 @@ export function ensureAcceptedWav(path) {
   if (!f) throw new Error('not a WAV file: ' + basename(path));
   if (wavAccepted(f)) return { path, bytes, format: f, converted: false };
   const { spawnSync } = requireSync('node:child_process'); const { tmpdir } = requireSync('node:os'); const { join } = requireSync('node:path');
-  const out = join(tmpdir(), 'mz-voice-' + Date.now() + '.wav');
-  const r = spawnSync(process.env.MZ_FFMPEG || 'ffmpeg', ['-y', '-loglevel', 'error', '-i', path, '-ac', '1', '-ar', '16000', '-sample_fmt', 's16', out], { encoding: 'utf8' });
-  if (r.error || r.status !== 0) throw new Error(`WAV is ${f.channels} ch, ${f.sampleRate} Hz, ${f.bits} bit; mono 16-bit 16/24 kHz expected and ffmpeg could not convert it (${(r.stderr || r.error?.message || '').slice(0, 120)})`);
-  const converted = readFileSync(out);
-  return { path: out, bytes: converted, format: wavFormat(converted), converted: true, from: f };
+  const out = join(tmpdir(), 'mz-voice-' + process.pid + '-' + Date.now() + '.wav');
+  // The converted copy of someone's voice is read into memory, then removed: nothing of it stays in the temp folder.
+  try {
+    const r = spawnSync(process.env.MZ_FFMPEG || 'ffmpeg', ['-y', '-loglevel', 'error', '-i', path, '-ac', '1', '-ar', '16000', '-sample_fmt', 's16', out], { encoding: 'utf8' });
+    if (r.error || r.status !== 0) throw new Error(`WAV is ${f.channels} ch, ${f.sampleRate} Hz, ${f.bits} bit; mono 16-bit 16/24 kHz expected and ffmpeg could not convert it (${(r.stderr || r.error?.message || '').slice(0, 120)})`);
+    const converted = readFileSync(out);
+    return { path, bytes: converted, format: wavFormat(converted), converted: true, from: f };
+  } finally { rmSync(out, { force: true }); }
 }
 const requireSync = (m) => createRequire(import.meta.url)(m);
 

@@ -48,8 +48,34 @@ test('a JSON body that is null, a number or an array is an empty body, never a c
 test('x-forwarded-for is believed only with MZ_TRUST_PROXY=1', () => {
   const req = { headers: { 'x-forwarded-for': '203.0.113.9, 10.0.0.1' }, socket: { remoteAddress: '127.0.0.1' } };
   assert.equal(callerOf(req, false), '127.0.0.1');
-  assert.equal(callerOf(req, true), '203.0.113.9');
+  assert.equal(callerOf(req, true), '10.0.0.1'); // the last value, appended by our proxy; the first is the caller's own claim
+  assert.equal(callerOf({ headers: { 'x-forwarded-for': 'spoofed, 198.51.100.7' }, socket: {} }, true), '198.51.100.7');
   assert.equal(callerOf({ headers: {}, socket: { remoteAddress: '::1' } }, true), '::1');
+});
+
+test('the page is served with its security headers, its inline script and style allowed by hash; a missing logo is a 404', async () => {
+  const { makeServer, securityHeaders } = await import('./server.js');
+  const { createHash } = await import('node:crypto');
+  const { readFileSync } = await import('node:fs');
+  const server = makeServer({ logoPath: join(tmpdir(), 'no-such-logo-' + process.pid + '.png') });
+  await new Promise((r) => server.listen(0, '127.0.0.1', r));
+  try {
+    const base = 'http://127.0.0.1:' + server.address().port;
+    const r = await fetch(base + '/');
+    assert.equal(r.status, 200);
+    const csp = r.headers.get('content-security-policy');
+    assert.match(csp, /^default-src 'self';/);
+    assert.equal(r.headers.get('x-frame-options'), 'DENY');
+    assert.equal(r.headers.get('x-content-type-options'), 'nosniff');
+    assert.equal(r.headers.get('referrer-policy'), 'no-referrer');
+    const html = await r.text();
+    const script = html.match(/<script>([\s\S]*?)<\/script>/)[1];
+    assert.ok(csp.includes("'sha256-" + createHash('sha256').update(script).digest('base64') + "'"), 'the page script would be blocked');
+    assert.equal((await fetch(base + '/logo.png')).status, 404);
+    const api = await fetch(base + '/api/poll');
+    assert.equal(api.status, 200); assert.equal(api.headers.get('x-content-type-options'), 'nosniff');
+  } finally { await new Promise((r) => server.close(r)); }
+  assert.doesNotMatch(securityHeaders(readFileSync(new URL('./index.html', import.meta.url), 'utf8'))['content-security-policy'], /unsafe-inline/);
 });
 
 test('callers silent for 10 minutes are forgotten', () => {

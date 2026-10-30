@@ -41,7 +41,6 @@ test('the run cap stops the next call once the run has spent it', async () => {
   const c = createClient({ key: 'k', capUsd: 2, dailyCapUsd: 0, fetchFn: fakeFetch([reply()]), price });
   await c.ask([]); await c.ask([]); // 1.25 then 2.50: the second starts under the cap
   await assert.rejects(() => c.ask([]), /^Error: Spending cap of \$2 reached for this run\. Raise MZ_CAP_USD to continue\.$/);
-  assert.match('Spending cap of $2 reached for this run.', /cap of .* reached/i); // bench/run-demo.js still sees it
   assert.equal(c.counter.calls, 2);
 });
 
@@ -53,7 +52,6 @@ test('the daily cap holds across clients that share the ledger', async () => {
     await a.ask([]); await b.ask([]); await a.ask([]); // 1.25 + 1.25 + 1.25: no write lost between the two clients
     assert.equal(spentToday(path), 3.75);
     await assert.rejects(() => b.ask([]), /Daily cap of \$3 reached\. Stopped until tomorrow \(UTC\), or raise MZ_DAILY_CAP_USD\./);
-    assert.match('Daily cap of $3 reached.', /cap of .* reached/i);
   } finally { rmSync(d, { recursive: true, force: true }); }
 });
 
@@ -109,21 +107,77 @@ test('metaFetch sets the key, counts the cost it is told, and checks the daily l
   const { d, path } = tmpLedger();
   try {
     const f = fakeFetch([{ ok: true, status: 200, text: async () => '{"audioDurationMs":3600000}' }]);
-    const r = await metaFetch('/asr/transcribe', { method: 'POST', headers: { accept: 'application/json' } }, { key: 'k', fetchFn: f, dailyCapUsd: 1, ledgerPath: path, cost: (j) => j.audioDurationMs / 3.6e6 * 0.18 });
+    const r = await metaFetch('/asr/transcribe', { method: 'POST', headers: { accept: 'application/json' } }, { key: 'k', fetchFn: f, capUsd: 1000, dailyCapUsd: 1, ledgerPath: path, cost: (j) => j.audioDurationMs / 3.6e6 * 0.18 });
     assert.equal(r.json.audioDurationMs, 3600000);
     assert.equal(f.calls[0].init.headers.authorization, 'Bearer k');
     assert.equal(f.calls[0].init.headers.accept, 'application/json');
     assert.ok(f.calls[0].url.endsWith('/asr/transcribe'));
     assert.equal(spentToday(path), 0.18);
     writeFileSync(path, JSON.stringify({ date: today(), usd: 1 }));
-    await assert.rejects(() => metaFetch('/responses', {}, { key: 'k', fetchFn: f, dailyCapUsd: 1, ledgerPath: path }), /Daily cap of \$1 reached/);
+    await assert.rejects(() => metaFetch('/responses', {}, { key: 'k', fetchFn: f, capUsd: 1000, dailyCapUsd: 1, ledgerPath: path }), /Daily cap of \$1 reached/);
     assert.equal(f.calls.length, 1);
   } finally { rmSync(d, { recursive: true, force: true }); }
 });
 
-test('an unknown MZ_BASE_URL host is announced before the key goes there', () => {
-  const env = { ...process.env, MZ_BASE_URL: 'https://evil.example/v1' }; delete env.MZ_API_KEY;
-  assert.match(spawnSync(process.execPath, ['--input-type=module', '-e', "import('./src/meta.js')"], { encoding: 'utf8', env }).stderr, /MODEL_API_KEY will be sent to evil\.example/);
-  const known = spawnSync(process.execPath, ['--input-type=module', '-e', "import('./src/meta.js')"], { encoding: 'utf8', env: { ...process.env, MZ_BASE_URL: 'https://inference.baseten.co/v1' } });
-  assert.doesNotMatch(known.stderr, /will be sent to/);
+// The first call of a client built in a fresh process, with a fetch that answers 200: what it throws, what stderr says.
+const firstCall = (env) => {
+  const clean = { ...process.env }; for (const k of ['MZ_BASE_URL', 'MZ_API_KEY', 'MZ_ALLOW_CUSTOM_BASE']) delete clean[k];
+  const code = "import('./src/meta.js').then(async (m) => { let error = null; try { await m.createClient({ key: 'k', dailyCapUsd: 0, fetchFn: async () => ({ ok: true, status: 200, text: async () => '{\"choices\":[]}' }) }).ask([]); } catch (e) { error = e.message; } console.log(JSON.stringify({ error })); })";
+  const r = spawnSync(process.execPath, ['--input-type=module', '-e', code], { encoding: 'utf8', env: { ...clean, ...env } });
+  return { ...JSON.parse(r.stdout.trim().split('\n').pop()), stderr: r.stderr };
+};
+
+test('an unknown or plain-http MZ_BASE_URL is refused at the first call, unless MZ_ALLOW_CUSTOM_BASE=1 (then announced)', () => {
+  assert.match(firstCall({ MZ_BASE_URL: 'https://evil.example/v1' }).error, /MZ_BASE_URL \(https:\/\/evil\.example\) is not a known https provider.*MZ_ALLOW_CUSTOM_BASE=1/);
+  assert.match(firstCall({ MZ_BASE_URL: 'http://api.meta.ai/v1' }).error, /not a known https provider/);
+  const custom = firstCall({ MZ_BASE_URL: 'https://evil.example/v1', MZ_ALLOW_CUSTOM_BASE: '1' });
+  assert.equal(custom.error, null);
+  assert.match(custom.stderr, /MODEL_API_KEY will be sent to evil\.example/);
+  const known = firstCall({ MZ_BASE_URL: 'https://inference.baseten.co/v1' });
+  assert.equal(known.error, null); assert.doesNotMatch(known.stderr, /will be sent to/);
+  assert.equal(firstCall({}).error, null); // the default, api.meta.ai
+});
+
+// bench/run-demo.js stops on this regex: it is read from the file, and checked against the real errors of both caps.
+const CAP_REACHED = (() => { const m = readFileSync('bench/run-demo.js', 'utf8').match(/const CAP_REACHED = \/(.+)\/(\w*);/); return new RegExp(m[1], m[2]); })();
+
+test('both cap errors, raised for real, are the ones bench/run-demo.js stops on', async () => {
+  const c = createClient({ key: 'k', capUsd: 1, dailyCapUsd: 0, fetchFn: fakeFetch([reply()]), price });
+  await c.ask([]);
+  const run = await c.ask([]).then(() => null, (e) => e);
+  assert.match(run.message, /Spending cap of \$1 reached/); assert.match(run.message, CAP_REACHED);
+  const { d, path } = tmpLedger();
+  try {
+    writeFileSync(path, JSON.stringify({ date: today(), usd: 9 }));
+    const daily = await createClient({ key: 'k', dailyCapUsd: 2, ledgerPath: path, fetchFn: fakeFetch([reply()]), price }).ask([]).then(() => null, (e) => e);
+    assert.match(daily.message, /Daily cap of \$2 reached/); assert.match(daily.message, CAP_REACHED);
+  } finally { rmSync(d, { recursive: true, force: true }); }
+});
+
+test('the run cap adds chat and side calls, on both sides', async () => {
+  const { sideCounter, chatSpend } = await import('./meta.js');
+  const saved = { side: sideCounter.usd, chat: chatSpend.usd };
+  try {
+    sideCounter.usd = 0; chatSpend.usd = 0;
+    const c = createClient({ key: 'k', capUsd: 2, dailyCapUsd: 0, fetchFn: fakeFetch([reply()]), price });
+    await c.ask([]); // chat: 1.25
+    sideCounter.usd = 1; // SAM or voice: 1, total 2.25
+    await assert.rejects(() => c.ask([]), /Spending cap of \$2/);
+    const f = fakeFetch([{ ok: true, status: 200, text: async () => '{}' }]);
+    await assert.rejects(() => metaFetch('/responses', {}, { key: 'k', fetchFn: f, capUsd: 2, dailyCapUsd: 0 }), /Spending cap of \$2/);
+    assert.equal(f.calls.length, 0);
+    sideCounter.usd = 0;
+    await metaFetch('/responses', {}, { key: 'k', fetchFn: f, capUsd: 2, dailyCapUsd: 0 }); // 1.25 of chat alone: under the cap
+    assert.equal(f.calls.length, 1);
+  } finally { sideCounter.usd = saved.side; chatSpend.usd = saved.chat; }
+});
+
+test('a network error or a timeout is retried like a 503, then reported as it is', async () => {
+  const waits = []; let n = 0;
+  const flaky = async () => { n += 1; if (n === 1) throw new TypeError('fetch failed'); if (n === 2) { const e = new Error('The operation was aborted due to timeout'); e.name = 'TimeoutError'; throw e; } return reply(); };
+  const r = await createClient({ key: 'k', dailyCapUsd: 0, fetchFn: flaky, sleep: async (ms) => { waits.push(ms); }, price }).ask([]);
+  assert.equal(r.text, 'ok'); assert.equal(n, 3); assert.deepEqual(waits, [2000, 8000]);
+  let m = 0;
+  await assert.rejects(() => createClient({ key: 'k', dailyCapUsd: 0, fetchFn: async () => { m += 1; throw new TypeError('fetch failed'); }, sleep: async () => {}, price }).ask([]), /fetch failed/);
+  assert.equal(m, 3);
 });

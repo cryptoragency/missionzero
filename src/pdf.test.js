@@ -25,7 +25,7 @@ test('readPage reads the text of a PDF report', async () => {
   const sentence = 'Small businesses: 43 percent were attacked in 2019 according to the study, which surveyed 4000 firms across 11 countries and reported the figure with its definition and year.';
   const body = tinyPdf(sentence + ' ' + sentence);
   const fetchFn = async () => new Response(body, { status: 200, headers: { 'content-type': 'application/pdf' } });
-  const r = await readPage('https://primary.example/report.pdf', { fetchFn });
+  const r = await readPage('https://primary.example/report.pdf', { fetchFn, lookup: null });
   assert.equal(r.ok, true);
   assert.match(r.text, /43 percent were attacked in 2019/);
   assert.equal(r.pdf.pages, 1);
@@ -33,7 +33,7 @@ test('readPage reads the text of a PDF report', async () => {
 
 test('a PDF larger than the cap is refused without being parsed', async () => {
   const fetchFn = async () => new Response(Buffer.alloc(26 * 1024 * 1024), { status: 200, headers: { 'content-type': 'application/pdf' } });
-  const r = await readPage('https://primary.example/huge.pdf', { fetchFn });
+  const r = await readPage('https://primary.example/huge.pdf', { fetchFn, lookup: null });
   assert.equal(r.ok, false);
   assert.match(r.error, /too large/);
 });
@@ -46,7 +46,7 @@ test('a long report comes back as the passages matching what the planner wants t
   const human = 'The human element was involved in approximately 60% of breaches this year, similar to last year.';
   const page = filler.slice(0, 8000) + '\n' + key + '\n' + filler.slice(8000) + '\n' + human;
   const fetchFn = async () => new Response(page, { status: 200, headers: { 'content-type': 'text/html' } });
-  const r = await readForGoal('https://p.example/report', 'how many breaches were analyzed and what share involved the human element', { fetchFn, find: 'confirmed breaches analyzed, human element share' });
+  const r = await readForGoal('https://p.example/report', 'how many breaches were analyzed and what share involved the human element', { fetchFn, find: 'confirmed breaches analyzed, human element share', lookup: null });
   assert.ok(r.text.includes('12,195'));
   assert.ok(r.text.includes('60%'));
   assert.ok(r.text.length <= 6000);
@@ -69,7 +69,7 @@ test('an EUR-Lex address is read from the Publications Office, and a bot challen
   assert.equal(officialMirror('https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022L2555'), 'http://publications.europa.eu/resource/celex/32022L2555');
   assert.equal(officialMirror('https://www.verizon.com/dbir.pdf'), null);
   const challenge = async () => new Response('<html><script>window.awsWafCookieDomainList = []; window.gokuProps = {}</script></html>', { status: 202, headers: { 'content-type': 'text/html' } });
-  const r = await readPage('https://blocked.example/page', { fetchFn: challenge });
+  const r = await readPage('https://blocked.example/page', { fetchFn: challenge, lookup: null });
   assert.equal(r.ok, false);
   assert.match(r.error, /bot challenge/);
   const { normalizeNumbers } = await import('./passages.js');
