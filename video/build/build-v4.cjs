@@ -25,7 +25,7 @@ const sBgeo = (function () {
     let t = RB; while (!inChip(CX + ux * t, CY + uy * t)) t += 0.5;
     return 'M' + f(CX + ux * RB) + ',' + f(CY + uy * RB) + ' L' + f(CX + ux * t) + ',' + f(CY + uy * t);
   };
-  const okChip = (i, label) => { const c = chips[i]; return '<rect class="chip ok" x="' + f(c.x - W / 2) + '" y="' + f(c.y - H / 2) + '" width="' + W + '" height="' + H + '" rx="' + H / 2 + '"/><text class="chip-t" x="' + f(c.x) + '" y="' + f(c.y + 7) + '" text-anchor="middle" style="font-size:19px">✔ ' + label + ' · prouvé</text>'; };
+  const okChip = (i, label) => { const c = chips[i]; return '<rect class="chip ok" x="' + f(c.x - W / 2) + '" y="' + f(c.y - H / 2) + '" width="' + W + '" height="' + H + '" rx="' + H / 2 + '"/><text class="chip-t" x="' + f(c.x) + '" y="' + f(c.y + 7) + '" text-anchor="middle" style="font-size:19px">✔ ' + label + '</text>'; };
   const exit = '<g class="a" data-k="?" data-dur="1000" data-d="1050"><path class="arrow" pathLength="1" d="M' + (CX + RB) + ',' + CY + ' L1633.3,' + CY + '"/></g>';
   step('<g class="a" data-k="?" data-dur="1300" data-d="1400"><path class="arrow" pathLength="1" d="M-33.3,' + CY + ' L' + (CX - RB) + ',' + CY + '"/></g>');
   step('<g class="b" data-k="?" data-d="1600"><circle class="ring lit" cx="' + CX + '" cy="' + CY + '" r="' + RB + '"/><text class="lbl m acc" x="' + CX + '" y="' + (CY - 4) + '" text-anchor="middle">la boucle</text><text class="lbl xs" x="' + CX + '" y="' + (CY + 22) + '" text-anchor="middle">chercher · lire · prouver</text></g>');
@@ -36,13 +36,13 @@ const sBgeo = (function () {
   step('<g class="a" data-k="?" data-zoom="#bS" data-dur="1000"><path class="arrow" pathLength="1" d="' + fil(9) + '"/></g>', 'securite');
   step('<g class="b" data-k="?" data-d="2400"><text class="lbl amber" x="800" y="70" text-anchor="middle" style="font-size:26px">Premier voyage : la sécurité d\'un site.</text></g>', 'securite');
   // 2e passage : la sécurité prouvée, le fil vers l'espace, puis il ressort à droite.
-  step('<g class="b" data-k="?" data-hide="#bS" data-d="1400">' + okChip(9, 'La sécurité') + '</g>', 'espace');
+  step('<g class="b" data-k="?" data-hide="#bS" data-d="1400">' + okChip(9, 'La sécurité · prouvée') + '</g>', 'espace');
   step('<g class="a" data-k="?" data-zoom="#bE" data-dur="1000"><path class="arrow" pathLength="1" d="' + fil(0) + '"/></g>', 'espace');
   step('<g class="b" data-k="?" data-d="2400"><text class="lbl amber" x="800" y="70" text-anchor="middle" style="font-size:26px">Deuxième voyage : l\'espace.</text></g>', 'espace');
   step(exit, 'espace');
   // 3e passage : sécurité et espace prouvés, le fil vers la médecine, puis il ressort à droite.
-  step('<g class="b" data-k="?" data-hide="#bS" data-d="700">' + okChip(9, 'La sécurité') + '</g>', 'medecine');
-  step('<g class="b" data-k="?" data-hide="#bE" data-d="1400">' + okChip(0, 'L\'espace') + '</g>', 'medecine');
+  step('<g class="b" data-k="?" data-hide="#bS" data-d="700">' + okChip(9, 'La sécurité · prouvée') + '</g>', 'medecine');
+  step('<g class="b" data-k="?" data-hide="#bE" data-d="1400">' + okChip(0, 'L\'espace · prouvé') + '</g>', 'medecine');
   step('<g class="a" data-k="?" data-zoom="#bM" data-dur="1000"><path class="arrow" pathLength="1" d="' + fil(1) + '"/></g>', 'medecine');
   step('<g class="b" data-k="?" data-d="2400"><text class="lbl amber" x="800" y="70" text-anchor="middle" style="font-size:26px">Dernier voyage : la médecine.</text></g>', 'medecine');
   step(exit, 'medecine');
@@ -63,39 +63,44 @@ const sBgeo = (function () {
 const sEgeo = (function () {
   let k = 0; const g = [];
   const step = (s) => { k += 1; g.push(s.replace('data-k="?"', 'data-k="' + k + '"')); };
-  const row = (x, y, txt, ok, label) => '<text class="lbl xs" x="' + x + '" y="' + y + '" style="font-size:17px;fill:var(--fg)">' + txt + '</text><rect class="chip ' + (ok ? 'ok' : 'ko') + '" x="' + (x < 800 ? 590 : 1400) + '" y="' + (y - 22) + '" width="' + (x < 800 ? 150 : 120) + '" height="32" rx="16"/><text class="chip-t" x="' + (x < 800 ? 665 : 1460) + '" y="' + y + '" text-anchor="middle">' + label + '</text>';
+  // Une ligne lisible par source : le texte, puis son statut.
+  const row = (x, y, txt, ok, label) => '<text class="lbl" x="' + x + '" y="' + y + '" style="font-size:20px;font-weight:400">' + txt + '</text><rect class="chip ' + (ok ? 'ok' : 'ko') + '" x="' + (x + 470) + '" y="' + (y - 23) + '" width="160" height="34" rx="17"/><text class="chip-t" x="' + (x + 550) + '" y="' + (y + 1) + '" text-anchor="middle" style="font-size:17px">' + label + '</text>';
   g.push('<g id="stars"></g>');
+  step('<g class="b" data-k="?" id="q0" data-stars="1" data-d="2600"><text class="lbl acc" x="800" y="80" text-anchor="middle" style="font-size:34px">« On va quelque part ? » Posée deux fois.</text></g>');
   g.push('<g id="vs">');
-  step('<g class="b" data-k="?" data-stars="1" data-d="2600"><text class="lbl acc" x="800" y="80" text-anchor="middle" style="font-size:34px">« On va quelque part ? » Posée deux fois.</text></g>');
-  // Le fil entre à gauche à y = 450, passe sous les deux panneaux et monte entre eux : chaque panneau apparaît à son arrivée.
-  step('<g class="a" data-k="?" data-dur="1700" data-d="1800"><path class="arrow" pathLength="1" d="M-33.3,450 L20,450 L20,700 L800,700 L800,420"/></g>');
-  step('<g class="b" data-k="?" data-d="3200"><rect class="box red" x="60" y="150" width="700" height="500" rx="16"/><text class="lbl m red" x="410" y="192" text-anchor="middle">Sans Mission Zero · le modèle seul</text><text class="lbl s" x="410" y="226" text-anchor="middle">12 chiffres · 1 centime</text>'
-    + row(90, 290, 'Hercule, 19,7 km/s · manuel de 1981, « p. 362 »', false, 'sans adresse') + row(90, 350, 'U, V, W = 11,1 · 12,24 · 7,25 km/s · MNRAS 2010', false, 'injoignable')
-    + row(90, 410, 'R₀ = 8,34 kpc, Θ₀ = 240 km/s · ApJ 2014', true, 'vérifié ✔') + row(90, 470, '600 km/s vers le Grand Attracteur · ApJ 1988', false, 'injoignable')
-    + row(90, 530, '369,82 km/s, l = 264°, b = 48° · A&amp;A 2020', false, 'injoignable') + '</g>');
-  step('<g class="b" data-k="?" data-d="3000"><text class="lbl amber" x="410" y="610" text-anchor="middle" style="font-size:20px">4 sources sur 5 : personne ne peut les ouvrir</text></g>');
-  step('<g class="b" data-k="?" data-d="3600"><rect class="box ok" x="840" y="150" width="700" height="500" rx="16"/><text class="lbl m acc" x="1190" y="192" text-anchor="middle">Avec Mission Zero</text><text class="lbl s" x="1190" y="226" text-anchor="middle">4 chiffres · 1 $ · chacun avec sa page</text>'
-    + row(870, 290, 'Hercule · « the Sun is moving » · Maryland', true, 'vérifié ✔') + row(870, 350, '230 km/s · « 828,000 km/hr » · NASA', true, 'vérifié ✔')
-    + row(870, 410, '369 km/s · « Crater and Leo » · Cambridge', true, 'vérifié ✔') + row(870, 470, '631 km/s · « 631 km s⁻¹ » · Tully 2014', true, 'vérifié ✔')
-    + '<text class="lbl okt" x="1190" y="610" text-anchor="middle" style="font-size:20px">ce qu\'il n\'a pas lu, il le dit</text></g>');
+  // Le fil entre à gauche, tout droit jusqu'au bord du panneau rouge.
+  step('<g class="a" data-k="?" data-dur="900" data-d="1000"><path class="arrow" pathLength="1" d="M-33.3,450 L58,450"/></g>');
+  step('<g class="b" data-k="?" data-d="3400"><rect class="box red" x="60" y="150" width="700" height="500" rx="16"/><text class="lbl m red" x="410" y="196" text-anchor="middle">Sans Mission Zero · le modèle seul</text><text class="lbl s" x="410" y="230" text-anchor="middle" style="font-size:20px">12 chiffres · 1 centime · 20 secondes</text>'
+    + row(90, 300, 'Hercule, 19,7 km/s · manuel de 1981', false, 'sans adresse') + row(90, 360, 'Trois vitesses au centième · 2010', false, 'injoignable')
+    + row(90, 420, 'Rayon et vitesse de la galaxie · 2014', true, 'vérifié ✔') + row(90, 480, '600 km/s vers le Grand Attracteur', false, 'injoignable')
+    + row(90, 540, 'Le fond du ciel au centième · 2020', false, 'injoignable') + '</g>');
+  step('<g class="b" data-k="?" data-d="3000"><text class="lbl amber" x="410" y="612" text-anchor="middle" style="font-size:22px">4 sources sur 5 : personne ne peut les ouvrir</text></g>');
+  step('<g class="a" data-k="?" data-dur="700" data-d="800"><path class="arrow" pathLength="1" d="M760,450 L838,450"/></g>');
+  step('<g class="b" data-k="?" data-d="3800"><rect class="box ok" x="840" y="150" width="700" height="500" rx="16"/><text class="lbl m acc" x="1190" y="196" text-anchor="middle">Avec Mission Zero</text><text class="lbl s" x="1190" y="230" text-anchor="middle" style="font-size:20px">4 chiffres · 1 dollar · chacun avec sa page</text>'
+    + row(870, 300, 'Hercule, 20 km/s · Univ. du Maryland', true, 'vérifié ✔') + row(870, 360, '230 km/s · NASA, mot pour mot', true, 'vérifié ✔')
+    + row(870, 420, '369 km/s · Cambridge', true, 'vérifié ✔') + row(870, 480, '631 km/s · Tully, 2014', true, 'vérifié ✔')
+    + '<text class="lbl okt" x="1190" y="612" text-anchor="middle" style="font-size:22px">ce qu\'il n\'a pas pu lire, il le dit</text></g>');
   g.push('</g>');
-  // Les panneaux s'effacent ; le fil reprend où il s'était arrêté et passe au-dessus de la future boîte de la galaxie, vers Hercule.
-  step('<g class="a" data-k="?" data-hide="#vs" data-dur="1400" data-d="1500"><path class="arrow" pathLength="1" d="M800,420 L800,470 L240,470 L240,678"/></g>');
-  const box = (x, y, title, speed, q1, src) => '<rect class="box gold" x="' + x + '" y="' + y + '" width="400" height="150" rx="16"/><text class="lbl m acc" x="' + (x + 200) + '" y="' + (y + 36) + '" text-anchor="middle">' + title + '</text><text class="lbl" x="' + (x + 200) + '" y="' + (y + 72) + '" text-anchor="middle">' + speed + '</text><text class="lbl xs" x="' + (x + 200) + '" y="' + (y + 104) + '" text-anchor="middle">' + q1 + '</text><text class="lbl xs okt" x="' + (x + 200) + '" y="' + (y + 132) + '" text-anchor="middle">' + src + '</text>';
-  step('<g class="b" data-k="?" data-speed="20" data-d="3400"><text class="lbl s" x="60" y="170" style="font-size:22px">« On va quelque part ? »</text><text class="lbl" x="60" y="240" style="font-size:64px;font-weight:800" id="speed">0</text><text class="lbl s" x="60" y="276" style="font-size:20px">km/s · et vous ne sentez rien</text>' + box(40, 680, 'Vers Hercule', '20 km/s', '« toward which the Sun is moving »', 'Univ. du Maryland · vérifié ✔') + '</g>');
-  step('<g class="a" data-k="?" data-dur="1100"><path class="arrow" pathLength="1" d="M440,755 L720,755 L720,652"/></g>');
-  step('<g class="b" data-k="?" data-speed="230" data-d="3800">' + box(520, 500, 'Autour de la galaxie', '230 km/s', '« an average velocity of 828,000 km/hr »', 'NASA, mot pour mot · vérifié ✔') + '</g>');
-  step('<g class="a" data-k="?" data-dur="1100"><path class="arrow" pathLength="1" d="M720,498 L720,395 L998,395"/></g>');
-  step('<g class="b" data-k="?" data-speed="631" data-d="3400">' + box(1000, 320, 'Vers le Grand Attracteur', '631 km/s', '« motion of the Local Group of 631 km/s »', 'Tully et al., Nature 2014 · vérifié ✔') + '</g>');
-  step('<g class="b" data-k="?" data-d="3600"><text class="lbl amber" x="1200" y="515" text-anchor="middle" style="font-size:22px">caché derrière notre galaxie</text><text class="lbl xs" x="1200" y="543" text-anchor="middle">on y va, on ne le voit pas</text></g>');
-  step('<g class="b" data-k="?" data-d="3600"><text class="lbl" x="800" y="840" text-anchor="middle" style="font-size:30px">Mesuré, pas vu, pas tranché.</text></g>');
+  // Les panneaux s'effacent ; le fil continue de là où il était, au-dessus des futures boîtes, jusqu'au bord haut de la boîte Hercule.
+  step('<g class="a" data-k="?" data-hide="#vs,#q0" data-dur="1500" data-d="1600"><path class="arrow" pathLength="1" d="M838,450 L838,470 L240,470 L240,678"/></g>');
+  const box = (x, y, title, speed, q1, src) => '<rect class="box gold" x="' + x + '" y="' + y + '" width="400" height="150" rx="16"/><text class="lbl acc" x="' + (x + 200) + '" y="' + (y + 36) + '" text-anchor="middle" style="font-size:19px">' + title + '</text><text class="lbl" x="' + (x + 200) + '" y="' + (y + 74) + '" text-anchor="middle" style="font-size:30px">' + speed + '</text><text class="lbl xs" x="' + (x + 200) + '" y="' + (y + 104) + '" text-anchor="middle">' + q1 + '</text><text class="lbl xs okt" x="' + (x + 200) + '" y="' + (y + 132) + '" text-anchor="middle">' + src + '</text>';
+  step('<g class="b" data-k="?" data-speed="20" data-d="3800"><text class="lbl s" x="60" y="170" style="font-size:20px">déplacement du système solaire</text><text class="lbl" x="60" y="240" style="font-size:64px;font-weight:800" id="speed">0</text><text class="lbl s" x="60" y="276" style="font-size:20px">km/s · et vous ne sentez rien</text>' + box(40, 680, 'Le système solaire va vers Hercule', '20 km/s', '« toward which the Sun is moving »', 'Univ. du Maryland · vérifié ✔') + '</g>');
+  step('<g class="a" data-k="?" data-dur="1100" data-d="1150"><path class="arrow" pathLength="1" d="M440,755 L720,755 L720,652"/></g>');
+  step('<g class="b" data-k="?" data-speed="230" data-d="3800">' + box(520, 500, 'Il tourne autour de la galaxie', '230 km/s', '« an average velocity of 828,000 km/hr »', 'NASA, mot pour mot · vérifié ✔') + '</g>');
+  step('<g class="a" data-k="?" data-dur="1100" data-d="1150"><path class="arrow" pathLength="1" d="M920,575 L960,575 L960,395 L998,395"/></g>');
+  step('<g class="b" data-k="?" data-speed="631" data-d="3400">' + box(1000, 320, 'Avec la galaxie, vers le Grand Attracteur', '631 km/s', '« motion of the Local Group of 631 km/s »', 'Tully et al., Nature 2014 · vérifié ✔') + '</g>');
+  step('<g class="b" data-k="?" data-d="3400"><text class="lbl amber" x="1200" y="515" text-anchor="middle" style="font-size:22px">caché derrière notre galaxie</text><text class="lbl xs" x="1200" y="543" text-anchor="middle">on y va, on ne le voit pas</text></g>');
+  step('<g class="b" data-k="?" data-d="3000"><text class="lbl" x="800" y="860" text-anchor="middle" style="font-size:26px">Mesuré, pas vu, pas tranché.</text></g>');
+  // Le titre de fin, et la sensation d'accélération derrière.
+  step('<g class="b" data-k="?" data-rush="1" data-d="4600"><text class="lbl acc" x="800" y="80" text-anchor="middle" style="font-size:36px;font-weight:700">Le système solaire se déplace.</text><text class="lbl" x="800" y="124" text-anchor="middle" style="font-size:26px">Vous allez à 631 km/s vers quelque chose que personne n\'a vu.</text></g>');
   step('<g class="a" data-k="?" data-dur="1000" data-d="1050"><path class="arrow" pathLength="1" d="M1400,450 L1633.3,450"/></g>');
-  const cap = ['On va quelque part&nbsp;? Posée deux fois.', null, 'Le modèle seul&nbsp;: <span class="r">douze chiffres, un centime.</span>', 'Quatre sources sur cinq, personne ne peut les ouvrir.',
-    '<b>Mission Zero</b>&nbsp;: quatre chiffres, un dollar. Chacun avec sa page.', null, 'Vingt kilomètres par seconde vers Hercule.', null,
-    'Deux cent trente autour de la galaxie. La NASA, mot pour mot.', null, 'Six cent trente et un vers le Grand Attracteur.',
-    'Caché derrière notre galaxie. On y va. On ne le voit pas.', 'Mesuré, pas vu, pas tranché. <b>Il n\'invente pas la suite.</b>', null];
+  const cap = ['On va quelque part&nbsp;? Posée deux fois.', null, 'Le modèle seul&nbsp;: <span class="r">douze chiffres, un centime.</span>', 'Quatre sources sur cinq, personne ne peut les ouvrir.', null,
+    '<b>Mission Zero</b>&nbsp;: quatre chiffres, un dollar. Chacun avec sa page.', null, '<b>Le système solaire se déplace.</b> Vingt kilomètres par seconde vers Hercule.', null,
+    'Il tourne autour de la galaxie&nbsp;: deux cent trente. La NASA, mot pour mot.', null, 'Avec la galaxie, six cent trente et un vers le Grand Attracteur.',
+    'Caché derrière notre galaxie. On y va. On ne le voit pas.', 'Mesuré, pas vu, pas tranché. <b>Il n\'invente pas la suite.</b>',
+    'Vous allez à <b>six cent trente et un kilomètres par seconde</b> vers quelque chose que personne n\'a vu.', null];
   if (cap.length !== k) throw new Error('sE : ' + k + ' étapes, ' + cap.length + ' légendes');
-  const sec = '  <section class="scene" id="sE">\n    <header><h2>L\'ESPACE</h2><span class="t">une vraie mission de Mission Zero</span></header>\n    <svg viewBox="0 0 1600 900" role="img" aria-label="La même question posée deux fois, puis un ciel d\'étoiles, un compteur qui monte, un fil qui va de boîte en boîte : vers Hercule, autour de la galaxie, vers le Grand Attracteur ; chaque chiffre avec sa page">\n      ' + g.join('\n      ') + '\n    </svg>\n    <div class="caption" id="cE"></div>\n  </section>\n';
+  const sec = '  <section class="scene" id="sE">\n    <header><h2>L\'ESPACE</h2><span class="t">une vraie mission de Mission Zero</span></header>\n    <svg viewBox="0 0 1600 900" role="img" aria-label="La même question posée deux fois, puis un ciel d\'étoiles, un compteur qui monte, un fil qui va de boîte en boîte : le système solaire vers Hercule, autour de la galaxie, vers le Grand Attracteur ; chaque chiffre avec sa page">\n      ' + g.join('\n      ') + '\n    </svg>\n    <div class="caption" id="cE"></div>\n  </section>\n';
   return { sec, cap };
 })();
 
@@ -105,37 +110,37 @@ const sEgeo = (function () {
 const sMgeo = (function () {
   let k = 0; const g = [];
   const step = (s) => { k += 1; g.push(s.replace('data-k="?"', 'data-k="' + k + '"')); };
-  const box = (cls, x, y, numCls, num, t, q1, q2) => '<rect class="box ' + cls + '" x="' + x + '" y="' + y + '" width="380" height="175" rx="16"/><text class="lbl ' + numCls + '" x="' + (x + 190) + '" y="' + (y + 52) + '" text-anchor="middle" style="font-size:44px;font-weight:700">' + num + '</text><text class="lbl s" x="' + (x + 190) + '" y="' + (y + 84) + '" text-anchor="middle">' + t + '</text><text class="lbl xs" x="' + (x + 190) + '" y="' + (y + 116) + '" text-anchor="middle">' + q1 + '</text><text class="lbl xs" x="' + (x + 190) + '" y="' + (y + 138) + '" text-anchor="middle">' + q2 + '</text><text class="lbl xs okt" x="' + (x + 190) + '" y="' + (y + 162) + '" text-anchor="middle">OMS · Global TB Report 2024 · vérifié ✔</text>';
+  const box = (cls, x, y, numCls, num, t) => '<rect class="box ' + cls + '" x="' + x + '" y="' + y + '" width="380" height="120" rx="16"/><text class="lbl ' + numCls + '" x="' + (x + 190) + '" y="' + (y + 50) + '" text-anchor="middle" style="font-size:44px;font-weight:700">' + num + '</text><text class="lbl s" x="' + (x + 190) + '" y="' + (y + 80) + '" text-anchor="middle" style="font-size:20px">' + t + '</text><text class="lbl xs okt" x="' + (x + 190) + '" y="' + (y + 106) + '" text-anchor="middle">vérifié ✔ · OMS, Global TB Report 2024</text>';
   const beat = (x0, x1, dur) => '<g class="a" data-k="?" data-dur="' + dur + '" data-d="' + (dur + 100) + '"><path class="arrow" pathLength="1" data-round="10" d="M' + x0 + ',450 L' + (x1 - 90) + ',450 L' + (x1 - 70) + ',400 L' + (x1 - 50) + ',500 L' + (x1 - 30) + ',450 L' + x1 + ',450"/></g>';
   step('<g class="a" data-k="?" data-dur="900" data-d="1000"><path class="arrow" pathLength="1" d="M-33.3,450 L40,450"/></g>');
   step('<g class="b" data-k="?" data-d="4200"><rect class="box red" x="40" y="370" width="260" height="160" rx="16"/><text class="lbl xs red" x="170" y="398" text-anchor="middle" style="font-weight:700;letter-spacing:.08em">SANS MISSION ZERO</text><text class="lbl" x="170" y="436" text-anchor="middle" style="font-size:24px">100 publications</text><text class="lbl xs" x="170" y="464" text-anchor="middle">pas le temps de les lire</text><text class="lbl xs red" x="170" y="500" text-anchor="middle">une IA : un chiffre, sans page</text></g>');
+  step('<g class="b" data-k="?" data-d="3600"><text class="lbl acc" x="800" y="110" text-anchor="middle" style="font-size:34px;font-weight:700">Demain, avec Mission Zero</text><text class="lbl" x="800" y="150" text-anchor="middle" style="font-size:24px">il analyse les chiffres, les affiche, et ils sont vrais</text></g>');
   step(beat(300, 600, 1500));
-  step('<g class="b" data-k="?" data-d="3400">' + box('amber', 340, 215, 'amber', '10,8 millions', 'de malades en 2023', '« an estimated 10.8 million people', 'fell ill with TB in 2023 »') + '</g>');
+  step('<g class="b" data-k="?" data-d="3000">' + box('amber', 340, 240, 'amber', '10,8 millions', 'de malades en 2023') + '</g>');
   step(beat(600, 1030, 1200));
-  step('<g class="b" data-k="?" data-d="3400">' + box('red', 770, 535, 'red', '1,25 million', 'de morts en 2023', '« TB caused an estimated', '1.25 million deaths in 2023 »') + '</g>');
+  step('<g class="b" data-k="?" data-d="3000">' + box('red', 770, 560, 'red', '1,25 million', 'de morts en 2023') + '</g>');
   step(beat(1030, 1480, 1300));
-  step('<g class="b" data-k="?" data-d="4200">' + box('ok', 1200, 215, 'acc', '88 %', 'guéris, quand on soigne', '« The treatment success rate for drug-susceptible TB', 'remains high (at 88%) »') + '</g>');
-  // La veille : le fil descend sur le graphique ; une courbe hebdomadaire, son seuil, et le point rouge de la semaine 38.
+  step('<g class="b" data-k="?" data-d="3800">' + box('ok', 1200, 240, 'acc', '88 %', 'guéris, quand on soigne') + '</g>');
+  // La veille : le fil descend sur le graphique ; une courbe hebdomadaire et le point rouge de la semaine 38 (pas de seuil : c'est la hausse qui alerte).
   step('<g class="a" data-k="?" data-dur="900" data-d="1000"><path class="arrow" pathLength="1" d="M1480,450 L1530,450 L1530,563"/></g>');
-  // La veille Sentinelles du 30 (examples/watch-sentinelles-2026-10-30) : S35 à S43, seuil 150 pour 100 000 ; semaine 38 : 55 → 77, +40 %.
   const weeks = [['35', 27], ['36', 38], ['37', 55], ['38', 77], ['39', 88], ['40', 94], ['41', 92], ['42', 85], ['43', 94]];
-  const X = (i) => 1215 + i * 42, Y = (v) => Math.round(790 - v * 0.94);
+  const X = (i) => 1215 + i * 42, Y = (v) => Math.round(800 - v * 1.6);
   const curve = 'M' + weeks.map(([, v], i) => X(i) + ',' + Y(v)).join(' L');
-  step('<g class="b" data-k="?" data-d="3600"><rect class="box" x="1180" y="565" width="400" height="250" rx="16"/><text class="lbl xs" x="1380" y="592" text-anchor="middle" style="fill:var(--fg)">la veille · grippe, Sentinelles, pour 100 000</text><line x1="1205" y1="' + Y(150) + '" x2="1555" y2="' + Y(150) + '" stroke="rgba(255,210,122,.8)" stroke-width="2" stroke-dasharray="8 6"/><text class="lbl xs amber" x="1555" y="' + (Y(150) - 8) + '" text-anchor="end">seuil 150</text><path d="' + curve + '" fill="none" stroke="var(--acc2)" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>' + weeks.map(([, v], i) => '<circle cx="' + X(i) + '" cy="' + Y(v) + '" r="3.5" fill="#fff"/>').join('') + weeks.map(([w], i) => '<text class="lbl xs" x="' + X(i) + '" y="806" text-anchor="middle" style="font-size:13px">S' + w + '</text>').join('') + '</g>');
+  step('<g class="b" data-k="?" data-d="3600"><rect class="box" x="1180" y="565" width="400" height="250" rx="16"/><text class="lbl xs" x="1380" y="592" text-anchor="middle" style="fill:var(--fg)">la veille · grippe, Sentinelles, pour 100 000</text><path d="' + curve + '" fill="none" stroke="var(--acc2)" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>' + weeks.map(([, v], i) => '<circle cx="' + X(i) + '" cy="' + Y(v) + '" r="3.5" fill="#fff"/>').join('') + weeks.map(([w], i) => '<text class="lbl xs" x="' + X(i) + '" y="806" text-anchor="middle" style="font-size:13px">S' + w + '</text>').join('') + '</g>');
   step('<g class="b" data-k="?" data-d="3200"><circle cx="' + X(3) + '" cy="' + Y(77) + '" r="9" fill="rgba(255,59,48,.35)" stroke="#ff3b30" stroke-width="3" style="filter:drop-shadow(0 0 8px rgba(255,59,48,1))"/><text class="lbl red" x="1380" y="628" text-anchor="middle" style="font-size:18px;font-weight:700">S38 · 55 → 77 · +40 %</text></g>');
   step('<g class="b" data-k="?" data-d="3600"><text class="lbl xs okt" x="1380" y="844" text-anchor="middle">3 sources citées · aucun commentaire publié, il le dit</text></g>');
-  // Au futur : le fil passe sous la boîte rouge et mène à la phrase.
   step('<g class="a" data-k="?" data-dur="1200" data-d="1300"><path class="arrow" pathLength="1" d="M1180,780 C1000,780 900,810 762,810"/></g>');
   step('<g class="b" data-k="?" data-d="3400"><text class="lbl" x="750" y="818" text-anchor="end" style="font-size:24px">Demain : les relevés d\'un laboratoire.</text></g>');
-  step('<g class="b" data-k="?" data-d="3000"><text class="lbl amber" x="800" y="120" text-anchor="middle" style="font-size:30px">On sait soigner. Reste à chercher.</text></g>');
+  step('<g class="b" data-k="?" data-d="3000"><text class="lbl amber" x="800" y="870" text-anchor="middle" style="font-size:30px">On sait soigner. Reste à chercher.</text></g>');
   step('<g class="a" data-k="?" data-dur="800" data-d="850"><path class="arrow" pathLength="1" d="M1580,700 L1633.3,700"/></g>');
-  const cap = [null, 'Un chercheur n\'a pas le temps de lire cent publications. <span class="r">Une IA lui sort un chiffre, sans page.</span>', '<b>Mission Zero lit pour lui.</b>',
-    'Dix millions huit cent mille malades en 2023.', null, '<span class="r">Un million deux cent cinquante mille morts.</span>', null,
-    'Quatre-vingt-huit pour cent guéris, quand on soigne. <b>Trois pages de l\'OMS, mot pour mot.</b>', null,
+  const cap = [null, 'Un chercheur n\'a pas le temps de lire cent publications. <span class="r">Une IA lui sort un chiffre, sans page.</span>',
+    '<b>Demain, Mission Zero analyse les chiffres et les affiche.</b> Ils sont vrais.', null,
+    'Dix millions huit cent mille malades en 2023. Vérifié.', null, '<span class="r">Un million deux cent cinquante mille morts.</span> Vérifié.', null,
+    'Quatre-vingt-huit pour cent guéris, quand on soigne. <b>Chaque chiffre a sa page.</b>', null,
     'Chaque semaine, il compare et ne signale que ce qui bouge.', 'Semaine 38&nbsp;: <b class="r">plus quarante pour cent.</b>', 'Il cite la méthode et dit qu\'aucun commentaire n\'existe.', null,
     'Demain, sur les relevés d\'un laboratoire. <b>Le chercheur tranche.</b>', '<b>On sait soigner. Reste à chercher.</b>', null];
   if (cap.length !== k) throw new Error('sM : ' + k + ' étapes, ' + cap.length + ' légendes');
-  const sec = '  <section class="scene" id="sM">\n    <header><h2>LA MÉDECINE</h2><span class="t">une vraie mission de Mission Zero</span></header>\n    <svg viewBox="0 0 1600 900" role="img" aria-label="Le fil devient un battement de cœur ; à chaque battement, un chiffre du rapport de l\'OMS sur la tuberculose ; puis la veille hebdomadaire">\n      ' + g.join('\n      ') + '\n    </svg>\n    <div class="caption" id="cM"></div>\n  </section>\n';
+  const sec = '  <section class="scene" id="sM">\n    <header><h2>LA MÉDECINE</h2><span class="t">une vraie mission de Mission Zero</span></header>\n    <svg viewBox="0 0 1600 900" role="img" aria-label="Le fil devient un battement de cœur ; à chaque battement, un chiffre vérifié ; puis la veille hebdomadaire">\n      ' + g.join('\n      ') + '\n    </svg>\n    <div class="caption" id="cM"></div>\n  </section>\n';
   return { sec, cap };
 })();
 
@@ -144,16 +149,23 @@ const sMgeo = (function () {
 const sZgeo = (function () {
   let k = 0; const g = [];
   const step = (s) => { k += 1; g.push(s.replace('data-k="?"', 'data-k="' + k + '"')); };
+  const hand = (id, y, size, weight, spacing, cls, txt, delay) => '<text id="' + id + '" class="hand' + (cls ? ' ' + cls : '') + '" x="800" y="' + y + '" text-anchor="middle" style="font-size:' + size + 'px;font-weight:' + weight + ';letter-spacing:' + spacing + '">' + txt.split('').map((ch, i) => '<tspan style="transition-delay:' + (i * delay).toFixed(2) + 's">' + (ch === ' ' ? '\u00a0' : ch) + '</tspan>').join('') + '</text>';
   step('<g class="a" data-k="?" id="zin" data-dur="1300" data-d="1400"><path class="arrow" pathLength="1" d="M0,728 C380,728 690,640 690,400"/></g>');
   step('<g class="a" data-k="?" id="zz" data-dur="2200" data-d="2400"><path class="arrow zero" pathLength="1" d="M690,400 A110,110 0 1,1 910,400 A110,110 0 1,1 690,400"/></g>');
   step('<g class="b" data-k="?" id="zdot" data-d="2000"><circle cx="800" cy="400" r="11" fill="#fff" style="filter:drop-shadow(0 0 8px rgba(46,230,160,.9))"/></g>');
-  step('<g class="b" data-k="?" data-cls="black" data-hide="#zin,#zz,#zdot" data-d="900"><text class="lbl xs" x="0" y="0"> </text></g>');
-  step('<g class="b" data-k="?" data-d="1800"><text x="800" y="420" text-anchor="middle" style="font-size:120px;font-weight:900;fill:#fff;letter-spacing:.02em">WHAT DO YOU NEED ?</text></g>');
-  step('<g class="b" data-k="?" data-d="1500"><text x="800" y="520" text-anchor="middle" style="font-size:40px;font-weight:600;fill:#e8edf7;letter-spacing:.3em">CRYPTOR.AGENCY</text></g>');
-  step('<g class="b" data-k="?" data-d="4200"><text class="neon" x="800" y="620" text-anchor="middle" style="font-size:58px;font-weight:800;letter-spacing:.35em">MISSION ZERO</text></g>');
-  const cap = [null, null, null, null, null, null, null];
+  step('<g class="b" data-k="?" data-cls="black" data-hide="#zin,#zz,#zdot" data-d="700"><text class="lbl xs" x="0" y="0"> </text></g>');
+  g.push(hand('w1', 420, 120, 900, '.02em', '', 'WHAT DO YOU NEED ?', 0.11));
+  g.push(hand('w2', 520, 40, 600, '.3em', '', 'CRYPTOR.AGENCY', 0.09));
+  g.push(hand('w3', 620, 58, 800, '.35em', 'neonw', 'MISSION ZERO', 0.14));
+  // Le point court le long de chaque ligne et l'écrit ; entre deux lignes, il descend en courbe.
+  step('<g class="a" data-k="?" data-dur="2100" data-d="2500" data-write="w1"><path class="arrow ghost" pathLength="1" d="M150,428 L1450,428"/></g>');
+  step('<g class="a" data-k="?" data-dur="800" data-d="850"><path class="arrow ghost" pathLength="1" d="M1450,428 L1450,480 L560,480 L560,528"/></g>');
+  step('<g class="a" data-k="?" data-dur="1300" data-d="1600" data-write="w2"><path class="arrow ghost" pathLength="1" d="M560,528 L1040,528"/></g>');
+  step('<g class="a" data-k="?" data-dur="800" data-d="850"><path class="arrow ghost" pathLength="1" d="M1040,528 L1040,580 L540,580 L540,628"/></g>');
+  step('<g class="a" data-k="?" data-dur="1800" data-d="4800" data-write="w3"><path class="arrow ghost" pathLength="1" d="M540,628 L1060,628"/></g>');
+  const cap = [null, null, null, null, null, null, null, null, null];
   if (cap.length !== k) throw new Error('sZ : ' + k + ' étapes, ' + cap.length + ' légendes');
-  const sec = '  <section class="scene" id="sZ">\n    <header><h2>LA FIN</h2><span class="t">le zéro</span></header>\n    <svg viewBox="0 0 1600 900" role="img" aria-label="Le fil dessine un zéro, puis : WHAT DO YOU NEED ? CRYPTOR.AGENCY. MISSION ZERO.">\n      ' + g.join('\n      ') + '\n    </svg>\n    <div class="caption" id="cZ"></div>\n  </section>\n';
+  const sec = '  <section class="scene" id="sZ">\n    <header><h2>LA FIN</h2><span class="t">le zéro</span></header>\n    <svg viewBox="0 0 1600 900" role="img" aria-label="Le fil dessine un zéro, puis le point écrit : WHAT DO YOU NEED ? CRYPTOR.AGENCY. MISSION ZERO.">\n      ' + g.join('\n      ') + '\n    </svg>\n    <div class="caption" id="cZ"></div>\n  </section>\n';
   return { sec, cap };
 })();
 // La sécurité, condensée : la carte du choc, la colonne rouge, la colonne verte, rejeté puis proposé, le regard, le vrai site, MYTHOZOR.
@@ -289,7 +301,8 @@ const fixS3 = (x) => {
   r('data-hide="#badko" data-chip="ch5:ok" data-d="1500">', 'data-hide="#badko" data-chip="ch5:ok" data-d="1500"><text class="chip-t" x="110" y="534" text-anchor="middle">✔ en-têtes</text>');
   r('vos serveurs ou votre cloud · modèle en poids ouverts · secrets masqués · rien ne sort', 'sur vos serveurs · rien ne sort');
   r('<text class="lbl xs" x="350" y="520" text-anchor="middle">✔ commandes · comptes</text><text class="lbl xs" x="350" y="570" text-anchor="middle">en ligne, tous les jours</text>', '<text class="lbl xs" x="350" y="540" text-anchor="middle">✔ commandes · comptes</text>');
-  r('x="350" y="640"', 'x="330" y="640"'); r('en-têtes : la politique de sécurité a sauté', 'en-têtes : protection sautée');
+  r('x="350" y="640"', 'x="330" y="640"');
+  r('<text class="lbl xs" x="1300" y="514" text-anchor="middle">appliqué tout seul', '<text class="lbl xs" x="1300" y="514" text-anchor="middle" style="font-size:12.5px">appliqué tout seul'); r('en-têtes : la politique de sécurité a sauté', 'en-têtes : protection sautée');
   r('d="M1300 602 L1300 735 L350 735 L350 602"', 'd="M1300 602 L1300 735 L490 735 L490 602"');
   grp(13, '<g class="b" data-k="13"><rect class="box gold" x="600" y="290" width="400" height="310" rx="18"/><text class="lbl acc" x="800" y="340" text-anchor="middle" style="font-size:28px">Mission Zero, branché</text><rect class="mini" x="625" y="380" width="100" height="50" rx="10"/><text class="lbl xs" x="675" y="411" text-anchor="middle" style="fill:var(--fg)">copie du site</text><path class="arrow" d="M727 405 L752 405" style="stroke-dasharray:none;stroke-dashoffset:0;stroke-width:3"/><rect class="mini" x="756" y="380" width="100" height="50" rx="10"/><text class="lbl xs" x="806" y="411" text-anchor="middle" style="fill:var(--fg)">correctif</text><path class="arrow" d="M858 405 L883 405" style="stroke-dasharray:none;stroke-dashoffset:0;stroke-width:3"/><circle class="ring lit" cx="905" cy="405" r="12"/><circle class="ring lit" cx="933" cy="405" r="12"/><circle class="ring lit" cx="961" cy="405" r="12"/><text class="lbl s okt" x="800" y="510" text-anchor="middle">✔ correctif confirmé, sur une copie</text></g>');
   // Le bloc « Vous validez · ou automatique » du 29 reste tel quel (les deux modes, décision du gérant du 30 octobre, 16 h).
@@ -358,11 +371,11 @@ const script = `<script>
   }
   function pulse(id, strong) { var el = document.getElementById(id); if (!el) return; el.classList.remove('pulse', 'strong'); void el.getBBox(); el.classList.add('pulse'); if (strong) el.classList.add('strong'); setTimeout(function () { el.classList.remove('pulse', 'strong'); }, strong ? 1300 : 700); }
   // Le compteur de vitesse de l'espace : il monte, il ne redescend jamais. Le ciel d'étoiles vient vers vous, comme par le pare-brise.
-  var speedTimer = null, starSpeed = 0.2, starsOn = false, stars = [], starEls = [], lastT = 0;
+  var speedTimer = null, starSpeed = 0.03, starsOn = false, stars = [], starEls = [], lastT = 0;
   function tweenSpeed(to) {
     var el = document.getElementById('speed'); if (!el) return; var from = Number(el.textContent) || 0, t0 = Date.now(); clearInterval(speedTimer);
     speedTimer = setInterval(function () { var k = Math.min(1, (Date.now() - t0) / 900); el.textContent = Math.round(from + (to - from) * (1 - Math.pow(1 - k, 3))); if (k >= 1) clearInterval(speedTimer); }, 40);
-    starSpeed = 0.15 + to / 900;
+    starSpeed = 0.04 + to / 1600;
   }
   function initStars() {
     var g = document.getElementById('stars'); if (!g || starEls.length) return;
@@ -379,7 +392,7 @@ const script = `<script>
     requestAnimationFrame(tickStars);
   }
   function startStars() { initStars(); if (!starsOn) { starsOn = true; lastT = 0; requestAnimationFrame(tickStars); } }
-  function stopStars() { starsOn = false; starSpeed = 0.2; }
+  function stopStars() { starsOn = false; starSpeed = 0.03; }
   function act(step) {
     (step.dataset.hide || '').split(',').filter(Boolean).forEach(function (h) { document.querySelector(h).classList.add('hidden'); });
     (step.dataset.ring || '').split(',').filter(Boolean).forEach(function (r) { var id = r.split(':')[0], mode = r.split(':')[1] || 'lit'; var el = document.getElementById(id); el.classList.remove('lit', 'bad'); if (mode !== 'off') el.classList.add(mode); });
@@ -392,6 +405,8 @@ const script = `<script>
     (step.dataset.blink || '').split(',').filter(Boolean).forEach(function (id) { var el = document.getElementById(id); if (!el) return; el.classList.remove('blink'); void el.getBBox(); el.classList.add('blink'); setTimeout(function () { el.classList.remove('blink'); }, 3600); });
     if (step.dataset.speed) tweenSpeed(Number(step.dataset.speed));
     if (step.dataset.stars) startStars();
+    if (step.dataset.rush) starSpeed = 1.3;
+    (step.dataset.write || '').split(',').filter(Boolean).forEach(function (id) { var el = document.getElementById(id); if (el) el.classList.add('on'); });
     if (step.dataset.cls) document.body.classList.add(step.dataset.cls);
     if (step.dataset.zoom) { var z = document.querySelector(step.dataset.zoom); if (z) setTimeout(function () { z.classList.add('zoom'); }, 900); }
   }
@@ -406,6 +421,7 @@ const script = `<script>
     document.querySelectorAll('#' + id + ' .arrow').forEach(function (p) { p.style.strokeDashoffset = ''; });
     document.querySelectorAll('#' + id + ' .zoom').forEach(function (z) { z.classList.remove('zoom'); });
     document.querySelectorAll('#' + id + ' .hidden').forEach(function (z) { z.classList.remove('hidden'); });
+    document.querySelectorAll('#' + id + ' .hand').forEach(function (z) { z.classList.remove('on'); });
     document.querySelectorAll('#' + id + ' .ring').forEach(function (r) { if (r.id) r.classList.remove('lit', 'bad'); });
     document.querySelectorAll('#' + id + ' .field').forEach(function (r) { r.classList.remove('gone'); });
     document.querySelectorAll('#' + id + ' .chip').forEach(function (r) { if (r.id) r.classList.remove('ok', 'ko'); });
@@ -482,6 +498,12 @@ const extra = `<style>
 body.black { background:#000; } body.black .scene { background:#000; } body.black .caption { visibility:hidden; }
 .neon { fill:#39ffb0; filter: drop-shadow(0 0 6px #2ee6a0) drop-shadow(0 0 18px rgba(46,230,160,.8)); }
 .b.on .neon { animation: neon 1.6s linear both; }
+/* Le point écrit : chaque lettre se trace à son tour (contour), puis se remplit. */
+.hand tspan { fill: transparent; stroke: #fff; stroke-width: 2; stroke-dasharray: 700; stroke-dashoffset: 700; transition: stroke-dashoffset .45s linear, fill .35s linear; }
+.hand.on tspan { stroke-dashoffset: 0; fill: #fff; }
+.hand.neonw tspan { stroke: #39ffb0; } .hand.neonw.on tspan { fill: #39ffb0; }
+.hand.neonw.on { filter: drop-shadow(0 0 6px #2ee6a0) drop-shadow(0 0 18px rgba(46,230,160,.8)); }
+.arrow.ghost { stroke: none; } .a.drawn .arrow.ghost { marker-end: none; }
 @keyframes neon { 0% { opacity:0; } 12% { opacity:1; } 18% { opacity:.15; } 30% { opacity:1; } 36% { opacity:.3; } 50%, 100% { opacity:1; } }
 </style>`;
 const html = `<!doctype html>
