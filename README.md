@@ -38,6 +38,8 @@ Repository: `github.com/cryptoragency/mission0` (public from 4 November 2026).
 
 Everything here was written during the hackathon, from 26 October 2026. The git history is dated and will be public on 4 November. No code or prompt comes from the agency's existing products; two data files (`examples/argus-aggregate.json`, `examples/real-site/findings.json`) are outputs of ARGUS, used as input only.
 
+Transparency: the first two commits (26 October, 15:22 and 15:47 Paris time) came before the 17:00 kickoff: a 50-line skeleton (the Meta API client with its spending cap, package.json, a key check) and a note after reading the official rules. Everything else, every feature shown in the demo, was built after the kickoff.
+
 ## How to read the scores
 
 The judge scores 0 to 10. One red claim (a quote the cited page does not support) caps the score at 5, whatever the judge thought. A low score means "not proven", not "wrong". Green = the exact quote was found on the cited page. Red = quote not found, page unreachable, or the page contradicts the claim.
