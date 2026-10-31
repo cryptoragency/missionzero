@@ -10,8 +10,9 @@
   "scripts": {
     "mission": "node --env-file-if-exists=.env src/run.js",
     "web": "node web/server.js",
+    "api": "node --env-file-if-exists=.env src/api.js",
     "check-key": "node --env-file-if-exists=.env src/check-key.js",
-    "test": "node --test src/chain.test.js src/tools.test.js src/verify.test.js src/evidenceDir.test.js src/meta.test.js src/memory.test.js src/loop.test.js src/pdf.test.js src/secrets.test.js src/media.test.js src/zero.test.js src/watch.test.js src/repair.test.js src/scanner.test.js web/server.test.js demo-site/server.test.js demo-site/journeys.test.js",
+    "test": "node --test src/api.test.js src/chain.test.js src/tools.test.js src/verify.test.js src/evidenceDir.test.js src/meta.test.js src/memory.test.js src/loop.test.js src/pdf.test.js src/secrets.test.js src/media.test.js src/zero.test.js src/watch.test.js src/repair.test.js src/scanner.test.js web/server.test.js demo-site/server.test.js demo-site/journeys.test.js",
     "demo": "node --env-file-if-exists=.env bench/run-demo.js",
     "effort-sweep": "node --env-file-if-exists=.env bench/run-effort-sweep.js",
     "demo-site": "node demo-site/server.js",
