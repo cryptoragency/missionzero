@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mission Zero · live demo</title>
+<meta name="description" content="Mission Zero: an autonomous agent on Muse Spark that researches with exact quotes and repairs websites on a copy, with proof. Replays of real runs.">
+<link rel="icon" href="assets/logo.png">
+<style>
+  :root { --bg: #0f1420; --panel: #182033; --line: #2c3854; --text: #eef2f8; --muted: #b9c3d6; --accent: #3ddc97; --warn: #ffb454; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 1080px; margin: 0 auto; padding: 40px 20px 64px; }
+  header { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
+  header img { width: 64px; height: 64px; }
+  h1 { font-size: clamp(28px, 5vw, 44px); margin: 0; letter-spacing: -0.5px; }
+  .tag { color: var(--accent); font-weight: 600; margin: 4px 0 0; }
+  p.lead { color: var(--muted); max-width: 760px; }
+  h2 { margin: 40px 0 12px; font-size: 22px; }
+  h2 small { color: var(--muted); font-weight: 400; font-size: 15px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+  a.card { display: block; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; color: var(--text); text-decoration: none; }
+  a.card:hover, a.card:focus-visible { border-color: var(--accent); outline: none; }
+  a.card b { display: block; margin-bottom: 4px; }
+  a.card span { color: var(--muted); font-size: 14px; }
+  .note { border-left: 3px solid var(--warn); padding: 8px 12px; color: var(--muted); background: #1d1a14; border-radius: 0 8px 8px 0; font-size: 14px; }
+  footer { margin-top: 48px; color: var(--muted); font-size: 14px; }
+  footer a, p a { color: var(--accent); }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <img src="assets/logo.png" alt="CRYPTOR.AGENCY logo">
+    <div>
+      <h1>Mission Zero</h1>
+      <p class="tag">Give it a goal. Let it discover the path. Demand proof.</p>
+    </div>
+  </header>
+  <p class="lead">An autonomous agent on Meta's Muse Spark. It researches a goal from the primary documents it actually read, with an exact quote for every figure, and repairs websites from a scanner's findings on a copy of the site, never on the live one. Every page below is a replay generated from the evidence of a real run committed in the repository. Nothing on this site calls a model.</p>
+
+  <h2>Research <small>a goal, no plan, an answer with quotes</small></h2>
+  <div class="grid">
+    <a class="card" href="examples/dbir-2025/replay.html"><b>Verizon DBIR 2025</b><span>a 117-page PDF read, 10/10</span></a>
+    <a class="card" href="examples/gdpr-max-fine/replay.html"><b>GDPR maximum fine</b><span>the official text, 10/10</span></a>
+    <a class="card" href="examples/nist-800-63b-4/replay.html"><b>NIST SP 800-63B-4</b><span>password rules, exact figures</span></a>
+    <a class="card" href="examples/cvss-v4/replay.html"><b>CVSS v4.0</b><span>the specification, quoted</span></a>
+    <a class="card" href="examples/anssi-hygiene/replay.html"><b>ANSSI hygiene guide</b><span>42 measures, edition found in the footer</span></a>
+    <a class="card" href="examples/open-weights/replay.html"><b>Open weights on Baseten</b><span>the same mission on muse-spark-open</span></a>
+    <a class="card" href="examples/back-to-zero/replay.html"><b>Back to zero</b><span>the agent archives its own memory and starts again</span></a>
+  </div>
+
+  <h2>Repair <small>a finding in, a proven patch out, a human applies it</small></h2>
+  <div class="grid">
+    <a class="card" href="examples/repair-maison-verde/report.html"><b>Maison Verde: 15 flaws</b><span>the full repair report of the demo shop</span></a>
+    <a class="card" href="examples/repair-maison-verde/stories/repair-2026-10-28-09-31/F05/replay.html"><b>Refused by its own eyes</b><span>tests green, payment form broken: Muse Spark vision and SAM say no</span></a>
+    <a class="card" href="examples/repair-maison-verde/stories/repair-2026-10-28-07-59/F06/replay.html"><b>A fix that broke a journey</b><span>rejected: a customer could no longer follow their own order</span></a>
+    <a class="card" href="examples/repair-maison-verde/repair-2026-10-28-11-18/F14/replay.html"><b>It judges its own patch</b><span>"this hides the symptom": proposed with a reservation</span></a>
+    <a class="card" href="examples/real-site/report.html"><b>A real site</b><span>read by another scanner, 7 findings</span></a>
+    <a class="card" href="examples/real-site/A-csp-strength/replay.html"><b>Its first fix refused</b><span>the policy would block the page's own scripts</span></a>
+  </div>
+
+  <h2>Watch <small>what moved in public readings, and the page that says why</small></h2>
+  <div class="grid">
+    <a class="card" href="examples/watch-sentinelles-2026-10-30/replay.html"><b>Influenza-like illness, France</b><span>Réseau Sentinelles, week to week</span></a>
+    <a class="card" href="examples/watch-sentinelles-regions-2026-10-30/replay.html"><b>The same, by region</b><span>variations only</span></a>
+    <a class="card" href="examples/watch-probe-example/replay.html"><b>An instrument's readings</b><span>the generic format for a probe</span></a>
+  </div>
+  <p class="note">Mission Zero reads and cites research for researchers. It is not medical advice, not a diagnosis and not an epidemic alert; the official bulletins of each network remain the reference.</p>
+
+  <footer>
+    CRYPTOR.AGENCY · Startup track · Meta Global AI Developer Hackathon 2026 ·
+    <a href="https://github.com/cryptoragency/mission0">source code and evidence</a>
+  </footer>
+</main>
+</body>
+</html>

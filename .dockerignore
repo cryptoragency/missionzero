@@ -1,0 +1,12 @@
+.env
+.env.*
+!.env.example
+node_modules
+evidence
+memory
+logs
+video
+film
+watch/*/
+web/data
+.git

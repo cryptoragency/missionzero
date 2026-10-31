@@ -116,5 +116,6 @@ export function handle(method, path, body, caller, now = Date.now()) {
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const port = Number(process.env.PORT) || 8099;
-  makeServer().listen(port, '127.0.0.1', () => console.log('Mission Zero community page on http://127.0.0.1:' + port));
+  const host = process.env.HOST || '127.0.0.1'; // 0.0.0.0 only inside the container (Dockerfile)
+  makeServer().listen(port, host, () => console.log('Mission Zero community page on http://' + host + ':' + port));
 }

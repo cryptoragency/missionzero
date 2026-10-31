@@ -12,6 +12,10 @@ Every step is written to an evidence folder you can open: journal, memory, final
 
 Startup track · CRYPTOR.AGENCY · Meta Global AI Developer Hackathon 2026 · built on the Meta Model API (`muse-spark-1.3`)
 
+**Problem statement: Build for Your World.** Our world is the websites of small businesses: the agency scans and repairs them every day, and most stay exposed because nobody proposes a fix with proof that it breaks nothing. Mission Zero does, and the same loop answers a researcher's question from the primary documents.
+
+**Live demo** (replays of the committed runs, no model called): https://cryptoragency.github.io/mission0/ (online when the repository is public, 4 November 2026). Mission Zero reads and cites research for researchers; it never gives medical advice.
+
 ## Meta tools in ten seconds
 
 - **Muse Spark 1.3** runs every role, with `reasoning_effort` set per role: the effort sweep below shows the same goal at 10/10 for $0.028 (minimal) and 5/10 at the highest efforts.
@@ -348,6 +352,16 @@ One founder, CRYPTOR.AGENCY (France), with Claude Code as pair programmer: commi
 - Optional: Playwright (`npm i playwright && npx playwright install chromium`) for `--vision`, and ffmpeg for voice
 - Optional: a Baseten key for the open weights
 
+With Docker (git and ffmpeg inside, the `.env` never copied into the image; the test suite runs in the image on every push, `.github/workflows/ci.yml`):
+
+```bash
+docker build -t mission-zero .
+docker run --rm --entrypoint npm mission-zero test                       # the test suite, no network, no model call
+docker run --rm --env-file .env -v "$PWD/evidence:/app/evidence" -v "$PWD/memory:/app/memory" mission-zero src/run.js "your goal" 4 3
+```
+
+Without Docker:
+
 ```bash
 cp .env.example .env            # add your MODEL_API_KEY (Meta Model API)
 npm install
@@ -388,6 +402,7 @@ The evidence folder (`evidence/<date>/`) holds `journal.jsonl` (every plan, obse
 | `demo-site/` | Maison Verde, the flawed shop, its vital journeys and its 15 documented flaws |
 | `bench/` | demo goals, A/B of the contradictor, replay generator, repair runner and report, chain check |
 | `web/` | a side experiment from day one (one community question, a random identifier in the browser, no name, email or stored IP); not part of the judged product |
+| `Dockerfile`, `.github/workflows/` | the container; the tests on Node 22 and 24 and inside the image on every push; the live demo (`pages/index.html` + `examples/`) deployed to GitHub Pages |
 | `examples/` | committed real runs, replays, patches, hashed journals, Meta tool outputs, the anonymous scan aggregate, the real site read by another scanner (`real-site/`), `effort-sweep/`, `open-weights/`, `film-2026-10-29/` (missions of 29 October) and `watch-*` |
 
 ## Data sources
