@@ -317,6 +317,36 @@ const feedback = (r) => ({ status: r.status, why: r.why, edits: (r.fix?.applied 
 // `review` (default: the agent reviewing its own patch) can be replaced or set to null. WEAK_JUSTIFICATION: a recommendation
 // the judge scored under this is not hidden behind "proposed": the status becomes "reserved", with the reservation written.
 export const WEAK_JUSTIFICATION = 7;
+
+// Locked zones: a fixed rule, written here and never asked to the model, decides that some fixes always wait for a human
+// decision, even when every check is green: money, identity, access rights, secrets, personal data, deletion. Neither the
+// model's review nor the judge's note can lift it. Either trigger is enough: the TYPE of the finding, or the CODE the patch touches.
+export const LOCKED_TYPES = {
+  'card-data-over-http': 'payment', 'client-side-price': 'payment',
+  'weak-authentication': 'authentication', 'insecure-cookie': 'session',
+  'broken-access-control': 'access rights', idor: 'access rights',
+  'exposed-secrets': 'secrets', 'personal-data-exposed': 'personal data',
+};
+export const LOCKED_CODE = [
+  ['payment', /\b(payment|checkout|card|cvv|cvc|iban|stripe|price|amount)\b/i],
+  ['authentication', /\b(password|passwd|login|logout|bcrypt|scrypt|argon2|otp|mfa)\b/i],
+  ['session', /\b(session|cookie|set-cookie|jwt|token)\b/i],
+  ['access rights', /\b(admin|role|roles|permission|permissions|isadmin|authori[sz]e)\b/i],
+  ['secrets', /\b(secret|api[_-]?key|private[_-]?key)\b|\.env\b/i],
+  ['deletion', /\b(unlink|unlinkSync|rmSync|rmdir)\b|\bdrop\s+table\b|\bdelete\s+from\b/i],
+];
+// The edits' find and replace strings are the only code the patch touches: a zone word in either one locks the fix.
+export function lockedZone(finding, edits = []) {
+  const byType = LOCKED_TYPES[String(finding?.type || '')];
+  if (byType) return { zone: byType, by: 'finding type', match: String(finding.type) };
+  for (const e of edits || []) {
+    for (const [zone, re] of LOCKED_CODE) {
+      const m = String(e?.replace || '').match(re) || String(e?.find || '').match(re);
+      if (m) return { zone, by: 'code touched', match: m[0], file: e.file };
+    }
+  }
+  return null;
+}
 export async function repairOne({ finding, siteDir, ask, folder = null, login = null, know = knowledge, propose = proposeFix, review = reviewPatch, turns = 2, rounds = 1, retries = 1, lessons = [], vision = null, files = ['server.js'] }) {
   if (vision && !vision.folder && folder) vision = { ...vision, folder };
   const t0 = Date.now();
@@ -345,6 +375,9 @@ export async function repairOne({ finding, siteDir, ask, folder = null, login = 
     const reservations = [];
     if (r.status === 'hides') { reservations.push(r.why); r = { ...r, status: 'reserved', why: 'journeys pass and the flaw is gone on the copy, but ' + r.why }; }
     if (r.status === 'proposed' && Number(rec.score) < WEAK_JUSTIFICATION) { reservations.push(`weak justification: the judge scored the cited recommendation ${rec.score}/10 (${rec.green || 0} verified source${rec.green === 1 ? '' : 's'}); read the sources before applying`); r = { ...r, status: 'reserved', why: 'journeys pass and the flaw is gone on the copy, but ' + reservations[reservations.length - 1] }; }
+    // Locked zone: whatever the status, the decision is a human's; written on the record, never lifted by a later step.
+    const locked = lockedZone(finding, r.fix?.applied || []);
+    if (locked) r = { ...r, locked: { ...locked, decision: 'human', why: `locked zone (${locked.zone}, by ${locked.by}: ${locked.match}): decided by a fixed rule, not by the model; a human decides, even if every check is green` } };
     // The patch is kept as text; the copy is kept only when the screenshots were written inside it (vision without a folder).
     keep = vision && !vision.folder && r.vision?.shots ? r.copy : null;
     return { ...r, copy: keep || undefined, reservations, attempts, ms: Date.now() - t0 };
@@ -399,7 +432,7 @@ export async function repairAll({ findings, siteDir, ask, folder, login = null, 
       try {
         // Every record goes into the hashed journal of the run: altered or missing afterwards = the chain breaks.
         writeFileSync(join(sub, 'repair.json'), JSON.stringify(diskRecord(r, known), null, 2));
-        appendChain(folder, dirName + '/repair.json', { finding: finding.id, status: r.status });
+        appendChain(folder, dirName + '/repair.json', { finding: finding.id, status: r.status, ...(r.locked ? { locked: r.locked.zone } : {}) });
         if (r.patch) {
           writeFileSync(join(sub, 'fix.patch'), r.patch); appendChain(folder, dirName + '/fix.patch', { finding: finding.id });
           writeFileSync(join(sub, 'fix.redacted.patch'), redactPatch(r.patch)); appendChain(folder, dirName + '/fix.redacted.patch', { finding: finding.id, redacted: true });

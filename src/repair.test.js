@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { applyEdits, copySite, runJourneys, repairOne, freePort, startSite } from './repair.js';
+import { applyEdits, copySite, runJourneys, repairOne, freePort, startSite, lockedZone } from './repair.js';
 import { scan } from './scanner.js';
 
 const SITE = 'demo-site';
@@ -39,6 +39,7 @@ test('a fix that keeps the journeys green and removes the flaw is PROPOSED, neve
   assert.ok(r.journeysAfter.ok);
   assert.equal(r.rescan.findings.length, 0);
   assert.ok(readFileSync(join(SITE, 'server.js'), 'utf8').includes('WooCommerce/3.5.1')); // the original is untouched
+  assert.equal(r.locked, undefined); // version headers: no locked zone
 });
 
 test('a fix that breaks a vital journey is REJECTED', async () => {
@@ -329,4 +330,22 @@ test('two findings never share a folder (a/b and a_b, F01 and f01, no id), and o
   for (const d of ['a_b', 'a_b-2', 'F01', 'f01-2', 'finding', 'finding-2', 'last']) assert.ok(existsSync(join(folder, d, 'repair.json')), d);
   assert.match(results[6].recordError, /BigInt/); // its record could not be written; the next finding still ran
   assert.equal(verifyChain(folder).ok, true); assert.equal(verifyChain(folder).entries, 7);
+});
+
+test('locked zones are decided by a fixed rule: by the finding type, or by the code the patch touches', () => {
+  assert.equal(lockedZone({ type: 'client-side-price' }, []).zone, 'payment');
+  assert.equal(lockedZone({ type: 'idor' }, []).by, 'finding type');
+  const byCode = lockedZone({ type: 'missing-security-headers' }, [{ file: 'server.js', find: 'a', replace: "res.setHeader('Set-Cookie', x)" }]);
+  assert.deepEqual([byCode.zone, byCode.by, byCode.file], ['session', 'code touched', 'server.js']);
+  assert.equal(lockedZone({ type: 'x' }, [{ find: 'fs.rmSync(dir)', replace: '' }]).zone, 'deletion'); // removing code counts too
+  assert.equal(lockedZone({ type: 'version-disclosure' }, [{ find: "'x-powered-by': 'PHP'", replace: '' }]), null);
+});
+
+test('a fix in a locked zone stays a HUMAN decision even when every check is green and the judge gives 9/10', async () => {
+  const propose = async () => ({ edits: [{ file: 'server.js', find: "server: 'Apache/2.4.29 (Ubuntu) PHP/7.2.24', 'x-powered-by': 'PHP/7.2.24 WooCommerce/3.5.1', ", replace: '' }], summary: 'drop version headers', risk: 'none' });
+  const r = await repairOne({ finding: { ...F02, type: 'insecure-cookie' }, siteDir: SITE, ask: null, know, propose, review: async () => ({ verdict: 'cause', reason: 'ok', missing: '' }) });
+  assert.equal(r.status, 'proposed', r.why);
+  assert.equal(r.locked.decision, 'human');
+  assert.equal(r.locked.zone, 'session');
+  assert.match(r.locked.why, /fixed rule, not by the model/);
 });

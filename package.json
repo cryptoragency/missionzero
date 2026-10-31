@@ -22,7 +22,8 @@
     "vision": "node --env-file-if-exists=.env bench/run-vision.js",
     "repair-replay": "node bench/make-repair-replay.js",
     "watch": "node --env-file-if-exists=.env src/watch.js",
-    "watch-replay": "node bench/make-watch-replay.js"
+    "watch-replay": "node bench/make-watch-replay.js",
+    "lessons": "node src/lessons.js"
   },
   "dependencies": {
     "pdfjs-dist": "^6.4.299"

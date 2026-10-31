@@ -61,7 +61,7 @@ goal ──► plan (hypotheses + ONE free action) ──► action ──► ob
 - **Reading a 250,000-character report** is cheap: the page is read once per run, cached, and reduced to its opening plus the passages relevant to what the planner asked for. Numbers written in words ("eight characters") count as numbers.
 - **A claim is green only with a quote** that really appears in the cited page. "Supported" without a quote is not trusted.
 - **A red claim is not left to the rewrite alone.** The cited page is read again with the claim itself as the target. The rewrite then sees the passages that carry the figure. It restates the claim in the page's words, cites another page it saw, or drops it. A red claim is an objection by itself, even when the contradictor finds no flaw.
-- **Memory**: each mission ends with generic lessons (never about a company or a person), 30 at most, reused by the next mission. Winning objections of the contradictor become lessons too.
+- **Memory that only learns from proof**: each mission ends with generic lessons (never about a company or a person), 30 at most, reused by the next mission. Winning objections of the contradictor become lessons too. What the agent says it learned is a claim, not a fact: a lesson reaches the planner only if the mission it came from is proven (judge 7/10 or more, at least one source verified by an exact quote, none contradicted). Otherwise it waits in quarantine, with the reason, until a proven mission teaches it again or a human approves it (`node src/lessons.js`, `approve <n>`, `reject <n>`; a rejected lesson is kept in `memory/rejected.json`).
 - **Hard budget caps**: per run (`MZ_CAP_USD`) and per day (`MZ_DAILY_CAP_USD`). The run stops when either is reached.
 
 ## Results on the demo goals (27 October 2026, up to 4 turns, up to 3 contradiction rounds)
@@ -136,6 +136,8 @@ The same loop, pointed at code. A scanner (any scanner: the input is a generic J
 5. **rescans the copy** with the probe that matches the finding by id or by type (so a finding from another scanner is rescanned here): the flaw must be gone, or the fix is **ineffective**. With no probe for its type, or a probe that does not reproduce the flaw on the untouched copy, the fix is **unverified**, never proposed;
 6. **reviews its own patch** against the recommendation it researched: cause removed, or symptom hidden? A hiding patch is refused by the agent and retried with that reason; if no better patch comes, the fix is **proposed with reservation**, the reservation written. A recommendation the judge scored under 7 is a reservation too, never a silent "proposed";
 7. writes the fix as a **patch** for a human to review and apply, plus a readable report.
+
+**Locked zones.** A fixed rule in the code, not the model, marks some fixes as a human decision whatever their status: payment, authentication, session, access rights, secrets, personal data, deletion. It fires on the type of the finding (`LOCKED_TYPES`) or on the code the patch touches (`LOCKED_CODE`), and is written on the record (`locked`), in the hashed journal and in the report table. Neither the agent's review nor the judge's note can lift it (`src/repair.js`, `lockedZone`).
 
 The target in this repository is Maison Verde (`demo-site/`), a fictional shop built with the 15 flaws scanners find on most e-commerce sites (`demo-site/FLAWS.md`). It runs locally only.
 
