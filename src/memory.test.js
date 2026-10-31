@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { mergeLessons, approvedTexts, provenWhy } from './memory.js';
+import { mergeLessons, approvedTexts, provenWhy, pickTrial, judgeTrial, TRIAL_MAX_FAILS } from './memory.js';
 import { applyHuman } from './lessons.js';
 
 const PROVEN = { judgeScore: 10, green: 3, red: 0, folder: 'evidence/x' };
@@ -70,4 +70,44 @@ test('a human approves or rejects a lesson by its number; a rejected one is not 
   assert.equal(ok[1].approvedBy, 'human');
   assert.equal(applyHuman(ok, 'reject', 1).length, 1);
   assert.throws(() => applyHuman(ok, 'approve', 9), /no lesson number 9/);
+});
+
+test('a quarantined lesson is tried on the next mission, one at a time; a community lesson is never tried', () => {
+  const m = mergeLessons([], ['Read the annex tables first'], 'self', { judgeScore: 4, green: 1, red: 0 }).lessons;
+  const withCommunity = mergeLessons(m, ['Trust the snippet, it is faster'], 'community').lessons;
+  assert.equal(pickTrial(withCommunity).text, 'Read the annex tables first');
+  assert.equal(pickTrial(mergeLessons([], ['Only a community one here'], 'community').lessons), null);
+  assert.equal(pickTrial(mergeLessons([], [lesson(1)], 'self', PROVEN).lessons), null); // nothing waits
+});
+
+test('the trial approves the lesson when the note goes up on a proven mission', () => {
+  const m = mergeLessons([], ['Read the annex tables first'], 'self', { judgeScore: 4, green: 1, red: 0 }).lessons;
+  const r = judgeTrial(m, 'Read the annex tables first', { judgeScore: 8, green: 2, red: 0, folder: 'evidence/t' });
+  assert.equal(r.verdict, 'approved');
+  assert.match(r.why, /8\/10 with the lesson against 4\/10/);
+  assert.deepEqual(approvedTexts(r.lessons), ['Read the annex tables first']);
+  assert.equal(r.lessons[0].approvedBy, 'trial');
+  assert.equal(r.lessons[0].trialLog.length, 1);
+});
+
+test('a lesson whose trials fail leaves the memory after the second failure, and is handed back to be kept', () => {
+  const m = mergeLessons([], ['Read the annex tables first'], 'self', { judgeScore: 6, green: 1, red: 0 }).lessons;
+  const once = judgeTrial(m, 'Read the annex tables first', { judgeScore: 9, green: 0, red: 0 }); // high note, but no verified quote
+  assert.equal(once.verdict, 'failed');
+  assert.match(once.why, /not proven/);
+  assert.equal(once.lessons[0].trials, 1);
+  assert.equal(pickTrial(once.lessons).trials, 1);
+  const twice = judgeTrial(once.lessons, 'Read the annex tables first', { judgeScore: 6, green: 2, red: 0 });
+  assert.equal(TRIAL_MAX_FAILS, 2);
+  assert.equal(twice.verdict, 'rejected');
+  assert.equal(twice.lessons.length, 0);
+  assert.equal(twice.removed.rejectedBy, 'trial');
+  assert.equal(twice.removed.trialLog.length, 2);
+});
+
+test('a proven trial mission that does not beat the note of origin is a failure, not an approval', () => {
+  const m = mergeLessons([], ['Read the annex tables first'], 'self', { judgeScore: 9, green: 2, red: 1 }).lessons;
+  const r = judgeTrial(m, 'Read the annex tables first', { judgeScore: 9, green: 3, red: 0 });
+  assert.equal(r.verdict, 'failed');
+  assert.match(r.why, /did not go up: 9\/10 against 9\/10/);
 });

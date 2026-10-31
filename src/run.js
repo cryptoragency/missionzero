@@ -1,5 +1,5 @@
 // Run Mission Zero on a goal: node --env-file=.env src/run.js "goal" [maxTurns] [contradictions 0-5] [--from-zero]
-import { mkdirSync, writeFileSync, appendFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync, appendFileSync, readFileSync, existsSync } from 'node:fs';
 import { createClient, provider } from './meta.js';
 import { run } from './loop.js';
 import { makeExecutor } from './tools.js';
@@ -7,7 +7,7 @@ import { synthesize, seenUrls } from './synthesis.js';
 import { refineAnswer } from './contradictAnswer.js';
 import { verifyReport } from './verify.js';
 import { makeResearch, makeReread } from './research.js';
-import { loadLessons, saveLessons, mergeLessons, distill, approvedTexts } from './memory.js';
+import { loadLessons, saveLessons, mergeLessons, distill, approvedTexts, pickTrial, judgeTrial } from './memory.js';
 import { recordOutcome, loadOutcomes, decideReset, archiveLessons, compareRuns } from './zero.js';
 import { evidenceFolder } from './evidenceDir.js';
 
@@ -66,10 +66,14 @@ let summary = { goal, provider: provider(), model: client.model };
 let failure = null;
 try {
   // 1) The mission with what the agent knows.
-  const first = await mission({ lessons: approvedTexts(past), dir: folder });
+  // A quarantined lesson of the agent is tried on this mission, one at a time (MZ_TRIAL=off disables it).
+  const trial = process.env.MZ_TRIAL === 'off' ? null : pickTrial(past);
+  const firstLessons = [...approvedTexts(past), ...(trial ? [trial.text] : [])];
+  if (trial) { note(folder)({ step: 'trial', lesson: trial.text, from: trial.proof?.judgeScore ?? null }); console.log(`Trying a quarantined lesson on this mission: "${trial.text.slice(0, 90)}"`); }
+  const first = await mission({ lessons: firstLessons, dir: folder });
   let kept = first; let zero = null;
   summary = { ...summary, judgeScore: first.refined.score, verifiedGreen: first.refined.green, verifiedRed: first.refined.red, partial: 'first mission done' };
-  const outcomes = recordOutcome(outcomesPath, { goal, judgeScore: first.refined.score, green: first.refined.green, red: first.refined.red, lessonsUsed: approvedTexts(past).length, folder });
+  const outcomes = recordOutcome(outcomesPath, { goal, judgeScore: first.refined.score, green: first.refined.green, red: first.refined.red, lessonsUsed: firstLessons.length, trial: trial ? trial.text : undefined, folder });
 
   // 2) The agent decides whether its memory is hurting; if so it archives it ITSELF, says why, and starts again from zero.
   const decision = process.env.MZ_ZERO === 'off' ? { reset: false, rule: null, reason: 'MZ_ZERO=off' } : decideReset(outcomes, { forced: process.argv.includes('--from-zero') });
@@ -89,14 +93,23 @@ try {
 
   // 3) Relearn from the answer that was kept. After a reset: if the from-zero answer won, the memory starts from that mission
   // alone; if the memory did no harm, the archived lessons come back (the archive stays, as the trace of the decision).
-  const base = decision.reset && zero.kept === 'from-zero' ? [] : past;
+  let base = decision.reset && zero.kept === 'from-zero' ? [] : past;
+  // The trial's verdict comes from the mission that used the lesson (the first one), never from the from-zero one.
+  let trialResult = null;
+  if (trial && base === past) {
+    const tv = judgeTrial(base, trial.text, { judgeScore: first.refined.score, green: first.refined.green, red: first.refined.red, folder: first.dir });
+    base = tv.lessons;
+    if (tv.removed) { const rp = 'memory/rejected.json'; const gone = existsSync(rp) ? JSON.parse(readFileSync(rp, 'utf8')) : []; gone.push(tv.removed); writeFileSync(rp, JSON.stringify(gone, null, 2)); }
+    trialResult = { lesson: trial.text, verdict: tv.verdict, why: tv.why };
+  } else if (trial) trialResult = { lesson: trial.text, verdict: 'archived', why: 'the memory was reset and the answer from zero was kept' };
+  if (trialResult) { note(folder)({ step: 'trial', ...trialResult }); console.log(`Trial ${trialResult.verdict}: ${trialResult.why}.`); }
   if (decision.reset && zero.kept !== 'from-zero') { note(folder)({ step: 'zero', restored: past.length }); console.log(`Memory restored: ${past.length} lessons back (the archive stays).`); }
   // What the agent says it learned is quarantined unless the kept mission is proven (score, verified quotes, nothing contradicted).
   const learned = mergeLessons(base, await distill({ goal, evidence: kept.result.evidence, ask }), 'self', { judgeScore: kept.refined.score, green: kept.refined.green, red: kept.refined.red, folder: kept.dir });
   if (learned.quarantined.length) console.log(`${learned.quarantined.length} lesson(s) in quarantine (${learned.quarantined[0].quarantine}): not given to the planner until proven again or approved (node src/lessons.js).`);
   saveLessons(lessonsPath, learned.lessons);
   writeFileSync(folder + '/final-answer.json', JSON.stringify(kept.final, null, 2));
-  summary = { goal, provider: provider(), model: client.model, reached: kept.result.reached, turns: kept.result.turns, best: kept.result.best, confidence: kept.final.confidence, judgeScore: kept.refined.score, verifiedGreen: kept.refined.green, verifiedRed: kept.refined.red, contradictionRounds: kept.refined.rounds, verifiedSources: kept.final.sources.length, rejectedSources: kept.final.rejectedSources, cost: client.counter, verificationsCached: [...kept.verifyCache.keys()].length, lessonsUsed: decision.reset && kept !== first ? 0 : approvedTexts(past).length, lessonsLearned: learned.added.length - learned.quarantined.length, lessonsQuarantined: learned.quarantined.length, lessonsPromoted: learned.promoted.length, zero: zero ? { rule: zero.decision.rule, reason: zero.decision.reason, kept: zero.kept, withMemory: zero.withMemory.score, fromZero: zero.fromZero.score } : { reset: false, reason: decision.reason } };
+  summary = { goal, provider: provider(), model: client.model, reached: kept.result.reached, turns: kept.result.turns, best: kept.result.best, confidence: kept.final.confidence, judgeScore: kept.refined.score, verifiedGreen: kept.refined.green, verifiedRed: kept.refined.red, contradictionRounds: kept.refined.rounds, verifiedSources: kept.final.sources.length, rejectedSources: kept.final.rejectedSources, cost: client.counter, verificationsCached: [...kept.verifyCache.keys()].length, lessonsUsed: decision.reset && kept !== first ? 0 : firstLessons.length, trial: trialResult || undefined, lessonsLearned: learned.added.length - learned.quarantined.length, lessonsQuarantined: learned.quarantined.length, lessonsPromoted: learned.promoted.length, zero: zero ? { rule: zero.decision.rule, reason: zero.decision.reason, kept: zero.kept, withMemory: zero.withMemory.score, fromZero: zero.fromZero.score } : { reset: false, reason: decision.reason } };
 } catch (e) {
   failure = e;
   summary = { ...summary, error: String(e?.message || e).slice(0, 500) };

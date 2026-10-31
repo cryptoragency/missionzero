@@ -53,6 +53,41 @@ export function mergeLessons(existing, incoming, source = 'self', proof = null) 
   return { lessons: all.filter((l) => keep.has(l)), added, promoted, quarantined: added.filter((l) => !l.approved) };
 }
 
+// Learning from failures, on trial. A quarantined lesson of the agent (never a community one: that waits for a human) is
+// tried on the next mission, ONE at a time so the note can be put down to it. The verdict, from the trial mission's proof:
+//  - approved: the mission is proven AND its note is higher than the note of the mission the lesson came from;
+//  - failed: otherwise; after TRIAL_MAX_FAILS failed trials the lesson leaves the memory (kept by the caller in rejected.json).
+export const TRIAL_MAX_FAILS = 2;
+export function pickTrial(lessons) {
+  const waiting = lessons.filter((l) => !l.approved && l.source === 'self');
+  waiting.sort((a, b) => (a.trials || 0) - (b.trials || 0) || String(a.at).localeCompare(String(b.at)));
+  return waiting[0] || null;
+}
+export function judgeTrial(lessons, text, proof) {
+  const i = lessons.findIndex((l) => l.text === text);
+  if (i < 0) return { lessons, verdict: 'gone', why: 'the lesson is no longer in the memory', removed: null };
+  const l = { ...lessons[i] };
+  const origin = Number(l.proof?.judgeScore ?? 0);
+  const notProven = provenWhy(proof);
+  const at = new Date().toISOString();
+  const entry = { at, judgeScore: proof?.judgeScore, green: proof?.green, red: proof?.red, folder: proof?.folder };
+  l.trialLog = [...(l.trialLog || []), entry];
+  if (!notProven && Number(proof.judgeScore) > origin) {
+    Object.assign(l, { approved: true, approvedBy: 'trial', promotedAt: at, proof: proofOf(proof) });
+    delete l.quarantine;
+    const why = `the note went up: ${proof.judgeScore}/10 with the lesson against ${origin}/10 where it came from, mission proven`;
+    entry.verdict = 'approved';
+    return { lessons: lessons.map((x, k) => (k === i ? l : x)), verdict: 'approved', why, removed: null };
+  }
+  l.trials = (l.trials || 0) + 1;
+  entry.verdict = 'failed';
+  const why = notProven ? `trial mission not proven (${notProven})` : `the note did not go up: ${proof.judgeScore}/10 against ${origin}/10 where it came from`;
+  if (l.trials >= TRIAL_MAX_FAILS) {
+    return { lessons: lessons.filter((_, k) => k !== i), verdict: 'rejected', why: `${why}; ${l.trials} failed trials: the lesson leaves the memory`, removed: { ...l, rejectedBy: 'trial', rejectedAt: at } };
+  }
+  return { lessons: lessons.map((x, k) => (k === i ? l : x)), verdict: 'failed', why: `${why}; trial ${l.trials} of ${TRIAL_MAX_FAILS}`, removed: null };
+}
+
 // Objections of the contradictor that made the judge's note go up: the useful ones.
 export function winningObjections(evidence) {
   const out = [];
