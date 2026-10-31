@@ -14,7 +14,7 @@ Startup track · CRYPTOR.AGENCY · Meta Global AI Developer Hackathon 2026 · bu
 
 **Problem statement: Build for Your World.** Our world is the websites of small businesses: the agency scans and repairs them every day, and most stay exposed because nobody proposes a fix with proof that it breaks nothing. Mission Zero does, and the same loop answers a researcher's question from the primary documents.
 
-**Live demo** (replays of the committed runs, no model called): https://cryptoragency.github.io/mission0/ (online when the repository is public, 4 November 2026). Mission Zero reads and cites research for researchers; it never gives medical advice.
+**Live demo** (replays of the committed runs, no model called): https://cryptoragency.github.io/missionzero/ (online when the repository is public, 4 November 2026). Mission Zero reads and cites research for researchers; it never gives medical advice.
 
 ## Meta tools in ten seconds
 
@@ -32,13 +32,13 @@ Startup track · CRYPTOR.AGENCY · Meta Global AI Developer Hackathon 2026 · bu
 - **Meta tools.** Muse Spark text (`src/meta.js`) and vision (`src/vision.js`), SAM 3.1 (Meta's Segment Anything, `src/sam.js`), `muse-voice-transcribe` (`src/voice.js`), and the open weights on Baseten (`src/meta.js`, `examples/open-weights`).
 - **Watch.** Watch mode reads public series (influenza, trial registries, instrument exports) and reports only what moved, with a cited explanation.
 
-Repository: `github.com/cryptoragency/mission0` (public from 4 November 2026).
+Repository: `github.com/cryptoragency/missionzero` (public from 4 November 2026).
 
 ## What is new in this repository
 
 Everything here was written during the hackathon, from 26 October 2026. The git history is dated and will be public on 4 November. No code or prompt comes from the agency's existing products; two data files (`examples/argus-aggregate.json`, `examples/real-site/findings.json`) are outputs of ARGUS, used as input only.
 
-Transparency: the first two commits (26 October, 15:22 and 15:47 Paris time) came before building officially started (kickoff on 26 October at 12:00 PM ET, building from 12:24 PM ET, i.e. 17:24 Paris time): a 50-line skeleton (the Meta API client with its spending cap, package.json, a key check) and a note after reading the official rules. Everything else, every feature shown in the demo, was built after the kickoff.
+Transparency: before building officially started (kickoff on 26 October 2026, building from 12:24 PM ET, i.e. 17:24 Paris time), a 50-line skeleton existed (the Meta API client with its spending cap, package.json, a key check), with a note on the official rules and an MIT license file. As the organizers asked, those early commits are kept out of this repository: its history starts after the kickoff, and only 13 trivial lines of that skeleton remain (braces, "type": "module", an empty MODEL_API_KEY= line). Everything else, every feature shown in the demo, was built during the event.
 
 ## How to read the scores
 

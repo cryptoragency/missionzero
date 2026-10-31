@@ -171,7 +171,7 @@ const SCENES = [
   } },
   ...(DATA.zero ? [{ html: zeroScene(), run: async (card, dur) => { const steps = card.querySelectorAll('.step'); const gap = Math.min(1600, dur / (steps.length + 1)); for (const s of steps) await reveal(s, gap); } }] : []),
   { html: resultScene(), run: async () => { meterAt(1); meter({ green: DATA.judge.green || meters.green }); } },
-  { html: titleScene('Proof, <span>not promises</span>', 'Everything in this repository was written during the hackathon.', 'github.com/cryptoragency/mission0 · Meta Model API · muse-spark-1.3 · reasoning effort tuned per role'), run: async () => {} },
+  { html: titleScene('Proof, <span>not promises</span>', 'Everything in this repository was written during the hackathon.', 'github.com/cryptoragency/missionzero · Meta Model API · muse-spark-1.3 · reasoning effort tuned per role'), run: async () => {} },
 ];
 async function play(i) {
   if (i < 0 || i >= SCENES.length) return;
