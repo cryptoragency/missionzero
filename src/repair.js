@@ -142,6 +142,7 @@ const FIX_PROMPT = 'You repair a small website. You get one scanner finding, the
   + 'Propose the smallest code change that removes the flaw without changing what the journeys do. Edits are exact-string replacements: "find" must be copied EXACTLY from the code, once; "replace" is the new text. '
   + 'Prefer fixing the cause (escape output, look prices up server-side, require a session, add headers, refuse the path only for a file that must never be served) over hiding it. Never change the journeys file. '
   + 'The journeys are given as code: read what each one sends and expects, and keep exactly that working (a journey that carries no session must keep working without one). '
+  + 'A rate limit counts per client (its address), never for all visitors together: one busy visitor must never lock the others out, and one visitor browsing normally (several pages a minute, each with all its files) is never refused. '
   + 'If "previous" is present, your earlier fix was refused for the reason given: propose a DIFFERENT fix that fixes the reason given and keeps every journey working, never the same edits again. '
   + 'Placeholders like «SECRET_1» stand for secrets; copy them unchanged in find and replace. The code may be cut; only edit text you can see. '
   + 'No prose outside the JSON. JSON: {"edits":[{"file":"server.js","find":"","replace":""}],"summary":"one sentence","risk":"what could break"}.';

@@ -82,3 +82,14 @@ test('the token file is read up to 200 bytes: an endless body does not hold the 
   const ok = await proveOwnership('https://shop.example', TOKEN, { fetchFn: async () => new Response(TOKEN + '\n'), lookup: PUBLIC });
   assert.equal(ok.ok, true);
 });
+
+test('a site that answers every address with its home page (try_files fallback) raises no false F06, F11, F12 or F13', async () => {
+  const page = '<html><title>Vitrine</title><a href="mailto:contact@vitrine.example">contact@vitrine.example</a> PASSWORD SECRET Index of</html>';
+  const spa = async (url) => new URL(url).pathname === '/.well-known/mission-zero.txt' ? new Response(TOKEN) : new Response(page, { headers: { 'content-type': 'text/html' } });
+  const r = await scan('https://vitrine.example', { ownerToken: TOKEN, only: ['F06', 'F11', 'F12', 'F13'], fetchFn: spa, lookup: PUBLIC });
+  assert.deepEqual(r.findings.map((f) => f.id), []);
+  // The same paths answering real data (not the fallback page) are still reported.
+  const leak = async (url) => { const p = new URL(url).pathname; if (p === '/.well-known/mission-zero.txt') return new Response(TOKEN); if (p === '/export/customers.csv') return new Response('name,email\nA,a@example.org\n'); return new Response('not found', { status: 404 }); };
+  const r2 = await scan('https://vitrine.example', { ownerToken: TOKEN, only: ['F13'], fetchFn: leak, lookup: PUBLIC });
+  assert.deepEqual(r2.findings.map((f) => f.id), ['F13']);
+});

@@ -376,6 +376,11 @@ npm run watch -- "Sentinelles grippe France" --replay=8 --explain   # watch mode
 npm run watch-replay -- watch/sentinelles-grippe-france            # the curve, the threshold, the red dots, the explanation (one HTML file)
 ```
 
+Repair your own static site (nginx, Apache, Caddy, a CDN): copy `examples/static-site/` next to the repository, put your
+built files in `public/` and your server's headers in `headers.json`, set the journeys, then
+`npm run repair -- --scan --policy --login=none --site=../my-site`. The step-by-step guide, and how a proposed patch
+becomes one line of your server's configuration, are in [`examples/static-site/README.md`](examples/static-site/README.md).
+
 Real runs are committed in `examples/`: five research missions (`dbir-2025`, `gdpr-max-fine`, `nist-800-63b-4`, `cvss-v4`, `anssi-hygiene`), the self-reset (`back-to-zero`) and the repair of the 15 flaws (`repair-maison-verde`, two runs with their patches and hashed journals, plus the `stories/` runs, which are single-finding replays). They also include the real site read by another scanner (`real-site`), the effort sweep (`effort-sweep`), the open weights on Baseten (`open-weights`), the missions of 29 October (`film-2026-10-29`), the watch runs (`watch-*`) and the raw outputs of the Meta tools (`meta-tools`). Open any `replay.html` in a browser to watch a mission or a repair replayed from its own evidence, or read the raw `journal.jsonl` and `repair.json`.
 
 The evidence folder (`evidence/<date>/`) holds `journal.jsonl` (every plan, observation, evaluation), `memory.json`, `final-answer.json` (answer, sources, every version with its verdicts and quotes) and `summary.json` (score, proofs, cost by role).

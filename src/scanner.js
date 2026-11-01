@@ -22,6 +22,20 @@ async function post(o, base, path, form, headers = {}) {
   } catch (e) { return { status: 0, headers: {}, body: '', error: e.message }; }
 }
 
+// A site that answers every unknown address with its home page (a single-page app behind try_files, a CMS catch-all)
+// would make the "200 on a sensitive path" probes fire on that page. The fallback is learnt once per scan from an address
+// that cannot exist; a probe whose answer is that same page has found nothing.
+export async function fallbackPage(o, base) {
+  if (!o) return null;
+  if (o.__fallback === undefined) {
+    const r = await get(o, base, '/mz-no-such-page-' + Math.random().toString(36).slice(2, 10));
+    o.__fallback = r.status === 200 ? squash(r.body) : null;
+  }
+  return o.__fallback;
+}
+const squash = (s) => String(s).replace(/\s+/g, ' ').trim();
+const isFallback = async (o, base, r) => { const fb = await fallbackPage(o, base); return Boolean(fb) && squash(r.body) === fb; };
+
 // Each probe returns a finding when the flaw is present, null otherwise. `opts.login` (user, password) enables the session probes.
 export const PROBES = [
   { id: 'F01', type: 'missing-security-headers', severity: 'medium', path: '/', run: async (b, o) => {
@@ -47,7 +61,7 @@ export const PROBES = [
   } },
   { id: 'F06', type: 'idor', severity: 'high', path: '/order?id=1002', run: async (b, o) => {
     const r = await get(o, b, '/order?id=1002');
-    return r.status === 200 && /@/.test(r.body) ? { evidence: 'order 1002 (name, e-mail, address) returned without any session', description: 'Any order is readable by changing the number.' } : null;
+    return r.status === 200 && /@/.test(r.body) && !(await isFallback(o, b, r)) ? { evidence: 'order 1002 (name, e-mail, address) returned without any session', description: 'Any order is readable by changing the number.' } : null;
   } },
   { id: 'F07', type: 'weak-authentication', severity: 'high', path: '/login', run: async (b, o) => {
     const a = await post(o, b, '/login', { user: 'admin', password: 'x' }); const z = await post(o, b, '/login', { user: 'zzz-nobody', password: 'x' });
@@ -70,15 +84,15 @@ export const PROBES = [
   } },
   { id: 'F11', type: 'exposed-secrets', severity: 'critical', path: '/.env', run: async (b, o) => {
     const r = await get(o, b, '/.env');
-    return r.status === 200 && /PASSWORD|SECRET/.test(r.body) ? { evidence: 'HTTP 200 with PASSWORD/SECRET entries', description: 'Database, mail and payment secrets are public.' } : null;
+    return r.status === 200 && /PASSWORD|SECRET/.test(r.body) && !(await isFallback(o, b, r)) ? { evidence: 'HTTP 200 with PASSWORD/SECRET entries', description: 'Database, mail and payment secrets are public.' } : null;
   } },
   { id: 'F12', type: 'directory-listing-backups', severity: 'high', path: '/backup/', run: async (b, o) => {
     const r = await get(o, b, '/backup/');
-    return r.status === 200 && /Index of/i.test(r.body) ? { evidence: 'index listing: ' + (r.body.match(/href="[^"]+"/g) || []).slice(0, 3).join(' '), description: 'Configuration and database backups are downloadable.' } : null;
+    return r.status === 200 && /Index of/i.test(r.body) && !(await isFallback(o, b, r)) ? { evidence: 'index listing: ' + (r.body.match(/href="[^"]+"/g) || []).slice(0, 3).join(' '), description: 'Configuration and database backups are downloadable.' } : null;
   } },
   { id: 'F13', type: 'personal-data-exposed', severity: 'critical', path: '/export/customers.csv', run: async (b, o) => {
     const r = await get(o, b, '/export/customers.csv');
-    return r.status === 200 && /@/.test(r.body) ? { evidence: 'names and e-mails returned without authentication', description: 'Customer personal data is public: a GDPR breach.' } : null;
+    return r.status === 200 && /@/.test(r.body) && !(await isFallback(o, b, r)) ? { evidence: 'names and e-mails returned without authentication', description: 'Customer personal data is public: a GDPR breach.' } : null;
   } },
   { id: 'F14', type: 'outdated-library', severity: 'medium', path: '/', run: async (b, o) => {
     const r = await get(o, b, '/'); const src = (r.body.match(/src="([^"]*jquery[^"]*)"/i) || [])[1]; if (!src) return null;
@@ -190,11 +204,12 @@ export async function scan(base, opts = {}) {
   if (!owner.ok) throw new Error('scan refused: ' + base + ' is not a host you proved you control (' + owner.why + ')');
   const origin = owner.origin; // every probe goes to the origin the proof was read from, nowhere else
   const findings = [];
+  const ctx = { ...opts }; // the learnt fallback page lives for this scan only
   for (const p of (opts.policy || opts.only ? ALL_PROBES : PROBES)) {
     if (p.needsLogin && !opts.login) continue;
     if (p.id === 'F21' && opts.burst === false) continue;
     if (opts.only && !opts.only.includes(p.id) && !opts.only.includes(p.type)) continue;
-    const hit = await p.run(origin, opts);
+    const hit = await p.run(origin, ctx);
     if (hit) findings.push({ id: p.id, severity: p.severity, type: p.type, url: origin + p.path, ...hit });
   }
   return { target: origin, owner: owner.how, scanner: 'mission-zero scan 0.1', scannedAt: new Date().toISOString(), findings };

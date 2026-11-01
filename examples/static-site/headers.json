@@ -1,0 +1,8 @@
+{
+  "server": "nginx",
+  "strict-transport-security": "max-age=31536000",
+  "x-frame-options": "SAMEORIGIN",
+  "x-content-type-options": "nosniff",
+  "referrer-policy": "strict-origin-when-cross-origin",
+  "content-security-policy": "frame-ancestors 'self'; object-src 'none'; base-uri 'self'"
+}
