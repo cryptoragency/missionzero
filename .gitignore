@@ -19,3 +19,6 @@ examples/watch-flunet-monde-*/
 # film (Remotion): dependencies and renders stay out; sources are versioned
 film/node_modules/
 film/out/
+
+# images intermédiaires du film (régénérées par video/build/demo-record.cjs)
+video/demo/frames/
