@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Mission Zero · démo page par page</title>
+<!--
+  La démo « avant / un dev installe MZ / après » (gérant, 31 octobre 2026) : pour chaque exemple, trois pages pleines, jamais
+  les deux cas sur une page. Une recherche IA simulée (le champ, la question qui se tape, quelqu'un qui appuie sur le
+  bouton), puis le terminal du développeur qui récupère Mission Zero sur GitHub et lance la mission, puis la même recherche
+  avec Mission Zero. Tout est piloté par le temps (window.__demo.seek(t)) : le script video/build/demo-record.cjs prend une
+  image par 1/12,5 s. ?ex=espace|stress|anssi&lang=fr|en
+  Données : la question de l'espace = les vraies observations du 29/10 (examples/film-2026-10-29/sans-mission-zero*.json) ;
+  le stress = les lignes de la scène sM du film ; l'ANSSI = le vrai run examples/anssi-hygiene (10/10, 4 citations, 0,047 $).
+-->
+<style>
+:root { --bg:#0d1526; --fg:#e8edf7; --mut:#a9b4cc; --line:rgba(255,255,255,.16); --card:rgba(255,255,255,.05); --acc:#2ee6a0; --acc2:rgba(46,230,160,.72); --accf:rgba(46,230,160,.12); --red:#ff6b61; --redf:rgba(180,35,24,.22); --amber:#ffd27a; }
+html, body { margin:0; background:var(--bg); color:var(--fg); font-family:"Segoe UI", system-ui, sans-serif; width:1280px; height:720px; overflow:hidden; }
+#stage { position:relative; width:1280px; height:720px; }
+.page { position:absolute; inset:0; display:none; }
+.page.on { display:block; }
+/* ---- l'application de recherche ---- */
+#app .bar { position:absolute; left:0; top:0; right:0; height:72px; border-bottom:1px solid var(--line); background:rgba(255,255,255,.03); }
+#app .logo { position:absolute; left:40px; top:22px; font-size:22px; font-weight:700; letter-spacing:.04em; }
+#app .logo i { display:inline-block; width:14px; height:14px; border-radius:50%; background:#5b8cff; margin-right:12px; vertical-align:-1px; }
+#app .badge { position:absolute; right:40px; top:20px; padding:7px 18px; border-radius:20px; font-size:15px; font-weight:700; letter-spacing:.1em; border:2px solid; }
+#app .badge.ko { color:var(--red); border-color:var(--red); background:var(--redf); }
+#app .badge.ok { color:var(--acc); border-color:var(--acc2); background:var(--accf); }
+#app .step { position:absolute; left:40px; top:98px; font-size:15px; letter-spacing:.14em; color:var(--mut); }
+#app .box { position:absolute; left:240px; top:150px; width:640px; height:62px; border:2px solid var(--line); border-radius:31px; background:rgba(255,255,255,.05); box-sizing:border-box; padding:0 28px 0 64px; font-size:24px; line-height:58px; white-space:nowrap; overflow:hidden; }
+#app .box.focus { border-color:#5b8cff; box-shadow:0 0 0 4px rgba(91,140,255,.18); }
+#app .box .clip { position:absolute; left:62px; right:28px; top:0; bottom:0; overflow:hidden; }
+#app .box .q { position:absolute; left:0; top:0; font-size:24px; }
+#app .box::before { content:"🔍"; position:absolute; left:24px; top:0; font-size:22px; opacity:.7; }
+#app .caret { display:inline-block; width:2px; height:28px; background:var(--fg); vertical-align:-5px; margin-left:2px; }
+#app .btn { position:absolute; left:904px; top:150px; width:170px; height:62px; border-radius:31px; background:#5b8cff; color:#fff; font-size:22px; font-weight:700; line-height:62px; text-align:center; transition:none; }
+#app .btn.press { transform:scale(.95); background:#3f6fe0; }
+#app .load { position:absolute; left:240px; top:240px; font-size:20px; color:var(--mut); }
+#app .load b { display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--mut); margin-left:6px; }
+#app .srch { position:absolute; left:240px; top:238px; font-size:16px; letter-spacing:.12em; color:var(--mut); }
+#app .result { position:absolute; left:240px; width:830px; box-sizing:border-box; border:2px solid; border-radius:16px; padding:14px 26px 14px 26px; }
+#app .result.ko { border-color:var(--red); background:var(--redf); } #app .result.ok { border-color:var(--acc2); background:var(--accf); }
+#app .result .lab { font-size:15px; letter-spacing:.16em; color:var(--mut); margin-bottom:6px; }
+#app .result .txt { font-size:25px; line-height:1.35; font-weight:600; }
+#app .result .sub { font-size:16px; color:var(--mut); margin-top:6px; line-height:1.3; }
+#app .result .stamp { position:absolute; right:18px; top:50%; border:3px solid; border-radius:10px; padding:6px 14px; font-size:22px; font-weight:900; letter-spacing:.12em; text-transform:uppercase; text-align:center; line-height:1.02; white-space:nowrap; box-shadow: inset 0 0 0 4px var(--bg), inset 0 0 0 6px currentColor; background:rgba(13,21,38,.55); }
+#app .result.ko .stamp { color:#ff4b3e; border-color:#ff4b3e; } #app .result.ok .stamp { color:#2ee6a0; border-color:#2ee6a0; }
+#app .install { position:absolute; left:1090px; width:172px; height:112px; border-radius:14px; background:var(--acc); color:#06281c; font-weight:900; font-size:21px; line-height:1.15; letter-spacing:.04em; text-align:center; display:flex; align-items:center; justify-content:center; box-sizing:border-box; padding:0 10px; }
+#app .bigstamp { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; pointer-events:none; z-index:30; }
+#app .bigstamp span { display:inline-block; border:6px solid; border-radius:14px; padding:.12em .38em; background:rgba(13,21,38,.80) !important; font-size:64px; font-weight:900; letter-spacing:.12em; line-height:1; white-space:nowrap; font-family:"Segoe UI Black","Segoe UI",system-ui,sans-serif; background:rgba(13,21,38,.62); box-shadow: inset 0 0 0 6px rgba(13,21,38,.9), inset 0 0 0 10px currentColor; }
+#app .bigstamp.ko span { color:#ff4b3e; border-color:#ff4b3e; } #app .bigstamp.ok span { color:#2ee6a0; border-color:#2ee6a0; }
+#lab .bigstamp { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; pointer-events:none; z-index:30; }
+#lab .bigstamp span { display:inline-block; border:6px solid; border-radius:14px; padding:.12em .38em; background:rgba(13,21,38,.80) !important; font-size:64px; font-weight:900; letter-spacing:.12em; line-height:1; white-space:nowrap; font-family:"Segoe UI Black","Segoe UI",system-ui,sans-serif; background:rgba(13,21,38,.62); box-shadow: inset 0 0 0 6px rgba(13,21,38,.9), inset 0 0 0 10px currentColor; }
+#lab .bigstamp.ko span { color:#ff4b3e; border-color:#ff4b3e; } #lab .bigstamp.ok span { color:#2ee6a0; border-color:#2ee6a0; }
+#lab .install { position:absolute; left:1060px; top:560px; width:190px; height:112px; border-radius:14px; background:var(--acc); color:#06281c; font-weight:900; font-size:22px; line-height:1.15; letter-spacing:.04em; text-align:center; display:flex; align-items:center; justify-content:center; box-sizing:border-box; padding:0 10px; }
+#lab .install.press { transform:scale(.95); background:#22c98a; }
+#app .install.press { transform:scale(.95); background:#22c98a; }
+#app .rows { position:absolute; left:240px; top:268px; width:830px; }
+#app .row { height:46px; font-size:21px; line-height:46px; position:relative; border-top:1px solid var(--line); }
+#app .row:first-child { border-top:0; }
+#app .row .chip { position:absolute; right:0; top:6px; height:34px; line-height:34px; padding:0 18px; border-radius:17px; font-size:16px; font-weight:700; border:2px solid; }
+#app .chip.ok { color:var(--acc); border-color:var(--acc2); background:var(--accf); }
+#app .chip.ko { color:var(--red); border-color:var(--red); background:var(--redf); }
+/* ---- le terminal du développeur ---- */
+#term .step { position:absolute; left:60px; top:30px; font-size:15px; letter-spacing:.14em; color:var(--mut); }
+#term .title { position:absolute; left:60px; top:60px; font-size:24px; color:var(--mut); letter-spacing:.06em; }
+#term .title b { color:var(--fg); }
+#term .win { position:absolute; left:60px; top:112px; width:1160px; height:568px; background:#070b14; border:1px solid var(--line); border-radius:12px; box-sizing:border-box; overflow:hidden; }
+#term .tb { height:36px; background:rgba(255,255,255,.06); border-bottom:1px solid var(--line); font-size:14px; line-height:36px; color:var(--mut); padding-left:16px; }
+#term .tb i { display:inline-block; width:12px; height:12px; border-radius:50%; margin-right:8px; vertical-align:-1px; }
+#term pre { margin:0; padding:18px 24px; font-family:Consolas, "Courier New", monospace; font-size:22px; line-height:1.5; color:#d7deea; white-space:pre-wrap; }
+#term .c { color:#8ab4ff; } #term .ok { color:var(--acc); } #term .k { color:var(--amber); } #term .m { color:var(--mut); } #term .r { color:var(--red); }
+#term .big { font-size:24px; font-weight:700; }
+#term .code { font-size:18px; color:#c9d3e6; } #term .code.add { color:#2ee6a0; background:rgba(46,230,160,.12); display:inline-block; width:100%; }
+#term .blk { display:inline-block; width:12px; height:24px; background:#d7deea; vertical-align:-4px; }
+/* ---- le curseur, le noir ---- */
+#cursor { position:absolute; left:0; top:0; width:28px; height:36px; pointer-events:none; filter:drop-shadow(0 2px 4px rgba(0,0,0,.6)); }
+#black { position:absolute; inset:0; background:#000; opacity:0; pointer-events:none; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="app" class="page">
+    <div class="bar"><div class="logo"><i></i><span id="appName"></span></div><div class="badge" id="badge"></div></div>
+    <div class="step" id="step"></div>
+    <div class="box" id="box"><div class="clip"><span class="q" id="q"></span></div></div>
+    <div class="btn" id="btn"></div>
+    <div class="load" id="load"></div>
+    <div class="srch" id="srch"></div>
+    <div class="rows" id="rows"></div>
+    <div class="result" id="result"></div>
+    <div class="install" id="install"></div>
+    <div class="bigstamp" id="bigstamp"><span id="bigstampT"></span></div>
+  </div>
+  <div id="lab" class="page"><svg id="labsvg" viewBox="0 0 1280 720" width="1280" height="720"></svg>
+    <div class="bigstamp" id="labstamp"><span id="labstampT"></span></div>
+    <div class="install" id="labinstall"></div></div>
+  <div id="term" class="page">
+    <div class="step" id="termStep"></div>
+    <div class="title" id="termTitle"></div>
+    <div class="win"><div class="tb"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i>dev@acme · bash</div><pre id="pre"></pre></div>
+  </div>
+  <svg id="cursor" viewBox="0 0 28 36"><path d="M2 2 L2 28 L9 21 L14 33 L19 31 L14 19 L24 19 Z" fill="#fff" stroke="#000" stroke-width="2" stroke-linejoin="round"/></svg>
+  <div id="black"></div>
+</div>
+<script>
+(function () {
+  var Q = new URLSearchParams(location.search), EX = Q.get('ex') || 'espace', L = Q.get('lang') === 'en' ? 'en' : 'fr';
+  var T = {
+    fr: { app: 'Recherche IA', sans: 'SANS MISSION ZERO', avec: 'AVEC MISSION ZERO', btn: 'Chercher', loadSans: 'L’IA répond', loadAvec: 'Mission Zero lit les pages', sources: 'SOURCES', lisible: 'lisible', inj: 'injoignable', sansAdr: 'sans adresse', stepA: 'ÉTAPE 1 · AVANT · LA QUESTION À UNE IA ORDINAIRE', stepB: 'ÉTAPE 2 · ON INSTALLE MISSION ZERO', stepC: 'ÉTAPE 3 · APRÈS · LA MÊME QUESTION PASSE PAR MISSION ZERO', res: 'RÉSULTAT', stampKo: 'NOT VERIFIED', stampOk: 'VERIFIED', install: 'INSTALL MISSION ZERO', dev: 'Un développeur de l’équipe récupère <b>Mission Zero</b> sur GitHub', ready: 'Mission Zero · prêt', wired: '→ ici, Mission Zero vérifie avant d’afficher' },
+    en: { app: 'AI Search', sans: 'WITHOUT MISSION ZERO', avec: 'WITH MISSION ZERO', btn: 'Search', loadSans: 'The AI answers', loadAvec: 'Mission Zero reads the pages', sources: 'SOURCES', lisible: 'readable', inj: 'unreachable', sansAdr: 'no address', stepA: 'STEP 1 · BEFORE · THE QUESTION TO AN ORDINARY AI', stepB: 'STEP 2 · INSTALLING MISSION ZERO', stepC: 'STEP 3 · AFTER · THE SAME QUESTION GOES THROUGH MISSION ZERO', res: 'RESULT', stampKo: 'NOT VERIFIED', stampOk: 'VERIFIED', install: 'INSTALL MISSION ZERO', dev: 'A developer on the team gets <b>Mission Zero</b> from GitHub', ready: 'Mission Zero · ready', wired: '→ here, Mission Zero checks before anything is shown' }
+  }[L];
+  // ---- les trois exemples ----
+  var DATA = {
+    espace: {
+      q: { fr: 'Le système solaire va-t-il quelque part ?', en: 'Is the solar system heading somewhere?' },
+      sans: {
+        result: { fr: 'Oui, le système solaire va vers un endroit inconnu, à 19,7 km/s', en: 'Yes, the solar system is heading somewhere unknown, at 19.7 km/s' },
+        rows: [
+          { t: { fr: 'Hercule, 19,7 km/s · manuel de 1981', en: 'Hercules, 19.7 km/s · 1981 textbook' }, c: 'sansAdr' },
+          { t: { fr: '3 vitesses au centième · MNRAS 2010', en: '3 speeds to the hundredth · MNRAS 2010' }, c: 'inj' },
+          { t: { fr: 'la galaxie, 240 km/s · Reid 2014', en: 'the Galaxy, 240 km/s · Reid 2014' }, c: 'lisible' },
+          { t: { fr: '600 km/s, Grand Attracteur · 1988', en: '600 km/s, Great Attractor · 1988' }, c: 'inj' },
+          { t: { fr: 'le fond du ciel, 369,82 km/s · Planck 2020', en: 'sky background, 369.82 km/s · Planck 2020' }, c: 'inj' }
+        ],
+        verdict: { fr: '4 sources sur 5 injoignables · personne n’a ouvert les pages · 1 centime, 20 secondes', en: '4 sources out of 5 nowhere to be found · nobody opened the pages · 1 cent, 20 seconds' }
+      },
+      avec: {
+        result: { fr: 'Oui, le système solaire va vers un endroit inconnu : 20 km/s vers Hercule, 230 km/s autour de la galaxie, 631 km/s vers le Grand Attracteur', en: 'Yes, the solar system is heading somewhere unknown: 20 km/s toward Hercules, 230 km/s around the Galaxy, 631 km/s toward the Great Attractor' },
+        rows: [
+          { t: { fr: 'Hercule, 20 km/s · Univ. du Maryland', en: 'Hercules, 20 km/s · Univ. of Maryland' }, c: 'lisible' },
+          { t: { fr: '230 km/s · NASA, mot pour mot', en: '230 km/s · NASA, word for word' }, c: 'lisible' },
+          { t: { fr: '369 km/s · Cambridge', en: '369 km/s · Cambridge' }, c: 'lisible' },
+          { t: { fr: '631 km/s · Nature, 2014', en: '631 km/s · Nature, 2014' }, c: 'lisible' }
+        ],
+        verdict: { fr: '4 pages lues, chaque chiffre relu sur sa page · ce qu’il n’a pas pu lire, il le dit · 1 dollar', en: '4 pages read, every figure re-read on its page · what it could not read, it says so · 1 dollar' }
+      },
+      run: { fr: ['plan · 4 hypothèses : apex solaire, galaxie, fond du ciel, Grand Attracteur', 'search · 11 résultats', 'read_page · astro.umd.edu · l’apex solaire', 'read_page · nasa.gov · la vitesse du Soleil dans la galaxie', 'read_page · cam.ac.uk · le dipôle du fond du ciel', 'read_page · nature.com · Laniakea, 2014', 'verify ✔ 20 km/s · citation relue sur la page', 'verify ✔ 230 km/s · citation relue sur la page', 'verify ✔ 369 km/s · citation relue sur la page', 'verify ✔ 631 km/s · citation relue sur la page', 'judge · 4 vertes · 0 rouge', 'cost · environ 1 $ · 4 missions · evidence/film-2026-10-29/'],
+             en: ['plan · 4 hypotheses: solar apex, Galaxy, sky background, Great Attractor', 'search · 11 results', 'read_page · astro.umd.edu · the solar apex', 'read_page · nasa.gov · the Sun’s speed in the Galaxy', 'read_page · cam.ac.uk · the sky background dipole', 'read_page · nature.com · Laniakea, 2014', 'verify ✔ 20 km/s · quote re-read on the page', 'verify ✔ 230 km/s · quote re-read on the page', 'verify ✔ 369 km/s · quote re-read on the page', 'verify ✔ 631 km/s · quote re-read on the page', 'judge · 4 green · 0 red', 'cost · $1.01 · 4 missions · evidence/film-2026-10-29/'] }
+    },
+    stress: {
+      q: { fr: 'Le stress fait-il varier le cancer ?', en: 'Does stress change cancer?' },
+      sans: {
+        result: { fr: 'Oui, le stress donne le cancer', en: 'Yes, stress causes cancer' },
+        rows: [
+          { t: { fr: '« de nombreuses études »', en: '“many studies”' }, c: 'sansAdr' },
+          { t: { fr: 'une méta-analyse, sans année', en: 'a meta-analysis, no year' }, c: 'inj' },
+          { t: { fr: 'un site santé · 2021', en: 'a health website · 2021' }, c: 'inj' }
+        ],
+        verdict: { fr: '0 source lisible sur 3 · une réponse en un bloc, aucun facteur, aucune mesure', en: '0 readable source out of 3 · one block answer, no factor, no measure' }
+      },
+      avec: {
+        result: { fr: 'Oui, selon le facteur : aucun lien au travail · plus de cancers sous stress psychologique · métastases ×4 par les hormones (souris)', en: 'Yes, by factor: no link at work · more cancers under psychological stress · metastasis ×4 from hormones (mice)' },
+        rows: [
+          { t: { fr: 'Stress au travail · risque 0,97 · BMJ 2013', en: 'Work stress · risk 0.97 · BMJ 2013' }, c: 'lisible' },
+          { t: { fr: 'Stress psychologique · P = 0,005 · Nat Clin Pract Oncol 2008', en: 'Psychological stress · P = 0.005 · Nat Clin Pract Oncol 2008' }, c: 'lisible' },
+          { t: { fr: 'Hormones du stress · métastases ×4 · Cancer Cell 2024', en: 'Stress hormones · metastasis ×4 · Cancer Cell 2024' }, c: 'lisible' },
+          { t: { fr: 'Propranolol 7 jours · P = 0,002 · Clin Cancer Res 2020', en: 'Propranolol 7 days · P = 0.002 · Clin Cancer Res 2020' }, c: 'lisible' }
+        ],
+        verdict: { fr: '4 facteurs, 4 pages lues · la variation mesurée et sa page, pour chacun', en: '4 factors, 4 pages read · the measured change and its page, for each' }
+      },
+      run: { fr: ['plan · 4 facteurs : travail, psychologique, hormones, couper le facteur', 'search · 14 résultats', 'read_page · bmj.com · 116 056 Européens, 12 ans', 'read_page · pubmed.ncbi.nlm.nih.gov · 165 études', 'read_page · cshl.edu · glucocorticoïdes, souris', 'read_page · aacrjournals.org · propranolol, 60 patientes', 'verify ✔ HR 0,97 · citation relue sur la page', 'verify ✔ P = 0,005 · citation relue sur la page', 'verify ✔ ×4 · citation relue sur la page', 'verify ✔ P = 0,002 · citation relue sur la page', 'judge · 4 vertes · 0 rouge', 'cost · 0,85 $ · evidence/stress-cancer/'],
+             en: ['plan · 4 factors: work, psychological, hormones, cutting the factor', 'search · 14 results', 'read_page · bmj.com · 116,056 Europeans, 12 years', 'read_page · pubmed.ncbi.nlm.nih.gov · 165 studies', 'read_page · cshl.edu · glucocorticoids, mice', 'read_page · aacrjournals.org · propranolol, 60 patients', 'verify ✔ HR 0.97 · quote re-read on the page', 'verify ✔ P = 0.005 · quote re-read on the page', 'verify ✔ ×4 · quote re-read on the page', 'verify ✔ P = 0.002 · quote re-read on the page', 'judge · 4 green · 0 red', 'cost · $0.85 · evidence/stress-cancer/'] }
+    },
+    anssi: {
+      q: { fr: 'Combien de mesures compte le Guide d’hygiène informatique de l’ANSSI, et quelle est l’édition en cours ?', en: 'How many measures does the ANSSI cyber hygiene guide list, and which edition is current?' },
+      sans: {
+        result: { fr: 'Une quarantaine de mesures, édition 2017', en: 'Around forty measures, 2017 edition' },
+        rows: [
+          { t: { fr: 'ssi.gouv.fr · page déplacée', en: 'ssi.gouv.fr · page moved' }, c: 'inj' },
+          { t: { fr: 'un résumé · 2019', en: 'a summary · 2019' }, c: 'sansAdr' }
+        ],
+        verdict: { fr: '0 source lisible sur 2 · « une quarantaine » : combien, au juste ? quelle version ?', en: '0 readable source out of 2 · “around forty”: how many, exactly? which version?' }
+      },
+      avec: {
+        result: { fr: '42 mesures · version 2.0 · septembre 2017', en: '42 measures · version 2.0 · September 2017' },
+        rows: [
+          { t: { fr: 'messervices.cyber.gouv.fr · « les 42 mesures d’hygiène informatique »', en: 'messervices.cyber.gouv.fr · “the 42 cyber hygiene measures”' }, c: 'lisible' },
+          { t: { fr: 'guide_hygiene_informatique_anssi.pdf · « EN 42 MESURES »', en: 'guide_hygiene_informatique_anssi.pdf · “EN 42 MESURES”' }, c: 'lisible' },
+          { t: { fr: 'même PDF · « Version 2.0 »', en: 'same PDF · “Version 2.0”' }, c: 'lisible' },
+          { t: { fr: 'même PDF · « Septembre 2017 »', en: 'same PDF · “Septembre 2017”' }, c: 'lisible' }
+        ],
+        verdict: { fr: '10/10 · 4 citations VERIFIED · 0,047 $ · 34 secondes', en: '10/10 · 4 quotes VERIFIED · $0.047 · 34 seconds' }
+      },
+      run: { fr: ['plan · 2 hypothèses : la page du guide, le PDF', 'search · 8 résultats', 'read_page · messervices.cyber.gouv.fr/guides/guide-dhygiene-informatique', 'read_page · messervices.cyber.gouv.fr/…/guide_hygiene_informatique_anssi.pdf', 'verify ✔ « 42 mesures » · citation relue sur la page', 'verify ✔ « EN 42 MESURES » · citation relue sur la page', 'verify ✔ « Version 2.0 » · citation relue sur la page', 'verify ✔ « Septembre 2017 » · citation relue sur la page', 'judge · 10/10 · 4 vertes · 0 rouge', 'cost · 0,047 $ · 12 appels · 34 s', 'evidence/anssi-hygiene/final-answer.json'],
+             en: ['plan · 2 hypotheses: the guide page, the PDF', 'search · 8 results', 'read_page · messervices.cyber.gouv.fr/guides/guide-dhygiene-informatique', 'read_page · messervices.cyber.gouv.fr/…/guide_hygiene_informatique_anssi.pdf', 'verify ✔ “42 mesures” · quote re-read on the page', 'verify ✔ “EN 42 MESURES” · quote re-read on the page', 'verify ✔ “Version 2.0” · quote re-read on the page', 'verify ✔ “Septembre 2017” · quote re-read on the page', 'judge · 10/10 · 4 green · 0 red', 'cost · $0.047 · 12 calls · 34 s', 'evidence/anssi-hygiene/final-answer.json'] }
+    }
+  };
+  DATA.labo = { q: { fr: 'labo', en: 'lab' } };
+  var D = DATA[EX];
+  var lerp = function (a, b, t) { return a + (b - a) * t; };
+  var ease = function (t) { t = Math.max(0, Math.min(1, t)); return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; };
+  var $ = function (id) { return document.getElementById(id); };
+  // Le zoom sur le résultat AVANT (gérant, 1er novembre) : 0,6 s d'approche, 4 s dessus, 0,6 s de retour, 1 s d'attente, puis le tampon.
+  var ZIN = 0.6, ZHOLD = 4.0, ZOUT = 0.6, ZWAIT = 1.0;
+  function zoomK(u, t0) { if (u < t0) return 0; var a = u - t0; if (a < ZIN) return ease(a / ZIN); a -= ZIN; if (a < ZHOLD) return 1; a -= ZHOLD; if (a < ZOUT) return 1 - ease(a / ZOUT); return 0; }
+  function applyZoom(el, k, cx, cy, S) { if (k <= 0.0005) { el.style.transform = ''; return; } var sc = 1 + (S - 1) * k; el.style.transformOrigin = '0 0'; el.style.transform = 'translate(' + ((640 - cx * S) * k).toFixed(1) + 'px,' + ((360 - cy * S) * k).toFixed(1) + 'px) scale(' + sc.toFixed(4) + ')'; }
+  var esc = function (s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;'); };
+
+  // ---- une page « application » : le curseur, la frappe, le bouton, la réponse, les sources, le verdict ----
+  function appTimeline(cfg) {
+    var q = D.q[L], typeDur = Math.min(3.4, 0.06 * q.length);
+    var tField = 1.4, tType = tField + 0.3, tTypeEnd = tType + typeDur, tBtn = tTypeEnd + 0.9, tClick = tBtn + 0.25;
+    var loadDur = cfg.avec ? 2.2 : 1.3, tAnswer = tClick + loadDur, tRows = tAnswer + 0.5, rowGap = 0.75;
+    var tVerdict = tRows + cfg.rows.length * rowGap + 0.7, tZoom = tVerdict + 0.6, tStamp = cfg.avec ? tVerdict + 0.5 : tZoom + ZIN + ZHOLD + ZOUT + ZWAIT, tInstall = tStamp + 2.3, tGo = tInstall + 0.5, tPress = tGo + 0.9;
+    var dur = cfg.avec ? tStamp + 3.4 : tPress + 1.4;
+    var cardTop = 268 + cfg.rows.length * 47 + 22, instX = 1090 + 86, instY = cardTop + 56;
+    return { dur: dur, render: function (u) {
+      $('appName').textContent = T.app;
+      $('badge').textContent = cfg.avec ? T.avec : T.sans; $('badge').className = 'badge ' + (cfg.avec ? 'ok' : 'ko');
+      $('step').textContent = cfg.avec ? T.stepC : T.stepA;
+      $('btn').textContent = T.btn;
+      // le curseur : d'en bas à droite vers le champ, puis vers le bouton
+      var cx, cy;
+      if (u < tField) { var k = ease(u / tField); cx = lerp(980, 560, k); cy = lerp(640, 186, k); }
+      else if (u < tTypeEnd + 0.2) { cx = 560; cy = 186; }
+      else if (u < tBtn) { var k2 = ease((u - tTypeEnd - 0.2) / (tBtn - tTypeEnd - 0.2)); cx = lerp(560, 989, k2); cy = lerp(186, 186, k2); }
+      else if (cfg.avec || u < tGo) { cx = 989; cy = 186; }
+      else { var k3 = ease((u - tGo) / 0.8); cx = lerp(989, instX, k3); cy = lerp(186, instY, k3); }
+      $('cursor').style.transform = 'translate(' + cx.toFixed(1) + 'px,' + cy.toFixed(1) + 'px)';
+      // la frappe
+      var n = u < tType ? 0 : Math.min(q.length, Math.floor((u - tType) / typeDur * q.length + 0.0001));
+      var caret = u >= tField && u < tClick && Math.floor(u * 2.5) % 2 === 0;
+      $('q').innerHTML = esc(q.slice(0, n)) + (caret ? '<span class="caret"></span>' : '');
+      // une question longue défile vers la gauche, comme dans un vrai champ
+      var inner = 640 - 62 - 28 - 4, w = $('q').offsetWidth; $('q').style.left = (w > inner ? inner - w : 0) + 'px';
+      $('box').className = 'box' + (u >= tField && u < tClick ? ' focus' : '');
+      $('btn').className = 'btn' + (u >= tClick && u < tClick + 0.25 ? ' press' : '');
+      // le chargement
+      var loading = u >= tClick && u < tAnswer;
+      $('load').style.display = loading ? 'block' : 'none';
+      if (loading) { var dots = 1 + Math.floor((u - tClick) * 3) % 3; $('load').innerHTML = esc(cfg.avec ? T.loadAvec : T.loadSans) + ' <b></b><b style="opacity:' + (dots > 1 ? 1 : .25) + '"></b><b style="opacity:' + (dots > 2 ? 1 : .25) + '"></b>'; }
+      // d'abord les preuves
+      $('srch').style.display = u >= tAnswer ? 'block' : 'none'; $('srch').textContent = T.sources;
+      // les sources, une à une
+      var html = '';
+      cfg.rows.forEach(function (r, i) { if (u >= tRows + i * rowGap) html += '<div class="row">' + esc(r.t[L]) + '<span class="chip ' + (r.c === 'lisible' ? 'ok' : 'ko') + '">' + T[r.c] + '</span></div>'; });
+      $('rows').innerHTML = html;
+      // puis le résultat, sous les preuves : bidon et tamponné « invérifiable » avant, « confirmé » après
+      var r = $('result'); r.style.display = u >= tVerdict ? 'block' : 'none'; r.style.top = (268 + cfg.rows.length * 47 + 22) + 'px';
+      r.className = 'result ' + (cfg.avec ? 'ok' : 'ko');
+      var ks = (u - tStamp) / 0.26, sc = ks < 0 ? 0 : ks < 1 ? 2.6 - 1.6 * (1 - Math.pow(1 - ks, 3)) : 1, so = ks < 0 ? 0 : Math.min(1, ks * 2.5);
+      var sty = 'transform:translateY(-50%) rotate(-12deg) scale(' + sc.toFixed(3) + ');opacity:' + so.toFixed(3);
+      r.innerHTML = '<div class="lab">' + T.res + '</div><div class="txt">' + esc(cfg.result[L]) + '</div><div class="sub">' + esc(cfg.verdict[L]) + '</div>';
+      // le tampon plein écran : il claque (×2,6 → ×1), tient 1,8 s, s'efface en 0,5 s
+      // le VERIFIED de la fin reste jusqu'à la fin de la page (gérant, 1er novembre : « je ne vois pas le VERIFIED »)
+      var bs = $('bigstamp'), hold = cfg.avec ? 99 : 1.8, fade = u > tStamp + hold ? Math.max(0, 1 - (u - tStamp - hold) / 0.5) : 1;
+      var zk = cfg.avec ? 0 : zoomK(u, tZoom), rh = r.offsetHeight || 120; applyZoom($('app'), zk, 240 + 415, (268 + cfg.rows.length * 47 + 22) + rh / 2, Math.min(1240 / 830, 680 / rh)); $('cursor').style.opacity = zk > 0.01 ? '0' : '1';
+      bs.className = 'bigstamp ' + (cfg.avec ? 'ok' : 'ko'); bs.style.display = ks >= 0 && fade > 0 ? 'flex' : 'none';
+      $('bigstampT').textContent = cfg.avec ? T.stampOk : T.stampKo;
+      $('bigstampT').style.cssText = 'transform:rotate(-12deg) scale(' + sc.toFixed(3) + ');opacity:' + (so * fade).toFixed(3);
+      // le bouton INSTALL MISSION ZERO (page AVANT seulement), pressé par le curseur
+      var ib = $('install'); ib.style.display = !cfg.avec && u >= tInstall ? 'flex' : 'none'; ib.style.top = cardTop + 'px'; ib.textContent = T.install;
+      var glow = 0.35 + 0.35 * Math.sin((u - tInstall) * 6); ib.style.boxShadow = '0 0 ' + (18 + 16 * glow).toFixed(0) + 'px rgba(46,230,160,' + glow.toFixed(2) + ')';
+      ib.className = 'install' + (u >= tPress && u < tPress + 0.3 ? ' press' : '');
+    } };
+  }
+  // ---- la page « terminal » : le dev clone Mission Zero, installe, lance la mission ----
+  function termTimeline() {
+    var q = D.q[L];
+    var SPEED = 34; // caractères par seconde
+    var items = [], t = 0.6;
+    var cmd = function (s, out, pause) { items.push({ t: t, cmd: s }); t += s.length / SPEED + 0.35; (out || []).forEach(function (o, i) { items.push({ t: t + i * 0.12, out: o }); }); t += (out ? out.length * 0.12 : 0) + (pause || 0.7); };
+    cmd('git clone https://github.com/cryptoragency/mission0.git', ['<span class="m">Receiving objects: 100% (412/412), done.</span>']);
+    cmd('cd mission0 && npm install', ['<span class="m">added 184 packages in 6s</span>']);
+    cmd('echo "MODEL_API_KEY=••••  MZ_API_KEY=••••" > .env', [], 0.6);
+    cmd('npm run api', ['<span class="ok">Mission Zero API · http://127.0.0.1:3000/api/verify</span>'], 0.9);
+    // le code de l'application : la recherche existante, puis la ligne qui appelle Mission Zero, juste avant d'afficher (gérant, 31 octobre)
+    cmd('code recherche.js', [], 0.5);
+    items.push({ t: t, out: '<span class="code">  const reponse = await ia.chercher(question);</span>' }); t += 0.5;
+    var ADD = ["const mz = await fetch('http://127.0.0.1:3000/api/verify', {", "  method: 'POST', headers: { authorization: 'Bearer ' + MZ_API_KEY },", "  body: JSON.stringify({ question, reponse, sources }) }).then(r => r.json());"];
+    ADD.forEach(function (line) { items.push({ t: t, add: line }); t += line.length / 60 + 0.25; });
+    items.push({ t: t, out: '<span class="code">  afficher(reponse, mz.verdict);  <span class="m">// VERIFIED ou NOT VERIFIED</span></span>' }); t += 0.9;
+    items.push({ t: t, out: '<span class="ok big">' + esc(T.wired) + '</span>' }); t += 0.2;
+    var dur = t + 3.6;
+    return { dur: dur, render: function (u) {
+      $('termStep').textContent = T.stepB; $('termTitle').innerHTML = T.dev;
+      var html = '';
+      items.forEach(function (it) {
+        if (u < it.t) return;
+        if (it.add) { var na = Math.min(it.add.length, Math.floor((u - it.t) * 60)); html += '<span class="code add">+ ' + esc(it.add.slice(0, na)) + (na < it.add.length ? '<span class="blk"></span>' : '') + '</span>\n'; return; }
+        if (it.cmd) { var n = Math.min(it.cmd.length, Math.floor((u - it.t) * SPEED)); html += '<span class="c">$</span> ' + esc(it.cmd.slice(0, n)) + (n < it.cmd.length ? '<span class="blk"></span>' : '') + '\n'; }
+        else html += it.out + '\n';
+      });
+      var last = items[items.length - 1];
+      if (u >= last.t + 0.4 && Math.floor(u * 2) % 2 === 0) html += '<span class="c">$</span> <span class="blk"></span>';
+      $('pre').innerHTML = html;
+      $('cursor').style.transform = 'translate(1180px,660px)';
+    } };
+  }
+  // ---- les trois pages, bout à bout, avec un noir de 0,5 s entre elles ----
+  // ---- le labo de Fleming, en réseau mondial ----
+  function labTimeline(avec) {
+    var LABS = [['Londres', 'boîte 7', true], ['Paris', 'boîte 3'], ['Boston', 'boîte 12'], ['Tokyo', 'boîte 5'], ['Genève', 'boîte 9'], ['São Paulo', 'boîte 2']];
+    var seed = 11, rnd = function () { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
+    var dots = LABS.map(function () { var a = []; for (var i = 0; i < 46; i++) { var r = Math.sqrt(rnd()) * 50, t = rnd() * 6.283; a.push([Math.cos(t) * r, Math.sin(t) * r, 1.6 + rnd() * 2.2]); } return a; });
+    var MOLD = [14, -10], tMold = 2.6, tDrop = 3.4;
+    var growth = function (h) { return 1 / (1 + Math.exp(-(h - 2.2) * 1.6)); };
+    var cleared = function (u) { return u < tDrop ? 0 : Math.min(0.92, (u - tDrop) / 2.2 * 0.92); };
+    var ROWS = avec
+      ? [['ÉTAT', 'les bactéries poussent', 'ok'], ['CHANGEMENT', 'elles meurent : −92 % en 6 h', 'ok'], ['CAUSE', 'seule la boîte 7 change', 'ok']]
+      : [['ÉTAT', 'les bactéries poussent', '?'], ['CHANGEMENT', 'la courbe chute', '?'], ['CAUSE', 'inconnue · boîte jetée', 'ko']];
+    var tTxt = 5.0, gap = 1.1, n = ROWS.length;
+    var tRes = tTxt + n * gap + 0.6, tZoom = tRes + 0.6, tStamp = avec ? tRes + 0.5 : tZoom + ZIN + ZHOLD + ZOUT + ZWAIT, tEnd = tStamp + 3.0, tInstall = tStamp + 2.3, tGo = tInstall + 0.5, tPress = tGo + 0.9;
+    var INTRO = avec ? 0 : 2.6; // la page AVANT s'ouvre sur le titre en grand
+    var dur = (avec ? tEnd + 3.0 : tPress + 1.4) + INTRO;
+    return { dur: dur, render: function (u0) {
+      var u = Math.max(0, u0 - INTRO);
+      var h = '', hour = Math.min(8, u * 1.1);
+      h += '<rect x="0" y="0" width="1280" height="72" fill="rgba(255,255,255,.03)"/><line x1="0" y1="72" x2="1280" y2="72" stroke="rgba(255,255,255,.16)"/>';
+      h += '<circle cx="47" cy="38" r="7" fill="#5b8cff"/><text x="66" y="46" fill="#e8edf7" style="font-size:22px;font-weight:700">Labos · réseau mondial de sondes</text>';
+      h += '<rect x="' + (avec ? 1028 : 1016) + '" y="20" width="' + (avec ? 212 : 224) + '" height="38" rx="19" fill="' + (avec ? 'rgba(46,230,160,.12)' : 'rgba(180,35,24,.22)') + '" stroke="' + (avec ? 'rgba(46,230,160,.72)' : '#ff6b61') + '" stroke-width="2"/><text x="' + (avec ? 1134 : 1128) + '" y="45" text-anchor="middle" fill="' + (avec ? '#2ee6a0' : '#ff6b61') + '" style="font-size:15px;font-weight:700;letter-spacing:.1em">' + (avec ? 'AVEC MISSION ZERO' : 'SANS MISSION ZERO') + '</text>';
+      h += '<text x="40" y="104" fill="#a9b4cc" style="font-size:15px;letter-spacing:.14em">' + (avec ? 'ÉTAPE 3 · APRÈS · LES MÊMES SONDES PASSENT PAR MISSION ZERO' : 'ÉTAPE 1 · AVANT · LES SONDES, SANS MISSION ZERO') + '</text>';
+      var banner = '<rect x="742" y="84" width="498" height="30" rx="15" fill="rgba(255,210,122,.14)" stroke="#ffd27a" stroke-width="2"/><text x="991" y="105" text-anchor="middle" fill="#ffd27a" style="font-size:16px;font-weight:700">Et si Fleming avait eu Mission Zero ? · reconstitution, données fictives</text>';
+      LABS.forEach(function (lab, i) {
+        var col = i % 3, row = Math.floor(i / 3), x = 40 + col * 278, y = 122 + row * 208, W = 262, H = 196, cx = x + 70, cy = y + 104;
+        var hit = !!lab[2], cl = hit ? cleared(u) : 0, ko = hit && u > tDrop + 0.6;
+        h += '<rect x="' + x + '" y="' + y + '" width="' + W + '" height="' + H + '" rx="14" fill="rgba(255,255,255,.05)" stroke="' + (ko ? '#ff6b61' : 'rgba(255,255,255,.16)') + '" stroke-width="' + (ko ? 3 : 2) + '"/>';
+        h += '<text x="' + (x + 16) + '" y="' + (y + 30) + '" fill="#e8edf7" style="font-size:18px;font-weight:700">' + lab[0] + '</text><text x="' + (x + W - 16) + '" y="' + (y + 30) + '" text-anchor="end" fill="#a9b4cc" style="font-size:15px">' + lab[1] + '</text>';
+        // la boîte de culture : les colonies, et à Londres la moisissure qui fait le vide autour d'elle
+        h += '<circle cx="' + cx + '" cy="' + cy + '" r="58" fill="rgba(210,190,120,.10)" stroke="rgba(255,255,255,.35)" stroke-width="2"/>';
+        var g = growth(hour), mr = hit && u > tMold ? Math.min(13, (u - tMold) * 9) : 0, ring = hit ? cl / 0.92 * 46 : 0;
+        dots[i].forEach(function (d, k) { if (k / dots[i].length > g) return; var dm = Math.hypot(d[0] - MOLD[0], d[1] - MOLD[1]); if (hit && dm < ring) return; h += '<circle cx="' + (cx + d[0]).toFixed(1) + '" cy="' + (cy + d[1]).toFixed(1) + '" r="' + d[2].toFixed(1) + '" fill="#e9d9a6"/>'; });
+        if (mr > 0) { h += '<circle cx="' + (cx + MOLD[0]) + '" cy="' + (cy + MOLD[1]) + '" r="' + (mr + ring * 0.4).toFixed(1) + '" fill="none" stroke="rgba(46,230,160,.35)" stroke-dasharray="3 4"/><circle cx="' + (cx + MOLD[0]) + '" cy="' + (cy + MOLD[1]) + '" r="' + mr.toFixed(1) + '" fill="#4f8f7a"/><circle cx="' + (cx + MOLD[0] - mr * .3) + '" cy="' + (cy + MOLD[1] - mr * .3) + '" r="' + (mr * .45).toFixed(1) + '" fill="#7cc7a8"/>'; }
+        // la sonde et sa courbe en direct
+        h += '<line x1="' + (cx + 58) + '" y1="' + (cy - 30) + '" x2="' + (x + 148) + '" y2="' + (y + 60) + '" stroke="rgba(255,255,255,.35)" stroke-width="2"/><circle cx="' + (x + 148) + '" cy="' + (y + 60) + '" r="4" fill="#5b8cff"/>';
+        var px = x + 146, pw = 100, py = y + 172, ph = 96, pts = [];
+        for (var s = 0; s <= 40; s++) { var uu = u * s / 40, hh = Math.min(8, uu * 1.1), v = growth(hh) * (1 - (hit ? cleared(uu) : 0)) * (0.97 + 0.03 * Math.sin(s * 1.7 + i)); pts.push((px + pw * s / 40).toFixed(1) + ',' + (py - v * ph).toFixed(1)); }
+        h += '<polyline points="' + pts.join(' ') + '" fill="none" stroke="' + (ko ? '#ff6b61' : '#2ee6a0') + '" stroke-width="3" stroke-linejoin="round"/>';
+        h += '<text x="' + (px + pw) + '" y="' + (y + 188) + '" text-anchor="end" fill="#a9b4cc" style="font-size:12px">croissance · ' + Math.round(hour) + ' h</text>';
+      });
+      // le panneau de droite : le chercheur seul, ou Mission Zero qui croise ses mesures
+      var PX = 884, PY = 122;
+      h += '<rect x="' + PX + '" y="' + PY + '" width="356" height="404" rx="14" fill="' + (avec ? 'rgba(46,230,160,.06)' : 'rgba(255,255,255,.04)') + '" stroke="' + (avec ? 'rgba(46,230,160,.72)' : 'rgba(255,255,255,.16)') + '" stroke-width="2"/>';
+      h += '<text x="' + (PX + 20) + '" y="' + (PY + 38) + '" fill="' + (avec ? '#2ee6a0' : '#e8edf7') + '" style="font-size:19px;font-weight:700;letter-spacing:.06em">' + (avec ? 'MISSION ZERO' : 'SANS MISSION ZERO') + '</text>';
+      ROWS.forEach(function (c, k) { var t = tTxt + k * gap; if (u < t) return; var yy = PY + 92 + k * 104, col = c[2] === 'ok' ? '#2ee6a0' : c[2] === 'ko' ? '#ff6b61' : '#ffd27a';
+        h += '<rect x="' + (PX + 14) + '" y="' + (yy - 30) + '" width="328" height="88" rx="12" fill="rgba(255,255,255,.04)" stroke="' + col + '" stroke-opacity=".55" stroke-width="2"/>';
+        h += '<text x="' + (PX + 30) + '" y="' + (yy - 4) + '" fill="#a9b4cc" style="font-size:14px;letter-spacing:.14em">' + c[0] + '</text>';
+        h += '<text x="' + (PX + 30) + '" y="' + (yy + 32) + '" fill="#e8edf7" style="font-size:20px;font-weight:600">' + c[1] + '</text>';
+        h += '<text x="' + (PX + 326) + '" y="' + (yy + 6) + '" text-anchor="end" fill="' + col + '" style="font-size:30px;font-weight:800">' + (c[2] === 'ok' ? '✔' : c[2] === 'ko' ? '✘' : '?') + '</text>'; });
+      // le résultat
+      if (u >= tRes) {
+        var ok = avec, ry = 548;
+        h += '<rect x="40" y="' + ry + '" width="' + (ok ? 1200 : 1000) + '" height="140" rx="16" fill="' + (ok ? 'rgba(46,230,160,.12)' : 'rgba(180,35,24,.22)') + '" stroke="' + (ok ? 'rgba(46,230,160,.72)' : '#ff6b61') + '" stroke-width="2"/>';
+        h += '<text x="66" y="' + (ry + 34) + '" fill="#a9b4cc" style="font-size:15px;letter-spacing:.16em">RÉSULTAT</text>';
+        h += '<text x="66" y="' + (ry + 72) + '" fill="#e8edf7" style="font-size:25px;font-weight:600">' + (ok ? 'Mission Zero signale la chute dans la seule boîte 7.' : 'Les bactéries meurent. Pourquoi ? On ne sait pas.') + '</text>';
+        h += '<text x="66" y="' + (ry + 108) + '" fill="#a9b4cc" style="font-size:17px">' + (ok ? 'vu dans les données · les 5 autres labos ne bougent pas · au chercheur de conclure' : 'la boîte part à la poubelle, la découverte avec elle') + '</text>';
+      }
+      if (avec && u >= tEnd) h += '<text x="640" y="' + 712 + '" text-anchor="middle" fill="#2ee6a0" style="font-size:19px;font-weight:700">Fleming l’a vu par hasard en 1928. Mission Zero le signale au chercheur.</text>';
+      // le titre : en grand au centre, lu, puis il glisse à sa place en haut à droite
+      var kb = INTRO ? ease(Math.min(1, Math.max(0, (u0 - 1.9) / 0.7))) : 1, sb = lerp(2.5, 1, kb), tx = lerp(640 - 991, 0, kb), ty = lerp(360 - 99, 0, kb);
+      if (kb < 1) h += '<rect x="0" y="0" width="1280" height="720" fill="#0d1526" opacity="' + (0.94 * (1 - kb)).toFixed(3) + '"/>';
+      h += '<g transform="translate(' + tx.toFixed(1) + ',' + ty.toFixed(1) + ') translate(991,99) scale(' + sb.toFixed(3) + ') translate(-991,-99)" opacity="' + (INTRO ? Math.min(1, u0 / 0.3) : 1).toFixed(3) + '">' + banner + '</g>';
+      $('labsvg').innerHTML = h;
+      // le zoom sur le cadre RÉSULTAT (encadré en jaune par le gérant) : on centre sur son texte
+      var zk = avec ? 0 : zoomK(u, tZoom); applyZoom($('lab'), zk, 540, 618, 1.24);
+      // le tampon plein écran
+      var ks = (u - tStamp) / 0.26, sc = ks < 0 ? 0 : ks < 1 ? 2.6 - 1.6 * (1 - Math.pow(1 - ks, 3)) : 1, so = ks < 0 ? 0 : Math.min(1, ks * 2.5);
+      var hold = avec ? 99 : 1.8, fade = u > tStamp + hold ? Math.max(0, 1 - (u - tStamp - hold) / 0.5) : 1, bs = $('labstamp');
+      bs.className = 'bigstamp ' + (avec ? 'ok' : 'ko'); bs.style.display = ks >= 0 && fade > 0 ? 'flex' : 'none';
+      $('labstampT').textContent = avec ? T.stampOk : T.stampKo;
+      $('labstampT').style.cssText = 'transform:rotate(-12deg) scale(' + sc.toFixed(3) + ');opacity:' + (so * fade).toFixed(3);
+      // le bouton INSTALL MISSION ZERO (avant seulement), pressé par le curseur
+      var ib = $('labinstall'); ib.style.display = !avec && u >= tInstall ? 'flex' : 'none'; ib.textContent = T.install;
+      var glow = 0.35 + 0.35 * Math.sin((u - tInstall) * 6); ib.style.boxShadow = '0 0 ' + (18 + 16 * glow).toFixed(0) + 'px rgba(46,230,160,' + glow.toFixed(2) + ')';
+      ib.className = 'install' + (u >= tPress && u < tPress + 0.3 ? ' press' : '');
+      var cx2 = 1180, cy2 = 700; if (!avec && u >= tGo) { var k3 = ease((u - tGo) / 0.8); cx2 = lerp(1180, 1155, k3); cy2 = lerp(700, 616, k3); }
+      $('cursor').style.transform = 'translate(' + cx2 + 'px,' + cy2 + 'px)'; $('cursor').style.opacity = zk > 0.01 ? '0' : '1';
+    } };
+  }
+  var LAB = EX === 'labo';
+  var A = LAB ? labTimeline(false) : appTimeline({ avec: false, result: D.sans.result, rows: D.sans.rows, verdict: D.sans.verdict });
+  var B = termTimeline();
+  var C = LAB ? labTimeline(true) : appTimeline({ avec: true, result: D.avec.result, rows: D.avec.rows, verdict: D.avec.verdict });
+  var GAP = 0.5, FADE = 0.35;
+  var pages = [{ id: LAB ? 'lab' : 'app', tl: A }, { id: 'term', tl: B }, { id: LAB ? 'lab' : 'app', tl: C }];
+  var starts = []; var acc = 0; pages.forEach(function (p) { starts.push(acc); acc += p.tl.dur + GAP; });
+  var TOTAL = acc - GAP;
+  function seek(t) {
+    var i = pages.length - 1; while (i > 0 && t < starts[i]) i--;
+    var p = pages[i], u = t - starts[i];
+    document.querySelectorAll('.page').forEach(function (el) { el.classList.remove('on'); });
+    $(p.id).classList.add('on');
+    p.tl.render(Math.max(0, Math.min(p.tl.dur, u)));
+    var black = u < 0 ? 1 : u < FADE ? 1 - u / FADE : u > p.tl.dur - FADE ? Math.min(1, (u - (p.tl.dur - FADE)) / FADE) : 0;
+    if (u > p.tl.dur) black = 1;
+    $('black').style.opacity = black.toFixed(3);
+    return true;
+  }
+  window.__demo = { seek: seek, total: TOTAL, ex: EX, lang: L, starts: starts };
+  window.addEventListener('message', function (e) { var d = e.data || {}; if (typeof d.mzSeek === 'number') seek(d.mzSeek); });
+  try { if (window.parent !== window) window.parent.postMessage({ mzDemo: EX, total: TOTAL }, '*'); } catch (e) { /* rien */ }
+  seek(Number(Q.get('t') || 0));
+})();
+</script>
+</body>
+</html>

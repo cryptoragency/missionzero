@@ -4,7 +4,9 @@
 #   docker run --rm --env-file .env -v "$PWD/evidence:/app/evidence" -v "$PWD/memory:/app/memory" mission-zero src/run.js "your goal" 4 3
 #   docker run --rm --entrypoint npm mission-zero test      (the test suite: no network, no model call)
 # The API (POST /api/verify), locked down: published on this machine only, read-only, no capabilities, no privilege gain:
-#   docker run -d --name mz-api --env-file .env -e MZ_API_KEY=<32+ chars> -p 127.0.0.1:3000:3000 \n#     --read-only --tmpfs /tmp --cap-drop ALL --security-opt no-new-privileges --pids-limit 128 --memory 512m \n#     mission-zero src/api.js
+#   docker run -d --name mz-api --env-file .env -e MZ_API_KEY=<32+ chars> -p 127.0.0.1:3000:3000 -v mz-memory:/app/memory -e MZ_DAILY_CAP_USD=5 \
+#     --read-only --tmpfs /tmp --cap-drop ALL --security-opt no-new-privileges --pids-limit 128 --memory 512m \
+#     mission-zero src/api.js
 # Vision (--vision) needs Playwright and stays outside the image; voice uses the ffmpeg installed here.
 FROM node:22-slim
 RUN apt-get update && apt-get install -y --no-install-recommends git ffmpeg ca-certificates && rm -rf /var/lib/apt/lists/*

@@ -7,7 +7,8 @@
 // 4. on applique les corrections : le point repasse vite sur les ronds déjà verts (ils se revalident), Évaluation
 //    redevient vert, et « OBJECTIF PROUVÉ » ;
 // 5. toute la boucle rétrécit jusqu'à ne laisser qu'un point blanc, qui repart vers l'écran suivant.
-const CX = 800, CY = 500, R = 280, r = 92;
+// Gérant, 1er novembre : pas de zoom pour aller plus vite, les ronds plus grands à la place.
+const CX = 800, CY = 520, R = 270, r = 115;
 const names = ['Objectif', 'Hypothèses', 'Action', 'Observation', 'Évaluation'];
 const ang = (i) => -Math.PI / 2 + (i * 2 * Math.PI) / 5;
 const P = (a, rad = R) => ({ x: CX + rad * Math.cos(a), y: CY + rad * Math.sin(a) });
@@ -40,7 +41,7 @@ let k = 0, g = [];
 const step = (s) => { k += 1; g.push(s.replace('data-k="?"', `data-k="${k}"`)); return k; };
 const blank = (attrs, d) => step(`<g class="b" data-k="?" ${attrs} data-d="${d}"><text class="lbl xs" x="0" y="0"> </text></g>`);
 
-step(`<g class="b" data-k="?" data-d="2800"><text class="lbl acc" x="800" y="58" text-anchor="middle" style="font-size:48px;letter-spacing:.04em">MISSION ZERO</text><text class="lbl s" x="800" y="94" text-anchor="middle" style="font-size:22px">un objectif, aucun plan et l'ordre de prouver</text></g>`);
+step(`<g class="b" data-k="?" data-d="2800"><text class="lbl acc" x="800" y="58" text-anchor="middle" style="font-size:48px;letter-spacing:.04em">MISSION ZERO</text><text class="lbl s" x="800" y="94" text-anchor="middle" style="font-size:22px">un objectif, aucun plan</text></g>`);
 g.push('<g id="loop">');
 // 1. Du titre au sommet d'Objectif, puis rond par rond.
 step(`<g class="a" data-k="?" data-d="900" data-dur="800"><path class="arrow" pathLength="1" d="M800,108 L800,${f(centers[0].y - r)}"/></g>`);
@@ -49,34 +50,38 @@ for (let i = 0; i < 5; i++) {
   const [s1, s2] = split(i, a, b);
   // Le zoom : le rond vient au centre, x3,4, au premier plan (il passe en dernier dans le dessin), le reste s'efface.
   const zx = f(CX - c.x), zy = f(CY - c.y);
-  step(`<g class="rg" data-k="?" id="g${i + 1}" data-ring="o${i + 1}" data-d="450" style="transform-origin:${f(c.x)}px ${f(c.y)}px;--zx:${zx}px;--zy:${zy}px"><circle class="ring" id="o${i + 1}" cx="${f(c.x)}" cy="${f(c.y)}" r="${r}"/><text class="lbl m" x="${f(c.x)}" y="${f(c.y + 6)}" text-anchor="middle" style="font-size:24px">${names[i]}</text><g class="a" data-k="${k + 1}" data-d="420" data-dur="360"><path class="arrow split" pathLength="1" d="${s1}"/><path class="arrow split" pathLength="1" d="${s2}"/></g></g>`); k += 1;
-  blank(`data-zoom2="g${i + 1}"`, 2400);
-  blank(`data-unzoom="g${i + 1}"`, 550);
+  step(`<g class="rg" data-k="?" id="g${i + 1}" data-ring="o${i + 1}" data-d="450" style="transform-origin:${f(c.x)}px ${f(c.y)}px;--zx:${zx}px;--zy:${zy}px"><circle class="ring" id="o${i + 1}" cx="${f(c.x)}" cy="${f(c.y)}" r="${r}"/><text class="lbl m" x="${f(c.x)}" y="${f(c.y + 6)}" text-anchor="middle" style="font-size:30px">${names[i]}</text><g class="a" data-k="${k + 1}" data-d="420" data-dur="360"><path class="arrow split" pathLength="1" d="${s1}"/><path class="arrow split" pathLength="1" d="${s2}"/></g></g>`); k += 1;
+  blank(``, 900);
+  blank(``, 60);
   const j = (i + 1) % 5, e = edge(j, i);
   step(`<g class="a" data-k="?" data-d="900" data-dur="800"><path class="arrow" pathLength="1" d="M${pt(b)} L${pt(e)}"/></g>`);
 }
 // 2. Retour sur Objectif : le tour est complet. « Preuve » au centre, puis OBJECTIF VALIDÉ.
 blank(`data-pulse="o1:strong"`, 900);
-step(`<g class="rg" data-k="?" id="gp" data-d="500" style="transform-origin:800px 500px;--zx:0px;--zy:0px"><text class="lbl m acc" x="800" y="510" text-anchor="middle" style="font-size:34px">Preuve</text></g>`);
-blank(`data-zoom2="gp"`, 2000);
-blank(`data-unzoom="gp"`, 500);
-step(`<g class="rg" data-k="?" id="gv" data-hide="#gp" data-d="2400" style="transform-origin:800px 500px"><text class="lbl acc" x="800" y="492" text-anchor="middle" style="font-size:38px;letter-spacing:.06em">OBJECTIF</text><text class="lbl acc" x="800" y="536" text-anchor="middle" style="font-size:38px;letter-spacing:.06em">VALIDÉ</text></g>`);
-// 3. Une nouvelle boucle, rien au milieu. Le point repasse sur le fil déjà tracé ; Évaluation devient rouge, son contour
-//    clignote (l'alerte) ; à ce moment seulement, la preuve est rayée, « preuve refusée ».
+step(`<g class="rg" data-k="?" id="gp" data-d="500" style="transform-origin:800px 500px;--zx:0px;--zy:0px"></g>`);
+blank(``, 2000);
+blank(``, 500);
+step(`<g class="rg" data-k="?" id="gv" data-hide="#gp" data-d="2400" style="transform-origin:800px 500px"></g>`);
+// 3. Une nouvelle boucle, rien au milieu. Le point repasse sur le fil déjà tracé ; quand il arrive sur Observation, elle devient
+//    rouge et son contour clignote (l'alerte : c'est l'observation qui annule la preuve) ; alors seulement, la preuve est rayée.
 const A = pass([0, 1, 2], 3), B = pass([3, 4], 0);
 const below = `x="${f(centers[3].x)}" y="${f(centers[3].y + r + 32)}"`;
 blank(`data-hide="#gv"`, 400);
 step(`<g class="a" data-k="?" data-d="1900" data-dur="1800" data-pulses="${pulses(A.at)}"><path class="arrow ghost" pathLength="1" d="${A.d}"/></g>`);
-step(`<g class="a" data-k="?" data-d="1300" data-dur="1200" data-pulses="${pulses(B.at)}"><path class="arrow ghost" pathLength="1" d="${B.d}"/></g>`);
-step(`<g class="rg" data-k="?" id="gx" data-blink="gxt" data-d="500" style="transform-origin:800px 500px;--zx:0px;--zy:0px"><text class="lbl m" x="800" y="486" text-anchor="middle" style="font-size:34px;fill:#8c95a8">Preuve</text><line x1="748" y1="458" x2="852" y2="496" stroke="#ff6b61" stroke-width="7" stroke-linecap="round"/><line x1="852" y1="458" x2="748" y2="496" stroke="#ff6b61" stroke-width="7" stroke-linecap="round"/><text class="lbl red" id="gxt" x="800" y="534" text-anchor="middle" style="font-size:24px;font-weight:700">preuve refusée</text><text class="lbl red" id="gxs" x="800" y="564" text-anchor="middle" style="font-size:19px">une citation ne tient pas</text></g>`);
-blank(`data-zoom2="gx"`, 2400);
-blank(`data-unzoom="gx"`, 500);
+// Le point arrive sur Observation : c'est elle qui annule la preuve (gérant, 31 octobre). Elle clignote en rouge à l'instant où il la touche.
 blank(`data-ring="o4:bad" data-blink="o4"`, 2200);
-// 4. On applique les corrections : le point repasse vite sur les ronds verts, qui se revalident ; Évaluation redevient vert ; OBJECTIF PROUVÉ.
-step(`<g class="a" data-k="?" data-d="1500" data-dur="1400" data-pulses="${pulses(A.at)}"><path class="arrow ghost" pathLength="1" d="${A.d}"/></g>`);
-step(`<g class="b" data-k="?" id="rc" data-hide="#gxs" data-ring="o4:lit" data-pulse="o4:strong" data-d="1600"><text class="lbl okt" x="800" y="564" text-anchor="middle" style="font-size:22px">il relit la page, réécrit dans ses mots</text></g>`);
+step(`<g class="rg" data-k="?" id="gx" data-blink="gxt" data-d="500" style="transform-origin:800px 500px;--zx:0px;--zy:0px"><text id="gxt"></text><text id="gxs"></text></g>`);
+blank(``, 1400);
+blank(``, 60);
+// 4. Preuve refusée : il relit la page et corrige (Observation redevient verte), puis Mission Zero repart de zéro (gérant,
+//    31 octobre, « après correction ») : le point revient sur Objectif et revalide tout depuis le début ; OBJECTIF PROUVÉ.
+const back = edge(3, 2), zero = edge(0, 4);
+step(`<g class="b" data-k="?" id="rc" data-hide="#gxs" data-ring="o4:lit" data-pulse="o4:strong" data-d="1600"><text class="lbl okt" x="800" y="508" text-anchor="middle" style="font-size:24px">le rédacteur relit la page</text><text class="lbl okt" x="800" y="542" text-anchor="middle" style="font-size:24px">réécrit ou retire</text></g>`);
+// Pas de trajet direct Observation → Objectif (gérant, 31 octobre) : la bille saute sur Objectif, d'où repart le nouveau tour.
+blank(`data-hide="#gx,#rc"`, 300);
+step(`<g class="a" data-k="?" data-d="1900" data-dur="1800" data-pulses="${pulses(A.at)}"><path class="arrow ghost" pathLength="1" d="${A.d}"/></g>`);
 step(`<g class="a" data-k="?" data-d="1100" data-dur="1000" data-pulses="${pulses(B.at)}"><path class="arrow ghost" pathLength="1" d="${B.d}"/></g>`);
-step(`<g class="rg" data-k="?" id="gv2" data-hide="#gx,#rc" data-pulse="o1:strong" data-d="2600" style="transform-origin:800px 500px"><text class="lbl acc" x="800" y="492" text-anchor="middle" style="font-size:38px;letter-spacing:.06em">OBJECTIF</text><text class="lbl acc" x="800" y="536" text-anchor="middle" style="font-size:38px;letter-spacing:.06em">PROUVÉ</text></g>`);
+step(`<g class="rg" data-k="?" id="gv2" data-hide="#gx,#rc" data-pulse="o1:strong" data-d="2600" style="transform-origin:800px 500px"></g>`);
 g.push('</g>');
 // 5. La boucle rétrécit jusqu'au point blanc, qui repart vers l'écran suivant.
 step(`<g class="b" data-k="?" id="dotc" data-shrink="loop" data-d="1100"><circle cx="800" cy="500" r="9" fill="#fff" style="filter:drop-shadow(0 0 8px rgba(46,230,160,.9))"/></g>`);
@@ -93,11 +98,10 @@ const s0 = `  <section class="scene" id="s0">
     <div class="caption" id="c0"></div>
   </section>
 `;
-const cap = ['<b>Mission Zero.</b> Un objectif et l’ordre de prouver.', null];
+const cap = ['<b>Mission Zero.</b>', null];
 ['Un objectif. Aucun plan.', 'Des hypothèses.', 'Une action&nbsp;: chercher, lire une page entière.', 'Ce qu’il observe.', 'Il s’évalue&nbsp;: une note, une leçon, un pivot.'].forEach(function (w) { cap.push(null, null, w, null, null); });
-cap.push('Il tourne jusqu’à atteindre l’objectif.', 'La <b>preuve</b>&nbsp;: chaque page citée est relue, citation exacte exigée.', null, null, '<b>Objectif validé.</b>',
-  'Une nouvelle mission.', null, null, '<b class="r">Preuve refusée.</b> Une citation ne tient pas.', null, null, 'Observation&nbsp;: <span class="r">la citation n’est pas sur la page.</span> Il se refuse lui-même.',
-  '<b>Il relit la page</b> et réécrit dans ses mots, ou retire.', 'La preuve tient.', null, '<b>Objectif prouvé.</b> Jugé, le meilleur survit.',
+cap.push('Il tourne jusqu’à atteindre l’objectif.', '<b>VERIFIED</b>&nbsp;: chaque page citée est relue, citation exacte exigée.', null, null, null,
+  'Une nouvelle mission.', null, 'Observation&nbsp;: <span class="r">la citation n’est pas sur la page.</span>', '<b class="r">NOT VERIFIED</b>&nbsp;: <b>le vérificateur</b> ne trouve pas la citation sur la page.', null, null, '<b>Le rédacteur</b> relit la page et réécrit dans ses mots ou retire.', 'Corrigé. <b>Il repart de zéro.</b>', '<b>Le vérificateur</b> revalide tout, depuis le début.', 'Tout tient.', 'Objectif&nbsp;: <b>VERIFIED</b>.',
   null, null, null, '<b>Où l’envoyer&nbsp;?</b>', null);
 module.exports = { s0, cap, steps: k };
 if (require.main === module) console.log('steps', k, 'captions', cap.length);

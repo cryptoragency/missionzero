@@ -1,0 +1,776 @@
+<!doctype html>
+<html lang="fr">
+<meta charset="utf-8">
+<title>Mission Zero · le film · DEV · ouverture sur le noir</title>
+<style>
+/* Ambiance de la carte ARGUS (nuit, menthe, bleu), adoucie : peu de halo, le vert réservé aux titres et aux « OK ». */
+:root { --bg:#0d1526; --fg:#e8edf7; --mut:#a9b4cc; --line:rgba(255,255,255,.16); --card:rgba(255,255,255,.05); --acc:#2ee6a0; --acc2:rgba(46,230,160,.72); --accf:rgba(46,230,160,.12); --blue:#2d55d4; --red:#ff6b61; --redf:rgba(180,35,24,.22); --amber:#ffd27a; --mint:#c9fff0; color-scheme: dark; }
+body { background:var(--bg); color:var(--fg); font-family: "Segoe UI", system-ui, sans-serif; margin:0; padding-block:16px; padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px)); }
+.wrap { max-width: 1700px; margin: 0 auto; display:grid; gap:18px; }
+h1 { font-size: 1.4rem; margin:0; } h1 small { display:block; font-weight:400; color:var(--mut); font-size:.95rem; margin-top:4px; }
+.scene { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:12px; display:grid; gap:8px; min-width:0; }
+.scene header { display:flex; flex-wrap:wrap; gap:10px; align-items:baseline; justify-content:space-between; }
+.scene h2 { margin:0; font-size:1.1rem; } .scene .t { color:var(--acc2); font-size:.8rem; letter-spacing:.06em; text-transform:uppercase; }
+svg { width:100%; height:auto; display:block; font-family: "Segoe UI", system-ui, sans-serif; overflow:visible; }
+.b { opacity:0; transform-box: fill-box; transform-origin: center; }
+.b.on { animation: pop .8s cubic-bezier(.2,.8,.2,1) forwards; }
+.b.focus .box { filter: drop-shadow(0 0 8px rgba(46,230,160,.35)); }
+@keyframes pop { 0% { opacity:0; transform: scale(.86); } 55% { opacity:1; transform: scale(1.06); } 100% { opacity:1; transform: scale(1); } }
+.box { fill:rgba(255,255,255,.05); stroke:var(--line); stroke-width:2; }
+.box.gold { stroke:var(--acc2); stroke-width:2.5; fill:rgba(46,230,160,.06); }
+.box.blue { stroke:rgba(45,85,212,.8); stroke-width:2.5; fill:rgba(45,85,212,.14); }
+.box.ok { stroke:var(--acc2); fill:rgba(46,230,160,.07); } .box.red { stroke:rgba(255,107,97,.8); fill:var(--redf); } .box.amber { stroke:rgba(255,210,122,.8); fill:rgba(255,210,122,.08); }
+.lbl { fill:var(--fg); font-size:26px; font-weight:600; } .lbl.m { font-size:21px; } .lbl.s { font-size:18px; font-weight:400; fill:var(--mut); } .lbl.xs { font-size:15px; font-weight:400; fill:var(--mut); }
+.lbl.acc { fill:var(--acc); } .lbl.red { fill:var(--red); } .lbl.amber { fill:var(--amber); } .lbl.okt { fill:#bff5dd; }
+.code { font-family: Consolas, "Courier New", monospace; font-size:15px; fill:var(--mut); } .code.add { fill:#8fe6c0; } .code.del { fill:#ff9d95; }
+.tile { fill:rgba(255,255,255,.04); stroke:var(--line); stroke-width:1.5; } .leaf { fill:rgba(46,230,160,.28); }
+.badge { fill:var(--redf); stroke:rgba(255,107,97,.85); stroke-width:2; } .badge-t { fill:#ffd2ce; font-size:18px; font-weight:600; }
+.badge.ok { fill:var(--accf); stroke:var(--acc2); } .badge-t.ok { fill:#bff5dd; }
+.pill { stroke-width:2; } .pill.ok { fill:var(--accf); stroke:var(--acc2); } .pill.ko { fill:var(--redf); stroke:rgba(255,107,97,.85); }
+.hidden { display:none; }
+/* Flèches : épaisses, arrondies, douces ; se dessinent avec un point qui court devant ; jamais de croisement. */
+.arrow { stroke:var(--acc2); stroke-width:5; stroke-linecap:round; stroke-linejoin:round; fill:none; stroke-dasharray:1; stroke-dashoffset:1; transition: stroke-dashoffset 1s linear; }
+.arrow.red { stroke:rgba(255,107,97,.8); } .arrow.ghost { stroke:none; }
+.a.on .arrow { stroke-dashoffset:0; } .a.drawn .arrow { marker-end:url(#mok); } .a.drawn .arrow.red { marker-end:url(#mred); } .a.drawn .arrow.ghost { marker-end:none; }
+.runner { fill:#fff; filter: drop-shadow(0 0 6px rgba(46,230,160,.8)); opacity:0; } .runner.go { opacity:1; }
+.ring { fill:rgba(255,255,255,.03); stroke:var(--mut); stroke-width:3; stroke-dasharray:7 9; transition: fill .5s, stroke .5s; }
+.ring.lit { fill:var(--accf); stroke:var(--acc2); stroke-dasharray:none; } .ring.bad { fill:var(--redf); stroke:rgba(255,107,97,.85); stroke-dasharray:none; }
+.mini { fill:rgba(255,255,255,.03); stroke:var(--mut); stroke-width:2; stroke-dasharray:4 5; }
+.chip { fill:rgba(255,255,255,.05); stroke:var(--line); stroke-width:2; transition: fill .5s, stroke .5s; }
+.chip.ok { fill:var(--accf); stroke:var(--acc2); } .chip.ko { fill:var(--redf); stroke:rgba(255,107,97,.85); } .chip.next { stroke:rgba(255,210,122,.7); fill:rgba(255,210,122,.06); }
+.chip-t { font-size:15px; fill:var(--fg); }
+.bar { display:flex; flex-wrap:wrap; gap:8px; } button { background:rgba(255,255,255,.06); color:var(--fg); border:1px solid var(--line); border-radius:8px; padding:8px 12px; font:inherit; cursor:pointer; } button:hover { border-color:var(--acc2); }
+.caption { min-height:2.2em; font-size:1.15rem; } .caption b { color:var(--acc); }
+/* Le film : un seul écran, quatre chapitres, une carte-titre avant chacun. */
+.filmbar { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+.filmbar .big { background:rgba(46,230,160,.14); border-color:var(--acc2); font-weight:600; }
+.film .scene { display:none; } .film .scene.active { display:grid; } .film .scene header, .film .bar { display:none; }
+.card { display:none; aspect-ratio: 16/9; max-height: 70vh; border:1px solid var(--line); border-radius:16px; background: radial-gradient(ellipse at 50% 40%, rgba(45,85,212,.25), transparent 60%), var(--bg); place-items:center; text-align:center; padding: 24px; }
+.card.show { display:grid; }
+.card .n { color:var(--acc); font-size: clamp(28px, 4vw, 56px); font-weight:700; letter-spacing:.06em; }
+.card .h { color:var(--fg); font-size: clamp(30px, 5.2vw, 76px); font-weight:800; line-height:1.1; margin-top:12px; text-wrap: balance; max-width: 18ch; }
+.card .s { color:var(--mut); font-size: clamp(16px, 1.8vw, 26px); margin-top:18px; }
+.card.end .h { color:var(--acc); }
+
+/* Le fil du film : sur chaque carte-titre, le point traverse l'écran, le trait le suit. Jamais de rupture. */
+.card { position:relative; overflow:hidden; }
+.card .trail { position:absolute; left:0; bottom:calc(12% + 5px); height:4px; width:0; background:var(--acc2); border-radius:2px; }
+.card .dot { position:absolute; left:0; bottom:12%; width:14px; height:14px; border-radius:50%; background:#fff; box-shadow:0 0 10px var(--acc); opacity:0; }
+.card.show .trail { animation: grow 2.4s linear forwards; } .card.show .dot { animation: ride 2.4s linear forwards; }
+.card.end .trail, .card.end .dot { display:none; }
+@keyframes grow { from { width:0; } to { width:100%; } } @keyframes ride { 0% { left:0; opacity:1; } 99% { opacity:1; } 100% { left:calc(100% - 14px); opacity:0; } }
+.arrow.orbit { stroke-width:6; } .runner.go { opacity:1; }
+.zoom { animation: zoomin 1.3s cubic-bezier(.2,.8,.2,1) forwards; } .zoom .chip { fill:var(--accf); stroke:var(--acc); }
+@keyframes zoomin { to { transform: scale(1.35); } }
+#stars circle { pointer-events:none; }
+#speed { fill:var(--acc); }
+/* La carte de fin : le fil dessine le zéro, puis CRYPTOR.AGENCY et, dessous, MISSION ZERO. */
+.card .sym { display:none; } .card.end .sym { display:block; width: min(30vh, 200px); margin: 0 auto 6px; }
+.card.end .zero { fill:none; stroke:var(--acc); stroke-width:7; stroke-linecap:round; stroke-dasharray:1; stroke-dashoffset:1; animation: drawzero 2.2s cubic-bezier(.4,0,.2,1) forwards; }
+.card.end .core { fill:#fff; opacity:0; filter: drop-shadow(0 0 8px var(--acc)); animation: corein .5s 2.1s forwards; }
+.card.end .n { color:var(--mut); font-size: clamp(16px, 1.8vw, 24px); font-weight:400; letter-spacing:.02em; opacity:0; animation: fadein .8s 2.4s forwards; }
+.card.end .h { color:var(--fg); font-size: clamp(34px, 6vw, 88px); letter-spacing:.08em; opacity:0; animation: fadein .8s 2.6s forwards; max-width: none; }
+.card.end .s { color:var(--acc); font-size: clamp(22px, 3vw, 44px); letter-spacing:.42em; font-weight:700; margin-top:8px; opacity:0; animation: fadein .8s 3.1s forwards; }
+@keyframes drawzero { to { stroke-dashoffset:0; } } @keyframes corein { to { opacity:1; } } @keyframes fadein { to { opacity:1; } }
+/* Enregistrement vidéo (?record=1) : rien que l'écran du film et sa légende, cadré pour 1280 × 720. */
+.record body { padding:0; } .record h1, .record .filmbar { display:none; } .record .wrap { gap:6px; max-width:1280px; }
+.record .scene { border:none; border-radius:0; padding:6px 10px 0; background:transparent; } .record .scene svg { max-height:640px; margin:0 auto; }
+.record .caption { min-height:2em; font-size:1.05rem; text-align:center; padding:0 12px; } .record .card { max-height:none; aspect-ratio:auto; height:708px; border:none; border-radius:0; }
+#noir { position:fixed; inset:0; background:#000; z-index:9999; opacity:1; pointer-events:none; transition: opacity 1.2s ease; } #noir.leve { opacity:0; }
+</style>
+<style>
+.film .scene { display:none; } .film .scene.active { display:grid; } .film .scene header { display:none; }
+.field { fill:#fff; stroke:#999; stroke-width:1.5; } .field.gone { fill:none; stroke:var(--red); stroke-dasharray:5 4; }
+/* Surbrillance au passage du point : une pulsation du contour, rien de plus. Forte quand on revalide. */
+.ring.pulse { animation: ringpulse .6s ease-out; } .ring.pulse.strong { animation: ringpulse-strong 1.2s ease-out; }
+.mark { fill:none; stroke:var(--mut); stroke-width:2; } .mark.done { fill:var(--acc2); stroke:var(--acc2); } .mark.now { fill:var(--acc); stroke:#fff; stroke-width:2.5; }
+/* Plein cadre (gérant, 30 octobre 20 h 10) : le dessin remplit 1280 × 720, la légende est posée dessus, en bas. */
+.record .scene { padding:0 !important; position:relative; } .record .scene svg { max-height:none !important; width:1280px; height:720px; display:block; margin:0 !important; }
+.scene video { display:block; width:100%; max-width:1280px; aspect-ratio:16/9; background:#000; border-radius:12px; margin:0 auto; }
+.record .scene video { width:1280px; height:720px; border-radius:0; margin:0; }
+.record .caption { position:absolute; left:0; right:0; bottom:12px; min-height:0 !important; font-size:1.45rem !important; text-align:center; padding:0 24px !important; text-shadow:0 2px 10px #000, 0 0 2px #000; }
+.record .wrap { gap:0 !important; }
+.lbl.xs { font-size:18px; } .lbl.s { font-size:21px; } .chip-t { font-size:17px; }
+.box.pulse { animation: ringpulse .6s ease-out; } .box.pulse.strong { animation: ringpulse-strong 1.2s ease-out; }
+@keyframes ringpulse { 0% { stroke-width:3; filter:none; } 30% { stroke-width:7; filter:drop-shadow(0 0 10px rgba(46,230,160,.9)); } 100% { stroke-width:3; filter:none; } }
+@keyframes ringpulse-strong { 0% { stroke-width:3; filter:none; } 25% { stroke-width:9; filter:drop-shadow(0 0 18px rgba(46,230,160,1)); } 100% { stroke-width:3; filter:drop-shadow(0 0 6px rgba(46,230,160,.6)); } }
+/* L'alerte prise en compte : le rond rouge clignote. */
+.chip.ko.blink, .lbl.red.blink { animation: blink .5s steps(2, start) 5; }
+/* L'alerte : le contour du rond clignote en rouge vif, épais, avec un halo rouge. */
+.ring.bad.blink { animation: alarm .5s ease-in-out 7; }
+@keyframes alarm { 0%, 100% { stroke:rgba(255,107,97,.85); stroke-width:3; filter:none; } 50% { stroke:#ff3b30; stroke-width:11; filter:drop-shadow(0 0 16px rgba(255,59,48,1)); } }
+.caption .r { color:var(--red); font-weight:700; }
+@keyframes blink { to { opacity:.25; } }
+.arrow.ghost { stroke:none; }
+.rg { opacity:0; transition: opacity .35s, transform .5s cubic-bezier(.2,.8,.2,1); transform-box: view-box; } .rg.on { opacity:1; }
+.rg.zoomx { transform: translate(var(--zx), var(--zy)) scale(3.4); }
+.rg.zoomx .ring { fill:#0f2b2c; stroke-width:2; filter: drop-shadow(0 0 4px rgba(46,230,160,.9)); } .rg.zoomx .arrow { stroke-width:2; }
+/* Un rond en alerte : le fil vert posé sur son contour s'efface, pour que le rouge se voie. */
+.rg:has(.ring.bad) .arrow.split { opacity:0; }
+/* Pendant le zoom, tout le reste de la boucle s'efface : rien sous le rond, rien autour. */
+#loop > :not(.rg) { transition: opacity .4s; } #loop.zooming > .on:not(.zoomx), #loop.zooming > .a:not(.zoomx) { opacity:0 !important; }
+.a.drawn .arrow.split { marker-end:none; }
+.fan { opacity:0; transform: translate(var(--fx), var(--fy)) scale(.2); transform-box: view-box; transition: transform .55s cubic-bezier(.2,.8,.2,1), opacity .3s; }
+.fan.on { opacity:1; transform: none; } .fan.zoom { transform: none; }
+/* La boucle entière rétrécit jusqu'au point blanc. */
+#loop { transform-box: view-box; transform-origin: 800px 420px; transition: transform 1s cubic-bezier(.4,0,.2,1), opacity 1s; }
+#loop.shrink { transform: scale(0.01); opacity: 0; }
+/* Le point blanc naît pendant le rétrécissement, au centre : aucun écran vide entre la boucle et le point. */
+#dotc.on { animation-delay: .25s; }
+/* La fin : le zéro tracé par le fil, la coupure au noir, le néon qui s'allume en dernier (un seul allumage, pas de boucle). */
+.arrow.zero { stroke:var(--acc); stroke-width:7; }
+body.black { background:#000; } body.black .scene { background:#000; } body.black .caption { visibility:hidden; }
+.neon { fill:#39ffb0; filter: drop-shadow(0 0 6px #2ee6a0) drop-shadow(0 0 18px rgba(46,230,160,.8)); }
+.b.on .neon { animation: neon 1.6s linear both; }
+/* Le point écrit : chaque lettre se trace à son tour (contour), puis se remplit. */
+.hand tspan { fill: transparent; stroke: #fff; stroke-width: 2; stroke-dasharray: 700; stroke-dashoffset: 700; transition: stroke-dashoffset .45s linear, fill .35s linear; }
+.hand.on tspan { stroke-dashoffset: 0; fill: #fff; }
+.hand.neonw tspan { stroke: #39ffb0; } .hand.neonw.on tspan { fill: #39ffb0; }
+.hand.neonw.on { filter: drop-shadow(0 0 6px #2ee6a0) drop-shadow(0 0 18px rgba(46,230,160,.8)); }
+.arrow.ghost { stroke: none; } .a.drawn .arrow.ghost { marker-end: none; }
+/* Le tampon plein écran : grand, incliné, double liseré, il claque (×2,6 → ×1), se lit, s'efface. */
+.scene { position:relative; }
+.bigstamp { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; pointer-events:none; z-index:40; }
+.bigstamp span { display:inline-block; border-style:solid; border-radius:18px; padding:.12em .38em; font-weight:900; letter-spacing:.12em; line-height:1; white-space:nowrap; font-family:"Segoe UI Black","Segoe UI",system-ui,sans-serif; background:rgba(13,21,38,.62); box-shadow: inset 0 0 0 4px rgba(13,21,38,.9), inset 0 0 0 6px currentColor; animation: stampin .32s cubic-bezier(.2,.9,.25,1.2) both; }
+.bigstamp.ko span { color:#ff4b3e; border-color:#ff4b3e; } .bigstamp.ok span { color:#2ee6a0; border-color:#2ee6a0; }
+.bigstamp.out span { opacity:0; transform: rotate(-12deg) scale(1.04); transition: opacity .5s, transform .5s; }
+@keyframes stampin { 0% { opacity:0; transform: rotate(-12deg) scale(2.6); } 60% { opacity:1; transform: rotate(-12deg) scale(.96); } 100% { opacity:1; transform: rotate(-12deg) scale(1); } }
+/* Le contour tracé : le petit point blanc du second côté (la bille 3D suit l'autre). */
+.ctr-dot { fill:#fff; filter: drop-shadow(0 0 4px rgba(46,230,160,.9)); }
+/* Le titre d'un écran qui arrive en GROS au centre, se lit, puis revient à sa place en haut (gérant, 31 octobre : « votre site web e-commerce »). */
+.b.shoutlabel { transform-box: view-box; transform-origin: 620px 40px; }
+.b.shoutlabel.on { animation: shoutlabel 2.5s cubic-bezier(.2,.8,.2,1) forwards; }
+@keyframes shoutlabel { 0% { opacity:0; transform: translate(180px, 410px) scale(2.2); } 12% { opacity:1; transform: translate(180px, 410px) scale(2.6); } 64% { opacity:1; transform: translate(180px, 410px) scale(2.6); } 100% { opacity:1; transform: none; } }
+/* Un texte qui bondit : il arrive en grand au premier plan, on le lit, puis il se pose à sa taille (boutique : « pas le temps »). */
+.b.shout.on { animation: shout 1.6s cubic-bezier(.2,.8,.2,1) forwards; }
+@keyframes shout { 0% { opacity:0; transform: scale(.6); } 18% { opacity:1; transform: scale(1.28); } 62% { opacity:1; transform: scale(1.28); } 100% { opacity:1; transform: none; } }
+@keyframes neon { 0% { opacity:0; } 12% { opacity:1; } 18% { opacity:.15; } 30% { opacity:1; } 36% { opacity:.3; } 50%, 100% { opacity:1; } }
+</style>
+<style>
+/* La bille 3D : une toile WebGL posée par-dessus la page, transparente, qui ne gêne aucun clic. Quand elle tourne, le point 2D s'efface. */
+#orb3d { position:fixed; inset:0; width:100%; height:100%; pointer-events:none; z-index:50; }
+.orb3d .runner.go { opacity:0 !important; } .orb3d .runner.go ~ .runner.go { opacity:1 !important; r:4px; fill:#fff; } /* le second côté d'un rond : un petit point blanc (gérant, 31 octobre) */ .orb3d #dotc circle { opacity:0; }
+</style>
+<div id="noir"></div>
+<div class="wrap">
+  <h1>Mission Zero, le film · VERSION DE DEV <small>Le modèle du 29 octobre, raccourci : des phrases courtes, les flèches qui se dessinent, le point qui court devant, chaque élément qui apparaît et reste. Voix française (le fondateur), sous-titres anglais incrustés au montage.</small></h1>
+  <div class="filmbar"><button class="big" id="go">▶ Lancer le film</button><button data-ch="s0">1 · La boucle</button><button data-ch="sB" data-pass="securite">· Où l'envoyer ?</button><button data-ch="s1">2 · Constat</button><button data-ch="s2">3 · Correction</button><button data-ch="sB" data-pass="espace">· Choix : l'espace</button><button data-ch="sDe">4 · L'espace</button><button data-ch="sB" data-pass="medecine">· Choix : la médecine</button><button data-ch="sDm">5 · La médecine</button><button data-ch="sZ">· Fin</button><button id="grid">Voir tous les schémas</button><button id="x2" title="Vitesse de lecture : ×1, ×2, ×3, ×4, ×5, ×6, ×10">×1</button><span id="clock" style="color:var(--mut)"></span></div>
+  <section class="scene" id="s0">
+    <header><h2>1 · LA BOUCLE</h2><span class="t">ouverture</span></header>
+    <svg viewBox="0 0 1600 900" role="img" aria-label="La boucle de Mission Zero"><g class="marks"><circle class="mark now" cx="1446" cy="38" r="6"/><circle class="mark" cx="1472" cy="38" r="6"/><circle class="mark" cx="1498" cy="38" r="6"/><circle class="mark" cx="1524" cy="38" r="6"/><circle class="mark" cx="1550" cy="38" r="6"/></g>
+      <g class="b" data-k="1" data-d="2800"><text class="lbl acc" x="800" y="58" text-anchor="middle" style="font-size:48px;letter-spacing:.04em">MISSION ZERO</text><text class="lbl s" x="800" y="94" text-anchor="middle" style="font-size:22px">un objectif, aucun plan, tout doit être VERIFIED</text></g>
+      <g id="loop">
+      <g class="a" data-k="2" data-d="900" data-dur="800"><path class="arrow" pathLength="1" d="M800,108 L800,128"/></g>
+      <g class="rg" data-k="3" id="g1" data-ring="o1" data-d="450" style="transform-origin:800px 220px;--zx:0px;--zy:280px"><circle class="ring" id="o1" cx="800" cy="220" r="92"/><text class="lbl m" x="800" y="226" text-anchor="middle" style="font-size:24px">Objectif</text><g class="a" data-k="3" data-d="420" data-dur="360"><path class="arrow split" pathLength="1" d="M800,128 A92,92 0 0,1 874.43,274.08"/><path class="arrow split" pathLength="1" d="M800,128 A92,92 0 1,0 874.43,274.08"/></g></g>
+      <g class="b" data-k="5" data-zoom2="g1" data-d="2400"><text class="lbl xs" x="0" y="0"> </text></g>
+      <g class="b" data-k="6" data-unzoom="g1" data-d="550"><text class="lbl xs" x="0" y="0"> </text></g>
+      <g class="a" data-k="7" data-d="900" data-dur="800"><path class="arrow" pathLength="1" d="M874.43,274.08 L991.87,359.4"/></g>
+      <g class="rg" data-k="8" id="g2" data-ring="o2" data-d="450" style="transform-origin:1066.3px 413.48px;--zx:-266.3px;--zy:86.52px"><circle class="ring" id="o2" cx="1066.3" cy="413.48" r="92"/><text class="lbl m" x="1066.3" y="419.48" text-anchor="middle" style="font-size:24px">Hypothèses</text><g class="a" data-k="8" data-d="420" data-dur="360"><path class="arrow split" pathLength="1" d="M991.87,359.4 A92,92 0 1,1 1037.87,500.97"/><path class="arrow split" pathLength="1" d="M991.87,359.4 A92,92 0 0,0 1037.87,500.97"/></g></g>
+      <g class="b" data-k="10" data-zoom2="g2" data-d="2400"><text class="lbl xs" x="0" y="0"> </text></g>
+      <g class="b" data-k="11" data-unzoom="g2" data-d="550"><text class="lbl xs" x="0" y="0"> </text></g>
+      <g class="a" data-k="12" data-d="900" data-dur="800"><path class="arrow" pathLength="1" d="M1037.87,500.97 L993.01,639.03"/></g>
+      <g class="rg" data-k="13" id="g3" data-ring="o3" data-d="450" style="transform-origin:964.58px 726.52px;--zx:-164.58px;--zy:-226.52px"><circle class="ring" id="o3" cx="964.58" cy="726.52" r="92"/><text class="lbl m" x="964.58" y="732.52" text-anchor="middle" style="font-size:24px">Action</text><g class="a" data-k="13" data-d="420" data-dur="360"><path class="arrow split" pathLength="1" d="M993.01,639.03 A92,92 0 1,1 872.58,726.52"/><path class="arrow split" pathLength="1" d="M993.01,639.03 A92,92 0 0,0 872.58,726.52"/></g></g>
+      <g class="b" data-k="15" data-zoom2="g3" data-d="2400"><text class="lbl xs" x="0" y="0"> </text></g>
+      <g class="b" data-k="16" data-unzoom="g3" data-d="550"><text class="lbl xs" x="0" y="0"> </text></g>
+      <g class="a" data-k="17" data-d="900" data-dur="800"><path class="arrow" pathLength="1" d="M872.58,726.52 L727.42,726.52"/></g>
+      <g class="rg" data-k="18" id="g4" data-ring="o4" data-d="450" style="transform-origin:635.42px 726.52px;--zx:164.58px;--zy:-226.52px"><circle class="ring" id="o4" cx="635.42" cy="726.52" r="92"/><text class="lbl m" x="635.42" y="732.52" text-anchor="middle" style="font-size:24px">Observation</text><g class="a" data-k="18" data-d="420" data-dur="360"><path class="arrow split" pathLength="1" d="M727.42,726.52 A92,92 0 1,1 606.99,639.03"/><path class="arrow split" pathLength="1" d="M727.42,726.52 A92,92 0 0,0 606.99,639.03"/></g></g>
+      <g class="b" data-k="20" data-zoom2="g4" data-d="2400"><text class="lbl xs" x="0" y="0"> </text></g>
+      <g class="b" data-k="21" data-unzoom="g4" data-d="550"><text class="lbl xs" x="0" y="0"> </text></g>
+      <g class="a" data-k="22" data-d="900" data-dur="800"><path class="arrow" pathLength="1" d="M606.99,639.03 L562.13,500.97"/></g>
+      <g class="rg" data-k="23" id="g5" data-ring="o5" data-d="450" style="transform-origin:533.7px 413.48px;--zx:266.3px;--zy:86.52px"><circle class="ring" id="o5" cx="533.7" cy="413.48" r="92"/><text class="lbl m" x="533.7" y="419.48" text-anchor="middle" style="font-size:24px">Évaluation</text><g class="a" data-k="23" data-d="420" data-dur="360"><path class="arrow split" pathLength="1" d="M562.13,500.97 A92,92 0 1,1 608.13,359.4"/><path class="arrow split" pathLength="1" d="M562.13,500.97 A92,92 0 0,0 608.13,359.4"/></g></g>
+      <g class="b" data-k="25" data-zoom2="g5" data-d="2400"><text class="lbl xs" x="0" y="0"> </text></g>
+      <g class="b" data-k="26" data-unzoom="g5" data-d="550"><text class="lbl xs" x="0" y="0"> </text></g>
+      <g class="a" data-k="27" data-d="900" data-dur="800"><path class="arrow" pathLength="1" d="M608.13,359.4 L725.57,274.08"/></g>
+      <g class="b" data-k="28" data-pulse="o1:strong" data-d="900"><text class="lbl xs" x="0" y="0"> </text></g>
+      <g class="rg" data-k="29" id="gp" data-d="500" style="transform-origin:800px 500px;--zx:0px;--zy:0px"></g>
+      <g class="b" data-k="30" data-zoom2="gp" data-d="2000"><text class="lbl xs" x="0" y="0"> </text></g>
+      <g class="b" data-k="31" data-unzoom="gp" data-d="500"><text class="lbl xs" x="0" y="0"> </text></g>
+      <g class="rg" data-k="32" data-stamp="ok:VERIFIED" id="gv" data-hide="#gp" data-d="2400" style="transform-origin:800px 500px"></g>
+      <g class="b" data-k="33" data-hide="#gv" data-d="400"><text class="lbl xs" x="0" y="0"> </text></g>
+      <g class="a" data-k="34" data-d="1900" data-dur="1800" data-pulses="o1@0.091,o2@0.424,o3@0.757"><path class="arrow ghost" pathLength="1" d="M725.57,274.08 A92,92 0 0,0 874.43,274.08 L991.87,359.4 A92,92 0 0,0 1037.87,500.97 L993.01,639.03 A92,92 0 0,0 872.58,726.52 L727.42,726.52"/></g>
+      <g class="b" data-k="35" data-ring="o4:bad" data-blink="o4" data-d="2200"><text class="lbl xs" x="0" y="0"> </text></g>
+      <g class="rg" data-k="36" data-stamp="ko:NOT VERIFIED" id="gx" data-blink="gxt" data-d="500" style="transform-origin:800px 500px;--zx:0px;--zy:0px"><text id="gxt"></text><text id="gxs"></text></g>
+      <g class="b" data-k="37" data-zoom2="gx" data-d="2400"><text class="lbl xs" x="0" y="0"> </text></g>
+      <g class="b" data-k="38" data-unzoom="gx" data-d="500"><text class="lbl xs" x="0" y="0"> </text></g>
+      <g class="b" data-k="39" id="rc" data-hide="#gxs" data-ring="o4:lit" data-pulse="o4:strong" data-d="1600"><text class="lbl okt" x="800" y="564" text-anchor="middle" style="font-size:22px">il relit la page, réécrit dans ses mots</text></g>
+      <g class="b" data-k="40" data-hide="#gx,#rc" data-d="300"><text class="lbl xs" x="0" y="0"> </text></g>
+      <g class="a" data-k="41" data-d="1900" data-dur="1800" data-pulses="o1@0.091,o2@0.424,o3@0.757"><path class="arrow ghost" pathLength="1" d="M725.57,274.08 A92,92 0 0,0 874.43,274.08 L991.87,359.4 A92,92 0 0,0 1037.87,500.97 L993.01,639.03 A92,92 0 0,0 872.58,726.52 L727.42,726.52"/></g>
+      <g class="a" data-k="42" data-d="1100" data-dur="1000" data-pulses="o4@0.136,o5@0.636"><path class="arrow ghost" pathLength="1" d="M727.42,726.52 A92,92 0 0,0 606.99,639.03 L562.13,500.97 A92,92 0 0,0 608.13,359.4 L725.57,274.08"/></g>
+      <g class="rg" data-k="43" data-stamp="ok:VERIFIED" id="gv2" data-hide="#gx,#rc" data-pulse="o1:strong" data-d="2600" style="transform-origin:800px 500px"></g>
+      </g>
+      <g class="b" data-k="44" id="dotc" data-shrink="loop" data-d="1100"><circle cx="800" cy="500" r="9" fill="#fff" style="filter:drop-shadow(0 0 8px rgba(46,230,160,.9))"/></g>
+      <g class="b" data-k="45"  data-d="500"><text class="lbl xs" x="0" y="0"> </text></g>
+      <g class="a" data-k="46" data-d="1300" data-dur="1200" data-hide="#dotc"><path class="arrow" pathLength="1" d="M800,500 C980,500 1020,488 1160,488"/></g>
+      <g class="b" data-k="47" data-d="2000"><text class="lbl amber" x="1175" y="498" style="font-size:30px">Où l’envoyer ?</text></g>
+      <g class="a" data-k="48" data-d="900" data-dur="800"><path class="arrow" pathLength="1" d="M1395,488 L1600,488"/></g>
+    </svg>
+    <div class="caption" id="c0"></div>
+  </section>
+
+  <section class="scene" id="sB">
+    <header><h2>OÙ L’ENVOYER ?</h2><span class="t">l’écran des choix</span></header>
+    <svg viewBox="0 0 1600 900" role="img" aria-label="La boucle au centre et, autour, tout ce qu'on peut lui demander"><text class="lbl amber" x="800" y="40" text-anchor="middle" style="font-size:26px;letter-spacing:.2em;font-weight:700">OÙ L’ENVOYER ?</text><g transform="translate(32,56) scale(0.96)">
+      <g class="a" data-k="1" data-dur="1300" data-d="1400"><path class="arrow" pathLength="1" d="M-33.3,450 L704,450"/></g>
+      <g class="b" data-k="2" data-d="1600"><circle class="ring lit" cx="800" cy="450" r="96"/><text class="lbl m acc" x="800" y="446" text-anchor="middle">la boucle</text><text class="lbl xs" x="800" y="472" text-anchor="middle">chercher · lire · vérifier</text></g>
+      <g class="fan" data-k="3" data-d="380" id="bE" style="transform-origin:655.1px 150.6px;--fx:144.9px;--fy:299.4px"><rect class="chip next" x="535.1" y="122.6" width="240" height="56" rx="28"/><text class="chip-t" x="655.1" y="157.6" text-anchor="middle" style="font-size:19px">🪐 L’espace</text></g>
+      <g class="fan" data-k="4" data-d="380" id="bM" style="transform-origin:944.9px 150.6px;--fx:-144.9px;--fy:299.4px"><rect class="chip next" x="824.9" y="122.6" width="240" height="56" rx="28"/><text class="chip-t" x="944.9" y="157.6" text-anchor="middle" style="font-size:19px">🩺 La médecine</text></g>
+      <g class="fan" data-k="5" data-d="380" style="transform-origin:1196px 230.8px;--fx:-396px;--fy:219.2px"><rect class="chip next" x="1076" y="202.8" width="240" height="56" rx="28"/><text class="chip-t" x="1196" y="237.8" text-anchor="middle" style="font-size:19px">🔎 Google · recherche</text></g>
+      <g class="fan" data-k="6" data-d="380" style="transform-origin:1340.9px 369.8px;--fx:-540.9px;--fy:80.2px"><rect class="chip next" x="1220.9" y="341.8" width="240" height="56" rx="28"/><text class="chip-t" x="1340.9" y="376.8" text-anchor="middle" style="font-size:19px">💬 ChatGPT · assistant</text></g>
+      <g class="fan" data-k="7" data-d="380" style="transform-origin:1340.9px 530.2px;--fx:-540.9px;--fy:-80.2px"><rect class="chip next" x="1220.9" y="502.2" width="240" height="56" rx="28"/><text class="chip-t" x="1340.9" y="537.2" text-anchor="middle" style="font-size:19px">📚 Wikipédia</text></g>
+      <g class="fan" data-k="8" data-d="380" style="transform-origin:1196px 669.2px;--fx:-396px;--fy:-219.2px"><rect class="chip next" x="1076" y="641.2" width="240" height="56" rx="28"/><text class="chip-t" x="1196" y="676.2" text-anchor="middle" style="font-size:19px">📰 Reuters · l’info</text></g>
+      <g class="fan" data-k="9" data-d="380" style="transform-origin:944.9px 749.4px;--fx:-144.9px;--fy:-299.4px"><rect class="chip next" x="824.9" y="721.4" width="240" height="56" rx="28"/><text class="chip-t" x="944.9" y="756.4" text-anchor="middle" style="font-size:19px">🛒 Amazon · e-commerce</text></g>
+      <g class="fan" data-k="10" data-d="380" style="transform-origin:655.1px 749.4px;--fx:144.9px;--fy:-299.4px"><rect class="chip next" x="535.1" y="721.4" width="240" height="56" rx="28"/><text class="chip-t" x="655.1" y="756.4" text-anchor="middle" style="font-size:19px">🏦 La banque</text></g>
+      <g class="fan" data-k="11" data-d="380" style="transform-origin:404px 669.2px;--fx:396px;--fy:-219.2px"><rect class="chip next" x="284" y="641.2" width="240" height="56" rx="28"/><text class="chip-t" x="404" y="676.2" text-anchor="middle" style="font-size:19px">⚖️ Le droit</text></g>
+      <g class="fan" data-k="12" data-d="380" id="bS" style="transform-origin:259.1px 530.2px;--fx:540.9px;--fy:-80.2px"><rect class="chip next" x="139.1" y="502.2" width="240" height="56" rx="28"/><text class="chip-t" x="259.1" y="537.2" text-anchor="middle" style="font-size:19px">🛡 La cybersécurité</text></g>
+      <g class="fan" data-k="13" data-d="380" style="transform-origin:259.1px 369.8px;--fx:540.9px;--fy:80.2px"><rect class="chip next" x="139.1" y="341.8" width="240" height="56" rx="28"/><text class="chip-t" x="259.1" y="376.8" text-anchor="middle" style="font-size:19px">🎓 L’université</text></g>
+      <g class="fan" data-k="14" data-d="1500" style="transform-origin:404px 230.8px;--fx:396px;--fy:219.2px"><rect class="chip next" x="284" y="202.8" width="240" height="56" rx="28"/><text class="chip-t" x="404" y="237.8" text-anchor="middle" style="font-size:19px">🏛 L’État</text></g>
+      <g class="b" data-k="15" data-pass="securite" data-d="1800"><text class="lbl xs" x="0" y="0"> </text></g>
+      <g class="a" data-k="16" data-pass="securite" data-zoom="#bS" data-dur="1000"><path class="arrow" pathLength="1" d="M705,464.1 L416.7,506.9"/></g>
+      <g class="b" data-k="17" data-pass="securite" data-d="2400"><text class="lbl amber" x="800" y="70" text-anchor="middle" style="font-size:26px">1 · La cybersécurité.</text></g>
+      <g class="a" data-k="18" data-pass="securite" data-dur="1000" data-d="1050"><path class="arrow" pathLength="1" d="M896,450 L1633.3,450"/></g>
+      <g class="b" data-k="19" data-pass="espace" data-hide="#bS" data-d="1400"><rect class="chip ok" x="139.1" y="502.2" width="240" height="56" rx="28"/><text class="chip-t" x="259.1" y="537.2" text-anchor="middle" style="font-size:19px">✔ La cybersécurité · VERIFIED</text></g>
+      <g class="a" data-k="20" data-pass="espace" data-zoom="#bE" data-dur="1000"><path class="arrow" pathLength="1" d="M758.2,363.6 L674.7,191.2"/></g>
+      <g class="b" data-k="21" data-pass="espace" data-d="2400"><text class="lbl amber" x="800" y="70" text-anchor="middle" style="font-size:26px">2 · L’espace.</text></g>
+      <g class="a" data-k="22" data-pass="espace" data-dur="1000" data-d="1050"><path class="arrow" pathLength="1" d="M896,450 L1633.3,450"/></g>
+      <g class="b" data-k="23" data-pass="medecine" data-hide="#bS" data-d="700"><rect class="chip ok" x="139.1" y="502.2" width="240" height="56" rx="28"/><text class="chip-t" x="259.1" y="537.2" text-anchor="middle" style="font-size:19px">✔ La cybersécurité · VERIFIED</text></g>
+      <g class="b" data-k="24" data-pass="medecine" data-hide="#bE" data-d="1400"><rect class="chip ok" x="535.1" y="122.6" width="240" height="56" rx="28"/><text class="chip-t" x="655.1" y="157.6" text-anchor="middle" style="font-size:19px">✔ L’espace · VERIFIED</text></g>
+      <g class="a" data-k="25" data-pass="medecine" data-zoom="#bM" data-dur="1000"><path class="arrow" pathLength="1" d="M841.8,363.6 L925.3,191.2"/></g>
+      <g class="b" data-k="26" data-pass="medecine" data-d="2400"><text class="lbl amber" x="800" y="70" text-anchor="middle" style="font-size:26px">3 · La médecine.</text></g>
+      <g class="a" data-k="27" data-pass="medecine" data-dur="1000" data-d="1050"><path class="arrow" pathLength="1" d="M896,450 L1633.3,450"/></g>
+    </g></svg>
+    <div class="caption" id="cB"></div>
+  </section>
+
+<section class="scene" id="s1">
+    <header><h2>1 · CONSTAT</h2><span class="t">scène 0</span></header>
+    <svg viewBox="0 0 1600 900" role="img" aria-label="Une boutique en ligne, une équipe qui corrige à la main, les failles qui reviennent, 8 sites sur 10 exposés"><g class="marks"><circle class="mark done" cx="1446" cy="38" r="6"/><circle class="mark now" cx="1472" cy="38" r="6"/><circle class="mark" cx="1498" cy="38" r="6"/><circle class="mark" cx="1524" cy="38" r="6"/><circle class="mark" cx="1550" cy="38" r="6"/></g><text class="lbl red" x="800" y="40" text-anchor="middle" style="font-size:26px;letter-spacing:.2em;font-weight:700">SANS MISSION ZERO</text><g transform="translate(32,56) scale(0.96)">
+      <g class="b shoutlabel" data-k="0" data-d="2600"><text class="lbl" x="620" y="40" text-anchor="middle" style="font-size:24px;font-weight:700;letter-spacing:.16em">VOTRE SITE WEB E-COMMERCE</text></g><g class="b" data-k="1" data-d="900"><rect class="box blue" x="40" y="60" width="1160" height="600" rx="20"/><rect x="40" y="60" width="1160" height="62" rx="20" fill="rgba(45,85,212,.3)"/><text class="lbl" x="80" y="102">🌿 Maison Verde · boutique</text><text class="lbl s" x="1160" y="102" text-anchor="end">Boutique · Panier · Mon compte</text>
+        <rect class="tile" x="100" y="168" width="320" height="180" rx="14"/><ellipse class="leaf" cx="260" cy="222" rx="80" ry="38"/><text class="lbl m" x="260" y="298" text-anchor="middle">Monstera</text><text class="lbl s" x="260" y="328" text-anchor="middle">49 €</text>
+        <rect class="tile" x="460" y="168" width="320" height="180" rx="14"/><ellipse class="leaf" cx="620" cy="222" rx="80" ry="38"/><text class="lbl m" x="620" y="298" text-anchor="middle">Ficus</text><text class="lbl s" x="620" y="328" text-anchor="middle">120 €</text>
+        <rect class="tile" x="820" y="168" width="320" height="180" rx="14"/><ellipse class="leaf" cx="980" cy="222" rx="80" ry="38"/><text class="lbl m" x="980" y="298" text-anchor="middle">Olivier</text><text class="lbl s" x="980" y="328" text-anchor="middle">89 €</text>
+        <rect class="tile" x="100" y="400" width="1040" height="60" rx="12"/><text class="lbl m" x="130" y="440">🛒 Panier · 3 articles · 258 €</text><rect x="960" y="408" width="160" height="44" rx="10" fill="rgba(46,230,160,.18)" stroke="rgba(46,230,160,.7)" stroke-width="2"/><text class="lbl m acc" x="1040" y="439" text-anchor="middle">Payer</text></g>
+      <g class="b" data-k="2" data-d="450"><text class="lbl s" x="130" y="510">✔ Commande #1001 · payée · 49 €</text></g>
+      <g class="b" data-k="3" data-d="450"><text class="lbl s" x="130" y="545">✔ Commande #1002 · payée · 120 €</text></g>
+      <g class="b" data-k="4" data-d="700"><text class="lbl s" x="130" y="580">✔ Commande #1003 · expédiée · 258 €</text><text class="lbl xs" x="1160" y="640" text-anchor="end" style="fill:rgba(169,180,204,.5)">jQuery 1.8.3 · PHP 7.2</text></g>
+      <g class="b" data-k="5" id="st0"><rect class="pill ok" x="1250" y="70" width="310" height="52" rx="26"/><text class="lbl m okt" x="1405" y="104" text-anchor="middle">● site conforme</text></g>
+      <g class="b" data-k="6"><text class="lbl" x="1405" y="168" text-anchor="middle" style="font-size:22px;font-weight:700;letter-spacing:.14em">VOTRE ADMIN WEB</text><text class="lbl" x="1405" y="290" text-anchor="middle" style="font-size:96px">👩‍💻</text><text class="lbl" x="1405" y="346" text-anchor="middle" style="font-size:32px">souvent seule</text><text class="lbl s" x="1405" y="380" text-anchor="middle" style="font-size:24px">site · clients · sécurité</text></g>
+      <g class="b" data-k="7" id="f1"><rect class="badge" x="560" y="73" width="300" height="36" rx="18"/><text class="badge-t" x="710" y="98" text-anchor="middle">⚠ en-têtes absents</text></g>
+      <g class="b" data-k="8" data-stamp="ko:NOT VERIFIED" id="st1" data-hide="#st0"><rect class="pill ko" x="1250" y="70" width="310" height="52" rx="26"/><text class="lbl m red" x="1405" y="104" text-anchor="middle">● 1 faille ouverte</text></g>
+      <g class="b" data-k="9" id="h1" data-d="1500"><text class="lbl xs amber" x="1405" y="420" text-anchor="middle">🔧 corrige à la main</text><text class="lbl xs" x="1405" y="446" text-anchor="middle">quand elle peut</text></g>
+      <g class="b" data-k="10" data-hide="#f1,#h1"><rect class="badge ok" x="560" y="73" width="300" height="36" rx="18"/><text class="badge-t ok" x="710" y="98" text-anchor="middle">✔ en-têtes ajoutés</text></g>
+      <g class="b" data-k="11" data-hide="#st1" id="st2"><rect class="pill ok" x="1250" y="70" width="310" height="52" rx="26"/><text class="lbl m okt" x="1405" y="104" text-anchor="middle">● site conforme</text></g>
+      <g class="b" data-k="12" id="f2"><rect class="badge" x="470" y="354" width="300" height="36" rx="18"/><text class="badge-t" x="620" y="379" text-anchor="middle">⚠ prix modifiable</text></g>
+      <g class="b" data-k="13" data-stamp="ko:NOT VERIFIED" id="st3" data-hide="#st2"><rect class="pill ko" x="1250" y="70" width="310" height="52" rx="26"/><text class="lbl m red" x="1405" y="104" text-anchor="middle">● 1 faille ouverte</text></g>
+      <g class="b" data-k="14" id="h2" data-d="1500"><text class="lbl xs amber" x="1405" y="420" text-anchor="middle">🔧 corrige à la main</text><text class="lbl xs" x="1405" y="446" text-anchor="middle">le soir</text></g>
+      <g class="b" data-k="15" data-hide="#f2,#h2"><rect class="badge ok" x="470" y="354" width="300" height="36" rx="18"/><text class="badge-t ok" x="620" y="379" text-anchor="middle">✔ prix verrouillé</text></g>
+      <g class="b" data-k="16" data-hide="#st3" id="st4"><rect class="pill ok" x="1250" y="70" width="310" height="52" rx="26"/><text class="lbl m okt" x="1405" y="104" text-anchor="middle">● site conforme</text></g>
+      <g class="b" data-k="17" data-d="500"><rect class="badge" x="890" y="466" width="300" height="36" rx="18"/><text class="badge-t" x="1040" y="491" text-anchor="middle">⚠ carte en clair</text></g>
+      <g class="b" data-k="18" data-d="700"><rect class="badge" x="740" y="582" width="420" height="36" rx="18"/><text class="badge-t" x="950" y="607" text-anchor="middle">⚠ jQuery 2012</text></g>
+      <g class="b" data-k="19" data-hide="#st4" id="st5"><rect class="pill ko" x="1250" y="70" width="310" height="52" rx="26"/><text class="lbl m red" x="1405" y="104" text-anchor="middle">● 2 failles ouvertes</text></g>
+      <g class="b shout" data-k="20" id="h3" data-d="1600" style="transform-box:view-box;transform-origin:1405px 440px"><text class="lbl amber" x="1405" y="432" text-anchor="middle" style="font-size:34px">⏳ pas le temps</text><text class="lbl s" x="1405" y="466" text-anchor="middle" style="font-size:24px">ni budget, ni compétence</text></g>
+      <g class="b" data-k="21" data-d="700"><rect class="badge" x="840" y="128" width="320" height="30" rx="15"/><text class="badge-t" x="1000" y="149" text-anchor="middle">⚠ mot de passe faible</text></g>
+      <g class="b" data-k="22" data-hide="#st5" data-d="1600"><rect class="pill ko" x="1250" y="70" width="310" height="52" rx="26"/><text class="lbl m red" x="1405" y="104" text-anchor="middle">● 3 failles ouvertes</text></g>
+      <g class="b" data-k="23"><text class="lbl amber" x="800" y="740" text-anchor="middle" style="font-size:44px">8 sites sur 10 restent exposés</text><text class="lbl s" x="800" y="784" text-anchor="middle" style="font-size:22px">26 sites scannés par MYTHOZOR ARGUS · 81 % sans protection</text><text class="lbl" x="800" y="840" text-anchor="middle" style="font-size:30px"> </text></g>
+    </g></svg>
+    <div class="caption" id="c1"></div>
+      </section>
+
+  
+  <section class="scene" id="s2">
+    <header><h2>3 · CORRECTION AVEC MISSION ZERO</h2><span class="t">correction</span></header>
+    <svg viewBox="0 0 1600 900" role="img" aria-label="Le site et ses failles, FAILLE SCAN, Mission Zero qui part de zéro, un correctif, cinq contrôles, un rouge : la page de paiement altérée, NOT VERIFIED, correctif n°2, VERIFIED, le site corrigé"><g class="marks"><circle class="mark done" cx="1446" cy="38" r="6"/><circle class="mark done" cx="1472" cy="38" r="6"/><circle class="mark now" cx="1498" cy="38" r="6"/><circle class="mark" cx="1524" cy="38" r="6"/><circle class="mark" cx="1550" cy="38" r="6"/></g><text class="lbl acc" x="800" y="40" text-anchor="middle" style="font-size:26px;letter-spacing:.2em;font-weight:700">AVEC MISSION ZERO</text><g transform="translate(32,56) scale(0.96)">
+      <g class="b" data-k="1" data-d="1500"><rect class="box red" id="siteBox" x="40" y="40" width="300" height="190" rx="16"/><text class="lbl m red" id="siteT" x="190" y="76" text-anchor="middle">VOTRE SITE · 5 failles</text><rect class="tile" x="70" y="96" width="60" height="44" rx="6"/><rect class="tile" x="140" y="96" width="60" height="44" rx="6"/><rect class="tile" x="210" y="96" width="60" height="44" rx="6"/><rect class="tile" x="70" y="150" width="200" height="24" rx="6"/><text class="lbl xs" x="190" y="210" text-anchor="middle">en ligne</text></g>
+      <g class="a" data-k="2" ><path class="arrow" pathLength="1" d="M340,135 L420,135"/></g>
+      <g class="b" data-k="3" data-d="1600"><rect class="box" x="420" y="40" width="360" height="190" rx="16"/><text class="lbl m" x="600" y="90" text-anchor="middle" style="letter-spacing:.12em;font-weight:800">FAILLE SCAN</text><text class="lbl s red" id="scan5" x="600" y="160" text-anchor="middle" style="font-size:22px;font-weight:700">⚠ 5 failles</text></g>
+      <g class="a" data-k="4" ><path class="arrow" pathLength="1" d="M780,135 L860,135"/></g>
+      <g class="b" data-k="5" data-d="2600"><rect class="box gold" id="mzBox" x="860" y="40" width="700" height="190" rx="16"/><text class="lbl acc" x="1210" y="104" text-anchor="middle" style="font-size:30px">Mission Zero part de zéro</text><text class="lbl s" x="1210" y="170" text-anchor="middle" style="font-size:20px">une copie · aucun plan · tout doit être VERIFIED</text></g>
+      <g class="a" data-k="6" ><path class="arrow" pathLength="1" d="M1330,230 L1330,262"/></g>
+      <g class="b" data-k="7" id="fix1" data-d="1500"><rect class="box gold" id="fix1b" x="1200" y="262" width="260" height="96" rx="16"/><text class="lbl acc" x="1330" y="298" text-anchor="middle">Correctif n°1</text><text class="lbl s" x="1330" y="332" text-anchor="middle">sur la copie</text></g>
+      <g class="a" data-k="8" ><path class="arrow" pathLength="1" d="M1330,358 L1330,400"/></g>
+      <g class="b" data-k="9" data-ring="r1" data-d="1500"><circle class="ring" id="r1" cx="1330" cy="470" r="70"/><text class="lbl m" x="1330" y="463" text-anchor="middle">1</text><text class="lbl s" x="1330" y="493" text-anchor="middle" style="fill:var(--fg)">Réserves</text><text class="lbl s" x="1414" y="476">écrites</text></g>
+      <g class="a" data-k="10" ><path class="arrow" pathLength="1" d="M1260,470 L1170,470"/></g>
+      <g class="b" data-k="11" data-ring="r2" data-d="1500"><circle class="ring" id="r2" cx="1100" cy="470" r="70"/><text class="lbl m" x="1100" y="463" text-anchor="middle">2</text><text class="lbl s" x="1100" y="493" text-anchor="middle" style="fill:var(--fg)">Relecture</text><text class="lbl s" x="1100" y="375" text-anchor="middle">cause ou symptôme ?</text></g>
+      <g class="a" data-k="12" ><path class="arrow" pathLength="1" d="M1030,470 L940,470"/></g>
+      <g class="b" data-k="13"  data-d="1500"><circle class="ring" id="r3" cx="870" cy="470" r="70"/><text class="lbl m" x="870" y="463" text-anchor="middle">3</text><text class="lbl s" x="870" y="493" text-anchor="middle" style="fill:var(--fg)">Regard</text><text class="lbl s" x="870" y="375" text-anchor="middle">Muse Spark + SAM</text></g>
+      <g class="b" data-k="14" data-ring="r3:bad" data-blink="r3" data-d="1500"><text class="lbl xs" x="0" y="0"> </text></g>
+      <g class="a" data-k="15" id="red0" data-dur="500" data-d="600"><path class="arrow red" pathLength="1" d="M870,540 L870,575"/></g>
+      <g class="b" data-k="16" data-stamp="ko:NOT VERIFIED" id="red1" data-d="3600"><text class="lbl red" x="870" y="604" text-anchor="middle" style="font-size:22px;font-weight:700">✖ page de paiement altérée</text><text class="lbl red" x="870" y="636" text-anchor="middle" style="font-size:24px;font-weight:800">à refaire</text><text class="lbl s" x="870" y="664" text-anchor="middle">5 champs avant · 2 après</text></g>
+      <g class="a" data-k="17" id="red2" data-dur="900" data-d="1000" data-round="24"><path class="arrow red" pathLength="1" d="M870,680 L870,712 L1090,712"/></g>
+      <g class="b" data-k="18" id="red3" data-stamp="ko:NOT VERIFIED" data-d="1900"><rect class="box red" x="1090" y="667" width="240" height="90" rx="16"/><text class="lbl s" x="1210" y="720" text-anchor="middle">par lui-même</text></g>
+      <g class="a" data-k="19" id="red4" data-dur="1300" data-d="1400" data-round="40"><path class="arrow red" pathLength="1" d="M1330,712 L1500,712 L1500,310 L1460,310"/></g>
+      <g class="b" data-k="20" data-hide="#fix1,#red0,#red1,#red2,#red3,#red4" data-ring="r3:off" data-d="1900"><rect class="box gold" id="fix2" x="1200" y="262" width="260" height="96" rx="16"/><text class="lbl acc" x="1330" y="298" text-anchor="middle">Correctif n°2</text><text class="lbl s" x="1330" y="332" text-anchor="middle">copie neuve</text></g>
+      <g class="a" data-k="21" data-dur="1500" data-d="1600" data-pulses="r1@0.176:strong,r2@0.638:strong"><path class="arrow ghost" pathLength="1" d="M1330,358 L1330,400 A70,70 0 0,0 1260,470 L1170,470 A70,70 0 0,0 1030,470 L940,470"/></g>
+      <g class="b" data-k="22" data-d="1200"><text class="lbl xs" x="1215" y="572" text-anchor="middle">1 et 2 rejoués · verts</text></g>
+      <g class="b" data-k="23" data-ring="r3" data-pulse="r3:strong" data-d="1600"><text class="lbl xs okt" x="870" y="572" text-anchor="middle">page intacte · 5 champs sur 5</text></g>
+      <g class="a" data-k="24" ><path class="arrow" pathLength="1" d="M800,470 L710,470"/></g>
+      <g class="b" data-k="25" data-ring="r4" data-d="1500"><circle class="ring" id="r4" cx="640" cy="470" r="70"/><text class="lbl m" x="640" y="463" text-anchor="middle">4</text><text class="lbl s" x="640" y="493" text-anchor="middle" style="fill:var(--fg)">Rescan</text><text class="lbl s" x="640" y="375" text-anchor="middle">faille disparue ?</text></g>
+      <g class="a" data-k="26" ><path class="arrow" pathLength="1" d="M570,470 L480,470"/></g>
+      <g class="b" data-k="27" data-ring="r5" data-d="1500"><circle class="ring" id="r5" cx="410" cy="470" r="70"/><text class="lbl m" x="410" y="463" text-anchor="middle">5</text><text class="lbl s" x="410" y="493" text-anchor="middle" style="fill:var(--fg)">Parcours</text><text class="lbl s" x="410" y="375" text-anchor="middle">tests client</text></g>
+      <g class="a" data-k="28" ><path class="arrow" pathLength="1" d="M410,540 L410,600"/></g>
+      <g class="b" data-k="29" id="okpatch" data-stamp="ok:VERIFIED" data-d="3200"><rect class="box ok" x="60" y="600" width="520" height="130" rx="16"/><text class="lbl acc" x="320" y="642" text-anchor="middle">patch prêt</text><text class="lbl s" x="320" y="690" text-anchor="middle" style="fill:var(--fg)">un humain, ou l’automatique</text></g>
+      <g class="a" data-k="30" data-dur="900" data-d="1000"><path class="arrow" pathLength="1" d="M130,600 L130,230"/></g>
+      <g class="b" data-k="31" data-stamp="ok:VERIFIED" data-hide="#siteBox,#siteT" data-d="2200"><rect class="box ok" x="40" y="40" width="300" height="190" rx="16" style="filter:drop-shadow(0 0 12px rgba(46,230,160,.7))"/><text class="lbl m acc" x="190" y="76" text-anchor="middle">VOTRE SITE · 0 faille</text><rect class="chip ok" x="70" y="146" width="240" height="32" rx="16"/><text class="chip-t" x="190" y="167" text-anchor="middle" style="font-size:15px;font-weight:700">✔ corrigée · en live</text></g>
+      <g class="a" data-k="32" data-dur="500" data-d="600"><path class="arrow ghost" pathLength="1" d="M340,135 L420,135"/></g>
+      <g class="b" data-k="33" data-hide="#scan5" data-d="2600"><text class="lbl s okt" x="600" y="160" text-anchor="middle" style="font-size:22px;font-weight:700">✔ 0 faille</text></g>
+      <g class="b" data-k="34" data-d="1800"><text class="lbl xs" x="0" y="0"> </text></g>
+      <g class="a" data-k="35" data-dur="700" data-d="750"><path class="arrow" pathLength="1" d="M1560,135 L1633.3,135"/></g>
+    </g></svg>
+    <div class="caption" id="c2"></div>
+  </section>
+
+  <section class="scene" id="sE">
+    <header><h2>L’ESPACE</h2><span class="t">une vraie mission de Mission Zero</span></header>
+    <svg viewBox="0 0 1600 900" role="img" aria-label="La même question posée deux fois, puis un ciel d’étoiles, un compteur qui monte, un fil qui va de boîte en boîte : le système solaire vers Hercule, autour de la galaxie, vers le Grand Attracteur ; chaque chiffre avec sa page"><g class="marks"><circle class="mark done" cx="1446" cy="38" r="6"/><circle class="mark done" cx="1472" cy="38" r="6"/><circle class="mark done" cx="1498" cy="38" r="6"/><circle class="mark now" cx="1524" cy="38" r="6"/><circle class="mark" cx="1550" cy="38" r="6"/></g><text class="lbl acc" x="800" y="40" text-anchor="middle" style="font-size:26px;letter-spacing:.2em;font-weight:700">L’ESPACE · AVEC MISSION ZERO</text><g transform="translate(32,56) scale(0.96)">
+      <g id="stars"></g>
+      <g class="b" data-k="1" id="q0" data-stars="1" data-d="3000"><rect class="box" x="400" y="48" width="800" height="62" rx="31" style="fill:rgba(255,255,255,.05)"/><text class="lbl s" x="436" y="90" style="font-size:28px">🔍</text><text class="lbl" x="484" y="91" style="font-size:30px;font-weight:600">On va quelque part ?</text><rect class="chip ok" x="1050" y="58" width="130" height="42" rx="21"/><text class="chip-t" x="1115" y="86" text-anchor="middle" style="font-size:20px;font-weight:700;letter-spacing:.1em">IA ▶</text><text class="lbl s" x="800" y="134" text-anchor="middle" style="font-size:19px">une recherche par IA · la même question, posée deux fois</text></g>
+      <g id="vs">
+      <g class="a" data-k="2" data-dur="900" data-d="1000"><path class="arrow" pathLength="1" d="M-33.3,450 L58,450"/></g>
+      <g class="b" data-k="3" data-d="3400"><rect class="box red" x="60" y="150" width="700" height="500" rx="16"/><text class="lbl red" x="410" y="200" text-anchor="middle" style="font-size:28px;letter-spacing:.08em">L’IA SEULE</text><text class="lbl s" x="410" y="238" text-anchor="middle" style="font-size:22px">12 chiffres · 1 centime · 20 secondes</text><text class="lbl" x="90" y="304" style="font-size:23px;font-weight:400">Hercule, 19,7 km/s · 1981</text><rect class="chip ko" x="560" y="279" width="180" height="38" rx="19"/><text class="chip-t" x="650" y="306" text-anchor="middle" style="font-size:19px">sans adresse</text><text class="lbl" x="90" y="364" style="font-size:23px;font-weight:400">3 vitesses au centième · 2010</text><rect class="chip ko" x="560" y="339" width="180" height="38" rx="19"/><text class="chip-t" x="650" y="366" text-anchor="middle" style="font-size:19px">injoignable</text><text class="lbl" x="90" y="424" style="font-size:23px;font-weight:400">la galaxie · 2014</text><rect class="chip ok" x="560" y="399" width="180" height="38" rx="19"/><text class="chip-t" x="650" y="426" text-anchor="middle" style="font-size:19px">lisible</text><text class="lbl" x="90" y="484" style="font-size:23px;font-weight:400">600 km/s, Grand Attracteur</text><rect class="chip ko" x="560" y="459" width="180" height="38" rx="19"/><text class="chip-t" x="650" y="486" text-anchor="middle" style="font-size:19px">injoignable</text><text class="lbl" x="90" y="544" style="font-size:23px;font-weight:400">le fond du ciel · 2020</text><rect class="chip ko" x="560" y="519" width="180" height="38" rx="19"/><text class="chip-t" x="650" y="546" text-anchor="middle" style="font-size:19px">injoignable</text></g>
+      <g class="b" data-k="4" data-stamp="ko:NOT VERIFIED" data-d="3000"><text class="lbl amber" x="410" y="616" text-anchor="middle" style="font-size:24px">4 sources sur 5 · introuvables</text></g>
+      <g class="a" data-k="5" data-dur="700" data-d="800"><path class="arrow" pathLength="1" d="M760,450 L838,450"/></g>
+      <g class="b" data-k="6" data-stamp="ok:VERIFIED" data-d="3800"><rect class="box ok" x="840" y="150" width="700" height="500" rx="16"/><text class="lbl acc" x="1190" y="200" text-anchor="middle" style="font-size:28px;letter-spacing:.08em">L’IA + MISSION ZERO</text><text class="lbl s" x="1190" y="238" text-anchor="middle" style="font-size:22px">4 chiffres · 1 dollar · chacun sa page</text><text class="lbl" x="870" y="304" style="font-size:23px;font-weight:400">Hercule, 20 km/s · Maryland</text><rect class="chip ok" x="1340" y="279" width="180" height="38" rx="19"/><text class="chip-t" x="1430" y="306" text-anchor="middle" style="font-size:19px">lisible</text><text class="lbl" x="870" y="364" style="font-size:23px;font-weight:400">230 km/s · NASA</text><rect class="chip ok" x="1340" y="339" width="180" height="38" rx="19"/><text class="chip-t" x="1430" y="366" text-anchor="middle" style="font-size:19px">lisible</text><text class="lbl" x="870" y="424" style="font-size:23px;font-weight:400">369 km/s · Cambridge</text><rect class="chip ok" x="1340" y="399" width="180" height="38" rx="19"/><text class="chip-t" x="1430" y="426" text-anchor="middle" style="font-size:19px">lisible</text><text class="lbl" x="870" y="484" style="font-size:23px;font-weight:400">631 km/s · Nature, 2014</text><rect class="chip ok" x="1340" y="459" width="180" height="38" rx="19"/><text class="chip-t" x="1430" y="486" text-anchor="middle" style="font-size:19px">lisible</text><text class="lbl okt" x="1190" y="616" text-anchor="middle" style="font-size:24px">pas lu ? il le dit</text></g>
+      <g class="b shout" data-k="7" data-d="3600" style="transform-box:view-box;transform-origin:800px 700px"><rect class="chip ko" x="200" y="676" width="420" height="50" rx="25"/><text class="chip-t" x="410" y="709" text-anchor="middle" style="font-size:23px;font-weight:600">✘ 1 source lisible sur 5</text><rect class="chip ok" x="940" y="676" width="500" height="50" rx="25"/><text class="chip-t" x="1190" y="709" text-anchor="middle" style="font-size:23px;font-weight:700">✔ meilleur résultat · 4 lisibles sur 4</text></g>
+      </g>
+      <g class="a" data-k="8" data-hide="#vs,#q0" data-dur="900" data-d="1000"><path class="arrow" pathLength="1" d="M-33.3,605 L60,605"/></g>
+      <g class="b" data-k="9" data-speed="20" data-d="3800"><g id="spd"><text class="lbl s" x="60" y="100" style="font-size:22px">déplacement du système solaire</text><text class="lbl" x="60" y="178" style="font-size:72px;font-weight:800" id="speed">0</text><text class="lbl s" x="60" y="214" style="font-size:22px">km/s</text></g><rect class="box gold" x="60" y="520" width="460" height="196" rx="16"/><text class="lbl acc" x="290" y="560" text-anchor="middle" style="font-size:21px;font-weight:600">1 · Le Soleil dérive vers Hercule</text><text class="lbl" x="290" y="614" text-anchor="middle" style="font-size:44px;font-weight:700">20 km/s</text><text class="lbl amber" x="290" y="652" text-anchor="middle" style="font-size:20px">su depuis 1783 · Herschel</text><text class="lbl okt" x="290" y="690" text-anchor="middle" style="font-size:20px">Université du Maryland</text></g>
+      <g class="a" data-k="10" data-dur="1100" data-d="1150" data-round="40"><path class="arrow" pathLength="1" d="M290,520 L290,378 L560,378"/></g>
+      <g class="b" data-k="11" data-speed="230" data-d="3800"><rect class="box gold" x="560" y="280" width="460" height="196" rx="16"/><text class="lbl acc" x="790" y="320" text-anchor="middle" style="font-size:21px;font-weight:600">2 · Son quartier tourne dans la galaxie</text><text class="lbl" x="790" y="374" text-anchor="middle" style="font-size:44px;font-weight:700">230 km/s</text><text class="lbl amber" x="790" y="412" text-anchor="middle" style="font-size:20px">su depuis 1927 · Oort</text><text class="lbl okt" x="790" y="450" text-anchor="middle" style="font-size:20px">NASA, mot pour mot</text></g>
+      <g class="a" data-k="12" data-dur="1100" data-d="1150" data-round="40"><path class="arrow" pathLength="1" d="M790,280 L790,208 L1100,208"/></g>
+      <g class="b" data-k="13" data-speed="631" data-d="3400"><rect class="box gold" x="1100" y="110" width="460" height="196" rx="16"/><text class="lbl acc" x="1330" y="150" text-anchor="middle" style="font-size:21px;font-weight:600">3 · La galaxie vers le Grand Attracteur</text><text class="lbl" x="1330" y="204" text-anchor="middle" style="font-size:44px;font-weight:700">631 km/s</text><text class="lbl amber" x="1330" y="242" text-anchor="middle" style="font-size:20px">su depuis 1988 · sept astronomes</text><text class="lbl okt" x="1330" y="280" text-anchor="middle" style="font-size:20px">Nature, 2014</text></g>
+      <g class="b" data-k="14" data-d="4200"><text class="lbl amber" x="600" y="560" style="font-size:24px;font-weight:600">trois mouvements emboîtés, l’un dans l’autre</text><text class="lbl" x="600" y="602" style="font-size:21px">1 · le Soleil, dans son quartier d’étoiles</text><text class="lbl" x="600" y="636" style="font-size:21px">2 · le quartier, autour du centre de la galaxie</text><text class="lbl" x="600" y="670" style="font-size:21px">3 · la galaxie, vers le Grand Attracteur</text><text class="lbl okt" x="600" y="710" style="font-size:20px">chaque chiffre a sa page · vous les faites tous les trois</text></g>
+      <g class="b" data-k="15" data-d="3400"><text class="lbl amber" x="1330" y="350" text-anchor="middle" style="font-size:26px">caché derrière notre galaxie</text><text class="lbl s" x="1330" y="384" text-anchor="middle" style="font-size:21px">on y va, on ne le voit pas</text></g>
+      <g class="b" data-k="16" data-d="3000"><text class="lbl xs" x="0" y="0"> </text></g>
+      <g class="b" data-k="17" data-rush="1" data-hide="#spd" data-d="4600"><text class="lbl acc" x="60" y="120" style="font-size:36px;font-weight:700">Le système solaire se déplace</text><text class="lbl" x="60" y="168" style="font-size:26px">vers quelque chose que personne n’a vu</text></g>
+      <g class="a" data-k="18" data-dur="1000" data-d="1050" data-round="40"><path class="arrow" pathLength="1" d="M1520,195 L1560,195 L1560,450 L1633.3,450"/></g>
+    </g></svg>
+    <div class="caption" id="cE"></div>
+  </section>
+
+  <section class="scene" id="sDe">
+    <header><h2>DÉMO · L’ESPACE</h2><span class="t">avant, on installe Mission Zero, après</span></header>
+    <video id="vsDe" src="demo/out/demo-espace-fr.webm" muted playsinline preload="auto" width="1280" height="720"></video>
+    <div class="b" data-k="1" data-video="vsDe" data-d="54120" style="display:none"></div>
+    <div class="caption" id="cDe"></div>
+  </section>
+
+  <section class="scene" id="sM">
+    <header><h2>LA MÉDECINE</h2><span class="t">une vraie mission de Mission Zero</span></header>
+    <svg viewBox="0 0 1600 900" role="img" aria-label="La médecine : la veille mondiale de la grippe (OMS FluNet) validée semaine après semaine, puis la preuve par facteur : le stress fait-il varier le cancer ? un facteur par ligne, sa variation mesurée, sa page vérifiée"><g class="marks"><circle class="mark done" cx="1446" cy="38" r="6"/><circle class="mark done" cx="1472" cy="38" r="6"/><circle class="mark done" cx="1498" cy="38" r="6"/><circle class="mark done" cx="1524" cy="38" r="6"/><circle class="mark now" cx="1550" cy="38" r="6"/></g><text class="lbl acc" x="800" y="40" text-anchor="middle" style="font-size:26px;letter-spacing:.2em;font-weight:700">LA MÉDECINE · AVEC MISSION ZERO</text><g transform="translate(32,56) scale(0.96)">
+      <g id="flu">
+      <g class="a" data-k="1" data-dur="700" data-d="800"><path class="arrow" pathLength="1" d="M-33.3,457 L60,457"/></g>
+      <g class="b" data-k="2" data-d="2600"><rect class="box" x="60" y="120" width="980" height="440" rx="16"/><text class="lbl" x="550" y="162" text-anchor="middle" style="font-size:27px">Veille · grippe · OMS FluNet · monde</text><text class="lbl s" x="550" y="194" text-anchor="middle" style="font-size:20px">détections positives par semaine · 190 pays</text><text class="lbl xs" x="150" y="540" text-anchor="middle" style="font-size:18px">S34</text><text class="lbl xs" x="250" y="540" text-anchor="middle" style="font-size:18px">S35</text><text class="lbl xs" x="350" y="540" text-anchor="middle" style="font-size:18px">S36</text><text class="lbl xs" x="450" y="540" text-anchor="middle" style="font-size:18px">S37</text><text class="lbl xs" x="550" y="540" text-anchor="middle" style="font-size:18px">S38</text><text class="lbl xs" x="650" y="540" text-anchor="middle" style="font-size:18px">S39</text><text class="lbl xs" x="750" y="540" text-anchor="middle" style="font-size:18px">S40</text><text class="lbl xs" x="850" y="540" text-anchor="middle" style="font-size:18px">S41</text><text class="lbl xs" x="950" y="540" text-anchor="middle" style="font-size:18px">S42</text></g>
+      <g class="a" data-k="3" data-dur="500" data-d="550"><path class="arrow" pathLength="1" d="M60,457 L150,457"/></g>
+      <g class="b" data-k="4" data-d="1400"><circle cx="150" cy="457" r="5" fill="#fff"/></g>
+      <g class="a" data-k="5" data-dur="600" data-d="650"><path class="arrow" pathLength="1" d="M150,457 L250,435"/></g>
+      <g class="b" data-k="6" data-d="1600"><circle cx="250" cy="435" r="5" fill="#fff"/></g>
+      <g class="a" data-k="7" data-dur="600" data-d="650"><path class="arrow" pathLength="1" d="M250,435 L350,391"/></g>
+      <g class="b" data-k="8" data-d="2000"><circle cx="350" cy="391" r="8" fill="rgba(255,59,48,.35)" stroke="#ff3b30" stroke-width="3" style="filter:drop-shadow(0 0 8px rgba(255,59,48,.9))"/><text class="lbl red" x="350" y="369" text-anchor="middle" style="font-size:24px;font-weight:700">+13 %</text></g>
+      <g class="a" data-k="9" data-dur="350" data-d="400"><path class="arrow" pathLength="1" d="M350,391 L450,357"/></g>
+      <g class="b" data-k="10" data-d="350"><circle cx="450" cy="357" r="5" fill="#fff"/></g>
+      <g class="a" data-k="11" data-dur="350" data-d="400"><path class="arrow" pathLength="1" d="M450,357 L550,348"/></g>
+      <g class="b" data-k="12" data-d="350"><circle cx="550" cy="348" r="5" fill="#fff"/></g>
+      <g class="a" data-k="13" data-dur="350" data-d="400"><path class="arrow" pathLength="1" d="M550,348 L650,332"/></g>
+      <g class="b" data-k="14" data-d="350"><circle cx="650" cy="332" r="5" fill="#fff"/></g>
+      <g class="a" data-k="15" data-dur="600" data-d="650"><path class="arrow" pathLength="1" d="M650,332 L750,260"/></g>
+      <g class="b" data-k="16" data-d="2000"><circle cx="750" cy="260" r="8" fill="rgba(255,59,48,.35)" stroke="#ff3b30" stroke-width="3" style="filter:drop-shadow(0 0 8px rgba(255,59,48,.9))"/><text class="lbl red" x="750" y="238" text-anchor="middle" style="font-size:24px;font-weight:700">+17 %</text></g>
+      <g class="a" data-k="17" data-dur="350" data-d="400"><path class="arrow" pathLength="1" d="M750,260 L850,238"/></g>
+      <g class="b" data-k="18" data-d="350"><circle cx="850" cy="238" r="5" fill="#fff"/></g>
+      <g class="a" data-k="19" data-dur="350" data-d="400"><path class="arrow" pathLength="1" d="M850,238 L950,235"/></g>
+      <g class="b" data-k="20" data-d="350"><circle cx="950" cy="235" r="5" fill="#fff"/></g>
+      <g class="a" data-k="21" data-dur="500" data-d="550"><path class="arrow" pathLength="1" d="M950,235 L1080,235"/></g>
+      <g class="b" data-k="22" data-d="3000"><rect class="box gold" x="1080" y="120" width="460" height="440" rx="16"/><text class="lbl acc" x="1310" y="166" text-anchor="middle" style="font-size:26px">chaque semaine, il</text><text class="lbl okt" x="1110" y="236" style="font-size:24px">lit la source · 190 pays</text><text class="lbl okt" x="1110" y="290" style="font-size:24px">compare à la semaine d’avant</text><text class="lbl okt" x="1110" y="344" style="font-size:24px">signale ce qui bouge</text><text class="lbl s" x="1110" y="398" style="font-size:22px">n’invente rien · pas lu ? il le dit</text><text class="lbl" x="1310" y="500" text-anchor="middle" style="font-size:30px;font-weight:700">un humain décide</text></g>
+      <g class="b" data-k="23" data-d="2600"><text class="lbl xs" x="0" y="0"> </text></g>
+      </g>
+      <g class="a" data-k="24" data-dur="1100" data-d="1200" data-hide="#flu"><path class="arrow ghost" pathLength="1" d="M1080,235 Q560,195 40,150"/></g>
+      <g class="b" data-k="25" data-d="2600"><text class="lbl fg" x="800" y="128" text-anchor="middle" style="font-size:30px;font-weight:700;fill:var(--fg)">Le chercheur demande : le stress fait-il varier le cancer ?</text><text class="lbl s" x="800" y="164" text-anchor="middle" style="font-size:20px">Mission Zero lit les études. Un facteur par ligne : sa variation mesurée, la page qui le prouve.</text></g>
+      <g class="a" data-k="26" data-dur="450" data-d="500"><path class="arrow" pathLength="1" d="M40,150 L40,274"/></g>
+      <g class="a" data-k="27" data-dur="300" data-d="350"><path class="arrow" pathLength="1" d="M40,274 L70,274"/></g>
+      <g class="b" data-k="28" data-d="1500"><rect class="box" x="70" y="215" width="1470" height="118" rx="16"/><text class="lbl fg" x="100" y="265" style="font-size:27px;font-weight:700;fill:var(--fg)">Stress au travail</text><text class="lbl s" x="100" y="298" style="font-size:19px">116 056 Européens · 12 ans · 5 700 cancers</text></g>
+      <g class="a" data-k="29" data-dur="300" data-d="350"><path class="arrow" pathLength="1" d="M640,274 L690,274"/></g>
+      <g class="b" data-k="30" data-d="3400"><rect class="chip ok" x="690" y="249" width="400" height="50" rx="25"/><text class="lbl fg" x="890" y="282" text-anchor="middle" style="font-size:21px;font-weight:700;fill:var(--fg)">risque 0,97 · aucun lien</text></g>
+      <g class="a" data-k="31" data-dur="250" data-d="300"><path class="arrow" pathLength="1" d="M1090,274 L1120,274"/></g>
+      <g class="b" data-k="32" data-d="1300"><rect class="chip" x="1120" y="249" width="390" height="50" rx="25"/><text class="lbl okt" x="1315" y="281" text-anchor="middle" style="font-size:18px">BMJ 2013</text></g>
+      <g class="a" data-k="33" data-dur="450" data-d="500"><path class="arrow" pathLength="1" d="M40,274 L40,404"/></g>
+      <g class="a" data-k="34" data-dur="300" data-d="350"><path class="arrow" pathLength="1" d="M40,404 L70,404"/></g>
+      <g class="b" data-k="35" data-d="1500"><rect class="box" x="70" y="345" width="1470" height="118" rx="16"/><text class="lbl fg" x="100" y="395" style="font-size:27px;font-weight:700;fill:var(--fg)">Stress psychologique</text><text class="lbl s" x="100" y="428" style="font-size:19px">détresse, dépression · 165 études, 330 sur la survie</text></g>
+      <g class="a" data-k="36" data-dur="300" data-d="350"><path class="arrow" pathLength="1" d="M640,404 L690,404"/></g>
+      <g class="b" data-k="37" data-d="3400"><rect class="chip next" x="690" y="379" width="400" height="50" rx="25"/><text class="lbl fg" x="890" y="412" text-anchor="middle" style="font-size:21px;font-weight:700;fill:var(--fg)">hausse mesurée · biais de publication</text></g>
+      <g class="a" data-k="38" data-dur="250" data-d="300"><path class="arrow" pathLength="1" d="M1090,404 L1120,404"/></g>
+      <g class="b" data-k="39" data-d="1300"><rect class="chip" x="1120" y="379" width="390" height="50" rx="25"/><text class="lbl okt" x="1315" y="411" text-anchor="middle" style="font-size:18px">Nat Clin Pract Oncol 2008</text></g>
+      <g class="a" data-k="40" data-dur="450" data-d="500"><path class="arrow" pathLength="1" d="M40,404 L40,534"/></g>
+      <g class="a" data-k="41" data-dur="300" data-d="350"><path class="arrow" pathLength="1" d="M40,534 L70,534"/></g>
+      <g class="b" data-k="42" data-d="1500"><rect class="box" x="70" y="475" width="1470" height="118" rx="16"/><text class="lbl fg" x="100" y="525" style="font-size:27px;font-weight:700;fill:var(--fg)">Hormones du stress</text><text class="lbl s" x="100" y="558" style="font-size:19px">souris · glucocorticoïdes · neutrophiles</text></g>
+      <g class="a" data-k="43" data-dur="300" data-d="350"><path class="arrow" pathLength="1" d="M640,534 L690,534"/></g>
+      <g class="b" data-k="44" data-d="3400"><rect class="chip ko" x="690" y="509" width="400" height="50" rx="25"/><text class="lbl fg" x="890" y="542" text-anchor="middle" style="font-size:21px;font-weight:700;fill:var(--fg)">métastases jusqu’à ×4</text></g>
+      <g class="a" data-k="45" data-dur="250" data-d="300"><path class="arrow" pathLength="1" d="M1090,534 L1120,534"/></g>
+      <g class="b" data-k="46" data-d="1300"><rect class="chip" x="1120" y="509" width="390" height="50" rx="25"/><text class="lbl okt" x="1315" y="541" text-anchor="middle" style="font-size:18px">Cancer Cell 2024</text></g>
+      <g class="a" data-k="47" data-dur="450" data-d="500"><path class="arrow" pathLength="1" d="M40,534 L40,664"/></g>
+      <g class="a" data-k="48" data-dur="300" data-d="350"><path class="arrow" pathLength="1" d="M40,664 L70,664"/></g>
+      <g class="b" data-k="49" data-d="1500"><rect class="box" x="70" y="605" width="1470" height="118" rx="16"/><text class="lbl fg" x="100" y="655" style="font-size:27px;font-weight:700;fill:var(--fg)">« Un vaccin contre le stress ? »</text><text class="lbl s" x="100" y="688" style="font-size:19px">propranolol 7 jours avant l’opération · 60 patientes</text></g>
+      <g class="a" data-k="50" data-dur="300" data-d="350"><path class="arrow" pathLength="1" d="M640,664 L690,664"/></g>
+      <g class="b" data-k="51" data-d="3600"><rect class="chip ok" x="690" y="639" width="400" height="50" rx="25"/><text class="lbl fg" x="890" y="672" text-anchor="middle" style="font-size:21px;font-weight:700;fill:var(--fg)">marqueurs de métastase en baisse</text></g>
+      <g class="a" data-k="52" data-dur="250" data-d="300"><path class="arrow" pathLength="1" d="M1090,664 L1120,664"/></g>
+      <g class="b" data-k="53" data-d="3000"><rect class="chip" x="1120" y="639" width="390" height="50" rx="25"/><text class="lbl okt" x="1315" y="671" text-anchor="middle" style="font-size:18px">Clin Cancer Res 2020</text></g>
+      <g class="b" data-k="54" data-stamp="ok:VERIFIED" data-d="3400"><text class="lbl acc" x="800" y="772" text-anchor="middle" style="font-size:27px;font-weight:700">un facteur écarté · un facteur mesuré · un mécanisme prouvé · une piste prouvée</text><text class="lbl s" x="800" y="806" text-anchor="middle" style="font-size:20px">chaque chiffre a sa page · un humain décide</text></g>
+      <g class="a" data-k="55" data-dur="800" data-d="850"><path class="arrow" pathLength="1" d="M1510,664 L1560,664 L1560,700 L1633.3,700"/></g>
+    </g></svg>
+    <div class="caption" id="cM"></div>
+  </section>
+
+  <section class="scene" id="sDm">
+    <header><h2>DÉMO · LA MÉDECINE</h2><span class="t">le labo de Fleming, en réseau mondial : avant, on installe Mission Zero, après</span></header>
+    <video id="vsDm" src="demo/out/demo-labo-fr.webm" muted playsinline preload="auto" width="1280" height="720"></video>
+    <div class="b" data-k="1" data-video="vsDm" data-d="53240" style="display:none"></div>
+    <div class="caption" id="cDm"></div>
+  </section>
+
+  <section class="scene" id="sZ">
+    <header><h2>LA FIN</h2><span class="t">le zéro</span></header>
+    <svg viewBox="0 0 1600 900" role="img" aria-label="Le fil dessine un zéro, puis le point écrit : WHAT DO YOU NEED ? CRYPTOR.AGENCY, et MISSION ZERO en haut.">
+      <g class="a" data-k="1" id="zin" data-dur="1300" data-d="1400"><path class="arrow" pathLength="1" d="M0,700 C380,700 690,640 690,400"/></g>
+      <g class="a" data-k="2" id="zz" data-dur="2200" data-d="2400"><path class="arrow zero" pathLength="1" d="M690,400 A110,110 0 1,1 910,400 A110,110 0 1,1 690,400"/></g>
+      <g class="b" data-k="3" id="zdot" data-d="2000"><circle cx="800" cy="400" r="11" fill="#fff" style="filter:drop-shadow(0 0 8px rgba(46,230,160,.9))"/></g>
+      <g class="b" data-k="4" data-cls="black" data-hide="#zin,#zz,#zdot" data-d="700"><text class="lbl xs" x="0" y="0"> </text></g>
+      <text id="w3" class="hand neonw" x="800" y="300" text-anchor="middle" style="font-size:58px;font-weight:800;letter-spacing:.35em"><tspan style="transition-delay:0.00s">M</tspan><tspan style="transition-delay:0.14s">I</tspan><tspan style="transition-delay:0.28s">S</tspan><tspan style="transition-delay:0.42s">S</tspan><tspan style="transition-delay:0.56s">I</tspan><tspan style="transition-delay:0.70s">O</tspan><tspan style="transition-delay:0.84s">N</tspan><tspan style="transition-delay:0.98s"> </tspan><tspan style="transition-delay:1.12s">Z</tspan><tspan style="transition-delay:1.26s">E</tspan><tspan style="transition-delay:1.40s">R</tspan><tspan style="transition-delay:1.54s">O</tspan></text>
+      <text id="w1" class="hand" x="800" y="470" text-anchor="middle" style="font-size:120px;font-weight:900;letter-spacing:.02em"><tspan style="transition-delay:0.00s">W</tspan><tspan style="transition-delay:0.11s">H</tspan><tspan style="transition-delay:0.22s">A</tspan><tspan style="transition-delay:0.33s">T</tspan><tspan style="transition-delay:0.44s"> </tspan><tspan style="transition-delay:0.55s">D</tspan><tspan style="transition-delay:0.66s">O</tspan><tspan style="transition-delay:0.77s"> </tspan><tspan style="transition-delay:0.88s">Y</tspan><tspan style="transition-delay:0.99s">O</tspan><tspan style="transition-delay:1.10s">U</tspan><tspan style="transition-delay:1.21s"> </tspan><tspan style="transition-delay:1.32s">N</tspan><tspan style="transition-delay:1.43s">E</tspan><tspan style="transition-delay:1.54s">E</tspan><tspan style="transition-delay:1.65s">D</tspan><tspan style="transition-delay:1.76s"> </tspan><tspan style="transition-delay:1.87s">?</tspan></text>
+      <text id="w2" class="hand" x="800" y="570" text-anchor="middle" style="font-size:40px;font-weight:600;letter-spacing:.3em"><tspan style="transition-delay:0.00s">C</tspan><tspan style="transition-delay:0.09s">R</tspan><tspan style="transition-delay:0.18s">Y</tspan><tspan style="transition-delay:0.27s">P</tspan><tspan style="transition-delay:0.36s">T</tspan><tspan style="transition-delay:0.45s">O</tspan><tspan style="transition-delay:0.54s">R</tspan><tspan style="transition-delay:0.63s">.</tspan><tspan style="transition-delay:0.72s">A</tspan><tspan style="transition-delay:0.81s">G</tspan><tspan style="transition-delay:0.90s">E</tspan><tspan style="transition-delay:0.99s">N</tspan><tspan style="transition-delay:1.08s">C</tspan><tspan style="transition-delay:1.17s">Y</tspan></text>
+      <g class="a" data-k="5" data-dur="2100" data-d="2500" data-write="w1"><path class="arrow ghost" pathLength="1" d="M150,478 L1450,478"/></g>
+      <g class="a" data-k="6" data-dur="800" data-d="850"><path class="arrow ghost" pathLength="1" d="M1450,478 L1450,530 L560,530 L560,578"/></g>
+      <g class="a" data-k="7" data-dur="1300" data-d="1600" data-write="w2"><path class="arrow ghost" pathLength="1" d="M560,578 L1040,578"/></g>
+      <g class="a" data-k="8" data-dur="900" data-d="950"><path class="arrow ghost" pathLength="1" d="M1040,578 L1500,578 L1500,308 L450,308"/></g>
+      <g class="a" data-k="9" data-dur="1800" data-d="4800" data-write="w3"><path class="arrow ghost" pathLength="1" d="M450,308 L1150,308"/></g>
+    </svg>
+    <div class="caption" id="cZ"></div>
+  </section>
+
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function () {
+  if (!window.THREE || !window.WebGLRenderingContext) return;
+  var R_UNITS = 5;             // rayon de la bille dans le repère du dessin (1600 × 900) : réduite de moitié (gérant, 31 octobre : « la mine d'un crayon »)
+  var canvas = document.createElement('canvas'); canvas.id = 'orb3d';
+  var renderer;
+  try { renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true, premultipliedAlpha: true }); } catch (e) { return; }
+  renderer.setClearColor(0x000000, 0);
+  document.body.appendChild(canvas);
+  document.documentElement.classList.add('orb3d');
+  var scene = new THREE.Scene();
+  var camera = new THREE.OrthographicCamera(0, 1, 0, -1, -2000, 2000); camera.position.z = 1000;
+  // La couche 3D prend SA taille affichée, pas celle de la fenêtre : avec une barre de défilement, la fenêtre est plus large
+  // que la couche et la bille glissait à gauche du trait (gérant, 31 octobre : « toujours dans l'axe du trait »).
+  var cw = 0, ch = 0, cl = 0, ct = 0;
+  function size() {
+    var rb = canvas.getBoundingClientRect(), W = Math.max(1, rb.width), H = Math.max(1, rb.height); cw = W; ch = H; cl = rb.left; ct = rb.top;
+    renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1)); renderer.setSize(W, H, false);
+    camera.left = 0; camera.right = W; camera.top = 0; camera.bottom = -H; camera.updateProjectionMatrix();
+  }
+  size(); window.addEventListener('resize', size);
+  // La lumière : un jour franc en haut à gauche, un fond doux, un reflet menthe par l'arrière-droite (le rebord s'allume).
+  scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+  var sun = new THREE.DirectionalLight(0xffffff, 1.15); sun.position.set(0, 0, 1); scene.add(sun); // de face (gérant, 31 octobre : la bille en plein milieu du trait, rien de décalé)
+  var rim = new THREE.PointLight(0x2ee6a0, 1.1, 0, 2); scene.add(rim);
+  // La matière : une bille blanche, nacrée, parcourue d'arcs menthe et d'un fil bleu nuit, pour qu'on la voie rouler.
+  function skin() {
+    var c = document.createElement('canvas'); c.width = 512; c.height = 256; var g = c.getContext('2d');
+    g.fillStyle = '#f6f8ff'; g.fillRect(0, 0, 512, 256);
+    g.lineCap = 'round';
+    g.strokeStyle = 'rgba(46,230,160,.85)'; g.lineWidth = 22;
+    g.beginPath(); g.moveTo(-20, 150); g.bezierCurveTo(120, 30, 260, 240, 540, 90); g.stroke();
+    g.strokeStyle = 'rgba(46,230,160,.45)'; g.lineWidth = 12;
+    g.beginPath(); g.moveTo(-20, 60); g.bezierCurveTo(160, 160, 300, 20, 540, 200); g.stroke();
+    g.strokeStyle = 'rgba(45,85,212,.75)'; g.lineWidth = 6;
+    g.beginPath(); g.moveTo(-20, 200); g.bezierCurveTo(200, 230, 320, 110, 540, 150); g.stroke();
+    var t = new THREE.CanvasTexture(c); t.wrapS = THREE.RepeatWrapping; t.anisotropy = 4; return t;
+  }
+  var mat = new THREE.MeshStandardMaterial({ map: skin(), roughness: 0.28, metalness: 0.08, emissive: 0x0f4a36, emissiveIntensity: 0.22, transparent: true, opacity: 0 });
+  var ball = new THREE.Mesh(new THREE.SphereGeometry(1, 48, 48), mat); scene.add(ball);
+  // Le halo : un disque menthe dégradé derrière la bille, en lumière additive, comme le halo du point 2D.
+  function haloTex() {
+    var c = document.createElement('canvas'); c.width = c.height = 128; var g = c.getContext('2d');
+    var r = g.createRadialGradient(64, 64, 10, 64, 64, 64); r.addColorStop(0, 'rgba(46,230,160,.5)'); r.addColorStop(0.45, 'rgba(46,230,160,.16)'); r.addColorStop(1, 'rgba(46,230,160,0)');
+    g.fillStyle = r; g.fillRect(0, 0, 128, 128); return new THREE.CanvasTexture(c);
+  }
+  var haloMat = new THREE.SpriteMaterial({ map: haloTex(), blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, opacity: 0 });
+  var halo = new THREE.Sprite(haloMat); scene.add(halo);
+  // L'ombre portée : une tache sombre et floue sous la bille, pour qu'elle se détache de la page.
+  function shadowTex() {
+    var c = document.createElement('canvas'); c.width = c.height = 128; var g = c.getContext('2d');
+    var r = g.createRadialGradient(64, 64, 4, 64, 64, 64); r.addColorStop(0, 'rgba(0,0,0,.55)'); r.addColorStop(1, 'rgba(0,0,0,0)');
+    g.fillStyle = r; g.fillRect(0, 0, 128, 128); return new THREE.CanvasTexture(c);
+  }
+  var shadowMat = new THREE.SpriteMaterial({ map: shadowTex(), depthWrite: false, transparent: true, opacity: 0 });
+  var shadow = new THREE.Sprite(shadowMat); scene.add(shadow);
+
+  var pos = null, last = null, vis = 0, lastT = 0, idle = 0, radius = 5, dir = { x: 1, y: 0 }; // dir : le sens de la course, pour poser la bille juste devant le trait
+  function center(el) { var b = el.getBoundingClientRect(); if (!b.width && !b.height) return null; return { x: b.left + b.width / 2 - cl, y: b.top + b.height / 2 - ct }; }
+  function scaleOf(el) { var svg = el.closest('svg'); var b = svg ? svg.getBoundingClientRect() : null; return b && b.width ? b.width / 1600 : 0.8; }
+  // Qui suivre : le point 2D qui court (.runner.go) ; sinon le point au centre de la boucle rétrécie ; sinon le dernier suivi.
+  function target() {
+    var act = document.querySelector('.scene.active');
+    if (!act) return null;
+    var r = act.querySelector('.runner.go'); if (r) return r;
+    var d = act.querySelector('#dotc.on:not(.hidden) circle'); if (d) return d;
+    if (last && act.contains(last)) return last;
+    return act.querySelector('.runner'); // rien n'a encore couru sur cet écran : le départ de son premier fil
+  }
+  function fin0() { return !!document.querySelector('.scene.active#sZ'); }
+  function frame(now) {
+    requestAnimationFrame(frame);
+    var dt = Math.min(0.05, (now - lastT) / 1000 || 0.016); lastT = now;
+    var rb0 = canvas.getBoundingClientRect(); if (Math.abs(rb0.width - cw) > 0.5 || Math.abs(rb0.height - ch) > 0.5 || rb0.left !== cl || rb0.top !== ct) size();
+    var body = document.body;
+    var want = body.classList.contains('film');
+    var el = want ? target() : null; if (el && !el.classList.contains('go') && fin0()) el = null;
+    // Jamais éteinte (gérant, 31 octobre). Pendant un zoom elle suit le point 2D du rond agrandi : elle attend sur son bord,
+    // au point de sortie, prête à repartir. Quand un fil démarre loin d'elle (l'alerte : d'Observation à Objectif ; un nouvel
+    // écran), elle saute directement au départ : pas de glissade à travers l'image, pas de disparition.
+    var veiled = false;
+    if (el) { last = el; var c = center(el); if (c) { if (!pos || vis < 0.05) pos = { x: c.x, y: c.y };
+      if (el.classList.contains('go') && Math.hypot(c.x - pos.x, c.y - pos.y) > 80) pos = { x: c.x, y: c.y };
+      // Quand le point court, la bille est exactement dessus : le trait n'est jamais devant elle. Au repos ou d'un écran à l'autre, elle glisse.
+      var k = el.classList.contains('go') ? 1 : 1 - Math.exp(-dt * 16); var dx = (c.x - pos.x) * k, dy = (c.y - pos.y) * k; pos.x += dx; pos.y += dy;
+      // La bille roule : l'angle vaut le chemin parcouru divisé par le rayon, autour de l'axe perpendiculaire au déplacement.
+      var L = Math.hypot(dx, dy); if (L > 0.01) { dir = { x: dx / L, y: dy / L }; var ax = new THREE.Vector3(-dy / L, dx / L, 0); ball.rotateOnWorldAxis(ax, L / radius); idle = 0; } else idle += dt;
+      radius = R_UNITS * scaleOf(el); } }
+    else idle += dt;
+    // Sur un écran sans fil (les démos vidéo), elle se range en bas à droite et attend, visible.
+    var actP = document.querySelector('.scene.active'); var sansFil = want && (!actP || !actP.querySelector('.runner'));
+    if (sansFil) { var park = { x: cw - 44, y: ch - 44 }; if (!pos) pos = { x: park.x, y: park.y }; var kp = 1 - Math.exp(-dt * 6); pos.x += (park.x - pos.x) * kp; pos.y += (park.y - pos.y) * kp; }
+    // Au repos, elle tourne doucement sur elle-même et respire : on sait qu'elle attend, qu'elle va repartir.
+    if (idle > 0.1) ball.rotateOnWorldAxis(new THREE.Vector3(0.3, 1, 0.2).normalize(), dt * 0.9);
+    var breathe = 1 + Math.sin(now / 420) * 0.02;
+    // Sur l'écran de fin, elle s'efface vite après le dernier mot écrit ; ailleurs elle attend jusqu'à 6 s, le temps d'une lecture.
+    var fin = document.querySelector('.scene.active#sZ');
+    var shown = want && pos && !veiled; // visible du premier au dernier instant
+    vis += ((shown ? 1 : 0) - vis) * (1 - Math.exp(-dt * 10));
+    if (pos) place(breathe);
+    mat.opacity = vis; haloMat.opacity = vis * 0.6; shadowMat.opacity = 0; // pas d'ombre (gérant, 31 octobre)
+    if (vis > 0.01 || renderer._dirty) { renderer.render(scene, camera); renderer._dirty = vis > 0.01; }
+  }
+  // Comme la mine d'un crayon (gérant, 31 octobre) : le centre de la bille EST le bout du trait, dans son axe, toujours.
+  function place(breathe) {
+      var bx = pos.x, by = pos.y;
+      ball.position.set(bx, -by, 0); ball.scale.setScalar(radius * breathe);
+      halo.position.set(bx, -by, -5); halo.scale.setScalar(radius * 3.4);
+      shadow.position.set(bx, -by, -10); shadow.scale.set(radius * 2.6, radius * 2.6, 1);
+      rim.position.set(bx, -by, -radius * 3);
+  }
+  requestAnimationFrame(frame);
+  // Appelé par le moteur juste après avoir avancé le point qui trace : la bille est recalée dans la MÊME image (sinon elle
+  // traînait une image derrière le bout du trait, ~9 px à la vitesse du fil).
+  function sync() {
+    if (!document.body.classList.contains('film')) return; var el = target(); if (!el || !el.classList.contains('go')) return;
+    var c = center(el); if (!c) return; last = el; pos = { x: c.x, y: c.y }; radius = R_UNITS * scaleOf(el); place(1); if (vis > 0.01) renderer.render(scene, camera);
+  }
+  window.MZORB = { ball: ball, renderer: renderer, where: function () { return pos; }, sync: sync };
+})();
+</script>
+<script>
+(function () {
+  var SVGNS = 'http://www.w3.org/2000/svg';
+  var CAP = {"s0":["<b>Mission Zero.</b> Un objectif. Tout doit être VERIFIED.",null,null,null,"Un objectif. Aucun plan.",null,null,null,null,"Des hypothèses.",null,null,null,null,"Une action&nbsp;: chercher, lire une page entière.",null,null,null,null,"Ce qu’il observe.",null,null,null,null,"Il s’évalue&nbsp;: une note, une leçon, un pivot.",null,null,"Il tourne jusqu’à atteindre l’objectif.","<b>VERIFIED</b>&nbsp;: chaque page citée est relue, citation exacte exigée.",null,null,"Objectif&nbsp;: <b>VERIFIED</b>.","Une nouvelle mission.",null,"Observation&nbsp;: <span class=\"r\">la citation n’est pas sur la page.</span> Il se juge lui-même.","<b class=\"r\">NOT VERIFIED.</b> Une citation ne tient pas.",null,null,"<b>Il relit la page</b> et réécrit dans ses mots, ou retire.","Corrigé. <b>Il repart de zéro.</b>","Il revalide tout, depuis le début.","Tout tient.","Objectif&nbsp;: <b>VERIFIED</b>. Jugé, le meilleur survit.",null,null,null,"<b>Où l’envoyer&nbsp;?</b>",null],"sDe":[null],"sDm":[null],"sB":["Le point arrive. La boucle attend un objectif.","Même boucle, zéro code.","L’espace…","la médecine…","Google…","ChatGPT…","Wikipédia…","Reuters…","Amazon…","la banque…","le droit…","la cybersécurité…","l’université…","l’État.","Partout où l’on cherche, Mission Zero s’installe.",null,"<b>D’abord, la cybersécurité.</b>",null],"sB2":["Le point revient.","La boucle, inchangée.",null,null,null,null,null,null,null,null,null,null,null,null,"La cybersécurité&nbsp;: <b>VERIFIED</b>.",null,"<b>Deuxième voyage&nbsp;: l’espace.</b>",null],"sB3":["Le point revient.","La boucle, toujours la même.",null,null,null,null,null,null,null,null,null,null,null,null,null,"L’espace&nbsp;: <b>VERIFIED</b>.",null,"<b>Dernier voyage&nbsp;: la médecine.</b>",null],"s1":[null,"Une boutique en ligne. Elle tourne.","Les commandes tombent.",null,"Tout va bien.","Conforme. Aujourd’hui.","Une équipe : une personne, souvent.","Une faille : en-têtes absents.","Rouge.","Elle corrige à la main.","Corrigé.","Vert.","Une autre : le prix modifiable.","Rouge.","Elle corrige, le soir.","Corrigé.","Vert.","Deux de plus : la carte bancaire en clair…","…et une bibliothèque de 2012.","Rouge.","Pas le temps. Pas le budget.","Une cinquième. Elle restera ouverte.","Rouge.","<b>8 sites sur 10 exposés.</b> La seule question : quand."],"s2":["Le même site. Cinq failles.",null,"FAILLE SCAN&nbsp;: cinq failles.",null,"<b>Mission Zero part de zéro.</b> Une copie, tout doit être VERIFIED.",null,"Correctif n°1, sur la copie.",null,"Contrôle 1&nbsp;: les réserves, écrites. Vert.",null,"Contrôle 2&nbsp;: la relecture. Vert.",null,"Contrôle 3&nbsp;: il regarde la page…","<b class=\"r\">Rouge.</b>",null,"La page de paiement est altérée&nbsp;: <b class=\"r\">à refaire.</b>",null,"<b class=\"r\">NOT VERIFIED</b>, par lui-même.",null,"<b>Correctif n°2</b>, copie neuve.","Contrôles 1 et 2 rejoués&nbsp;: verts.",null,"Contrôle 3&nbsp;: page intacte. Vert.",null,"Contrôle 4&nbsp;: la faille a disparu. Vert.",null,"Contrôle 5&nbsp;: les tests du client. Vert.",null,"Cinq verts&nbsp;: <b>VERIFIED</b>. Un humain, ou l’automatique.",null,"<b>Corrigée, en live.</b>",null,"FAILLE SCAN&nbsp;: zéro. Tout est vert.",null,null],"s3":["Chez vous, sur votre machine. Aucun serveur à nous.","Votre site, sur votre serveur.","<b>MYTHOZOR ARGUS</b> surveille, jour et nuit.",null,null,null,null,null,null,"Tout est vert.","Une nouvelle faille. ARGUS la voit. Rouge.",null,"<b>Mission Zero</b> la prend. Copie, correctif, cinq contrôles.",null,"Vous validez d’un clic. Ou en automatique.",null,"ARGUS vérifie à nouveau.","Rouge repassé au vert. Sans vous réveiller.",null],"sE":["Une recherche par IA. La même question, posée deux fois.",null,"L’IA seule&nbsp;: <span class=\"r\">douze chiffres, un centime.</span>","Quatre sources sur cinq, introuvables.",null,"<b>L’IA avec Mission Zero</b>&nbsp;: quatre chiffres, un dollar. Chacun avec sa page.","Même IA, même question. Avec Mission Zero, <b>le meilleur résultat</b>&nbsp;: quatre sur quatre, lisibles.",null,"<b>Vous êtes assis. Pourtant vous bougez trois fois.</b> Un&nbsp;: le Soleil, avec ses planètes, dérive vers Hercule. Vingt kilomètres par seconde. On le sait depuis 1783.",null,"Deux&nbsp;: tout ce quartier d’étoiles tourne autour du centre de la galaxie. Deux cent trente. Depuis 1927. La NASA, mot pour mot.",null,"Trois&nbsp;: la galaxie entière, et vous dedans, tombe vers le Grand Attracteur. Six cent trente et un. Depuis 1988.","Trois mouvements emboîtés&nbsp;: le Soleil dans son quartier, le quartier dans la galaxie, la galaxie dans l’Univers. <b>Vous les faites tous les trois.</b>","Caché derrière notre galaxie. On y va. On ne le voit pas.","Mesuré, pas vu, pas tranché. <b>Il n’invente pas la suite.</b>","Vous allez à <b>six cent trente et un kilomètres par seconde</b> vers quelque chose que personne n’a vu.",null],"sM":[null,"Chaque semaine, Mission Zero lit les relevés de l’OMS. La grippe, dans le monde, cent quatre-vingt-dix pays.",null,"Semaine 34&nbsp;: le premier relevé.",null,"Il compare à la semaine d’avant. Rien d’assez grand&nbsp;: il se tait.",null,"Semaine 36&nbsp;: <b>plus treize pour cent.</b> Il le signale.",null,null,null,null,null,null,null,"Semaine 40&nbsp;: <b>plus dix-sept.</b> Il le signale.",null,null,null,null,null,"Il lit, il compare, il signale. Il ne tranche pas&nbsp;: <b>un humain décide.</b>","<b>Valider le web, c’est le premier pas.</b> Le chercheur veut plus&nbsp;: prouver qu’une métrique varie selon des facteurs.","<b>Nouvelle mission.</b> Le stress fait-il varier le cancer&nbsp;?","Un facteur par ligne&nbsp;: sa variation mesurée, et la page qui le prouve.",null,null,null,null,"Stress au travail&nbsp;: 116 000 Européens, douze ans. Risque 0,97&nbsp;: aucun lien. <b>Il écarte le facteur.</b>",null,null,null,null,null,null,"Stress psychologique&nbsp;: des centaines d’études mesurent une hausse. La page dit «&nbsp;biais de publication, prudence&nbsp;»&nbsp;: <b>il le recopie, il ne gonfle rien.</b>",null,null,null,null,null,null,"Les hormones du stress&nbsp;: chez la souris, jusqu’à <b class=\"r\">quatre fois plus</b> de métastases. <b>Le mécanisme est prouvé.</b>",null,null,null,null,null,null,"«&nbsp;Un vaccin contre le stress&nbsp;?&nbsp;» Il cherche ce qui coupe le facteur&nbsp;: un bêta-bloquant, sept jours avant l’opération. <b>Les marqueurs de métastase baissent.</b>",null,"Prouvé sur des marqueurs, pas encore sur la survie&nbsp;: <b>il demande un essai de phase III.</b> Il ne tranche pas.","<b>Un facteur écarté, un facteur mesuré, une piste prouvée.</b> Chaque chiffre a sa page.",null],"sZ":[null,null,null,null,null,null,null,null,null]};
+  var timers = {}, pass = {}, SPEED = {};
+  var RATE = 1;
+  function speedOf(el) { var sc = el.closest('.scene'); return ((sc && SPEED[sc.id]) || 1) * RATE; }
+  // Vitesses de lecture (gérant, 31 octobre : ajouter ×4, ×5, ×6 et ×10) : un clic passe à la suivante, puis revient à ×1.
+  var SPEEDS = [1, 2, 3, 4, 5, 6, 10], SPEED_I = 0;
+  document.getElementById('x2').addEventListener('click', function () { SPEED_I = (SPEED_I + 1) % SPEEDS.length; RATE = 1 / SPEEDS[SPEED_I]; this.textContent = '×' + SPEEDS[SPEED_I]; this.classList.toggle('big', SPEED_I !== 0); });
+  function steps(id) { var p = pass[id] || 'all'; return Array.prototype.slice.call(document.querySelectorAll('#' + id + ' [data-k]')).filter(function (s) { return !s.dataset.pass || p === 'all' || s.dataset.pass === p; }); }
+  function capId(id) { return 'c' + id.slice(1); }
+  function roundPath(d, maxR) {
+    var t = d.trim(); if (t.charAt(0) !== 'M' || /[ACQSTHVZacqsthvz]/.test(t.slice(1))) return d;
+    var nums = t.replace(/[ML]/g, ' ').split(/[ ,]+/).filter(Boolean).map(Number); var pts = []; for (var j = 0; j + 1 < nums.length; j += 2) pts.push([nums[j], nums[j + 1]]);
+    if (pts.length < 3) return d;
+    var out = 'M' + pts[0][0] + ',' + pts[0][1];
+    for (var i = 1; i < pts.length - 1; i++) {
+      var p = pts[i - 1], c = pts[i], n2 = pts[i + 1];
+      var l1 = Math.hypot(c[0] - p[0], c[1] - p[1]), l2 = Math.hypot(n2[0] - c[0], n2[1] - c[1]), rr = Math.min(maxR || 48, l1 / 2, l2 / 2);
+      var a = [c[0] - (c[0] - p[0]) / l1 * rr, c[1] - (c[1] - p[1]) / l1 * rr], bq = [c[0] + (n2[0] - c[0]) / l2 * rr, c[1] + (n2[1] - c[1]) / l2 * rr];
+      out += ' L' + a[0].toFixed(1) + ',' + a[1].toFixed(1) + ' Q' + c[0] + ',' + c[1] + ' ' + bq[0].toFixed(1) + ',' + bq[1].toFixed(1);
+    }
+    var last = pts[pts.length - 1]; return out + ' L' + last[0] + ',' + last[1];
+  }
+  document.querySelectorAll('.arrow').forEach(function (p) { p.setAttribute('d', roundPath(p.getAttribute('d'), Number(p.dataset.round) || 0)); });
+  var n = 0, gen = 0;
+  document.querySelectorAll('.a .arrow').forEach(function (p) {
+    n += 1; p.id = p.id || 'p' + n;
+    var dur = Math.round((Number(p.parentNode.dataset.dur) || 1000) * speedOf(p));
+    var c = document.createElementNS(SVGNS, 'circle'); c.setAttribute('r', '8'); c.setAttribute('class', 'runner'); c.dataset.for = p.id;
+    try { var q0 = p.getPointAtLength(0); c.setAttribute('cx', q0.x); c.setAttribute('cy', q0.y); } catch (e) { /* rien */ }
+    p.parentNode.appendChild(c); p.style.transition = 'none'; p.parentNode.dataset.dur = dur;
+  });
+  function draw(step) {
+    var dur = Number(step.dataset.dur) || 1000, my = gen, t0 = performance.now();
+    var list = Array.prototype.map.call(step.querySelectorAll('.arrow'), function (p) { return { p: p, L: p.getTotalLength(), c: step.querySelector('.runner[data-for="' + p.id + '"]') }; });
+    function frame(now) {
+      if (my !== gen) return;
+      var t = Math.min(1, Math.max(0, (now - t0) / dur));
+      list.forEach(function (o) { o.p.style.strokeDashoffset = String(1 - t); var q = o.p.getPointAtLength(o.L * t); if (o.c) { o.c.setAttribute('cx', q.x); o.c.setAttribute('cy', q.y); } });
+      if (window.MZORB && window.MZORB.sync) window.MZORB.sync();
+      if (t < 1) requestAnimationFrame(frame); else { list.forEach(function (o) { o.p.style.strokeDashoffset = ''; if (o.c) o.c.classList.remove('go'); }); step.classList.add('drawn'); }
+    }
+    list.forEach(function (o) { o.p.style.strokeDashoffset = '1'; var q = o.p.getPointAtLength(0); if (o.c) { o.c.setAttribute('cx', q.x); o.c.setAttribute('cy', q.y); o.c.classList.add('go'); } });
+    requestAnimationFrame(frame);
+    (step.dataset.pulses || '').split(',').filter(Boolean).forEach(function (r) { var m = r.split('@'), f = m[1].split(':'); setTimeout(function () { if (my === gen) pulse(m[0], f[1] === 'strong'); }, Math.round(Number(f[0]) * dur)); });
+  }
+  function pulse(id, strong) { var el = document.getElementById(id); if (!el) return; el.classList.remove('pulse', 'strong'); void el.getBBox(); el.classList.add('pulse'); if (strong) el.classList.add('strong'); setTimeout(function () { el.classList.remove('pulse', 'strong'); }, strong ? 1300 : 700); }
+  // Le compteur de vitesse de l'espace : il monte, il ne redescend jamais. Le ciel d'étoiles vient vers vous, comme par le pare-brise.
+  var speedTimer = null, starSpeed = 0.03, starsOn = false, stars = [], starEls = [], lastT = 0;
+  function tweenSpeed(to) {
+    var el = document.getElementById('speed'); if (!el) return; var from = Number(el.textContent) || 0, t0 = Date.now(); clearInterval(speedTimer);
+    speedTimer = setInterval(function () { var k = Math.min(1, (Date.now() - t0) / 900); el.textContent = Math.round(from + (to - from) * (1 - Math.pow(1 - k, 3))); if (k >= 1) clearInterval(speedTimer); }, 40);
+    starSpeed = 0.04 + to / 1600;
+  }
+  function initStars() {
+    var g = document.getElementById('stars'); if (!g || starEls.length) return;
+    for (var i = 0; i < 140; i++) { var c = document.createElementNS(SVGNS, 'circle'); c.setAttribute('fill', '#fff'); g.appendChild(c); starEls.push(c); stars.push({ x: Math.random() * 2 - 1, y: Math.random() * 2 - 1, z: Math.random() }); }
+  }
+  function tickStars(t) {
+    if (!starsOn) return; var dt = Math.min(0.05, (t - lastT) / 1000 || 0.016); lastT = t;
+    stars.forEach(function (s, i) {
+      s.z -= starSpeed * dt; if (s.z <= 0.03) { s.x = Math.random() * 2 - 1; s.y = Math.random() * 2 - 1; s.z = 1; }
+      var sx = 800 + s.x / s.z * 700, sy = 450 + s.y / s.z * 420;
+      if (sx < -20 || sx > 1620 || sy < -20 || sy > 920) { s.x = Math.random() * 2 - 1; s.y = Math.random() * 2 - 1; s.z = 1; return; }
+      var e = starEls[i]; e.setAttribute('cx', sx.toFixed(1)); e.setAttribute('cy', sy.toFixed(1)); e.setAttribute('r', ((1 - s.z) * 3 + 0.4).toFixed(2)); e.setAttribute('opacity', ((1 - s.z) * 0.8 + 0.1).toFixed(2));
+    });
+    requestAnimationFrame(tickStars);
+  }
+  function startStars() { initStars(); if (!starsOn) { starsOn = true; lastT = 0; requestAnimationFrame(tickStars); } }
+  function stopStars() { starsOn = false; starSpeed = 0.03; }
+  // Le tampon plein écran (gérant, 31 octobre) : il claque sur toute la scène, se lit, puis s'efface.
+  function stampIt(spec) {
+    var sc = document.querySelector('.scene.active'); if (!sc) return; var m = spec.split(':'), kind = m[0], txt = m.slice(1).join(':');
+    var old = sc.querySelector('.bigstamp'); if (old) old.remove();
+    var d = document.createElement('div'); d.className = 'bigstamp ' + kind; var w = sc.getBoundingClientRect().width || 1280;
+    d.innerHTML = '<span style="font-size:' + Math.round(w * 0.05) + 'px;border-width:' + Math.round(w * 0.005) + 'px">' + txt + '</span>';
+    sc.appendChild(d); var my = gen; setTimeout(function () { if (my === gen) d.classList.add('out'); }, 2300); setTimeout(function () { d.remove(); }, 2900);
+  }
+  function act(step) {
+    if (step.dataset.stamp) stampIt(step.dataset.stamp);
+    if (step.dataset.video) { var vv = document.getElementById(step.dataset.video); if (vv) { try { vv.currentTime = 0; var pr = vv.play(); if (pr && pr.catch) pr.catch(function () {}); } catch (e) { /* rien */ } } }
+    (step.dataset.hide || '').split(',').filter(Boolean).forEach(function (h) { document.querySelector(h).classList.add('hidden'); });
+    (step.dataset.ring || '').split(',').filter(Boolean).forEach(function (r) { var id = r.split(':')[0], mode = r.split(':')[1] || 'lit'; var el = document.getElementById(id); el.classList.remove('lit', 'bad'); if (mode !== 'off') el.classList.add(mode); });
+    if (step.dataset.shrink) { var sh = document.getElementById(step.dataset.shrink); if (sh) sh.classList.add('shrink'); }
+    if (step.dataset.zoom2) { var zz = document.getElementById(step.dataset.zoom2); if (zz) { zz.parentNode.appendChild(zz); void zz.getBoundingClientRect(); zz.classList.add('zoomx'); zz.parentNode.classList.add('zooming'); } }
+    if (step.dataset.unzoom) { var uz = document.getElementById(step.dataset.unzoom); if (uz) { uz.classList.remove('zoomx'); uz.parentNode.classList.remove('zooming'); } }
+    (step.dataset.chip || '').split(',').filter(Boolean).forEach(function (r) { var id = r.split(':')[0], mode = r.split(':')[1] || 'ok'; var el = document.getElementById(id); if (el) { el.classList.remove('ok', 'ko'); el.classList.add(mode); } });
+    (step.dataset.gone || '').split(',').filter(Boolean).forEach(function (id) { document.getElementById(id).classList.add('gone'); });
+    (step.dataset.pulse || '').split(',').filter(Boolean).forEach(function (r) { pulse(r.split(':')[0], r.split(':')[1] === 'strong'); });
+    (step.dataset.blink || '').split(',').filter(Boolean).forEach(function (id) { var el = document.getElementById(id); if (!el) return; el.classList.remove('blink'); void el.getBBox(); el.classList.add('blink'); setTimeout(function () { el.classList.remove('blink'); }, 3600); });
+    if (step.dataset.speed) tweenSpeed(Number(step.dataset.speed));
+    if (step.dataset.stars) startStars();
+    if (step.dataset.rush) starSpeed = 1.3;
+    (step.dataset.write || '').split(',').filter(Boolean).forEach(function (id) { var el = document.getElementById(id); if (el) el.classList.add('on'); });
+    if (step.dataset.cls) document.body.classList.add(step.dataset.cls);
+    if (step.dataset.zoom) { var z = document.querySelector(step.dataset.zoom); if (z) setTimeout(function () { z.classList.add('zoom'); }, 900); }
+  }
+  // Le contour tracé (gérant, 31 octobre) : un chemin qui suit le bord de la forme, deux traits qui partent du même point.
+  function outline(el) {
+    var n = function (a) { return Number(el.getAttribute(a)) || 0; };
+    if (el.tagName === 'circle') { var cx = n('cx'), cy = n('cy'), r = n('r'); return 'M' + cx + ',' + (cy - r) + ' A' + r + ',' + r + ' 0 1,1 ' + cx + ',' + (cy + r) + ' A' + r + ',' + r + ' 0 1,1 ' + cx + ',' + (cy - r) + ' Z'; }
+    var x = n('x'), y = n('y'), w = n('width'), h = n('height'), rx = Math.min(n('rx') || n('ry'), w / 2, h / 2);
+    return 'M' + (x + rx) + ',' + y + ' H' + (x + w - rx) + ' A' + rx + ',' + rx + ' 0 0,1 ' + (x + w) + ',' + (y + rx) + ' V' + (y + h - rx) + ' A' + rx + ',' + rx + ' 0 0,1 ' + (x + w - rx) + ',' + (y + h) + ' H' + (x + rx) + ' A' + rx + ',' + rx + ' 0 0,1 ' + x + ',' + (y + h - rx) + ' V' + (y + rx) + ' A' + rx + ',' + rx + ' 0 0,1 ' + (x + rx) + ',' + y + ' Z';
+  }
+  function contour(step) {
+    var shapes = Array.prototype.filter.call(step.querySelectorAll('rect, circle'), function (el) {
+      if (el.classList.contains('runner') || el.classList.contains('mark') || el.closest('.rg') || el.closest('.fan')) return false;
+      var cs = getComputedStyle(el); if (!cs.stroke || cs.stroke === 'none' || cs.strokeOpacity === '0' || parseFloat(cs.strokeWidth) === 0) return false;
+      var b = el.getBBox(); return b.width > 6 && b.height > 6;
+    });
+    if (!shapes.length) return;
+    var my = gen, dur = 650, orb = window.MZORB && window.MZORB.where ? window.MZORB.where() : null;
+    var jobs = shapes.map(function (el, i) {
+      var cs = getComputedStyle(el), p = document.createElementNS(SVGNS, 'path'); p.setAttribute('d', outline(el)); p.setAttribute('class', 'ctr');
+      p.style.fill = 'none'; p.style.stroke = cs.stroke; p.style.strokeWidth = cs.strokeWidth; p.style.strokeLinecap = 'round';
+      var svg = el.ownerSVGElement, M = svg.getScreenCTM().inverse().multiply(el.getScreenCTM()), tf = 'matrix(' + [M.a, M.b, M.c, M.d, M.e, M.f].join(',') + ')';
+      p.setAttribute('transform', tf); svg.appendChild(p);
+      var q = p.cloneNode(); svg.appendChild(q);
+      var L = p.getTotalLength(), s0 = 0;
+      // le départ : le point du bord le plus proche de la bille (là où le fil arrive), sinon le haut
+      if (orb && i === 0) { try { var m = p.getScreenCTM(), best = 1e9; for (var k = 0; k < 96; k++) { var pt = p.getPointAtLength(L * k / 96), sx = m.a * pt.x + m.c * pt.y + m.e, sy = m.b * pt.x + m.d * pt.y + m.f, d = Math.hypot(sx - orb.x, sy - orb.y); if (d < best) { best = d; s0 = L * k / 96; } } } catch (e) { /* rien */ } }
+      var r1 = document.createElementNS(SVGNS, 'circle'); r1.setAttribute('r', '8'); r1.setAttribute('class', 'runner' + (i === 0 ? ' go' : '')); r1.dataset.ctr = '1';
+      var r2 = document.createElementNS(SVGNS, 'circle'); r2.setAttribute('r', '4'); r2.setAttribute('class', 'ctr-dot');
+      r1.setAttribute('transform', tf); r2.setAttribute('transform', tf); svg.appendChild(r1); svg.appendChild(r2);
+      el.style.strokeOpacity = '0';
+      return { el: el, svg: svg, p: p, q: q, L: L, s0: s0, r1: r1, r2: r2, lead: i === 0 };
+    });
+    var t0 = performance.now();
+    function put(c, pth, at) { var pt = pth.getPointAtLength(((at % pth._L) + pth._L) % pth._L); c.setAttribute('cx', pt.x); c.setAttribute('cy', pt.y); }
+    jobs.forEach(function (j) { j.p._L = j.L; });
+    function frame(now) {
+      if (my !== gen) return;
+      var t = Math.min(1, (now - t0) / dur), seg;
+      jobs.forEach(function (j) {
+        // le cadre arrive avec un rebond d'échelle : le tracé suit sa position à chaque image
+        try { var M = j.svg.getScreenCTM().inverse().multiply(j.el.getScreenCTM()), tf = 'matrix(' + [M.a, M.b, M.c, M.d, M.e, M.f].join(',') + ')'; j.p.setAttribute('transform', tf); j.q.setAttribute('transform', tf); j.r1.setAttribute('transform', tf); j.r2.setAttribute('transform', tf); } catch (e) { /* rien */ }
+        seg = t * j.L / 2;
+        j.p.style.strokeDasharray = seg + ' ' + (j.L - seg); j.p.style.strokeDashoffset = String(-j.s0);
+        j.q.style.strokeDasharray = seg + ' ' + (j.L - seg); j.q.style.strokeDashoffset = String(-(j.s0 - seg));
+        if (j.lead) { put(j.r1, j.p, j.s0 + seg); put(j.r2, j.p, j.s0 - seg); } else { j.r1.style.display = 'none'; put(j.r2, j.p, j.s0 + seg); }
+      });
+      if (window.MZORB && window.MZORB.sync) window.MZORB.sync();
+      if (t < 1) { requestAnimationFrame(frame); return; }
+      jobs.forEach(function (j) { j.el.style.strokeOpacity = ''; j.p.remove(); j.q.remove(); j.r2.remove(); if (j.lead) j.r1.classList.remove('go'); else j.r1.remove(); });
+    }
+    requestAnimationFrame(frame);
+  }
+  function fire(step) {
+    step.classList.add('on'); act(step);
+    if (step.classList.contains('a')) draw(step); else contour(step);
+  }
+  function reset(id) {
+    document.querySelectorAll('#' + id + ' .bigstamp').forEach(function (n) { n.remove(); });
+    document.querySelectorAll('#' + id + ' .ctr, #' + id + ' .ctr-dot, #' + id + ' [data-ctr]').forEach(function (n) { n.remove(); });
+    document.querySelectorAll('#' + id + ' rect, #' + id + ' circle').forEach(function (n) { if (n.style.strokeOpacity === '0') n.style.strokeOpacity = ''; });
+    document.querySelectorAll('#' + id + ' video').forEach(function (v) { try { v.pause(); v.currentTime = 0; } catch (e) { /* rien */ } });
+    gen += 1; Array.prototype.slice.call(document.querySelectorAll('#' + id + ' [data-k]')).forEach(function (s) { s.classList.remove('on', 'drawn', 'focus', 'hidden', 'zoom'); if (s.dataset.cls) document.body.classList.remove(s.dataset.cls); });
+    document.querySelectorAll('#' + id + ' .zooming').forEach(function (z) { z.classList.remove('zooming'); });
+    document.querySelectorAll('#' + id + ' .zoomx').forEach(function (z) { z.classList.remove('zoomx'); });
+    document.querySelectorAll('#' + id + ' .arrow').forEach(function (p) { p.style.strokeDashoffset = ''; });
+    document.querySelectorAll('#' + id + ' .zoom').forEach(function (z) { z.classList.remove('zoom'); });
+    document.querySelectorAll('#' + id + ' .hidden').forEach(function (z) { z.classList.remove('hidden'); });
+    document.querySelectorAll('#' + id + ' .hand').forEach(function (z) { z.classList.remove('on'); });
+    document.querySelectorAll('#' + id + ' .ring').forEach(function (r) { if (r.id) r.classList.remove('lit', 'bad'); });
+    document.querySelectorAll('#' + id + ' .field').forEach(function (r) { r.classList.remove('gone'); });
+    document.querySelectorAll('#' + id + ' .chip').forEach(function (r) { if (r.id) r.classList.remove('ok', 'ko'); });
+    document.querySelectorAll('#' + id + ' .runner').forEach(function (c) { c.classList.remove('go'); });
+    document.querySelectorAll('#' + id + ' .shrink').forEach(function (c) { c.classList.remove('shrink'); });
+    document.querySelectorAll('#' + id + ' .pulse, #' + id + ' .blink').forEach(function (c) { c.classList.remove('pulse', 'strong', 'blink'); });
+    if (id === 'sE') { stopStars(); clearInterval(speedTimer); var sp = document.getElementById('speed'); if (sp) sp.textContent = '0'; }
+    document.getElementById(capId(id)).innerHTML = '';
+  }
+  function caps(id) { if (id !== 'sB') return CAP[id]; return pass[id] === 'espace' ? CAP.sB2 : pass[id] === 'medecine' ? CAP.sB3 : CAP.sB; }
+  function caption(id, k) { var t = caps(id)[k - 1]; if (t) document.getElementById(capId(id)).innerHTML = t; }
+  // Un passage « retour » sur l'écran des choix : le fil arrive à sa vitesse, puis la boucle et l'éventail reviennent vite.
+  function play(id, done, p) {
+    clearTimeout(timers[id]); pass[id] = p || pass[id] || 'all'; reset(id);
+    var list = steps(id), k = 0, quick = (id === 'sB' && pass[id] !== 'securite' && pass[id] !== 'all');
+    void document.getElementById(id).getBoundingClientRect();
+    (function next() { if (k >= list.length) { if (done) timers[id] = setTimeout(done, list[list.length - 1].classList.contains('a') ? 0 : 1800); return; } var s = list[k]; k += 1; fire(s); caption(id, k); var d = Math.round((Number(s.dataset.d) || (s.classList.contains('a') ? 1100 : 1300)) * speedOf(s)); if (quick && !s.dataset.pass && !s.classList.contains('a')) d = Math.min(d, 220); if (s.classList.contains('a')) d = Math.max(d, (Number(s.dataset.dur) || 0) + 60); timers[id] = setTimeout(next, d); })();
+  }
+  function all(id) { clearTimeout(timers[id]); pass[id] = id === 'sB' ? 'medecine' : 'all'; reset(id); var list = steps(id); list.forEach(function (s) { s.classList.add('on', 'drawn'); act(s); }); document.querySelectorAll('#' + id + ' .shrink').forEach(function (c) { c.classList.remove('shrink'); }); document.body.classList.remove('black'); caption(id, list.length); }
+  function show(id) { document.querySelectorAll('.scene').forEach(function (s) { s.classList.toggle('active', s.id === id); }); }
+  var t0 = 0, clock = document.getElementById('clock');
+  function tick() { if (t0) clock.textContent = Math.round((Date.now() - t0) / 100) / 10 + ' s'; }
+  setInterval(tick, 200);
+  // Le film complet : la boucle, les choix, la sécurité (boutique, correction, ARGUS), les choix, l'espace, les choix, la médecine, la fin.
+  // Les démos « avant / install / après » (gérant, 31 octobre) : l'espace juste après L'ESPACE, le stress juste après LA MÉDECINE.
+  var CHAIN = [ /* l'espace : la démo seule, le schéma retiré (gérant, 31 octobre) */ ['s0'], ['sB', 'securite'], ['s1'], ['s2'], ['sB', 'espace'], ['sDe'], ['sB', 'medecine'], ['sDm'], ['sZ']]; // la médecine : la seule page est le labo de Fleming (gérant, 31 octobre)
+  var IDS = ['s0', 'sB', 's1', 's2', 'sE', 'sDe', 'sDm', 'sZ'];
+  function stopAll() { IDS.forEach(function (id) { clearTimeout(timers[id]); }); stopStars(); document.body.classList.remove('black'); }
+  function film(from) {
+    var voile = document.getElementById('noir'); if (voile) { voile.classList.remove('leve'); setTimeout(function () { voile.classList.add('leve'); }, 1000); }
+    stopAll(); t0 = Date.now(); document.body.classList.add('film');
+    var i = from || 0; (function step() { if (i >= CHAIN.length) { clock.textContent = 'fin · ' + Math.round((Date.now() - t0) / 100) / 10 + ' s'; t0 = 0; return; } var c = CHAIN[i]; i += 1; show(c[0]); play(c[0], step, c[1] || 'all'); })();
+  }
+  document.getElementById('go').addEventListener('click', function () { film(0); });
+  document.querySelectorAll('[data-ch]').forEach(function (b) { b.addEventListener('click', function () { stopAll(); document.body.classList.add('film'); show(b.dataset.ch); play(b.dataset.ch, null, b.dataset.pass || 'all'); }); });
+  document.getElementById('grid').addEventListener('click', function () { stopAll(); document.body.classList.remove('film'); IDS.forEach(all); });
+  window.MZF = { film: film, play: play, CHAIN: CHAIN, CAP: CAP, steps: steps, pass: pass };
+  var q = new URLSearchParams(location.search);
+  if (q.get('record')) document.documentElement.classList.add('record');
+  film(0);
+})();
+</script>
+</html>

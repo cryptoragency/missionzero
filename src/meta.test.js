@@ -9,7 +9,7 @@ import { createClient, metaFetch, spentToday } from './meta.js';
 // The provider, its key and its model follow the base URL alone (the module reads the environment when it loads),
 // so each case runs in a fresh process.
 const probe = (env) => {
-  const clean = { ...process.env }; for (const k of ['MZ_BASE_URL', 'MZ_MODEL', 'MZ_API_KEY', 'MODEL_API_KEY', 'BASETEN_API_KEY', 'FIREWORKS_API_KEY']) delete clean[k];
+  const clean = { ...process.env }; for (const k of ['MZ_BASE_URL', 'MZ_MODEL', 'MZ_API_KEY', 'MZ_MODEL_KEY', 'MODEL_API_KEY', 'BASETEN_API_KEY', 'FIREWORKS_API_KEY']) delete clean[k];
   const r = spawnSync(process.execPath, ['--input-type=module', '-e', "import('./src/meta.js').then((m) => { let model = null, error = null; try { model = m.createClient({ ledgerPath: 'memory/.probe' }).model; } catch (e) { error = e.message; } console.log(JSON.stringify({ provider: m.provider(), model, error })); })"], { encoding: 'utf8', env: { ...clean, ...env } });
   return JSON.parse(r.stdout.trim().split('\n').pop());
 };
@@ -17,6 +17,10 @@ const probe = (env) => {
 test('Meta by default: muse-spark-1.3 with MODEL_API_KEY', () => {
   assert.deepEqual(probe({ MODEL_API_KEY: 'k' }), { provider: 'meta', model: 'muse-spark-1.3', error: null });
   assert.match(probe({}).error, /MODEL_API_KEY is missing/);
+});
+
+test('the API access token (MZ_API_KEY) is never the model key: it would leave the machine and Meta would refuse it', () => {
+  assert.match(probe({ MZ_API_KEY: 't'.repeat(48) }).error, /MODEL_API_KEY is missing/);
 });
 
 test('Baseten: open weights with BASETEN_API_KEY', () => {
@@ -27,7 +31,7 @@ test('Baseten: open weights with BASETEN_API_KEY', () => {
 test('Fireworks: the same open weights with FIREWORKS_API_KEY, MZ_MODEL overrides', () => {
   assert.deepEqual(probe({ MZ_BASE_URL: 'https://api.fireworks.ai/inference/v1', FIREWORKS_API_KEY: 'k' }), { provider: 'fireworks', model: 'accounts/fireworks/models/muse-spark-open', error: null });
   assert.equal(probe({ MZ_BASE_URL: 'https://api.fireworks.ai/inference/v1', FIREWORKS_API_KEY: 'k', MZ_MODEL: 'accounts/fireworks/models/other' }).model, 'accounts/fireworks/models/other');
-  assert.equal(probe({ MZ_BASE_URL: 'https://example.com/v1', MZ_API_KEY: 'k' }).provider, 'example.com');
+  assert.equal(probe({ MZ_BASE_URL: 'https://example.com/v1', MZ_MODEL_KEY: 'k' }).provider, 'example.com');
 });
 
 // Caps and ledger, with a fake fetch: each call reports 1M input tokens, i.e. $1.25 at the default price.
@@ -121,7 +125,7 @@ test('metaFetch sets the key, counts the cost it is told, and checks the daily l
 
 // The first call of a client built in a fresh process, with a fetch that answers 200: what it throws, what stderr says.
 const firstCall = (env) => {
-  const clean = { ...process.env }; for (const k of ['MZ_BASE_URL', 'MZ_API_KEY', 'MZ_ALLOW_CUSTOM_BASE']) delete clean[k];
+  const clean = { ...process.env }; for (const k of ['MZ_BASE_URL', 'MZ_API_KEY', 'MZ_MODEL_KEY', 'MZ_ALLOW_CUSTOM_BASE']) delete clean[k];
   const code = "import('./src/meta.js').then(async (m) => { let error = null; try { await m.createClient({ key: 'k', dailyCapUsd: 0, fetchFn: async () => ({ ok: true, status: 200, text: async () => '{\"choices\":[]}' }) }).ask([]); } catch (e) { error = e.message; } console.log(JSON.stringify({ error })); })";
   const r = spawnSync(process.execPath, ['--input-type=module', '-e', code], { encoding: 'utf8', env: { ...clean, ...env } });
   return { ...JSON.parse(r.stdout.trim().split('\n').pop()), stderr: r.stderr };

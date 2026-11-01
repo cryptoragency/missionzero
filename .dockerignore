@@ -7,6 +7,9 @@ memory
 logs
 video
 film
+# Docker drops the trailing slash: watch/*/ alone also drops the files the tests need.
 watch/*/
+!watch/sources.json
+!watch/readings.example.json
 web/data
 .git

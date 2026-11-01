@@ -5,7 +5,7 @@ import type { Scene } from '../script';
 
 const CX = 960, CY = 540;
 const BUBBLES = ['La sécurité d’un site', 'L’espace', 'La médecine', 'Un chiffre de l’INSEE', 'Une loi', 'Un brevet', 'Un appel d’offres', 'Votre métier', 'Une norme', 'Un marché', 'Une CVE', 'Un rapport'];
-const bpos = (i: number) => { const a = -Math.PI / 2 + (i * 2 * Math.PI) / 12; return { x: CX + 660 * Math.cos(a), y: CY + 400 * Math.sin(a) }; };
+const bpos = (i: number) => { const a = -Math.PI / 2 + (i * 2 * Math.PI) / 12; return { x: CX + 660 * Math.cos(a), y: CY - 20 + 360 * Math.sin(a) }; };
 
 export const Choose: React.FC<{ scene: Scene; start: number }> = ({ scene, start }) => {
   const frame = useCurrentFrame();

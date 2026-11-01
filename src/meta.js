@@ -26,9 +26,10 @@ const PROVIDERS = [
   { name: 'fireworks', test: /fireworks/i, key: 'FIREWORKS_API_KEY', model: 'accounts/fireworks/models/muse-spark-open' },
 ];
 const OPEN = PROVIDERS.find((p) => p.test.test(BASE));
-// The key follows the provider: BASETEN_API_KEY or FIREWORKS_API_KEY when the base URL is theirs, MODEL_API_KEY (Meta) otherwise; MZ_API_KEY overrides.
+// The key follows the provider: BASETEN_API_KEY or FIREWORKS_API_KEY when the base URL is theirs, MODEL_API_KEY (Meta) otherwise; MZ_MODEL_KEY overrides.
+// Never MZ_API_KEY: that one is the access token of the API (src/api.js), it must not be sent to the model provider.
 const KEY_NAME = OPEN ? OPEN.key : 'MODEL_API_KEY';
-const KEY = process.env.MZ_API_KEY || process.env[KEY_NAME];
+const KEY = process.env.MZ_MODEL_KEY || process.env[KEY_NAME];
 export const provider = () => (OPEN ? OPEN.name : /api\.meta\.ai/.test(BASE) ? 'meta' : new URL(BASE).hostname);
 // A typo in MZ_BASE_URL would hand the key to whoever answers there: an unknown host or a plain-http URL is refused at the
 // first call, unless MZ_ALLOW_CUSTOM_BASE=1 says it is meant (then a warning still says where the key goes).
@@ -40,7 +41,7 @@ function baseProblem(base) {
 }
 const BASE_PROBLEM = baseProblem(BASE);
 const CUSTOM_BASE = process.env.MZ_ALLOW_CUSTOM_BASE === '1';
-if (BASE_PROBLEM && CUSTOM_BASE) { try { console.warn(`Warning: MZ_BASE_URL is not a known provider; ${process.env.MZ_API_KEY ? 'MZ_API_KEY' : KEY_NAME} will be sent to ${new URL(BASE).hostname}.`); } catch { /* not a URL: the call fails with its own message */ } }
+if (BASE_PROBLEM && CUSTOM_BASE) { try { console.warn(`Warning: MZ_BASE_URL is not a known provider; ${process.env.MZ_MODEL_KEY ? 'MZ_MODEL_KEY' : KEY_NAME} will be sent to ${new URL(BASE).hostname}.`); } catch { /* not a URL: the call fails with its own message */ } }
 const checkBase = (base) => { if (base === BASE && BASE_PROBLEM && !CUSTOM_BASE) throw new Error(BASE_PROBLEM); };
 
 // Daily ledger, one per machine: { date, usd }. The day is the UTC day: a daily cap resets at midnight UTC (see .env.example).

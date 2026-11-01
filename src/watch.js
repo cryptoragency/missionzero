@@ -81,9 +81,16 @@ export function fileSnapshots(json) {
 
 // A source that hangs must not hang the watch: 60 s, then the run fails with the URL.
 export async function fetchJson(url, { timeoutMs = 60000, fetchFn = fetch } = {}) {
-  const r = await fetchFn(url, { headers: { 'User-Agent': 'Mozilla/5.0 (Mission Zero watch)', Accept: 'application/json' }, signal: AbortSignal.timeout(timeoutMs) });
-  if (!r.ok) throw new Error(`${url}: HTTP ${r.status}`);
-  return r.json();
+  // A held timer (not AbortSignal.timeout, whose timer does not keep Node 22 alive), cleared once the body is read.
+  const ctl = new AbortController();
+  const timer = setTimeout(() => ctl.abort(new Error(`${url}: timeout after ${timeoutMs} ms`)), timeoutMs);
+  try {
+    const r = await fetchFn(url, { headers: { 'User-Agent': 'Mozilla/5.0 (Mission Zero watch)', Accept: 'application/json' }, signal: ctl.signal });
+    if (!r.ok) throw new Error(`${url}: HTTP ${r.status}`);
+    return await r.json();
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 export async function loadSnapshots(src) {

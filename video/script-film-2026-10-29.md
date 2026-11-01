@@ -7,6 +7,10 @@
 > (dossiers `evidence/2026-10-29-*`), avec la citation exacte et le verdict du vérificateur.
 > Tournage : le 2 ou 3 novembre, sur la version finale, sur le mot du gérant.
 
+> **Ouverture obligatoire (demande des organisateurs, Cerebral Valley, 31 octobre 2026)** : le film commence par une ligne sur ce qui existait avant le kickoff.
+> Sous-titre EN : « Before the kickoff (Oct 26, 12:24 PM ET): a 50-line skeleton (API client, package.json). Everything shown was built during the event. »
+> Voix FR : « Avant le lancement, il existait un squelette de 50 lignes. Tout ce que vous allez voir a été construit pendant le hackathon. »
+
 Ordre : la boucle → les choix → la médecine (ça sert) → les choix → la sécurité (du concret, et on en a besoin)
 → les choix → l'espace (la grande sensation) → le symbole de fin.
 
@@ -32,7 +36,7 @@ Ordre : la boucle → les choix → la médecine (ça sert) → les choix → l
 |---|---|---|
 | Le point arrive, la boucle au centre, douze bulles | L'espace, la médecine, un chiffre de l'INSEE, une loi, un brevet, un appel d'offres, votre métier. Même boucle. Zéro code : un objectif. | Space, medicine, a statistic, a law, a patent, a tender, your own trade. Same loop. No code: one goal. |
 | Ligne du bas | Tout vient de données gratuites. Une source payante ? Il demande, vous fixez le budget, il la paie et la cite. | Everything comes from free data. A paid source? It asks, you set the budget, it pays and cites. |
-| Le fil va vers « La médecine », zoom | Premier voyage : la médecine. Pour montrer que ça sert. À des vies. | First journey: medicine. To show it matters. To lives. |
+| Le fil va vers « La médecine », zoom | Premier voyage : la médecine. Pour montrer que ça sert. À des vies. | First journey: medicine. To show it helps. Real lives. |
 
 ## Chapitre 2 · La médecine (≈ 40 s) · mission réelle, juge 10/10, 5 citations vérifiées, 10 centimes, 2 minutes
 
@@ -41,11 +45,11 @@ Ordre : la boucle → les choix → la médecine (ça sert) → les choix → l
 | Titre | Une IA vous sort un chiffre. Mission Zero vous le démontre. | An AI gives you a number. Mission Zero proves it to you. |
 | Sous-titre | La tuberculose. Une maladie vieille comme l'humanité. On sait la soigner depuis 1950. | Tuberculosis. As old as mankind. Curable since 1950. |
 | Le fil devient un électrocardiogramme | Suivez le point. C'est un battement de cœur. | Follow the dot. It is a heartbeat. |
-| 1er battement, 10,8 millions | Dix millions huit cent mille personnes tombées malades en 2023. Mission Zero l'a lu dans le rapport de l'OMS, et le cite mot pour mot. | 10.8 million people fell ill in 2023. Mission Zero read it in the WHO report, and quotes it word for word. |
+| 1er battement, 10,8 millions | Dix millions huit cent mille personnes tombées malades en 2023. Mission Zero l'a lu dans le rapport de l'OMS et le cite mot pour mot. | 10.8 million people fell ill in 2023. Mission Zero read it in the WHO report, and quotes it word for word. |
 | 2e battement, 1,25 million, rouge | Un million deux cent cinquante mille en sont mortes. Plus que de toute autre infection au monde. | 1.25 million died. More than any other infection on Earth. |
-| 3e battement, 88 %, vert | Et pourtant, soignés, quatre-vingt-huit pour cent guérissent, quand le microbe est sensible aux médicaments. La page le dit. | And yet, treated, 88% are cured when the germ is drug-susceptible. The page says so. |
+| 3e battement, 88 %, vert | Et pourtant, soignés, quatre-vingt-huit pour cent guérissent, quand le microbe est sensible aux médicaments. La page le dit. | And yet, with treatment, 88% are cured when the bacterium responds to drugs. The page says so. |
 | Bas de l'écran | Trois chiffres. Trois pages. Aucun inventé. Une vraie mission, quelques centimes. | Three figures. Three pages. None invented. One real mission, a few cents. |
-| Dernière ligne | Et la page dit : on sait soigner. Reste à agir. | And the page says: we know how to cure. What is left is to act. |
+| Dernière ligne | Et la page dit : on sait soigner. Reste à agir. | And the page says: we know how to cure. What remains is to act. |
 
 Citations exactes (rapport OMS « Global Tuberculosis Report 2024 », iris.who.int, vérifiées) :
 « an estimated 10.8 million people fell ill with TB in 2023 » · « TB caused an estimated 1.25 million deaths in 2023 » ·
@@ -55,7 +59,7 @@ Citations exactes (rapport OMS « Global Tuberculosis Report 2024 », iris.who
 
 | À l'écran | Narration (FR) | Sous-titre (EN) |
 |---|---|---|
-| La médecine passe au vert, le fil va vers « La sécurité d'un site » | La médecine : prouvée. Deuxième voyage : la sécurité d'un site. Du concret. Et on en a besoin. | Medicine: proven. Second journey: a website's security. Concrete. And needed. |
+| La médecine passe au vert, le fil va vers « La sécurité d'un site » | La médecine : prouvée. Deuxième voyage : la sécurité d'un site. Du concret. Et on en a besoin. | Medicine: proven. Second journey: website security. Concrete. And we need it. |
 
 ## Chapitres 3, 4, 5 · Constat, Correction, MYTHOZOR ARGUS (≈ 1 min 30)
 
@@ -78,11 +82,11 @@ l'automatique qui applique.
 |---|---|---|
 | Titre, le fil monte entre deux panneaux | La même question, posée deux fois. « On va quelque part ? » | The same question, asked twice. "Are we going somewhere?" |
 | Panneau gauche, rouge | À gauche, le modèle seul : vingt secondes, un centime, douze chiffres, huit références. Brillant. | On the left, the model alone: twenty seconds, one cent, twelve figures, eight references. Brilliant. |
-| Ligne 1, « sans adresse » | Hercule à 19,7 km/s : la source est un manuel de 1981, page 362. Pas d'adresse. | Hercules at 19.7 km/s: the source is a 1981 textbook, page 362. No address. |
+| Ligne 1, « sans adresse » | Hercule à 19,7 km/s : la source est un manuel de 1981, page 362. Pas d'adresse. | Hercules at 19.7 km/s: the source is a 1981 textbook, page 362. No link. |
 | Ligne 2, « injoignable » | Trois vitesses au centième : l'article est derrière un péage. Injoignable. | Three speeds to the hundredth: the paper is behind a paywall. Unreachable. |
 | Ligne 3, vert | Le rayon et la vitesse de la galaxie : l'article s'ouvre, le chiffre y est. Vert. | The galaxy's radius and speed: the paper opens, the figure is there. Green. |
 | Ligne 4, « injoignable » | Six cents kilomètres par seconde : derrière un péage. Injoignable. | Six hundred kilometres per second: behind a paywall. Unreachable. |
-| Ligne 5, « injoignable » | Le fond du ciel au centième : derrière un péage. Quatre sources sur cinq, personne ne peut les ouvrir. | The sky's background to the hundredth: behind a paywall. Four sources out of five, no one can open them. |
+| Ligne 5, « injoignable » | Le fond du ciel au centième : derrière un péage. Quatre sources sur cinq, personne ne peut les ouvrir. | The sky background, to the hundredth: behind a paywall. Four sources out of five, no one can open them. |
 | Panneau droit, vert | À droite, Mission Zero : vingt minutes, un dollar, quatre chiffres. | On the right, Mission Zero: twenty minutes, one dollar, four figures. |
 | Quatre lignes vertes | Hercule, la citation exacte. Deux cent trente, la NASA mot pour mot. Trois cent soixante-neuf, Cambridge mot pour mot. Six cent trente et un, Tully 2014 mot pour mot. Moins de chiffres. Chacun avec sa page. | Hercules, the exact quote. 230, NASA word for word. 369, Cambridge word for word. 631, Tully 2014 word for word. Fewer figures. Each with its page. |
 | Phrase clé | Une IA vous sort un chiffre. Mission Zero vous le démontre. | An AI gives you a number. Mission Zero proves it to you. |
@@ -95,7 +99,7 @@ l'automatique qui applique.
 | Les étoiles défilent, le compteur à 0 | La question d'un enfant : on va quelque part ? Suivez le point : chaque chiffre arrive avec sa page. | A child's question: are we going somewhere? Follow the dot: every figure comes with its page. |
 | Boîte 1, compteur 20 | Oui. Le Soleil fonce vers la constellation d'Hercule, à vingt kilomètres par seconde. | Yes. The Sun is rushing toward the constellation Hercules, at 20 kilometres per second. |
 | Boîte 2, compteur 230 | Et il tourne autour du centre de la galaxie, à deux cent trente kilomètres par seconde. Un tour : deux cent trente millions d'années. La NASA le dit, mot pour mot. | And it orbits the centre of the galaxy at 230 kilometres per second. One lap: 230 million years. NASA says so, word for word. |
-| Boîte 3, compteur 369 | Par rapport au fond du ciel, la lumière la plus vieille de l'univers : trois cent soixante-neuf kilomètres par seconde, vers le Lion et la Coupe. Mesuré par Planck, cité par Cambridge. | Relative to the oldest light in the universe: 369 kilometres per second, toward Leo and Crater. Measured by Planck, quoted by Cambridge. |
+| Boîte 3, compteur 369 | Par rapport au fond du ciel, la lumière la plus vieille de l'univers : trois cent soixante-neuf kilomètres par seconde, vers le Lion et la Coupe. Mesuré par Planck, cité par Cambridge. | Relative to the cosmic background, the oldest light in the universe: 369 kilometres per second, toward Leo and Crater. Measured by Planck, quoted by Cambridge. |
 | Boîte 4, compteur 600 | Et toute la Voie lactée coule, avec cent mille galaxies, vers le Grand Attracteur. Six cent trente et un kilomètres par seconde. Tully, 2014, mot pour mot. | And the whole Milky Way flows, with 100,000 galaxies, toward the Great Attractor. 631 kilometres per second. Tully, 2014, word for word. |
 | La tache sombre | Le Grand Attracteur est caché derrière notre propre galaxie. On y va. On ne le voit pas. | The Great Attractor hides behind our own galaxy. We are going there. We cannot see it. |
 | Le fil y entre | Ce qui tire et ce qui pousse : encore débattu. Mission Zero l'écrit tel quel : mesuré, pas vu, pas tranché. Il n'invente pas la suite. | What pulls and what pushes: still debated. Mission Zero writes it as it is: measured, not seen, not settled. It does not invent the rest. |
@@ -123,3 +127,4 @@ qui est à l'écran est le produit lui-même et ses vraies missions.
 Curiosité (un point qui tourne et cherche) → émerveillement et gravité (la médecine : il lit le rapport de l'OMS et le cite)
 → peur (huit sites sur dix exposés) → soulagement (il se refuse lui-même, puis confirme) → confiance (chez vous, rien ne sort)
 → vertige et espoir (l'espace : on va quelque part, et il refuse d'inventer ce qu'on ne voit pas) → le symbole qu'on retient.
+
