@@ -8,6 +8,15 @@ installation is reserved to CRYPTOR.AGENCY and to partners it approves in writin
 An installation without CRYPTOR.AGENCY's signed installation certificate carries no
 warranty and no liability from CRYPTOR.AGENCY.
 
+Earlier commits
+===============
+
+The commits of 26 and 27 October 2026, up to and including b558633, carry an MIT
+license file left from a private skeleton. Those commits were never published nor
+offered to anyone outside CRYPTOR.AGENCY under that file, which is withdrawn. This
+repository, every commit of its history included, is published and offered only
+under the terms of this file.
+
 Additional grant for the Meta Global AI Developer Hackathon 2026
 ================================================================
 
