@@ -420,6 +420,26 @@ The evidence folder (`evidence/<date>/`) holds `journal.jsonl` (every plan, obse
 
 All read on 30 October 2026. The figures are copied as published; the variations and explanations are Mission Zero's, not the sources'.
 
+## Commercial use and certified installation
+
+Mission Zero is source-available, not open source. The public license (PolyForm Noncommercial 1.0.0) covers study, research, personal testing and the noncommercial organizations it lists.
+
+Any commercial use needs a commercial license from CRYPTOR.AGENCY (SIREN 993 537 422, France). That includes running Mission Zero on a business's own sites, running it for customers and installing it for anyone else.
+
+Under the commercial license, Mission Zero is installed, configured and updated only by CRYPTOR.AGENCY or by a partner it has approved in writing, by name. Each installation comes with a signed installation certificate (customer, sites, date, version, and the fingerprint of the JavaScript code in `src/`, `web/` and `bench/` with `package.json` and the dependency lock), that CRYPTOR.AGENCY confirms on request.
+
+`npm run certificate` checks it, offline: certified, not certified, signature refused, revoked, or code changed since the installation (the changed files are named). The check sends nothing, needs no network and never blocks the agent: an installation without a certificate runs exactly the same. The certificate proves provenance and integrity of the code delivered, signed by its author; it is not a copyright license and not a security audit. The public keys and the revocation list are in `certificates/`. CRYPTOR.AGENCY signs with one key, pinned in the code and published here and on https://cryptor.agency, so a key swapped in to self-certify is refused:
+
+- `cryptor-2026-1`: `sha256:1ae28a09dc2ceb9e89045a717d94c5fc8c1a6be21877e5cc260ac63cd5433a07` (SHA-256 of the public key, DER)
+
+Set `MZ_SITE` to the site this installation serves: a certificate copied from another site is then reported as such.
+
+An installation without that certificate, including one built from this repository, carries no warranty, no support and no liability from CRYPTOR.AGENCY. Commercial use without a license infringes CRYPTOR.AGENCY's copyright.
+
+This does not affect the rights the hackathon organizers hold on the submitted version under the Official Rules.
+
+Licensing: https://cryptor.agency
+
 ## License
 
 PolyForm Noncommercial 1.0.0: the code is readable and usable for personal study, research and testing, and by noncommercial organizations; the hackathon organizers use it under the Official Rules. Any commercial use requires a license from CRYPTOR.AGENCY. Copyright (c) 2026 CRYPTOR.AGENCY.

@@ -15,6 +15,7 @@
 // - coût borné par requête (MZ_API_CAP_USD, 0,25 $ par défaut) et par jour (le plafond quotidien du client Meta) ;
 // - aucune trace de pile ni de clé dans les réponses ou le journal ; pas de CORS sauf MZ_API_ORIGIN.
 //   MZ_API_KEY=<clé> node --env-file-if-exists=.env src/api.js
+import { statusLine } from './certificate.js';
 import http from 'node:http';
 import { timingSafeEqual, createHash } from 'node:crypto';
 import { pathToFileURL } from 'node:url';
@@ -102,5 +103,5 @@ if (import.meta.url === pathToFileURL(process.argv[1] || '').href) {
   const server = createApi({ key: process.env.MZ_API_KEY, verify, origin: process.env.MZ_API_ORIGIN || null, log: (l) => console.log(JSON.stringify(l)) });
   const host = process.env.HOST || '127.0.0.1', port = Number(process.env.PORT || 3000);
   server.requestTimeout = LIMITS.timeoutMs + 10000; server.headersTimeout = 15000;
-  server.listen(port, host, () => console.log('Mission Zero API · http://' + host + ':' + port + '/api/verify'));
+  server.listen(port, host, () => { console.log('Mission Zero API · http://' + host + ':' + port + '/api/verify'); console.log(statusLine()); });
 }

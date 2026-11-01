@@ -23,6 +23,8 @@ const login = loginArg === 'none' ? null : { user: loginArg.split(':')[0], passw
 // --files=server.js,index.html: the files the model may edit (default: server.js). --policy: the generic policy probes join --scan.
 const files = arg('files', 'server.js').split(',').map((s) => s.trim()).filter(Boolean);
 // The key is checked before anything is scanned or written: no key = one line, no stack, no empty evidence folder.
+import { statusLine } from '../src/certificate.js';
+console.log(statusLine()); // certified installation or not: told once, never blocking
 let client;
 try { client = createClient(); } catch (e) { console.error(e.message); process.exit(1); }
 const folder = evidenceFolder('repair-');

@@ -22,3 +22,6 @@ film/out/
 
 # images intermédiaires du film (régénérées par video/build/demo-record.cjs)
 video/demo/frames/
+
+# a client's installation certificate stays with the client
+mission-zero-certificate.json
