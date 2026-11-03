@@ -565,13 +565,13 @@ html, body { font-family:'Plus Jakarta Sans','Segoe UI',system-ui,sans-serif !im
           { n: 9, w: 56, l: t('effet chez l\u2019animal et passage dans le cerveau · citations vérifiées', 'effect in animals and brain penetration · quotes checked'), cls: 'ok' }
         ]) + '</div>';
         if (w > 11.5) h += '<div class="mleads">' + LEADS.map(function (x, i) { return '<div class="mlead' + on(w, 11.7 + i * 2.2) + '"><div class="mld">' + x.d + '<span>' + x.u + '</span></div><i>' + x.q + '</i><span class="mok">VERIFIED · PubMed ' + x.p + '</span></div>'; }).join('') + '</div>';
-        if (w > 20.0) h += '<div class="mfoot on">' + t('Chez la souris, pas encore chez l\u2019humain · pour aller plus loin, un accès autorisé aux données de laboratoire · coût ≈ 2,30 $', 'In mice, not yet in humans · to go further, authorised access to lab data · cost ≈ $2.30') + '</div>';
+        if (w > 20.0) h += '<div class="mfoot on">' + t('Chez la souris, pas encore chez l’humain · pour les chercheurs · pas un avis médical · coût ≈ 2,30 , 'In mice, not yet in humans · for researchers · not medical advice · cost ≈ $2.30') + '</div>';
       } else if (u < T3) {
         var z = u - T2;
-        h += '<div class="mend' + on(z, 0.2) + '"><div class="meh">' + t('Des pistes pour les chercheurs.<br><b>Pas des traitements.</b>', 'Leads for researchers.<br><b>Not treatments.</b>') + '</div><div class="mes">' + t('Chaque chiffre a sa page. Un humain décide.', 'Every figure has its page. A human decides.') + '</div></div>';
+        h += '<div class="mend' + on(z, 0.2) + '"><div class="meh">' + t('Des pistes pour les chercheurs.<br><b>Pas des traitements.</b>', 'Leads for researchers.<br><b>Not treatments.</b>') + '</div><div class="mes">' + t('Pas un avis médical. Chaque chiffre a sa page. Un humain décide.', 'Not medical advice. Every figure has its page. A human decides.') + '</div></div>';
       } else {
         var c = u - T3;
-        h += '<div class="mend' + on(c, 0.2) + '"><div class="mk mkbig">' + t('CHERCHEURS, LABORATOIRES', 'RESEARCHERS, LABS') + '</div><div class="meh" style="margin-top:18px">' + t('Apportez-nous vos <b>données de laboratoire</b>.', 'Bring us your <b>lab data</b>.') + '</div><div class="mes">' + t('Nous lisons tout, nous prouvons tout, <b>vous décidez</b>.<br>Lecture prouvée, essais déjà faits, contradiction, veille.', 'We read everything, we prove everything, <b>you decide</b>.<br>Proven reading, trials already run, contradiction, continuous watch.') + '</div></div>';
+        h += '<div class="mend' + on(c, 0.2) + '"><div class="mk mkbig">' + t('CHERCHEURS, LABORATOIRES', 'RESEARCHERS, LABS') + '</div><div class="meh" style="margin-top:18px">' + t('Apportez-nous vos <b>données de laboratoire</b>.', 'Bring us your <b>lab data</b>.') + '</div><div class="mes">' + t('Nous lisons tout, nous prouvons tout, <b>vous décidez</b>.<br>Pour les chercheurs. Pas un avis médical. Des hypothèses, pas des traitements.', 'We read everything, we prove everything, <b>you decide</b>.<br>For researchers. Not medical advice. Hypotheses, not treatments.') + '</div></div>';
       }
       $('med').innerHTML = mzh(h); var cur = $('cursor'); if (cur) cur.style.opacity = '0';
     } };
@@ -606,13 +606,95 @@ html, body { font-family:'Plus Jakarta Sans','Segoe UI',system-ui,sans-serif !im
 </script>
 </body>
 </html>
-, 'In mice, not yet in humans · to go further, authorised access to lab data · cost ≈ $2.30') + '</div>';
+, 'In mice, not yet in humans · for researchers · not medical advice · cost ≈ $2.30') + '</div>';
       } else if (u < T3) {
         var z = u - T2;
-        h += '<div class="mend' + on(z, 0.2) + '"><div class="meh">' + t('Des pistes pour les chercheurs.<br><b>Pas des traitements.</b>', 'Leads for researchers.<br><b>Not treatments.</b>') + '</div><div class="mes">' + t('Chaque chiffre a sa page. Un humain décide.', 'Every figure has its page. A human decides.') + '</div></div>';
+        h += '<div class="mend' + on(z, 0.2) + '"><div class="meh">' + t('Des pistes pour les chercheurs.<br><b>Pas des traitements.</b>', 'Leads for researchers.<br><b>Not treatments.</b>') + '</div><div class="mes">' + t('Pas un avis médical. Chaque chiffre a sa page. Un humain décide.', 'Not medical advice. Every figure has its page. A human decides.') + '</div></div>';
       } else {
         var c = u - T3;
-        h += '<div class="mend' + on(c, 0.2) + '"><div class="mk mkbig">' + t('CHERCHEURS, LABORATOIRES', 'RESEARCHERS, LABS') + '</div><div class="meh" style="margin-top:18px">' + t('Apportez-nous vos <b>données de laboratoire</b>.', 'Bring us your <b>lab data</b>.') + '</div><div class="mes">' + t('Nous lisons tout, nous prouvons tout, <b>vous décidez</b>.<br>Lecture prouvée, essais déjà faits, contradiction, veille.', 'We read everything, we prove everything, <b>you decide</b>.<br>Proven reading, trials already run, contradiction, continuous watch.') + '</div></div>';
+        h += '<div class="mend' + on(c, 0.2) + '"><div class="mk mkbig">' + t('CHERCHEURS, LABORATOIRES', 'RESEARCHERS, LABS') + '</div><div class="meh" style="margin-top:18px">' + t('Apportez-nous vos <b>données de laboratoire</b>.', 'Bring us your <b>lab data</b>.') + '</div><div class="mes">' + t('Nous lisons tout, nous prouvons tout, <b>vous décidez</b>.<br>Pour les chercheurs. Pas un avis médical. Des hypothèses, pas des traitements.', 'We read everything, we prove everything, <b>you decide</b>.<br>For researchers. Not medical advice. Hypotheses, not treatments.') + '</div></div>';
+      }
+      $('med').innerHTML = mzh(h); var cur = $('cursor'); if (cur) cur.style.opacity = '0';
+    } };
+  }
+  var MED = EX === 'medecine';
+  var LAB = EX === 'labo', SHOP = EX === 'boutique';
+  var A = SHOP || MED ? null : LAB ? labTimeline(false) : appTimeline({ avec: false, result: D.sans.result, rows: D.sans.rows, verdict: D.sans.verdict });
+  // installations après la 1re (gérant, 1er novembre) : le terminal en accéléré, 4 s au plus
+  var fit = function (tl, d) { var f = tl.dur / d; return { dur: d, render: function (u) { tl.render(Math.min(tl.dur, u * f)); } }; };
+  var B = SHOP ? termTimeline('shop') : fit(termTimeline(''), 4.0);
+  var C = SHOP || MED ? null : LAB ? labTimeline(true) : appTimeline({ avec: true, result: D.avec.result, rows: D.avec.rows, verdict: D.avec.verdict });
+  var GAP = 0, FADE = 0; // plus d'écran noir entre les parties : on enchaîne (gérant, 1er novembre)
+  var pages = MED ? [{ id: 'med', tl: medTimeline() }] : SHOP ? [{ id: 'term', tl: B }] : [{ id: LAB ? 'lab' : 'app', tl: A }, { id: 'term', tl: B }, { id: LAB ? 'lab' : 'app', tl: C }];
+  var starts = []; var acc = 0; pages.forEach(function (p) { starts.push(acc); acc += p.tl.dur + GAP; });
+  var TOTAL = acc - GAP;
+  function seek(t) {
+    var i = pages.length - 1; while (i > 0 && t < starts[i]) i--;
+    var p = pages[i], u = t - starts[i];
+    document.querySelectorAll('.page').forEach(function (el) { el.classList.remove('on'); });
+    $(p.id).classList.add('on');
+    p.tl.render(Math.max(0, Math.min(p.tl.dur, u)));
+    var black = u < 0 ? 1 : u < FADE ? 1 - u / FADE : u > p.tl.dur - FADE ? Math.min(1, (u - (p.tl.dur - FADE)) / FADE) : 0;
+    if (u > p.tl.dur) black = 0; // après la dernière image : on la garde, jamais de noir
+    $('black').style.opacity = black.toFixed(3);
+    return true;
+  }
+  window.__demo = { seek: seek, total: TOTAL, ex: EX, lang: L, starts: starts };
+  window.addEventListener('message', function (e) { var d = e.data || {}; if (typeof d.mzSeek === 'number') seek(d.mzSeek); });
+  try { if (window.parent !== window) window.parent.postMessage({ mzDemo: EX, total: TOTAL }, '*'); } catch (e) { /* rien */ }
+  seek(Number(Q.get('t') || 0));
+})();
+</script>
+</body>
+</html>
+, 'In mice, not yet in humans · for researchers · not medical advice · cost ≈ $2.30') + '</div>';
+      } else if (u < T3) {
+        var z = u - T2;
+        h += '<div class="mend' + on(z, 0.2) + '"><div class="meh">' + t('Des pistes pour les chercheurs.<br><b>Pas des traitements.</b>', 'Leads for researchers.<br><b>Not treatments.</b>') + '</div><div class="mes">' + t('Pas un avis médical. Chaque chiffre a sa page. Un humain décide.', 'Not medical advice. Every figure has its page. A human decides.') + '</div></div>';
+      } else {
+        var c = u - T3;
+        h += '<div class="mend' + on(c, 0.2) + '"><div class="mk mkbig">' + t('CHERCHEURS, LABORATOIRES', 'RESEARCHERS, LABS') + '</div><div class="meh" style="margin-top:18px">' + t('Apportez-nous vos <b>données de laboratoire</b>.', 'Bring us your <b>lab data</b>.') + '</div><div class="mes">' + t('Nous lisons tout, nous prouvons tout, <b>vous décidez</b>.<br>Pour les chercheurs. Pas un avis médical. Des hypothèses, pas des traitements.', 'We read everything, we prove everything, <b>you decide</b>.<br>For researchers. Not medical advice. Hypotheses, not treatments.') + '</div></div>';
+      }
+      $('med').innerHTML = mzh(h); var cur = $('cursor'); if (cur) cur.style.opacity = '0';
+    } };
+  }
+  var MED = EX === 'medecine';
+  var LAB = EX === 'labo', SHOP = EX === 'boutique';
+  var A = SHOP || MED ? null : LAB ? labTimeline(false) : appTimeline({ avec: false, result: D.sans.result, rows: D.sans.rows, verdict: D.sans.verdict });
+  // installations après la 1re (gérant, 1er novembre) : le terminal en accéléré, 4 s au plus
+  var fit = function (tl, d) { var f = tl.dur / d; return { dur: d, render: function (u) { tl.render(Math.min(tl.dur, u * f)); } }; };
+  var B = SHOP ? termTimeline('shop') : fit(termTimeline(''), 4.0);
+  var C = SHOP || MED ? null : LAB ? labTimeline(true) : appTimeline({ avec: true, result: D.avec.result, rows: D.avec.rows, verdict: D.avec.verdict });
+  var GAP = 0, FADE = 0; // plus d'écran noir entre les parties : on enchaîne (gérant, 1er novembre)
+  var pages = MED ? [{ id: 'med', tl: medTimeline() }] : SHOP ? [{ id: 'term', tl: B }] : [{ id: LAB ? 'lab' : 'app', tl: A }, { id: 'term', tl: B }, { id: LAB ? 'lab' : 'app', tl: C }];
+  var starts = []; var acc = 0; pages.forEach(function (p) { starts.push(acc); acc += p.tl.dur + GAP; });
+  var TOTAL = acc - GAP;
+  function seek(t) {
+    var i = pages.length - 1; while (i > 0 && t < starts[i]) i--;
+    var p = pages[i], u = t - starts[i];
+    document.querySelectorAll('.page').forEach(function (el) { el.classList.remove('on'); });
+    $(p.id).classList.add('on');
+    p.tl.render(Math.max(0, Math.min(p.tl.dur, u)));
+    var black = u < 0 ? 1 : u < FADE ? 1 - u / FADE : u > p.tl.dur - FADE ? Math.min(1, (u - (p.tl.dur - FADE)) / FADE) : 0;
+    if (u > p.tl.dur) black = 0; // après la dernière image : on la garde, jamais de noir
+    $('black').style.opacity = black.toFixed(3);
+    return true;
+  }
+  window.__demo = { seek: seek, total: TOTAL, ex: EX, lang: L, starts: starts };
+  window.addEventListener('message', function (e) { var d = e.data || {}; if (typeof d.mzSeek === 'number') seek(d.mzSeek); });
+  try { if (window.parent !== window) window.parent.postMessage({ mzDemo: EX, total: TOTAL }, '*'); } catch (e) { /* rien */ }
+  seek(Number(Q.get('t') || 0));
+})();
+</script>
+</body>
+</html>
+, 'In mice, not yet in humans · for researchers · not medical advice · cost ≈ $2.30') + '</div>';
+      } else if (u < T3) {
+        var z = u - T2;
+        h += '<div class="mend' + on(z, 0.2) + '"><div class="meh">' + t('Des pistes pour les chercheurs.<br><b>Pas des traitements.</b>', 'Leads for researchers.<br><b>Not treatments.</b>') + '</div><div class="mes">' + t('Pas un avis médical. Chaque chiffre a sa page. Un humain décide.', 'Not medical advice. Every figure has its page. A human decides.') + '</div></div>';
+      } else {
+        var c = u - T3;
+        h += '<div class="mend' + on(c, 0.2) + '"><div class="mk mkbig">' + t('CHERCHEURS, LABORATOIRES', 'RESEARCHERS, LABS') + '</div><div class="meh" style="margin-top:18px">' + t('Apportez-nous vos <b>données de laboratoire</b>.', 'Bring us your <b>lab data</b>.') + '</div><div class="mes">' + t('Nous lisons tout, nous prouvons tout, <b>vous décidez</b>.<br>Pour les chercheurs. Pas un avis médical. Des hypothèses, pas des traitements.', 'We read everything, we prove everything, <b>you decide</b>.<br>For researchers. Not medical advice. Hypotheses, not treatments.') + '</div></div>';
       }
       $('med').innerHTML = mzh(h); var cur = $('cursor'); if (cur) cur.style.opacity = '0';
     } };
