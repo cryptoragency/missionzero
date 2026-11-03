@@ -1,0 +1,1374 @@
+{
+  "date": "2026-11-02T10:51:55.738Z",
+  "usd": 0.048116400000000004,
+  "rows": [
+    {
+      "nct": "NCT00003884",
+      "queries": [
+        "\"NOVARTIS-4244603011\" results",
+        "A Randomized, Double-Blind, Placebo-Controlled, Multicenter Trial to Evaluate the Safety and Efficacy of Zoledronate"
+      ],
+      "searchFailed": 0,
+      "kept": 5,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "None of the results concern zoledronate in solid tumors with bone metastases, covering instead osteoporosis, diabetes, epilepsy, CRPS-1 pain, and elecoglipron."
+    },
+    {
+      "nct": "NCT06107790",
+      "queries": [
+        "HS022 HER2-positive Breast Cancer phase III 2022 Zhejiang",
+        "Phase III Clinical Trial Comparing the Safety, Efficacy, and Immunogenicity of HS022 and Trastuzumab®"
+      ],
+      "searchFailed": 0,
+      "kept": 6,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "All results are drug overviews or registry/listing descriptions of NCT06107790 with no journal article, abstract, or results synopsis."
+    },
+    {
+      "nct": "NCT00063726",
+      "queries": [
+        "bortezomib Multiple Myeloma phase III 2005 Millennium",
+        "An International, Non-Comparative, Open-Label Study of PS-341 Administered to Patients With Multiple Myeloma Who"
+      ],
+      "searchFailed": 0,
+      "kept": 12,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "No result reports outcomes for this non-comparative companion study; result 1 reports the parent M34101-039 APEX randomized trial and the rest are reviews of other trials or trial listings without results."
+    },
+    {
+      "nct": "NCT00005623",
+      "queries": [
+        "\"BARR-PCA-301\" results",
+        "A Phase III, Randomized, Multicenter, Placebo-Controlled, Double-Blind Clinical Trial to Study the Efficacy and"
+      ],
+      "searchFailed": 0,
+      "kept": 4,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "None of the results concern cyproterone acetate for prostate cancer hot flashes, covering only inavolisib in breast cancer and daridorexant in insomnia."
+    },
+    {
+      "nct": "NCT00002742",
+      "queries": [
+        "\"AR-95-41.356-006\" results",
+        "A PROSPECTIVE RANDOMIZED, DOUBLE-BLIND, COMPARATIVE, MULTICENTER STUDY TO EVALUATE EFFICACY AND SAFETY OF NYSTATIN"
+      ],
+      "searchFailed": 0,
+      "kept": 2,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "Both results concern biosimilar adalimumab in rheumatoid arthritis, unrelated to the antifungal fever-neutropenia trial."
+    },
+    {
+      "nct": "NCT01111344",
+      "queries": [
+        "Glizigen External Anogenital Warts phase III 2011 Catalysis",
+        "Efficacy of Glizigen-Viudid in the Treatment of External Anogenital Warts in Children and Adolescents."
+      ],
+      "searchFailed": 0,
+      "kept": 6,
+      "verdict": "FOUND",
+      "url": "https://innovativejournal.in/index.php/ijmhs/article/view/487/",
+      "quote": "Method: A longitudinal, randomized, double-blind, controlled, phase IV clinical trial was carried out on 76 patients of both genders aged between 6 and 18, who had been diagnosed with anogenital warts. The treatment consisted in the topical application of glycyrrhizinic acid together with the food supplement that was taken orally, three times a day for twelve weeks, with fortnightly check-ups, to evaluate the effectiveness of this combination according to the patient's response to the treatment and to identify any adverse reactions experienced. The relationship between the time taken for the lesions to disappear and the patient's response to the treatment along with the reduction in the number of lesions and their clinical presentation were all taken into account. Results: The lesions of 68.4% of the patients (26 individuals) disappeared altogether",
+      "why": "The page describes the same 76-patient pediatric anogenital-warts trial of glycyrrhizinic acid plus immunostimulant and reports lesion clearance outcomes.",
+      "problem": null
+    },
+    {
+      "nct": "NCT02076815",
+      "queries": [
+        "\"2013-003410-41\" results",
+        "A Phase III Randomized, Multicenter, Double-blind, Active Controlled Study to Compare the Efficacy and"
+      ],
+      "searchFailed": 0,
+      "kept": 7,
+      "verdict": "NOT FOUND",
+      "url": "https://www.clinicaltrialsregister.eu/ctr-search/trial/2013-003410-41/results",
+      "quote": "Comparison groups Anagrelide Retard v Thromboreductin Number of subjects included in analysis 85 Analysis specification Pre-specified Analysis type non-inferiority [1] P-value < 0.0001 Method Mixed models analysis Parameter type Ratio of means Point estimate 0.9205",
+      "why": "Drug names match registry drugs and sponsor/indication/N=106 match, and the quote gives the primary efficacy result.",
+      "problem": "the quote is not in the passages"
+    },
+    {
+      "nct": "NCT01185470",
+      "queries": [
+        "Implantation Cancers phase III 2016 Medallion",
+        "THE CLINICAL EVALUATION OF IMPLANTABLE PUMP SYSTEM FOR SAFETY AND DELIVERY ACCURACY IN PATIENTS"
+      ],
+      "searchFailed": 0,
+      "kept": 12,
+      "verdict": "PROBABLE",
+      "url": "https://www.sciencedirect.com/science/article/pii/S1094715922013484",
+      "quote": "",
+      "why": "page not readable: blocked: bot challenge (http 403), a browser would be needed · Title and topic match the implantable intrathecal pump accuracy/safety evaluation for chronic pain, indicating the published results article for NCT01185470."
+    },
+    {
+      "nct": "NCT03413579",
+      "queries": [
+        "Nimotuzumab Cervical Cancer phase III 2021 El",
+        "Multicenter Randomised Double-blind Study to Compare HR3 or Placebo in Combination With Cisplatin-navelbine for"
+      ],
+      "searchFailed": 0,
+      "kept": 12,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "No result reports outcomes for NCT03413579/CIMAHOPE cisplatin-vinorelbine trial; 0-6 are chemoradiotherapy/CC3 or retrospective studies and 8-11 are registry listings only."
+    },
+    {
+      "nct": "NCT00241020",
+      "queries": [
+        "Octreotide Advanced Hepatocellular Carcinoma phase III 2005 Novartis",
+        "Evaluation of the Efficacy of Long-acting Release Octreotide in Patients With Advanced Hepatocellular Carcinoma"
+      ],
+      "searchFailed": 0,
+      "kept": 8,
+      "verdict": "PROBABLE",
+      "url": "https://www.sciencedirect.com/science/article/pii/S0959804909001245",
+      "quote": "",
+      "why": "page not readable: blocked: bot challenge (http 403), a browser would be needed · It describes a randomised phase III trial of long-acting octreotide in advanced HCC with overall survival as aim, matching the registry title, drug, condition, and phase."
+    },
+    {
+      "nct": "NCT03727074",
+      "queries": [
+        "5-FU Actinic Keratosis (AK) phase III 2019 Sol-Gel",
+        "A Multi-Center, Double-Blind, Randomized, Vehicle-Controlled, Parallel-Group Bioequivalence Study to Compare Sol-Gel Technologies' 5-FU Cream,"
+      ],
+      "searchFailed": 0,
+      "kept": 11,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "Results 8-10 only describe/list NCT03727074 without results and results 0-7 concern different 5-FU formulations, combinations, or reviews, not this Sol-Gel bioequivalence trial."
+    },
+    {
+      "nct": "NCT00156156",
+      "queries": [
+        "Asoprisnil Fibroid Uterus phase III 2007 Abbott",
+        "A Phase 3, Continuation Study to Evaluate the Long-Term Safety of Asoprisnil in Subjects"
+      ],
+      "searchFailed": 0,
+      "kept": 12,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "No result reports the continuation long-term-safety study NCT00156156; results 0/3 report a 3-month trial and result 1 reports pooled 12-month parent trials, while the rest only describe or list the trial."
+    },
+    {
+      "nct": "NCT00410943",
+      "queries": [
+        "OROS Pain phase III 1999 Alza",
+        "A Randomized, Double-Blind, Repeated Dose, Parallel-Group Comparison of the Efficacy & Tolerability of Dilaudid"
+      ],
+      "searchFailed": 0,
+      "kept": 15,
+      "verdict": "PROBABLE",
+      "url": "https://www.jpsmjournal.com/article/S0885-3924(06)00628-2/fulltext",
+      "quote": "",
+      "why": "page not readable: blocked: bot challenge (http 403), a browser would be needed · Title 'Clinical Trial Results with OROS Hydromorphone' indicates a journal article summarizing efficacy/tolerability results matching the OROS vs immediate-release chronic pain trial, not just a registry listing."
+    },
+    {
+      "nct": "NCT02040935",
+      "queries": [
+        "\"2013-000829-31\" results",
+        "HOMERUS: A Local, Open Label, Multicentre, Phase IIIB Study, Investigating Subcutaneous Trastuzumab Administered at"
+      ],
+      "searchFailed": 0,
+      "kept": 0,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": ""
+    },
+    {
+      "nct": "NCT01674855",
+      "queries": [
+        "PEG-G-CSF Chemotherapy Induced Neutropenia phase III 2013 Dong-A",
+        "Randomized, Open, Multi-Center, Phase III Study to Evaluate Efficacy and Safety in Chemotherapy-induced Neutropenia"
+      ],
+      "searchFailed": 0,
+      "kept": 9,
+      "verdict": "NOT FOUND",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10194448/",
+      "quote": "need for a total of 160 patients, 80 in each group",
+      "why": "Page describes a planned 160-patient protocol with no outcome data, mismatching NCT01674855's 74 patients.",
+      "readVia": "https://europepmc.org/article/MED/37335745",
+      "problem": "no results on the page"
+    },
+    {
+      "nct": "NCT00784680",
+      "queries": [
+        "\"D5392C08389\" results",
+        "A Randomised, Double-Blind, Parallel Group Trial to Assess Quality of Life With Arimidex Alone,"
+      ],
+      "searchFailed": 0,
+      "kept": 6,
+      "verdict": "NOT FOUND",
+      "url": "https://link.springer.com/content/pdf/10.1007/s10549-006-9260-6",
+      "quote": "",
+      "why": "Page content inaccessible due to JavaScript block, so no trial identification or result can be verified.",
+      "problem": "no results on the page"
+    },
+    {
+      "nct": "NCT02716792",
+      "queries": [
+        "Ibandronate Pain; Bone Neoplasms; phase III 2008 Hoffmann-La",
+        "Randomized, Open Label Study to Evaluate Renal Safety of Intravenous Bondronat 6 mg Infusions"
+      ],
+      "searchFailed": 0,
+      "kept": 13,
+      "verdict": "PROBABLE",
+      "url": "https://www.annalsofoncology.org/article/S0923-7534(19)40285-8/fulltext",
+      "quote": "",
+      "why": "page not readable: blocked: bot challenge (http 403), a browser would be needed · It is a journal article reporting repeated 15-min vs 60-min ibandronate renal safety in breast cancer bone metastases, matching the trial's purpose and intervention."
+    },
+    {
+      "nct": "NCT03936218",
+      "queries": [
+        "Inj. Advanced Prostate Cancer phase III 2024 Eurofarma",
+        "A Two Arm, Multi Centric, Randomised, Open Label, Parallel Study to Compare Pharmacodynamics of"
+      ],
+      "searchFailed": 0,
+      "kept": 10,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "None report results for NCT03936218, with result 0 being only a trial listing without results."
+    },
+    {
+      "nct": "NCT00270101",
+      "queries": [
+        "epoetin Anemia phase III 1996 Johnson",
+        "A Placebo-Controlled Study on the Effect of r-huEPO in Patients With Multiple Myeloma Followed"
+      ],
+      "searchFailed": 0,
+      "kept": 12,
+      "verdict": "NOT FOUND",
+      "url": "https://yoda.yale.edu/clinical-trial/nct00270101-a-placebo-controlled-study-on-the-effect-of-r-huepo-in-patients-with-multiple-myeloma-followed-by-an-open-label-extension/",
+      "quote": "",
+      "why": "Page lists only trial identifiers, enrollment and available documents with no outcome numbers stated.",
+      "problem": "no results on the page"
+    },
+    {
+      "nct": "NCT00140075",
+      "queries": [
+        "Epirubicin Adenocarcinoma phase III 2006 Pfizer",
+        "Phase III, Randomized Study Of Epirubicin/Cyclophosphamide Followed By Taxane Sequential Chemotherapy Versus Epirubicin/Taxane Concurrent"
+      ],
+      "searchFailed": 0,
+      "kept": 11,
+      "verdict": "PROBABLE",
+      "url": "https://ascopubs.org/doi/10.1200/jco.2006.24.18_suppl.573",
+      "quote": "",
+      "why": "page not readable: blocked: bot challenge (http 403), a browser would be needed · It is a 2006 ASCO conference abstract whose title matches the same concurrent vs sequential epirubicin regimens for node-positive breast cancer."
+    },
+    {
+      "nct": "NCT00335075",
+      "queries": [
+        "Temozolomide Glioblastoma phase III 2006 Merck",
+        "A Multicenter, Open-Label, Randomized, Active-Controlled Parallel Groups Study Comparing the Efficacy and Safety of"
+      ],
+      "searchFailed": 0,
+      "kept": 12,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "No result describes Temodal vs semustine in recurrent glioblastoma/anaplastic astrocytoma or Study P03644, only other temozolomide trials or unrelated studies."
+    },
+    {
+      "nct": "NCT02526784",
+      "queries": [
+        "\"2015-000357-20\" results",
+        "A Multi-Centre, Open-Label, Randomised Trial Evaluating Two Subcutaneous Injection Techniques and Intramuscular Administration of"
+      ],
+      "searchFailed": 0,
+      "kept": 6,
+      "verdict": "NOT FOUND",
+      "url": "https://www.clinicaltrialsregister.eu/ctr-search/trial/2015-000357-20/results",
+      "quote": "US NCT number NCT02526784 ... Point estimate -0.39 Confidence interval      level 95%     sides 2-sided     lower limit -0.7     upper limit -0.09",
+      "why": "The page lists the same NCT number as the registry record and reports the primary pain-score treatment effect.",
+      "problem": "the quote is not in the passages"
+    },
+    {
+      "nct": "NCT00683995",
+      "queries": [
+        "KW-2246 Pain, Cancer phase III 2011 Kyowa",
+        "A Phase III Clinical Study of KW-2246 for Breakthrough Pain in Cancer Patients"
+      ],
+      "searchFailed": 0,
+      "kept": 5,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "All results are trial listing/descriptive pages for NCT00683995 or the related NCT00684632, none is a results article, abstract, or results synopsis."
+    },
+    {
+      "nct": "NCT00270127",
+      "queries": [
+        "Epoetin Anemia phase III 1998 Johnson",
+        "Double-Blind, Placebo-Controlled Study to Assess the Effect of Early Intervention and/or Treatment With Epoetin"
+      ],
+      "searchFailed": 0,
+      "kept": 13,
+      "verdict": "PROBABLE",
+      "url": "https://www.ejcancer.com/article/S0959-8049(05)00333-3/abstract",
+      "quote": "",
+      "why": "page not readable: blocked: bot challenge (http 403), a browser would be needed · Its title matches epoetin alfa in nonplatinum chemotherapy with early intervention and explicitly states results of a randomized double-blind placebo-controlled trial."
+    },
+    {
+      "nct": "NCT01126892",
+      "queries": [
+        "Nilotinib Chronic Myeloid Leukemia phase III 2011 Novartis",
+        "An Open-label, Multicenter Study of Treatment With Nilotinib in Adult Patients With Imatinib -"
+      ],
+      "searchFailed": 0,
+      "kept": 15,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "No result reports results for NCT01126892 with 6 patients; the similar-titled result 10 is a trial listing for a different NCT number, not a results report."
+    },
+    {
+      "nct": "NCT01050829",
+      "queries": [
+        "Gadobutrol Magnetic Resonance Imaging phase III 2011 Bayer",
+        "A Multi-center/Multi-national, Randomized, Controlled, Single-blind, Group Comparison Phase 3 Study to Determine the Efficacy"
+      ],
+      "searchFailed": 0,
+      "kept": 12,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "No result reports body-trial results: #2 describes the matching Magnevist-controlled body study but gives no results, while #1,3,4,5,7 are CNS gadobutrol trials."
+    },
+    {
+      "nct": "NCT00598312",
+      "queries": [
+        "Leuprolide Prostate Cancer phase III 2008 Oakwood",
+        "A Phase 3, Open-Label, Multi-Center, Safety And Efficacy Study of Oakwood Laboratories' Leuprolide Acetate"
+      ],
+      "searchFailed": 0,
+      "kept": 5,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "Results 0-3 are trial-listing/descriptive pages and result 4 reports a different leuprolide trial in children with CPP, not prostate cancer."
+    },
+    {
+      "nct": "NCT00443196",
+      "queries": [
+        "MiCK Adenocarcinoma phase III 2010 Pierian",
+        "Application of the Microculture Kinetic MiCK Assay for Apoptosis to Testing Drug Sensitivity of"
+      ],
+      "searchFailed": 0,
+      "kept": 11,
+      "verdict": "PROBABLE",
+      "url": "https://aacrjournals.org/cancerres/article/72/16/3901/575928/The-Microculture-Kinetic-MiCK-Assay-The-Role-of-a",
+      "quote": "",
+      "why": "page not readable: blocked: bot challenge (http 403), a browser would be needed · It is a journal article stating blinded trials showed higher response and survival with MiCK-directed therapy in epithelial ovarian cancer, matching this completed ovarian trial."
+    },
+    {
+      "nct": "NCT00661102",
+      "queries": [
+        "Corticosteroids Breast Cancer phase III 2011 Hoffmann-La",
+        "A Randomized, Open Label Study Comparing the Efficacy of Topical Corticosteroids or Bepantol in"
+      ],
+      "searchFailed": 0,
+      "kept": 10,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "No result is a results article/synopsis for NCT00661102; result 5 is only a trial listing with matching title, and the rest are unrelated topics."
+    },
+    {
+      "nct": "NCT00279344",
+      "queries": [
+        "Fentanyl Standard Opioid Analgesic phase III 2007 Nycomed",
+        "A Randomised, Open, Parallel-group, Multi-centre Trial to Investigate Analgesic Efficacy and Safety of Transdermal"
+      ],
+      "searchFailed": 0,
+      "kept": 13,
+      "verdict": "PROBABLE",
+      "url": "https://www.jpsmjournal.com/article/S0885-3924(08)00251-0/fulltext",
+      "quote": "",
+      "why": "page not readable: blocked: bot challenge (http 403), a browser would be needed · It describes the same 220-patient open parallel-group multicenter trial comparing the fentanyl patch to standard opioid treatment and presents efficacy/safety findings."
+    },
+    {
+      "nct": "NCT00044759",
+      "queries": [
+        "Piperacillin/Tazobactam Hematologic Neoplasms phase III 2003 Wyeth",
+        "A Randomized, Open-Label, Multi-Center, Comparative Study of the Efficacy and Safety of Piperacillin/Tazobactam to"
+      ],
+      "searchFailed": 0,
+      "kept": 12,
+      "verdict": "PROBABLE",
+      "url": "https://academic.oup.com/cid/article-abstract/43/4/447/388596",
+      "quote": "",
+      "why": "page not readable: blocked: bot challenge (http 403), a browser would be needed · Its title exactly matches the registry trial comparing piperacillin-tazobactam vs cefepime in hematologic malignancy and is a journal article reporting efficacy and safety results."
+    },
+    {
+      "nct": "NCT00681551",
+      "queries": [
+        "\"305624\" results",
+        "Intra-individual Comparison Study of Intravenously Administered Magnevist SH L 451A on Lesion Detection Ability"
+      ],
+      "searchFailed": 0,
+      "kept": 10,
+      "verdict": "NOT FOUND",
+      "url": "https://clinicaltrials.bayer.com/study/91103",
+      "quote": "Magnevist (SH L 451A) intra-individual dose comparison study in patients with brain metastasis",
+      "why": "The page states trial purpose and design but provides no outcome numbers or findings.",
+      "problem": "no results on the page"
+    },
+    {
+      "nct": "NCT04509622",
+      "queries": [
+        "Venetoclax Acute Myeloid Leukemia phase III 2021 AbbVie",
+        "An Expanded Access Study for Venetoclax in Combination With Low-Dose Cytarabine in Treatment-Naïve Subjects"
+      ],
+      "searchFailed": 0,
+      "kept": 12,
+      "verdict": "PROBABLE",
+      "url": "https://academic.oup.com/jjco/article/53/7/595/7103410",
+      "quote": "",
+      "why": "page not readable: blocked: bot challenge (http 403), a browser would be needed · It is a journal article on venetoclax plus low-dose cytarabine expanded-access in Japan matching the NCT04509622 population and intervention."
+    },
+    {
+      "nct": "NCT00921375",
+      "queries": [
+        "\"VB037\" results",
+        "Efficacy and Safety of TULY in Prevention and Treatment of Malignancy-associated Hyperuricemia"
+      ],
+      "searchFailed": 0,
+      "kept": 5,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "All results appear to be registry or listing pages describing the trial rather than reporting its results."
+    },
+    {
+      "nct": "NCT00055562",
+      "queries": [
+        "CC Melanoma phase III 2004 Celgene",
+        "Multicenter, Randomized, Controlled, Double-Blind, Parallel-Group Study to Compare the Efficacy and Safety of Two"
+      ],
+      "searchFailed": 0,
+      "kept": 13,
+      "verdict": "FOUND",
+      "url": "https://insights.citeline.com/PS059257/Celgene-To-Pursue-Revlimid-Combination-Use-For-Melanoma-After-Halting-Monotherapy-Phase-III/",
+      "quote": "discontinuation of melanoma trials for lack of efficacy",
+      "why": "The page states melanoma monotherapy Phase III trials were discontinued for lack of efficacy, matching the CC-5013 metastatic melanoma trial.",
+      "problem": null
+    },
+    {
+      "nct": "NCT00401323",
+      "queries": [
+        "\"XRP6976G-322\" results",
+        "A Randomized Phase II-III Multicenter Trial of Docetaxel Plus Cisplatin and Docetaxel Plus 5-FU"
+      ],
+      "searchFailed": 0,
+      "kept": 7,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "None match a phase 3 first-line recurrent/metastatic head-and-neck trial with 568 patients, all are phase II gastric/esophageal or induction/chemoselection studies."
+    },
+    {
+      "nct": "NCT03381417",
+      "queries": [
+        "pegcyte Breast Cancer Female phase III 2017 Nanogen",
+        "A Randomized, Double-blind, Parallel Study Comparing Efficacy and Safety of Pegcyte Nanogen and Reference"
+      ],
+      "searchFailed": 0,
+      "kept": 4,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "All results are trial listing/descriptive pages for NCT03381417 or a different NCT, with none presenting results as a journal article, abstract, or synopsis."
+    },
+    {
+      "nct": "NCT00068952",
+      "queries": [
+        "\"A5921009\" results",
+        "A Phase III, Randomized, Open-Label Study Of IV Edotecarin Vs Temozolomide Or Carmustine BCNU"
+      ],
+      "searchFailed": 0,
+      "kept": 6,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "All results 0-5 are registry listings or trial descriptions with no journal article, abstract, or results synopsis."
+    },
+    {
+      "nct": "NCT00004255",
+      "queries": [
+        "\"CDR0000067502\" results",
+        "A Multi-Center, Open Label, Randomized, Active Controlled Phase II/III Clinical Trial to Evaluate the"
+      ],
+      "searchFailed": 0,
+      "kept": 4,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "None of the results match NCT00004255, its GVHD/bone-marrow-transplant topic, or its 2003 timeframe, all describing unrelated phase II prostate cancer trials."
+    },
+    {
+      "nct": "NCT06910514",
+      "queries": [
+        "Mucopolysaccharide Endoscopic Mucosal Resection phase III 2022 Nakafarma",
+        "Multicenter, Randomized, Double-Blind Clinical Trial on the Efficacy and Safety of a Solution for"
+      ],
+      "searchFailed": 0,
+      "kept": 10,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "No result reports outcomes for 52-patient colonic EMR trial NCT06910514, with candidates describing a different MC-003 gastric trial or only listing/describing the trial/product."
+    },
+    {
+      "nct": "NCT00523107",
+      "queries": [
+        "PG2 Fatigue phase III 2008 PhytoHealth",
+        "PG2 Treatment for Improving Fatigue Among Advanced Cancer Patients Under Standard Palliative Care"
+      ],
+      "searchFailed": 0,
+      "kept": 12,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "No result reports outcomes for NCT00523107 with 91 participants completed 2008; result 8 reports a different later phase IV study in 323 patients."
+    },
+    {
+      "nct": "NCT05078827",
+      "queries": [
+        "Test Actinic Keratoses phase III 2022 Encube",
+        "A Randomized, Double-blind, Multi-center, Three-arm, Parallel-group, Multiple-dose, Placebo Controlled Study to Assess the Therapeutic"
+      ],
+      "searchFailed": 0,
+      "kept": 12,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "All results are registry listings or unrelated methodology articles with no journal article, abstract, or results synopsis for NCT05078827."
+    },
+    {
+      "nct": "NCT00037791",
+      "queries": [
+        "(PN-152,243)/PN-196,444 Neoplasms phase III 2002 Pfizer",
+        "Safety and Efficacy of PN-152,243 /PN-196,444 in the Prevention of Thrombocytopenia in Patients Receiving"
+      ],
+      "searchFailed": 0,
+      "kept": 5,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "No result reports results; the matching NCT00037791 page only describes the trial purpose without outcomes, and the others list different trials or pipeline status."
+    },
+    {
+      "nct": "NCT00195585",
+      "queries": [
+        "Isovorin Colon Cancer phase III 2006 Wyeth",
+        "Post-Approved Phase III Study of 1-LV/5FU Therapy"
+      ],
+      "searchFailed": 0,
+      "kept": 10,
+      "verdict": "NOT FOUND",
+      "url": "https://adisinsight.springer.com/trials/700006091",
+      "quote": "Indications Gastric cancer",
+      "why": "Page describes a gastric cancer 1-LV/5FU trial, not the NCT00195585 colon cancer Isovorin/UFT trial.",
+      "problem": "no results on the page"
+    },
+    {
+      "nct": "NCT05301010",
+      "queries": [
+        "Faceptor Breast Cancer Metastatic phase III 2021 Nanogen",
+        "Randomized, Single-blind, Multicenter, Parallel Group Clinical Trial to Assess Efficacy and Safety of NNG-TMAB"
+      ],
+      "searchFailed": 0,
+      "kept": 8,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "All results only list/describe the trial, drug pipeline, or general breast cancer treatment without reporting efficacy/safety outcomes."
+    },
+    {
+      "nct": "NCT00210080",
+      "queries": [
+        "Uridine Lung Cancer phase III 2003 Merck",
+        "A Double-Blind, Placebo-Controlled, Parallel Group Study of Uridine 5'-Triphosphate UTP Solution for Inhalation as"
+      ],
+      "searchFailed": 0,
+      "kept": 9,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "No result provides results for NCT00210080; same-trial pages only describe it and the only results-type article concerns single-dose physiology, not this 700-patient diagnostic study."
+    },
+    {
+      "nct": "NCT02603705",
+      "queries": [
+        "Oxycodone Moderate-to-severe Chronic Noncancer phase III 2017 Egalet",
+        "An Open-label Phase 3 Trial to Evaluate the Safety and Tolerability of Egalet ADER"
+      ],
+      "searchFailed": 0,
+      "kept": 8,
+      "verdict": "FOUND",
+      "url": "https://www.prnewswire.com/news-releases/egalet-announces-positive-top-line-results-from-phase-3-safety-study-evaluating-safety-of-egalet-002-300558023.html",
+      "quote": "today announced positive top-line results from a phase 3 study evaluating the safety of Egalet-002",
+      "why": "The page announces positive top-line results for the phase 3 safety study of Egalet-002 matching this registry record.",
+      "problem": null
+    },
+    {
+      "nct": "NCT05614518",
+      "queries": [
+        "Sodium Bone Metastases phase III 2022 HTA",
+        "A Randomized, Open-Label, Crossover, Controlled, Multi-center Clinical Study to Assess the Diagnostic Performance and"
+      ],
+      "searchFailed": 0,
+      "kept": 13,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "No result matches the 18F-NaF-PET/CT vs 99mTc-MDP diagnostic performance trial NCT05614518, all are unrelated reviews or different trials."
+    },
+    {
+      "nct": "NCT01394263",
+      "queries": [
+        "Histrelin Prostate Cancer phase III 2003 Endo",
+        "Phase III, Open-Label Randomized, Parallel, Active-Control Study to Evaluate Efficacy and Safety of Histrelin"
+      ],
+      "searchFailed": 0,
+      "kept": 7,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "All results are trial registry, listing, or portal pages describing the trial, with no journal article, abstract, or results synopsis present."
+    },
+    {
+      "nct": "NCT00036400",
+      "queries": [
+        "epoetin Stomach Neoplasms phase III 2003 Johnson",
+        "A Double-Blind, Randomized, Placebo-Controlled Study of the Efficacy and Safety of Epoetin Alfa Administered"
+      ],
+      "searchFailed": 0,
+      "kept": 9,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "No result reports outcomes for NCT00036400; results 0-2 are registry listings and 3-8 concern different drugs, trials, or cancers."
+    },
+    {
+      "nct": "NCT00341055",
+      "queries": [
+        "Epoetin Anemia phase III 2004 Johnson",
+        "A Pilot Study to Evaluate the Hematologic Response Rate of PROCRIT� Epoetin Alfa at"
+      ],
+      "searchFailed": 0,
+      "kept": 12,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "No result reports outcomes for NCT00341055 80,000U weekly epoetin alfa, with the only same-NCT page being a descriptive listing without results."
+    },
+    {
+      "nct": "NCT00039910",
+      "queries": [
+        "(PN-152,243)/ Non-Hodgkin Lymphoma phase III 2003 Pfizer",
+        "Safety and Efficacy of PN-152,243 /PN-196,444 in the Prevention of Thrombocytopenia in Recurrent or"
+      ],
+      "searchFailed": 0,
+      "kept": 6,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "All results only describe or list the trial prospectively and none provide results, with two referring to different NCT numbers."
+    },
+    {
+      "nct": "NCT00172055",
+      "queries": [
+        "Zoledronic Cancer Prostate phase III 2009 Novartis",
+        "Study to Assess Efficacy and Safety of Zoledronic Acid and the Value of Markers"
+      ],
+      "searchFailed": 0,
+      "kept": 15,
+      "verdict": "NOT FOUND",
+      "url": "https://acsjournals.onlinelibrary.wiley.com/doi/10.1002/cncr.24404",
+      "quote": "Forty men received either a single infusion of zoledronic acid (4 mg intravenously on Day 1) or no infusion during ADT.",
+      "why": "This page describes a 40-patient study, not the 218-participant NCT00172055 trial.",
+      "readVia": "https://europepmc.org/article/MED/19484786",
+      "problem": "no results on the page"
+    },
+    {
+      "nct": "NCT00635713",
+      "queries": [
+        "\"D6995C00021\" results",
+        "A Double-Blind, Randomized, Multi-Center Trial Comparing the Efficacy and Tolerability of 125 and 250mg"
+      ],
+      "searchFailed": 0,
+      "kept": 6,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "None of the results concern fulvestrant vs anastrozole in advanced breast cancer or NCT00635713."
+    },
+    {
+      "nct": "NCT00210587",
+      "queries": [
+        "epoetin Anemia phase III 2005 Johnson",
+        "A Pilot Study to Evaluate the Response Rate of Epoetin Alfa PROCRIT at 80,000"
+      ],
+      "searchFailed": 0,
+      "kept": 10,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "No result reports outcomes for this 51-patient non-chemotherapy/radiation pilot, with the closest matches 7 and 8 being trial listings only."
+    },
+    {
+      "nct": "NCT00492986",
+      "queries": [
+        "\"2005-002524-34\" results",
+        "An Open Label, Non Comparative, Phase III Study of the Raf Kinase Inhibitor BAY"
+      ],
+      "searchFailed": 0,
+      "kept": 5,
+      "verdict": "FOUND",
+      "url": "https://www.clinicaltrialsregister.eu/ctr-search/trial/2005-002524-34/results",
+      "quote": "Clinical Trial Results: An Open Label, Non Comparative, Phase III Study of the Raf Kinase Inhibitor BAY 43-9006 as a Subsequent to First Line Therapy in Patients with Advanced Renal Cell Carcinoma Summary EudraCT number 2005-002524-34",
+      "why": "The page titles this matching trial as Clinical Trial Results and lists a results version.",
+      "problem": null
+    },
+    {
+      "nct": "NCT00931008",
+      "queries": [
+        "SID530, Non-Small Cell Lung phase III 2011 SK",
+        "A Randomized, Double-Blind, Two-Way Crossover, Bioequivalence Study of SID530 and Taxotere® in Study Participants"
+      ],
+      "searchFailed": 0,
+      "kept": 7,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "All listed results are trial-description or listing pages with no journal article, abstract, or results synopsis."
+    },
+    {
+      "nct": "NCT00038064",
+      "queries": [
+        "Darbepoetin Neoplasms phase III 2004 Amgen",
+        "A Randomized, Open-Label Study of Darbepoetin Alfa Novel Erythropoiesis Stimulation Protein, NESP and rHuEPO"
+      ],
+      "searchFailed": 0,
+      "kept": 15,
+      "verdict": "NOT FOUND",
+      "url": "https://www.amgen.com/newsroom/press-releases/2005/05/final-results-of-phase-3-head-to-head-study-demonstrate-aranesp-dosed-every-two-weeks-is-comparable-to-epoetin-alfa-dosed-weekly-in-cancer-patients-with-chemotherapy-induced-anemia",
+      "quote": "a total of 1,220 patients with chemotherapy-induced anemia were randomized to receive either Aranesp 200 mcg every two weeks (n=613) or Epoetin alfa 40,000 U once a week (n=607)",
+      "why": "The page describes a 1,220-patient head-to-head study, which does not match the registry record's 707 participants for NCT00038064.",
+      "problem": "no results on the page"
+    },
+    {
+      "nct": "NCT00237120",
+      "queries": [
+        "Imatinib Chronic Myelogenous Leukemia phase III 2007 Novartis",
+        "Efficacy, Safety and Long-term Prognosis of Imatinib in Patients Newly Diagnosed With Chronic Myelogenous"
+      ],
+      "searchFailed": 0,
+      "kept": 13,
+      "verdict": "NOT FOUND",
+      "url": "https://acsjournals.onlinelibrary.wiley.com/doi/10.1002/cncr.22842",
+      "quote": "A total of 23 patients treated for a median of 4.5 years with IFN-alpha (range, 1.6-14.3 years) who had achieved a complete (Philadelphia chromosome [Ph] negative, n = 15 patients) or near-complete (1-10% Ph, n = 8 patients) cytogenetic response were studied.",
+      "why": "Registry is 100 newly diagnosed patients, while this page studies 23 IFN-alpha-pretreated patients, so it cannot be this trial.",
+      "readVia": "https://europepmc.org/article/MED/17607681",
+      "problem": "no results on the page"
+    },
+    {
+      "nct": "NCT00917306",
+      "queries": [
+        "PEP005 Actinic Keratosis phase III 2009 Peplin",
+        "A Multi-center, Open-label Study to Evaluate the Safety and Efficacy of PEP005 Ingenol Mebutate"
+      ],
+      "searchFailed": 0,
+      "kept": 11,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "No result reports NCT00917306 open-label results; results 0,3,4 report REGION-I randomized vehicle-controlled trial NCT00742391, and 8 is only a trial listing."
+    },
+    {
+      "nct": "NCT02191540",
+      "queries": [
+        "Abnoba Malignant Pleural Effusion phase III 2013 Abnoba",
+        "A Phase 3, Multi-Center, Single-Arm, Open-Label Study For The Safety And Efficacy Of Mistletoe"
+      ],
+      "searchFailed": 0,
+      "kept": 7,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "All results are trial listings or descriptions with no journal article, abstract, or results synopsis reporting outcomes."
+    },
+    {
+      "nct": "NCT00269737",
+      "queries": [
+        "Fentanyl Pain phase III 1988 Alza",
+        "Efficacy of TTS Fentanyl in the Management of Pain in Patients With Malignancy -"
+      ],
+      "searchFailed": 0,
+      "kept": 11,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "No result reports outcomes for the 7-patient 1988 cancer-pain pilot; results 7-8 are trial listings only, while 1, 9, and 10 differ in population, size, and dates."
+    },
+    {
+      "nct": "NCT00057616",
+      "queries": [
+        "CC-5013 Melanoma phase III 2005 Celgene",
+        "Multicenter, Randomized, Double-blind, Placebo-controlled Study to Compare the Efficacy and Safety of CC-5013 vs."
+      ],
+      "searchFailed": 0,
+      "kept": 7,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "No result reports outcomes for NCT00057616 melanoma trial, the only same-NCT match is a trial description page, all others are different indications or trials."
+    },
+    {
+      "nct": "NCT00293514",
+      "queries": [
+        "\"2004-002380-24\" results",
+        "An Open, Randomised, Prospective, Multi-centre, Parallel-group Trial of TachoSil Versus Standard Surgical Treatment in"
+      ],
+      "searchFailed": 0,
+      "kept": 4,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "None report pulmonary lobectomy air-leak results: 0 and 2 are trial listings, while 1 is kidney tumours and 3 is liver resection."
+    },
+    {
+      "nct": "NCT01167322",
+      "queries": [
+        "NPC-07 Malignant Glioma phase III 2011 Nobelpharma",
+        "Clinical Study to Assess the Positive Predictive Value of NPC-07 Induced Tissue Fluorescence in"
+      ],
+      "searchFailed": 0,
+      "kept": 4,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "All results only describe or list the trial design and status without reporting outcome data."
+    },
+    {
+      "nct": "NCT00061815",
+      "queries": [
+        "cetuximab Colorectal Cancer phase III 2005 Eli",
+        "A Phase 3 Randomized Multicenter Study of Cetuximab, Oxaliplatin, 5-Fluorouracil, and Leucovorin vs. Oxaliplatin,"
+      ],
+      "searchFailed": 0,
+      "kept": 15,
+      "verdict": "PROBABLE",
+      "url": "https://ascopubs.org/doi/10.1200/jco.2005.23.16_suppl.3574",
+      "quote": "",
+      "why": "page not readable: blocked: bot challenge (http 403), a browser would be needed · Result 6 reports preliminary results for EXPLORE, a randomized phase III of cetuximab plus FOLFOX4 vs FOLFOX in irinotecan-pretreated metastatic EGFR-positive CRC, matching this trial's arms and population."
+    },
+    {
+      "nct": "NCT00190762",
+      "queries": [
+        "\"H3E-MC-JMEW\" results",
+        "A Randomized Phase 3 Trial Comparing ALIMTA Plus Best Supportive Care Versus Best Supportive"
+      ],
+      "searchFailed": 0,
+      "kept": 5,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "Results 0-1 are registry listings and results 2-4 describe a different NSCLC maintenance trial, not mesothelioma results."
+    },
+    {
+      "nct": "NCT00478049",
+      "queries": [
+        "Gefitinib NSCLC phase III 2009 AstraZeneca",
+        "A Randomized, Open Label, Parallel Group, Regional, Multicenter, Phase III Study of Oral Gefitinib"
+      ],
+      "searchFailed": 0,
+      "kept": 15,
+      "verdict": "PROBABLE",
+      "url": "https://www.researchgate.net/publication/246487182_2LB_Phase_III_randomized_open-label_parallel-group_study_of_oral_gefitinib_IRESSA_versus_intravenous_docetaxel_in_patients_with_locally_advanced_or_metastatic_non-small-cell_lung_cancer_who_have_previ",
+      "quote": "",
+      "why": "page not readable: blocked: bot challenge (http 403), a browser would be needed · Its title matches ISTANA's gefitinib vs docetaxel second-line design and '2LB' denotes a conference results abstract, unlike the INTEREST/IPASS or design-only listings."
+    },
+    {
+      "nct": "NCT03826550",
+      "queries": [
+        "Diclofenac Actinic Keratoses phase III 2018 Encube",
+        "A Randomized, Double-Blind, Placebo-Controlled, Three-Arm, Parallel-Design, Multiple-Site Study to Evaluate the Therapeutic Equivalence of"
+      ],
+      "searchFailed": 0,
+      "kept": 10,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "All results are only trial listings/descriptions or unrelated methodology articles with no journal article, abstract, or results synopsis for NCT03826550."
+    },
+    {
+      "nct": "NCT02611804",
+      "queries": [
+        "Diclofenac Actinic Keratosis phase III 2016 Teva",
+        "A Randomized, Double-Blind, Parallel-Group, Vehicle-Controlled, Multicenter Study Comparing Diclofenac Sodium Gel, 3% to Solaraze®"
+      ],
+      "searchFailed": 0,
+      "kept": 10,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "All results are trial listings or general diclofenac reviews, with no journal article, abstract, or synopsis reporting outcomes for NCT02611804."
+    },
+    {
+      "nct": "NCT03612011",
+      "queries": [
+        "Onco-Repair/ Grade 2 Hand-foot phase III 2019 Quanta",
+        "Evaluation of the Restorative Efficacy of the Cosmetic Product Onco-Repair vs. Placebo on Grade"
+      ],
+      "searchFailed": 0,
+      "kept": 5,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "All results are registry-listing mirrors describing the trial aim/design, not a journal article, abstract, or results synopsis."
+    },
+    {
+      "nct": "NCT05305456",
+      "queries": [
+        "Tanreqing Novel Coronavirus Pneumonia phase III 2022 Jiangsu",
+        "A Randomized, Double-blind, Placebo-controlled, Multicenter Clinical Trial of Tanreqing Capsule Efficacy and Safety in"
+      ],
+      "searchFailed": 0,
+      "kept": 6,
+      "verdict": "NOT FOUND",
+      "url": "https://www.epistemonikos.org/en/documents/eb4a663b3e8157d4e20f37e2791fdf6828da7468",
+      "quote": "Tanreqing capsule: a randomized, double-blind, placebo-controlled, multicenter clinical trial of efficacy and safety in the treatment of COVID-19 (mild, general)",
+      "why": "The page lists only INTERVENTION, CONDITION, PRIMARY OUTCOME and INCLUSION CRITERIA with no numerical results reported.",
+      "problem": "no results on the page"
+    },
+    {
+      "nct": "NCT00085826",
+      "queries": [
+        "Exisulind Non-Small Cell Lung phase III 2004 Astellas",
+        "A Phase III, Randomized, Double-Blind, Multi-Center Study of the Efficacy of Taxotere Docetaxel in"
+      ],
+      "searchFailed": 0,
+      "kept": 11,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "No result reports outcomes for docetaxel+exisulind NCT00085826; #10 is only a trial description and #4-#9 involve different drug combinations."
+    },
+    {
+      "nct": "NCT00635973",
+      "queries": [
+        "\"D7913C00026\" results",
+        "Multi-Centre, Open-Label Extension Trial of Treatment With ZD1839 Iressa in Patients Who Have Been"
+      ],
+      "searchFailed": 0,
+      "kept": 4,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "All results are trial description/listing pages, not journal articles, abstracts, or results synopses reporting outcomes for NCT00635973."
+    },
+    {
+      "nct": "NCT00337532",
+      "queries": [
+        "Paclitaxel Head and Neck phase III 2007 Bristol-Myers",
+        "A Phase II Trial Neoadjuvant Paclitaxel and Cisplatin in Patients With Locally Advanced Head"
+      ],
+      "searchFailed": 0,
+      "kept": 11,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "No result reports outcomes for this 50-patient neoadjuvant paclitaxel-cisplatin trial, with result 9 only listing the trial without results."
+    },
+    {
+      "nct": "NCT00657488",
+      "queries": [
+        "Thalidomide Multiple Myeloma phase III 2006 Celgene",
+        "Multicenter, Randomized Study Comparing the Efficacy and Safety of Two Doses of Thalidomide 100"
+      ],
+      "searchFailed": 0,
+      "kept": 16,
+      "verdict": "PROBABLE",
+      "url": "https://ascopubs.org/doi/10.1200/jco.2006.24.18_suppl.7520",
+      "quote": "",
+      "why": "page not readable: blocked: bot challenge (http 403), a browser would be needed · Its title matches the 100 mg vs 400 mg refractory/relapsed myeloma comparison and states Results of the final analysis of the IFM 01-02 study."
+    },
+    {
+      "nct": "NCT00269763",
+      "queries": [
+        "Fentanyl Pain phase III 1988 Alza",
+        "The Clinical Use and Safety of TTS Fentanyl in the Management of Pain in"
+      ],
+      "searchFailed": 0,
+      "kept": 11,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "No result reports outcomes for the 32-patient cancer-pain TTS trial; #7 only lists its design and the others address different populations, reviews, patents, or pipeline news."
+    },
+    {
+      "nct": "NCT00270166",
+      "queries": [
+        "epoetin Anemia phase III 1998 Johnson",
+        "A Placebo-Controlled Study on the Effect of Epoetin Alfa in Patients With Malignancy Receiving"
+      ],
+      "searchFailed": 0,
+      "kept": 12,
+      "verdict": "NOT FOUND",
+      "url": "https://yoda.yale.edu/clinical-trial/nct00270166-a-placebo-controlled-study-on-the-effect-of-epoetin-alfa-in-patients-with-malignancy-receiving-chemotherapy/",
+      "quote": "NCT00270166 - A Placebo-Controlled Study on the Effect of Epoetin Alfa in Patients With Malignancy Receiving Chemotherapy",
+      "why": "The page lists only trial metadata and available documents with no efficacy or safety outcome results.",
+      "problem": "no results on the page"
+    },
+    {
+      "nct": "NCT00846976",
+      "queries": [
+        "Bicalutamide Prostate Cancer phase III 2013 AstraZeneca",
+        "A Treatment Protocol to Monitor the Safety of a 200 mg Daily Dose of"
+      ],
+      "searchFailed": 0,
+      "kept": 13,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "Result 5 matches the title but only describes the protocol, and all other results involve different doses, populations, or unrelated topics with no results for this 200mg safety trial."
+    },
+    {
+      "nct": "NCT03343145",
+      "queries": [
+        "Leucostim Breast Cancer phase III 2019 Dong-A",
+        "A Randomized, Open-label, Active-controlled, Multi-center, Phase III Study to Evaluate the Efficacy, Safety and"
+      ],
+      "searchFailed": 0,
+      "kept": 8,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "All results only list or describe the trial design and completion with no journal article, abstract, or results synopsis presenting efficacy/safety outcomes."
+    },
+    {
+      "nct": "NCT00784940",
+      "queries": [
+        "\"D5392C01985\" results",
+        "A Randomised, Double-Blind Trial to Assess the Effects on Bone Mineral Density and Metabolism"
+      ],
+      "searchFailed": 0,
+      "kept": 6,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "None of the results concern anastrozole/tamoxifen or ATAC, all address probiotics, vitamin D, or calcium/vitamin D instead."
+    },
+    {
+      "nct": "NCT01433562",
+      "queries": [
+        "DLBS1425 Breast Cancer phase III 2012 Dexa",
+        "Combination of DLBS1425 With Anthracyclin-based Regimen as a Neoadjuvant Therapy in Subjects With Stage"
+      ],
+      "searchFailed": 0,
+      "kept": 4,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "All results are trial listings/protocol descriptions or preclinical in vitro work, with none presenting clinical efficacy/safety outcome data for NCT01433562."
+    },
+    {
+      "nct": "NCT05254457",
+      "queries": [
+        "EN3835 Plantar Fibromatosis phase III 2024 Endo",
+        "A Multi-Center, Open-Label, Extension Study to Evaluate the Long-Term Safety, Efficacy, and Durability of"
+      ],
+      "searchFailed": 0,
+      "kept": 8,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "No result reports results for NCT05254457; results 0-2 concern a different trial NCT06151197 and 3-7 concern unrelated drugs/conditions."
+    },
+    {
+      "nct": "NCT00776165",
+      "queries": [
+        "Recombinant Chemotherapy-Induced Neutropenia phase III 2009 Shantha",
+        "A Phase 3 Randomized Controlled Open Label Comparative Multicentric Trial To Compare The Safety"
+      ],
+      "searchFailed": 0,
+      "kept": 7,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "No result reports GCSF vs Neupogen in chemotherapy-induced neutropenia; result 0 is only a registry listing and results 1-6 are unrelated drugs/conditions."
+    },
+    {
+      "nct": "NCT00241449",
+      "queries": [
+        "Fulvestrant Breast Cancer phase III 2012 AstraZeneca",
+        "A Double-blind, Randomized, Multicentre Trial Comparing the Efficacy and Tolerability of 250mg of Faslodex"
+      ],
+      "searchFailed": 0,
+      "kept": 13,
+      "verdict": "NOT FOUND",
+      "url": "https://www.astrazenecaclinicaltrials.com/study/9238IL%2F0025/",
+      "quote": "A trial comparing the efficacy and tolerability of Faslodex with Nolvadex in postmenopausal women with advanced breast cancer",
+      "why": "The page only lists design, arms and a CSR download link with no efficacy outcome numbers reported.",
+      "problem": "no results on the page"
+    },
+    {
+      "nct": "NCT00243685",
+      "queries": [
+        "Laboratory Breast Neoplasms phase III 2009 Pierian",
+        "Application of the Microculture Kinetic MiCK Assay for Apoptosis to Drug Testing Sensitivity of"
+      ],
+      "searchFailed": 0,
+      "kept": 13,
+      "verdict": "PROBABLE",
+      "url": "https://aacrjournals.org/cancerres/article/72/16/3901/575928/The-Microculture-Kinetic-MiCK-Assay-The-Role-of-a",
+      "quote": "",
+      "why": "page not readable: blocked: bot challenge (http 403), a browser would be needed · It is the only journal article specifically about the MiCK apoptosis assay reporting higher response rates and longer survival in blinded clinical trials using the assay."
+    },
+    {
+      "nct": "NCT03170050",
+      "queries": [
+        "YYD701-2 Wrinkle Severity Rating phase III 2017 Yooyoung",
+        "A Multicenter, Active-controlled, Randomized, Evaluator and Subject Blinded, Split-face, Comparative, Non-inferiority and Confirmatory Clinical"
+      ],
+      "searchFailed": 0,
+      "kept": 6,
+      "verdict": "NOT FOUND",
+      "url": "https://onlinelibrary.wiley.com/doi/10.1111/jocd.13773",
+      "quote": "We compared the efficacy and safety between DIVAVIVA medium and Restylane Perlane Lidocaine for moderate to severe nasolabial folds.",
+      "why": "The page never mentions NCT03170050, YYD701-2, Yooyoung, or 107 participants, so DIVAVIVA medium cannot be confirmed as YYD701-2 for this registry record.",
+      "readVia": "https://europepmc.org/article/MED/33085170",
+      "problem": "no results on the page"
+    },
+    {
+      "nct": "NCT00002662",
+      "queries": [
+        "\"CDR0000064232\" results",
+        "PHASE III COMPARISON OF TAXOTERE DOCETAXEL AND TAXOL PACLITAXEL IN PATIENTS WITH ADVANCED BREAST"
+      ],
+      "searchFailed": 0,
+      "kept": 8,
+      "verdict": "FOUND",
+      "url": "https://ascopubs.org/doi/10.1200/JCO.2005.02.027",
+      "quote": "Docetaxel was superior to paclitaxel in terms of OS and TTP.",
+      "why": "The page compares the same two drugs in advanced breast cancer and reports superior OS and TTP for docetaxel.",
+      "readVia": "https://europepmc.org/article/MED/16110015",
+      "problem": null
+    },
+    {
+      "nct": "NCT00035152",
+      "queries": [
+        "Paclitaxel Carcinoma, Non-Small-Cell Lung phase III 2004 Bristol-Myers",
+        "A Multicenter, Randomized Trial for Stage IIIB or IV NSCLC Comparing Weekly Taxol Paclitaxel"
+      ],
+      "searchFailed": 0,
+      "kept": 14,
+      "verdict": "PROBABLE",
+      "url": "https://www.sciencedirect.com/science/article/abs/pii/S1525730411707057",
+      "quote": "",
+      "why": "page not readable: blocked: bot challenge (http 403), a browser would be needed · Its description matches weekly vs every-3-week paclitaxel+carboplatin as first-line for stage IIIB/IV NSCLC, unlike the maintenance-design papers in other results."
+    },
+    {
+      "nct": "NCT00038311",
+      "queries": [
+        "PN-152,243)/PN-196,444 Sarcoma phase III 2003 Pfizer",
+        "Safety and Efficacy of PN-152,243 /PN-196,444 in the Prevention of Thrombocytopenia Administered to Patients"
+      ],
+      "searchFailed": 0,
+      "kept": 7,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "None report results for NCT00038311 — results 1-2 only describe that trial, 0 is a pipeline listing, and 3-6 are for different NCT numbers."
+    },
+    {
+      "nct": "NCT02103322",
+      "queries": [
+        "Imatinib Chronic Myeloid Leukemia phase III 2014 Amneal",
+        "A Randomized, Open Label, Two-Treatment, Multiple Dose, Steady State, Two-period, Cross-over, Multi-Centre Comparative Bioequivalence"
+      ],
+      "searchFailed": 0,
+      "kept": 12,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "No result reports Amneal's fed bioequivalence study NCT02103322, as all are unrelated imatinib efficacy papers or bioequivalence studies of other drugs/methods."
+    },
+    {
+      "nct": "NCT00156208",
+      "queries": [
+        "Asoprisnil Fibroid Uterus phase III 2006 Abbott",
+        "A Phase III, 18-Month, Extension Study to Evaluate the Safety of Asoprisnil in Subjects"
+      ],
+      "searchFailed": 0,
+      "kept": 9,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "No result reports outcomes for NCT00156208; all are registry/descriptive pages or pertain to a different 3-month study, not the 18-month extension results."
+    },
+    {
+      "nct": "NCT05495425",
+      "queries": [
+        "NPC-12Y Tuberous Sclerosis Complex phase III 2024 Nobelpharma",
+        "Placebo-controlled Comparative Study of NPC-12Y Gel in Patients With Skin Lesions Associated With Tuberous"
+      ],
+      "searchFailed": 0,
+      "kept": 6,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "All results are trial description/listing pages stating purpose and design with no efficacy or safety results reported."
+    },
+    {
+      "nct": "NCT00096967",
+      "queries": [
+        "Avastin Breast Cancer phase III 2004 Genentech",
+        "An Open-Label, Multicenter Extension Study of rhuMAb VEGF Bevacizumab in Subjects Treated in a"
+      ],
+      "searchFailed": 0,
+      "kept": 12,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "No result reports outcomes for NCT00096967; results 10 and 11 only describe the extension-study design and eligibility without results."
+    },
+    {
+      "nct": "NCT02561039",
+      "queries": [
+        "Ibandronate Pain; Bone Neoplasms; phase III 2008 Hoffmann-La",
+        "Randomized, Open Label Study to Assess the Efficacy and Safety of the Intravenous and"
+      ],
+      "searchFailed": 0,
+      "kept": 10,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "No result links to NCT02561039-specific results, all are reviews, listings, or unrelated trials."
+    },
+    {
+      "nct": "NCT00161980",
+      "queries": [
+        "Fibrin Breast Cancer phase III 2002 Baxter",
+        "A Randomized and Controlled Clinical Study to Evaluate the Efficacy and Safety of Fibrin"
+      ],
+      "searchFailed": 0,
+      "kept": 11,
+      "verdict": "PROBABLE",
+      "url": "https://academic.oup.com/bjs/article-abstract/91/1/54/6143577",
+      "quote": "",
+      "why": "page not readable: blocked: bot challenge (http 403), a browser would be needed · 2004 BJS randomized trial of drains and fibrin sealant after breast cancer surgery matches Baxter FS VH S/D axillary sealing trial completed Dec 2002 in population, intervention, and seroma/lymphatic leakage endpoint."
+    },
+    {
+      "nct": "NCT00911261",
+      "queries": [
+        "Oxymorphone Chronic Pain phase III 2005 Endo",
+        "An Open-Label Long Term Effectiveness and Safety Study of Oxymorphone Extended Release Tablets in"
+      ],
+      "searchFailed": 0,
+      "kept": 14,
+      "verdict": "FOUND",
+      "url": "https://www.keenova.com/media/mwmls0jh/en3202-029-abstracted-synopsis-external-posting.pdf",
+      "quote": "Overall, 62.4% (138/221) of Treated Subjects reached stabilization with a median time to stabilization of 27 days (95% CI 22, 28 days).",
+      "why": "The page title matches the registry title and Enrolled: 223 matches participants, and the quote states the stabilization efficacy result.",
+      "problem": null
+    },
+    {
+      "nct": "NCT00814125",
+      "queries": [
+        "\"D5392C06736\" results",
+        "A Randomised, Double Blind Trial to Assess the Incidence of Endometrial Changes With Arimidex"
+      ],
+      "searchFailed": 0,
+      "kept": 6,
+      "verdict": "FOUND",
+      "url": "https://benmeg.com/archives/pharmacm/CTR_MED_6111_study1149_CSR-1033IC-0029.pdf",
+      "quote": "A total of 285 patients (from 31 centres in Europe, Australia, and South Africa) were recruited into this sub-protocol",
+      "why": "The 285-patient count matches the registry record and reports the recruitment result for this sub-protocol.",
+      "problem": null
+    },
+    {
+      "nct": "NCT00105937",
+      "queries": [
+        "OraVescent Pain phase III 2006 Cephalon",
+        "Multi-center, Open Label, Long-term Study of OraVescent Fentanyl Citrate for the Treatment of Breakthrough"
+      ],
+      "searchFailed": 0,
+      "kept": 8,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "No result reports outcome data for NCT00105937; results 0-5 and 7 are only trial descriptions/listings and results 1-4 and 6 refer to different NCTs or a 77-patient crossover design inconsistent with this 300-patient open-label trial."
+    },
+    {
+      "nct": "NCT00784862",
+      "queries": [
+        "\"D5392C02301\" results",
+        "A Randomised, Double Blind Trial to Assess the Pharmacokinetics of Arimidex Alone, Nolvadex Alone,"
+      ],
+      "searchFailed": 0,
+      "kept": 6,
+      "verdict": "FOUND",
+      "url": "https://benmeg.com/archives/pharmacm/CTR_MED_6111_study1148_CSR-1033IA-0029.pdf",
+      "quote": "Co-administration of anastrozole 1 mg with tamoxifen 20 mg resulted in an estimated 27% decrease in anastrozole levels.",
+      "why": "The sentence reports the pharmacokinetic interaction result for the anastrozole-tamoxifen combination studied in this sub-protocol.",
+      "problem": null
+    },
+    {
+      "nct": "NCT00105287",
+      "queries": [
+        "OraVescent Pain phase III 2007 Cephalon",
+        "Multi-center Study Evaluating OraVescent Fentanyl Citrate for the Treatment of Breakthrough Pain in Opioid"
+      ],
+      "searchFailed": 0,
+      "kept": 10,
+      "verdict": "NOT FOUND",
+      "url": null,
+      "quote": "",
+      "why": "No result is a results article/synopsis for NCT00105287, only registry listings for it and results for a different crossover efficacy trial."
+    },
+    {
+      "nct": "NCT00309101",
+      "queries": [
+        "tacrolimus Myasthenia Gravis phase III 2009 Astellas",
+        "FK506 Phase 3 Study: An Open Study for Steroid Resistant, Non-Thymectomized MG Patients"
+      ],
+      "searchFailed": 0,
+      "kept": 3,
+      "verdict": "NOT FOUND",
+      "url": "https://www.clinicaltrials.astellas.com/study/F506-CL-0611",
+      "quote": "Clinicaltrials.gov ID NCT01325571",
+      "why": "This page identifies a different trial (NCT01325571 with Enrollment number 83) than NCT00309101 with 11 participants and provides no efficacy result numbers, only 'Scientific Results Summary Available'.",
+      "problem": "no results on the page"
+    },
+    {
+      "nct": "NCT00152256",
+      "queries": [
+        "Asoprisnil Fibroid Uterus phase III 2005 Abbott",
+        "A Phase 3,6-Month, Randomized, Double-Blind Study to Evaluate the Safety and Efficacy of Two"
+      ],
+      "searchFailed": 0,
+      "kept": 10,
+      "verdict": "NOT FOUND",
+      "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7967793/",
+      "quote": "TRIAL REGISTRATION NUMBER NCT00152269 , NCT00160381 ( clinicaltrials.gov ).",
+      "why": "The page identifies different trial numbers than the registry record NCT00152256, so it does not report results of this trial.",
+      "problem": "no results on the page"
+    }
+  ]
+}

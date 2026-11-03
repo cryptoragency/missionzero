@@ -1,0 +1,30 @@
+{
+  "nct": "NCT00003884",
+  "folder": "evidence/2026-11-02-09-40-25",
+  "code": 0,
+  "answer": "NOT FOUND: No readable publication or results page identifies NCT00003884, NOVARTIS-4244603011, or the exact 600-patient design. Checked trial records for NCT00003884, five PubMed IDs 17062708, 11398911, 11208851, 16026743, 24824552, EU Clinical Trials Register, Novartis results site, and ASCO/ESMO abstracts searched by acronym and drug plus sponsor plus phase III/phase 3, with drug plus condition plus phase III plus sponsor.",
+  "sources": [
+    {
+      "url": "https://deltatrials.com/trial/NCT00003884",
+      "contribution": "Listed as NCT00003884"
+    },
+    {
+      "url": "https://deltatrials.com/trial/NCT00003884",
+      "contribution": "this PHASE3 trial focuses on Hypercalcemia of Malignancy and Lung Cancer and remains completed"
+    },
+    {
+      "url": "https://plaintrial.com/trial/NCT00003884",
+      "contribution": "NCT00003884 is a clinical study titled \" Zoledronate in Treating Patients With Solid Tumors That Have Spread to the Bone\""
+    },
+    {
+      "url": "https://clinicaltrials.gg/study/NCT00003884",
+      "contribution": "PURPOSE: Randomized phase III trial to determine the effectiveness of zoledronate in treating patients who have solid tumors that have spread to the bone"
+    }
+  ],
+  "judge": {
+    "score": 7,
+    "green": 4,
+    "red": 0
+  },
+  "usd": 0.318672
+}

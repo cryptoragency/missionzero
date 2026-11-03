@@ -1,0 +1,32 @@
+[
+  {
+    "turn": 1,
+    "action": {
+      "type": "web_search",
+      "query": "WHO tuberculosis fact sheet global"
+    },
+    "ok": false,
+    "lesson": "Search located the WHO TB fact sheet and 2025 Global TB Report URLs but no page bodies with exact quoted figures were read yet."
+  },
+  {
+    "turn": 2,
+    "action": {
+      "type": "read_page",
+      "url": "https://www.who.int/news-room/fact-sheets/detail/tuberculosis",
+      "find": "fell ill million died treatment success rate tuberculosis 2024 2023"
+    },
+    "ok": true,
+    "lesson": "Fact sheet provided exact 2024 quotes for fell ill (10.7 million) and died (1.23 million) but no treatment success rate was found in the text."
+  },
+  {
+    "turn": 3,
+    "action": {
+      "type": "web_search",
+      "query": "WHO Global Tuberculosis Report 2025",
+      "costUsd": 0,
+      "real": false
+    },
+    "ok": false,
+    "lesson": "Search found the official WHO Global TB Report 2025 URL but provided no exact figures or quotes yet."
+  }
+]

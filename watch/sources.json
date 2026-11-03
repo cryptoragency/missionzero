@@ -37,6 +37,14 @@
     "note": "ClinicalTrials.gov: every registered study of a tuberculosis vaccine and its status. A status that changes (recruiting, completed, terminated) is a variation."
   },
   {
+    "name": "Essais vaccins paludisme",
+    "kind": "clinicaltrials",
+    "api": "https://clinicaltrials.gov/api/v2/studies?query.cond=malaria&query.intr=vaccine&pageSize=100&fields=NCTId,BriefTitle,OverallStatus,LastUpdatePostDate,Phase",
+    "page": "https://clinicaltrials.gov/search?cond=malaria&intr=vaccine",
+    "attribution": "ClinicalTrials.gov, U.S. National Library of Medicine",
+    "note": "ClinicalTrials.gov: every registered study of a malaria vaccine and its status. A status that changes (recruiting, completed, terminated) is a variation."
+  },
+  {
     "name": "Relevés d'une sonde (exemple)",
     "kind": "file",
     "path": "watch/readings.example.json",

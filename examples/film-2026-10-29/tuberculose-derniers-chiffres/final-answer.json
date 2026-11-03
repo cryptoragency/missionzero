@@ -1,0 +1,77 @@
+{
+  "answer": "WHO's latest global figures refer to year 2024. Fell ill: an estimated 10.7 million people - exact quote: \"In 2024, an estimated 10.7 million people developed TB worldwide\". Died: 1.23 million people - exact quote: \"A total of 1.23 million people died from tuberculosis (TB) in 2024\". No treatment success rate figure with exact quote was present in the seen sources.",
+  "sources": [
+    {
+      "url": "https://www.afro.who.int/health-topics/tuberculosis-tb",
+      "contribution": "In 2024, an estimated 10.7 million people developed TB worldwide"
+    },
+    {
+      "url": "https://www.who.int/news-room/fact-sheets/detail/tuberculosis",
+      "contribution": "A total of 1.23 million people died from tuberculosis (TB) in 2024"
+    }
+  ],
+  "confidence": 8,
+  "uncertainties": [
+    "Treatment success rate not found in seenSources excerpts",
+    "Full fact-sheet sentence for fell ill was truncated in excerpt, so regional WHO page used for complete quote"
+  ],
+  "rejectedSources": 0,
+  "seenSources": 14,
+  "judge": {
+    "score": 5,
+    "green": 2,
+    "red": 0,
+    "rounds": 1,
+    "versions": [
+      {
+        "round": 0,
+        "score": 5,
+        "green": 2,
+        "red": 0,
+        "reason": "Two figures quoted and verified but wrong source for incidence and missing treatment success rate required by goal.",
+        "verification": [
+          {
+            "url": "https://www.afro.who.int/health-topics/tuberculosis-tb",
+            "claim": "In 2024, an estimated 10.7 million people developed TB worldwide",
+            "verdict": "supported",
+            "detail": "In 2024, an estimated 10.7 million people developed TB worldwide and about 1.23 million people died from the disease."
+          },
+          {
+            "url": "https://www.who.int/news-room/fact-sheets/detail/tuberculosis",
+            "claim": "A total of 1.23 million people died from tuberculosis (TB) in 2024",
+            "verdict": "supported",
+            "detail": "A total of 1.23&nbsp;million people died from tuberculosis (TB) in 2024 (including 150&nbsp;000 among people with HIV)."
+          }
+        ],
+        "objections": []
+      },
+      {
+        "round": 2,
+        "score": 5,
+        "green": 2,
+        "red": 0,
+        "reason": "Two figures correct and supported, but treatment success missing, quotes imprecise, Global Report not checked.",
+        "verification": [
+          {
+            "url": "https://www.who.int/news-room/fact-sheets/detail/tuberculosis",
+            "claim": "In 2024, an estimated 10.7 million people developed TB worldwide",
+            "verdict": "supported",
+            "detail": "In 2024, an estimated 10.7&nbsp;million people fell ill with TB worldwide, including 5.8&nbsp;million men, 3.7&nbsp;million women and 1.2&nbsp;million children."
+          },
+          {
+            "url": "https://www.who.int/news-room/fact-sheets/detail/tuberculosis",
+            "claim": "A total of 1.23 million people died from tuberculosis (TB) in 2024",
+            "verdict": "supported",
+            "detail": "A total of 1.23&nbsp;million people died from tuberculosis (TB) in 2024 (including 150&nbsp;000 among people with HIV)."
+          }
+        ],
+        "objections": [
+          "The answer omits the required treatment success rate figure with its year and exact quote.",
+          "The fell-ill figure is sourced to the AFRO regional page instead of the required current WHO fact sheet or latest Global Tuberculosis Report on who.int."
+        ],
+        "fetched": 0,
+        "reread": 0
+      }
+    ]
+  }
+}

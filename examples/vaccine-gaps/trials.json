@@ -1,0 +1,186 @@
+{
+  "date": "2026-11-02T14:12:39.694Z",
+  "source": "ClinicalTrials.gov API v2, query.intr=vaccine, interventional",
+  "rows": [
+    {
+      "fr": "Mélanome",
+      "en": "Melanoma",
+      "query": "melanoma",
+      "vaccineTrials": 319,
+      "recruitingNow": 13,
+      "phase3": 15,
+      "mutationBurden": "API blocked"
+    },
+    {
+      "fr": "Poumon (non à petites cellules)",
+      "en": "Lung (non-small cell)",
+      "query": "non-small cell lung cancer",
+      "vaccineTrials": 169,
+      "recruitingNow": 22,
+      "phase3": 12,
+      "mutationBurden": "API blocked"
+    },
+    {
+      "fr": "Vessie",
+      "en": "Bladder",
+      "query": "bladder cancer OR urothelial carcinoma",
+      "vaccineTrials": 81,
+      "recruitingNow": 7,
+      "phase3": 18,
+      "mutationBurden": "API blocked"
+    },
+    {
+      "fr": "Peau, carcinome épidermoïde",
+      "en": "Skin, squamous cell carcinoma",
+      "query": "cutaneous squamous cell carcinoma",
+      "vaccineTrials": 7,
+      "recruitingNow": 3,
+      "phase3": 0,
+      "mutationBurden": "API blocked"
+    },
+    {
+      "fr": "Merkel",
+      "en": "Merkel cell",
+      "query": "merkel cell carcinoma",
+      "vaccineTrials": 6,
+      "recruitingNow": 1,
+      "phase3": 0,
+      "mutationBurden": "API blocked"
+    },
+    {
+      "fr": "Côlon-rectum",
+      "en": "Colorectal",
+      "query": "colorectal cancer",
+      "vaccineTrials": 170,
+      "recruitingNow": 22,
+      "phase3": 11,
+      "mutationBurden": "API blocked"
+    },
+    {
+      "fr": "Estomac",
+      "en": "Stomach",
+      "query": "gastric cancer",
+      "vaccineTrials": 38,
+      "recruitingNow": 5,
+      "phase3": 1,
+      "mutationBurden": "API blocked"
+    },
+    {
+      "fr": "Œsophage",
+      "en": "Oesophagus",
+      "query": "esophageal cancer",
+      "vaccineTrials": 36,
+      "recruitingNow": 2,
+      "phase3": 1,
+      "mutationBurden": "API blocked"
+    },
+    {
+      "fr": "Tête et cou",
+      "en": "Head and neck",
+      "query": "head and neck squamous cell carcinoma",
+      "vaccineTrials": 57,
+      "recruitingNow": 12,
+      "phase3": 3,
+      "mutationBurden": "API blocked"
+    },
+    {
+      "fr": "Endomètre",
+      "en": "Endometrium",
+      "query": "endometrial cancer",
+      "vaccineTrials": 11,
+      "recruitingNow": 3,
+      "phase3": 0,
+      "mutationBurden": "API blocked"
+    },
+    {
+      "fr": "Col de l’utérus",
+      "en": "Cervix",
+      "query": "cervical cancer",
+      "vaccineTrials": 330,
+      "recruitingNow": 40,
+      "phase3": 70,
+      "mutationBurden": "API blocked"
+    },
+    {
+      "fr": "Foie",
+      "en": "Liver",
+      "query": "hepatocellular carcinoma",
+      "vaccineTrials": 54,
+      "recruitingNow": 19,
+      "phase3": 2,
+      "mutationBurden": "API blocked"
+    },
+    {
+      "fr": "Rein",
+      "en": "Kidney",
+      "query": "renal cell carcinoma",
+      "vaccineTrials": 65,
+      "recruitingNow": 5,
+      "phase3": 2,
+      "mutationBurden": "API blocked"
+    },
+    {
+      "fr": "Sein",
+      "en": "Breast",
+      "query": "breast cancer",
+      "vaccineTrials": 229,
+      "recruitingNow": 30,
+      "phase3": 5,
+      "mutationBurden": "API blocked"
+    },
+    {
+      "fr": "Prostate",
+      "en": "Prostate",
+      "query": "prostate cancer",
+      "vaccineTrials": 169,
+      "recruitingNow": 9,
+      "phase3": 8,
+      "mutationBurden": "API blocked"
+    },
+    {
+      "fr": "Ovaire",
+      "en": "Ovary",
+      "query": "ovarian cancer",
+      "vaccineTrials": 139,
+      "recruitingNow": 14,
+      "phase3": 3,
+      "mutationBurden": "API blocked"
+    },
+    {
+      "fr": "Pancréas",
+      "en": "Pancreas",
+      "query": "pancreatic cancer",
+      "vaccineTrials": 129,
+      "recruitingNow": 22,
+      "phase3": 4,
+      "mutationBurden": "API blocked"
+    },
+    {
+      "fr": "Glioblastome",
+      "en": "Glioblastoma",
+      "query": "glioblastoma",
+      "vaccineTrials": 118,
+      "recruitingNow": 14,
+      "phase3": 7,
+      "mutationBurden": "API blocked"
+    },
+    {
+      "fr": "Leucémie aiguë myéloïde",
+      "en": "Acute myeloid leukaemia",
+      "query": "acute myeloid leukemia",
+      "vaccineTrials": 67,
+      "recruitingNow": 8,
+      "phase3": 1,
+      "mutationBurden": "API blocked"
+    },
+    {
+      "fr": "Thyroïde",
+      "en": "Thyroid",
+      "query": "thyroid cancer",
+      "vaccineTrials": 9,
+      "recruitingNow": 1,
+      "phase3": 0,
+      "mutationBurden": "API blocked"
+    }
+  ]
+}

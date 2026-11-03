@@ -1,0 +1,224 @@
+{
+  "answer": "For 2024, WHO reports: fell ill - \"In 2024, an estimated 10.7 million people fell ill with TB worldwide\"; died - \"A total of 1.23 million people died from tuberculosis (TB) in 2024\" \"including 150 000 among people with HIV.\" Global TB Report 2025 factsheet: \"The treatment success rate for drug-susceptible TB remains high, at 88%\" and \"has improved to 71% for RR-TB\" - cohort year not stated in extract.",
+  "sources": [
+    {
+      "url": "https://www.who.int/news-room/fact-sheets/detail/tuberculosis",
+      "contribution": "In 2024, an estimated 10.7 million people fell ill with TB worldwide"
+    },
+    {
+      "url": "https://www.who.int/news-room/fact-sheets/detail/tuberculosis",
+      "contribution": "A total of 1.23 million people died from tuberculosis (TB) in 2024"
+    },
+    {
+      "url": "https://www.who.int/news-room/fact-sheets/detail/tuberculosis",
+      "contribution": "including 150 000 among people with HIV in 2024"
+    },
+    {
+      "url": "https://cdn.who.int/media/docs/default-source/global-tuberculosis-report-2025/global-tb-report-2025_factsheet.pdf",
+      "contribution": "The treatment success rate for drug-susceptible TB remains high, at 88%"
+    },
+    {
+      "url": "https://cdn.who.int/media/docs/default-source/global-tuberculosis-report-2025/global-tb-report-2025_factsheet.pdf",
+      "contribution": "has improved to 71% for RR-TB"
+    }
+  ],
+  "confidence": 8,
+  "uncertainties": [
+    "Treatment success extracts do not state cohort year in available snippet, so year for 88% and 71% cannot be confirmed beyond Global TB Report 2025 factsheet."
+  ],
+  "rejectedSources": 0,
+  "judge": {
+    "score": 4,
+    "green": 2,
+    "red": 3,
+    "rounds": 4,
+    "versions": [
+      {
+        "round": 0,
+        "score": 0,
+        "green": 0,
+        "red": 0,
+        "reason": "No figures, quotes, sources or verification provided; fails all requirements for latest WHO TB data.",
+        "verification": [],
+        "objections": []
+      },
+      {
+        "round": 1,
+        "score": 1,
+        "green": 0,
+        "red": 3,
+        "reason": "All claims RED per verification; fell-ill missing, death unsupported, treatment unreachable; goal unmet.",
+        "verification": [
+          {
+            "url": "https://www.who.int/news-room/fact-sheets/detail/tuberculosis",
+            "claim": "A total of 1.23 million people died from tuberculosis (TB) in 2024 (including 150 000 among people with HIV).",
+            "verdict": "unsupported",
+            "detail": "the quote does not carry the figure 150000; nearest passages: \"&copy; Credits Tuberculosis 24 March 2026 Reading time: Key facts A total of 1.23&nbsp;million people died from tuberculosis (TB) in 2024 (including 150&nbsp;000 among people with HIV).\" \"In 2024, an estimated 10.7&nbsp;million people fell ill with TB worldwide, including 5.8&nbsp;million men, 3.7&nbsp;million women and 1.2&nbsp;million children.\" \"In 2024, about 150&nbsp;000 people died of HIV-associated TB.\""
+          },
+          {
+            "url": "https://cdn.who.int/media/docs/default-source/global-tuberculosis-report-2025/global-tb-report-2025_factsheet.pdf",
+            "claim": "The treatment success rate for drug-susceptible TB remains high, at 88%",
+            "verdict": "source-unreachable",
+            "detail": "Cannot find package 'pdfjs-dist' imported from F:\\travaux-2026-10-31\\mission-zer"
+          },
+          {
+            "url": "https://cdn.who.int/media/docs/default-source/global-tuberculosis-report-2025/global-tb-report-2025_factsheet.pdf",
+            "claim": "The treatment success rate has improved to 71% for RR-TB",
+            "verdict": "source-unreachable",
+            "detail": "Cannot find package 'pdfjs-dist' imported from F:\\travaux-2026-10-31\\mission-zer"
+          }
+        ],
+        "objections": [
+          "The contribution 'In 2024, an estimated 10.7' is truncated and fails to give complete figures for how many fell ill, how many died, and treatment success rate.",
+          "No exact quote is provided with each figure as the goal explicitly requires.",
+          "The verification and sources arrays are empty so no claim is shown as supported by its source.",
+          "The year each figure refers to is not stated for deaths and treatment success rate."
+        ],
+        "fetched": 0,
+        "reread": 0
+      },
+      {
+        "round": 2,
+        "score": 4,
+        "green": 2,
+        "red": 3,
+        "reason": "Two core figures supported for 2024, but treatment rates unverified and HIV quote unsupported, cohort year missing.",
+        "verification": [
+          {
+            "url": "https://www.who.int/news-room/fact-sheets/detail/tuberculosis",
+            "claim": "In 2024, an estimated 10.7 million people fell ill with TB worldwide",
+            "verdict": "supported",
+            "detail": "In 2024, an estimated 10.7&nbsp;million people fell ill with TB worldwide, including 5.8&nbsp;million men, 3.7&nbsp;million women and 1.2&nbsp;million children."
+          },
+          {
+            "url": "https://www.who.int/news-room/fact-sheets/detail/tuberculosis",
+            "claim": "A total of 1.23 million people died from tuberculosis (TB) in 2024",
+            "verdict": "supported",
+            "detail": "&copy; Credits Tuberculosis 24 March 2026 Reading time: Key facts A total of 1.23&nbsp;million people died from tuberculosis (TB) in 2024 (including 150&nbsp;000 among people with HIV)."
+          },
+          {
+            "url": "https://www.who.int/news-room/fact-sheets/detail/tuberculosis",
+            "claim": "including 150 000 among people with HIV in 2024",
+            "verdict": "unsupported",
+            "detail": "the quote does not carry the figure 150000; nearest passages: \"&copy; Credits Tuberculosis 24 March 2026 Reading time: Key facts A total of 1.23&nbsp;million people died from tuberculosis (TB) in 2024 (including 150&nbsp;000 among people with HIV).\" \"TB was also both the leading killer of people with HIV in 2024 and a major cause of deaths related to antimicrobial resistance.\" \"In 2024, an estimated 10.7&nbsp;million people fell ill with TB worldwide, including 5.8&nbsp;million men, 3.7&nbsp;million women and 1.2&nbsp;million children.\""
+          },
+          {
+            "url": "https://cdn.who.int/media/docs/default-source/global-tuberculosis-report-2025/global-tb-report-2025_factsheet.pdf",
+            "claim": "The treatment success rate for drug-susceptible TB remains high, at 88%",
+            "verdict": "source-unreachable",
+            "detail": "Cannot find package 'pdfjs-dist' imported from F:\\travaux-2026-10-31\\mission-zer"
+          },
+          {
+            "url": "https://cdn.who.int/media/docs/default-source/global-tuberculosis-report-2025/global-tb-report-2025_factsheet.pdf",
+            "claim": "has improved to 71% for RR-TB",
+            "verdict": "source-unreachable",
+            "detail": "Cannot find package 'pdfjs-dist' imported from F:\\travaux-2026-10-31\\mission-zer"
+          }
+        ],
+        "objections": [
+          "Answer omits the required fell-ill figure entirely while the goal explicitly demands how many fell ill with year and exact quote.",
+          "Treatment success rates of 88% and 71% are given without cohort year despite the goal requiring the year each figure refers to.",
+          "Death claim verdict is \"unsupported\" in verification, making it RED and unusable for the goal.",
+          "Both treatment success claims have verdict \"source-unreachable\" with no verifiable exact quote, making them RED.",
+          "RED: the claim \"A total of 1.23 million people died from tuberculosis (TB) in 2024 (including 150 000 among people with HIV).\" is not supported by https://www.who.int/news-room/fact-sheets/detail/tuberculosis (verdict: unsupported); restate it in the words of the re-read passages of that page, or cite another seen page that states it, or drop it",
+          "RED: the claim \"The treatment success rate for drug-susceptible TB remains high, at 88%\" is not supported by https://cdn.who.int/media/docs/default-source/global-tuberculosis-report-2025/global-tb-report-2025_factsheet.pdf (verdict: source-unreachable); restate it in the words of the re-read passages of that page, or cite another seen page that states it, or drop it",
+          "RED: the claim \"The treatment success rate has improved to 71% for RR-TB\" is not supported by https://cdn.who.int/media/docs/default-source/global-tuberculosis-report-2025/global-tb-report-2025_factsheet.pdf (verdict: source-unreachable); restate it in the words of the re-read passages of that page, or cite another seen page that states it, or drop it"
+        ],
+        "fetched": 0,
+        "reread": 1
+      },
+      {
+        "round": 3,
+        "score": 4,
+        "green": 2,
+        "red": 1,
+        "reason": "Two figures supported for 2024, treatment rate missing, third quote unsupported, report not used.",
+        "verification": [
+          {
+            "url": "https://www.who.int/news-room/fact-sheets/detail/tuberculosis",
+            "claim": "In 2024, an estimated 10.7 million people fell ill with TB worldwide",
+            "verdict": "supported",
+            "detail": "In 2024, an estimated 10.7&nbsp;million people fell ill with TB worldwide, including 5.8&nbsp;million men, 3.7&nbsp;million women and 1.2&nbsp;million children."
+          },
+          {
+            "url": "https://www.who.int/news-room/fact-sheets/detail/tuberculosis",
+            "claim": "A total of 1.23 million people died from tuberculosis (TB) in 2024",
+            "verdict": "supported",
+            "detail": "&copy; Credits Tuberculosis 24 March 2026 Reading time: Key facts A total of 1.23&nbsp;million people died from tuberculosis (TB) in 2024 (including 150&nbsp;000 among people with HIV)."
+          },
+          {
+            "url": "https://www.who.int/news-room/fact-sheets/detail/tuberculosis",
+            "claim": "including 150 000 among people with HIV",
+            "verdict": "unsupported",
+            "detail": "the quote does not carry the figure 150000; nearest passages: \"&copy; Credits Tuberculosis 24 March 2026 Reading time: Key facts A total of 1.23&nbsp;million people died from tuberculosis (TB) in 2024 (including 150&nbsp;000 among people with HIV).\" \"TB was also both the leading killer of people with HIV in 2024 and a major cause of deaths related to antimicrobial resistance.\" \"In 2024, an estimated 10.7&nbsp;million people fell ill with TB worldwide, including 5.8&nbsp;million men, 3.7&nbsp;million women and 1.2&nbsp;million children.\""
+          }
+        ],
+        "objections": [
+          "The 88% drug-susceptible treatment success claim is RED because its verification verdict is source-unreachable, not supported.",
+          "The 71% RR-TB treatment success claim is RED because its verification verdict is source-unreachable, not supported.",
+          "The 'including 150 000 among people with HIV in 2024' claim is RED because its verification verdict is unsupported.",
+          "The answer fails the goal by reporting treatment success rates without stating the year each figure refers to.",
+          "RED: the claim \"including 150 000 among people with HIV in 2024\" is not supported by https://www.who.int/news-room/fact-sheets/detail/tuberculosis (verdict: unsupported); restate it in the words of the re-read passages of that page, or cite another seen page that states it, or drop it",
+          "RED: the claim \"The treatment success rate for drug-susceptible TB remains high, at 88%\" is not supported by https://cdn.who.int/media/docs/default-source/global-tuberculosis-report-2025/global-tb-report-2025_factsheet.pdf (verdict: source-unreachable); restate it in the words of the re-read passages of that page, or cite another seen page that states it, or drop it",
+          "RED: the claim \"has improved to 71% for RR-TB\" is not supported by https://cdn.who.int/media/docs/default-source/global-tuberculosis-report-2025/global-tb-report-2025_factsheet.pdf (verdict: source-unreachable); restate it in the words of the re-read passages of that page, or cite another seen page that states it, or drop it"
+        ],
+        "fetched": 0,
+        "reread": 1
+      },
+      {
+        "round": 4,
+        "score": 4,
+        "green": 3,
+        "red": 3,
+        "reason": "Two core figures supported but HIV detail marked unsupported and both treatment rates unreachable, missing year, failing exact-quote backing.",
+        "verification": [
+          {
+            "url": "https://www.who.int/news-room/fact-sheets/detail/tuberculosis",
+            "claim": "In 2024, an estimated 10.7 million people fell ill with TB worldwide",
+            "verdict": "supported",
+            "detail": "In 2024, an estimated 10.7&nbsp;million people fell ill with TB worldwide, including 5.8&nbsp;million men, 3.7&nbsp;million women and 1.2&nbsp;million children."
+          },
+          {
+            "url": "https://www.who.int/news-room/fact-sheets/detail/tuberculosis",
+            "claim": "A total of 1.23 million people died from tuberculosis (TB) in 2024",
+            "verdict": "supported",
+            "detail": "&copy; Credits Tuberculosis 24 March 2026 Reading time: Key facts A total of 1.23&nbsp;million people died from tuberculosis (TB) in 2024 (including 150&nbsp;000 among people with HIV)."
+          },
+          {
+            "url": "https://www.who.int/news-room/fact-sheets/detail/tuberculosis",
+            "claim": "(including 150 000 among people with HIV)",
+            "verdict": "unsupported",
+            "detail": "the quote does not carry the figure 150000; nearest passages: \"&copy; Credits Tuberculosis 24 March 2026 Reading time: Key facts A total of 1.23&nbsp;million people died from tuberculosis (TB) in 2024 (including 150&nbsp;000 among people with HIV).\" \"TB was also both the leading killer of people with HIV in 2024 and a major cause of deaths related to antimicrobial resistance.\" \"In 2024, an estimated 10.7&nbsp;million people fell ill with TB worldwide, including 5.8&nbsp;million men, 3.7&nbsp;million women and 1.2&nbsp;million children.\""
+          },
+          {
+            "url": "https://www.who.int/teams/global-programme-on-tuberculosis-and-lung-health/tb-reports/global-tuberculosis-report-2025",
+            "claim": "WHO Global tuberculosis report 2025 provides a comprehensive and up-to-date assessment of the TB epidemic",
+            "verdict": "supported",
+            "detail": "Global Tuberculosis Report 2025 Skip to main content &nbsp; Global tuberculosis report 2025 Overview The WHO Global tuberculosis report 2025 provides a comprehensive and up-to-date assessment of the TB epidemic and of progress in prevention, diagnosis and treatment of the disease, at global, regional and country levels."
+          },
+          {
+            "url": "https://cdn.who.int/media/docs/default-source/global-tuberculosis-report-2025/global-tb-report-2025_factsheet.pdf",
+            "claim": "The treatment success rate for drug-susceptible TB remains high, at 88%",
+            "verdict": "source-unreachable",
+            "detail": "Cannot find package 'pdfjs-dist' imported from F:\\travaux-2026-10-31\\mission-zer"
+          },
+          {
+            "url": "https://cdn.who.int/media/docs/default-source/global-tuberculosis-report-2025/global-tb-report-2025_factsheet.pdf",
+            "claim": "has improved to 71% for RR-TB",
+            "verdict": "source-unreachable",
+            "detail": "Cannot find package 'pdfjs-dist' imported from F:\\travaux-2026-10-31\\mission-zer"
+          }
+        ],
+        "objections": [
+          "Treatment success rate required by the goal is omitted with no year or exact quote.",
+          "The claim 'including 150 000 among people with HIV' has verification verdict 'unsupported' and is RED.",
+          "No citation to the latest Global Tuberculosis Report is provided despite the goal explicitly requiring it.",
+          "The answer relies only on the fact sheet secondary summary instead of the primary Global Report for latest figures.",
+          "RED: the claim \"including 150 000 among people with HIV\" is not supported by https://www.who.int/news-room/fact-sheets/detail/tuberculosis (verdict: unsupported); restate it in the words of the re-read passages of that page, or cite another seen page that states it, or drop it"
+        ],
+        "fetched": 1,
+        "reread": 1
+      }
+    ]
+  }
+}

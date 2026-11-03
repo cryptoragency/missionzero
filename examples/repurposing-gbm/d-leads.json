@@ -1,0 +1,2332 @@
+{
+  "date": "2026-11-02T12:09:06.257Z",
+  "usd": 0.706083,
+  "leads": [
+    {
+      "drug": "3,3'-diindolylmethane",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "ADENOSINUM TRIPHOSPHORICUM DINATRUM, BRYONIA (ALBA), CEDRON, DIM (3, 3-DIINDOLYMETHANE), EQUOL, FAECALIS (ALKALIGENES), IGNATIA AMARA, LACHESIS MUTUS, PETROSELINUM SATIVUM, SANGUINARIA CANADENSIS, SEPIA, STANNUM METALLICUM, SULPHUR",
+      "indication": "USES: • For the temporary relief of symptoms including: • menopausal support • hot flashes • mood swings • night sweats • flushing • headache • weakness • lack of energy These statements are based upon homeopathic principles. They have not been reviewed by the Food and Drug Administration.",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 4,
+      "best": {
+        "pmid": "29029435",
+        "level": "animal",
+        "quote": "It was successfully internalized inside the glioma cells resulting in apoptosis."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": {
+        "pmid": "39909809",
+        "quote": "Although capable of crossing the blood brain barrier, DIM's bioavailability is limited by its low solubility."
+      },
+      "brainVerified": true,
+      "summary": "Preclinical in vitro and animal studies report DIM nanoformulations accumulate in brain tumors and induce glioma cell apoptosis, with no human glioblastoma data in these abstracts."
+    },
+    {
+      "drug": "albendazole",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "ALBENDAZOLE",
+      "indication": "1 INDICATIONS AND USAGE Albendazole is an anthelmintic drug indicated for: Treatment of parenchymal neurocysticercosis due to active lesions caused by larval forms of the pork tapeworm, Taenia solium . ( 1.1 ) Treatment of cystic hydatid disease of the liver, lung, and peritoneum, caused by the larv",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 13,
+      "best": {
+        "pmid": "38817541",
+        "level": "animal",
+        "quote": "This combination therapy enhanced anti-tumor effects in immunocompetent mice, but not in immunodeficient ones, without increasing OVM1 replication."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": {
+        "pmid": "26958418",
+        "quote": "Albendazole is the preferred drug for the treatment of racemose NCC due to its superior cerebrospinal fluid penetration compared to praziquantel"
+      },
+      "brainVerified": true,
+      "summary": "Albendazole shows in vitro cytotoxicity against glioma cells and enhanced anti-tumor effects with oncolytic virus in glioma-bearing mice, and has superior cerebrospinal fluid penetration."
+    },
+    {
+      "drug": "alendronate",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "ALENDRONATE SODIUM",
+      "indication": "1 INDICATIONS AND USAGE BINOSTO is a bisphosphonate indicated for: Treatment of osteoporosis in postmenopausal women ( 1.1 ) Treatment to increase bone mass in men with osteoporosis ( 1.2 ) Limitation of use: Optimal duration of use has not been determined. For patients at low-risk for fracture, con",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 6,
+      "best": {
+        "pmid": "33947409",
+        "level": "in vitro",
+        "quote": "RALA/ALN NPs at the IC50, significantly decreased colony formation, induced apoptosis and slowed spheroid growth in vitro."
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "28646347",
+        "quote": "We observed that ALD treatment, at the higher concentrations, induced a significant increase of IL-1B, NLRP3, CASP1 expression, provoked apoptosis and also mitochondrial damage in U87-MG."
+      },
+      "againstVerified": true,
+      "brain": {
+        "pmid": "33684458",
+        "quote": "alendronate, a potent PTP1B inhibitor (blood brain barrier crossing bisphosphonate)"
+      },
+      "brainVerified": true,
+      "summary": "Alendronate shows in vitro anti-glioblastoma activity including reduced sphere/colony growth and apoptosis, is described as blood brain barrier crossing, but high concentrations also caused inflammatory expression, apoptosis and mitochondrial damage in a glial cell model."
+    },
+    {
+      "drug": "aliskiren",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "ALISKIREN HEMIFUMARATE",
+      "indication": "1 INDICATIONS AND USAGE Tekturna is a renin inhibitor (RI) indicated for the treatment of hypertension in adults and in pediatric patients weighing 50 kg or greater who are at least 6 years of age, to lower blood pressure. Lowering blood pressure reduces the risk of fatal and nonfatal cardiovascular",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 1,
+      "best": {
+        "pmid": "34929651",
+        "level": "human trial",
+        "quote": "The overall median survival was 19.9 (95% CI:14.1-25.7) months."
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "34929651",
+        "quote": "Serial FET-PET/CTs showed a reduction in both tumor volume and uptake in one patient, an increase in tumor uptake in nine patients with decreased (n = 1), unchanged (n = 1) and increased (n = 7) tumor volume, in the ten patients who had completed full dose-escalation of the treatment."
+      },
+      "againstVerified": false,
+      "brain": null,
+      "brainVerified": false,
+      "summary": "A phase I trial of combined oral RAS modulators including aliskiren reported median survival of 19.9 months in relapsed glioblastoma without clear attribution to aliskiren alone."
+    },
+    {
+      "drug": "amlodipine",
+      "papers": 2,
+      "approvedUS": true,
+      "fdaName": "AMLODIPINE BESYLATE",
+      "indication": "1 INDICATIONS AND USAGE Amlodipine besylate tablets are calcium channel blocker and may be used alone or in combination with other antihypertensive and antianginal agents for the treatment of: •Hypertension ( 1.1 ) о Amlodipine besylate tablets are indicated for the treatment of hypertension, to low",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 5,
+      "best": {
+        "pmid": "40701313",
+        "level": "animal",
+        "quote": "Furthermore, amlodipine significantly reduced tumor volume and prolonged median survival of tumor-bearing mice in vivo."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": {
+        "pmid": "42139800",
+        "quote": "Contrary to historical assumptions, recent evidence confirms that amlodipine penetrates the blood-brain barrier."
+      },
+      "brainVerified": true,
+      "summary": "Preclinical studies report amlodipine inhibits glioblastoma cell survival and prolongs survival in mouse xenograft models, and reviews state it penetrates the blood-brain barrier."
+    },
+    {
+      "drug": "amoxapine",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "AMOXAPINE",
+      "indication": "INDICATIONS AND USAGE Amoxapine is indicated for the relief of symptoms of depression in patients with neurotic or reactive depressive disorders as well as endogenous and psychotic depressions. It is indicated for depression accompanied by anxiety or agitation.",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 3,
+      "best": {
+        "pmid": "35657693",
+        "level": "in vitro",
+        "quote": "By comparative analysis of 765 FDA-approved compounds, we identified another clinically available drug for central nervous system (CNS) diseases, amoxapine, in addition to ifenprodil."
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "40272900",
+        "quote": "14 reference drugs known to cause seizure/convulsion: Paroxetine, 4-aminopyridine, pentylenetetrazol, strychnine, amoxapine, fluvoxamine, linopirdine, theophylline, pilocarpine, tramadol, bupropion, diphenhydramine, kainic acid, and veratridine."
+      },
+      "againstVerified": true,
+      "brain": {
+        "pmid": "41500576",
+        "quote": "It is known that in mice, brain penetration of amoxapine (AMX) increases nonlinearly with increasing doses"
+      },
+      "brainVerified": true,
+      "summary": "Amoxapine was identified in vitro as inducing lysosomal membrane damage relevant to patient-derived glioblastoma spheroids, is known to penetrate mouse brain, and is listed among drugs known to cause seizure/convulsion."
+    },
+    {
+      "drug": "apomorphine",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "ACTIVATED CHARCOAL - AETHUSA CYNAPIUM - APOMORPHINE HYDROCHLORIDE - BRYONIA ALBA ROOT - COLCHICUM AUTUMNALE BULB - IPECAC - LYCOPODIUM CLAVATUM SPORE - STRYCHNOS IGNATII SEED - STRYCHNOS NUX-VOMICA SEED - WATERMELON - SUS SCROFA STOMACH -",
+      "indication": "Take 15 minutes before meals",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 16,
+      "best": {
+        "pmid": "26954019",
+        "level": "in vitro",
+        "quote": "Eight of the fourteen drugs showed significant anti-proliferative activity against glioblastoma; i.e., ivermectin, trifluridine, astemizole, amlodipine, maprotiline, apomorphine, mometasone, and nortriptyline."
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "11137712",
+        "quote": "Apomorphine-promoted cell death was proportional to its concentration and was time-dependent."
+      },
+      "againstVerified": true,
+      "brain": {
+        "pmid": "30738234",
+        "quote": "The nanoparticles were significantly accumulated in the brain tissue after intranasal delivery."
+      },
+      "brainVerified": true,
+      "summary": "Apomorphine shows in vitro anti-proliferative activity against glioblastoma cells but also shows concentration-dependent cytotoxicity in neuronal and C6 cultures."
+    },
+    {
+      "drug": "arbutin",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "ARBUTIN, NIACINAMIDE, ADENOSINE",
+      "indication": "Before use, remove sweat, water, and oil, and apply evenly to the armpit while rolling the ball in a clean state, then dry completely before wearing clothes.",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 2,
+      "best": {
+        "pmid": "40826173",
+        "level": "animal",
+        "quote": "Pharmacological inhibition of BST2 with arbutin, an FDA-approved compound, disrupted this mechanism, increasing GBM radiosensitivity by enhancing mitochondrial reactive oxygen species (ROS) production and apoptosis."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": {
+        "pmid": "38879765",
+        "quote": "Arbutin can also penetrate the blood- -brain barrier, which increases its therapeutic potential."
+      },
+      "brainVerified": true,
+      "summary": "Arbutin increased radiosensitivity and apoptosis in GBM models with reported blood-brain barrier penetration, without reported negative efficacy data in these abstracts."
+    },
+    {
+      "drug": "aripiprazole",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "ARIPIPRAZOLE",
+      "indication": "1 INDICATIONS AND USAGE Aripiprazole is indicated for the treatment of: • Schizophrenia • Irritability Associated with Autistic Disorder • Treatment of Tourette’s Disorder Aripiprazole is an atypical antipsychotic. The oral formulations are indicated for: • Schizophrenia (14.1) • Irritability Associ",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 8,
+      "best": {
+        "pmid": "41824398",
+        "level": "in vitro",
+        "quote": "Both demonstrated more potent anticancer activity than temozolomide, the current standard clinical therapy for malignant glioblastoma."
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "26170741",
+        "quote": "Moreover, these two formulas did not exhibit any cytotoxicity in C6 glioma cells."
+      },
+      "againstVerified": true,
+      "brain": {
+        "pmid": "32271696",
+        "quote": "It shows a high affinity for neurotransmitters dopamine and serotonin receptors, which can overcome the blood-brain barrier (BBB) to reach the central nervous system (CNS) to exert therapeutic effects."
+      },
+      "brainVerified": true,
+      "summary": "Aripiprazole shows in vitro cytotoxicity against glioblastoma cell lines but one study reported no cytotoxicity in C6 glioma cells, while it is described as able to cross the blood-brain barrier."
+    },
+    {
+      "drug": "azithromycin",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "AZITHROMYCIN",
+      "indication": "1 INDICATIONS AND USAGE Azithromycin is a macrolide antibacterial drug indicated for the treatment of patients with mild to moderate infections caused by susceptible strains of the designated microorganisms in the specific conditions listed below. Recommended dosages and durations of therapy in adul",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 10,
+      "best": {
+        "pmid": "37486388",
+        "level": "animal",
+        "quote": "azithromycin at non-toxic dose inhibits GBM growth in mice and increases overall survival"
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": null,
+      "brainVerified": false,
+      "summary": "In a mouse model azithromycin inhibited GBM growth and increased survival, with in vitro studies showing cytotoxicity to GBM cells, and no brain penetration data stated."
+    },
+    {
+      "drug": "bisacodyl",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "BISACODYL SUPPOSITORY",
+      "indication": "Directions -detach one suppository from the strip -remove wrapper before inserting into the rectum adults and children 12 years of age and older 1 suppository once daily children 6 to under 12 years 1/2 suppository once daily children under 6 years do not use",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 3,
+      "best": {
+        "pmid": "28109792",
+        "level": "animal",
+        "quote": "In the present study we further characterize bisacodyl activity and show its efficacy in vitro on clonal macro-tumorospheres, as well as in vivo in glioblastoma mouse models."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": null,
+      "brainVerified": false,
+      "summary": "Bisacodyl showed selective cytotoxicity toward quiescent glioblastoma stem-like cells in vitro and efficacy in glioblastoma mouse models."
+    },
+    {
+      "drug": "bremelanotide",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "BREMELANOTIDE",
+      "indication": "1 INDICATIONS AND USAGE VYLEESI is indicated for the treatment of premenopausal women with acquired, generalized hypoactive sexual desire disorder (HSDD), as characterized by low sexual desire that causes marked distress or interpersonal difficulty and is NOT due to: A co-existing medical or psychia",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 1,
+      "best": {
+        "pmid": "39197897",
+        "level": "in vitro",
+        "quote": "Bremelanotide reduced survivin expression and induced cell death in glioblastoma cells at concentrations that were not toxic to normal human cells"
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": null,
+      "brainVerified": false,
+      "summary": "In vitro, bremelanotide reduced survivin expression and induced cell death in glioblastoma cells."
+    },
+    {
+      "drug": "brexpiprazole",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "BREXPIPRAZOLE",
+      "indication": "1 INDICATIONS AND USAGE REXULTI is indicated for: Adjunctive treatment to antidepressants for major depressive disorder (MDD) in adults Treatment of schizophrenia in adults and pediatric patients ages 13 years and older Treatment of agitation associated with dementia due to Alzheimer's disease Limit",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 4,
+      "best": {
+        "pmid": "31284441",
+        "level": "animal",
+        "quote": "Moreover, co-treatment of brexpiprazole and osimertinib suppressed tumor growth more efficiently than either drug alone without notable toxicity in vivo."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": {
+        "pmid": "40943762",
+        "quote": "as these substances readily cross the blood-brain barrier (BBB)."
+      },
+      "brainVerified": true,
+      "summary": "Brexpiprazole showed in vitro and in vivo animal anti-glioblastoma stem cell activity, including chemosensitization via survivin reduction, with no contrary evidence reported in these abstracts."
+    },
+    {
+      "drug": "bromocriptine",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "BROMOCRIPTINE MESYLATE",
+      "indication": "INDICATIONS AND USAGE Hyperprolactinemia-Associated Dysfunctions Bromocriptine mesylate tablets are indicated for the treatment of dysfunctions associated with hyperprolactinemia including amenorrhea with or without galactorrhea, infertility or hypogonadism . Bromocriptine mesylate tablets treatment",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 11,
+      "best": {
+        "pmid": "42404464",
+        "level": "human observational",
+        "quote": "Despite developing a recurrence, he remains alive and progression-free for >11 years after diagnosis."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": {
+        "pmid": "42404464",
+        "quote": "Given the safety, low cost, and blood-brain barrier penetrance of these Food and Drug Administration-approved drugs,"
+      },
+      "brainVerified": true,
+      "summary": "Two GBM cases with concurrent dopamine agonist use including bromocriptine showed unusually long survival, suggesting a hypothetical association warranting further investigation."
+    },
+    {
+      "drug": "carfilzomib",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "CARFILZOMIB",
+      "indication": "1 INDICATIONS AND USAGE Kyprolis is a proteasome inhibitor that is indicated: for the treatment of adult patients with relapsed or refractory multiple myeloma who have received one to three lines of therapy in combination with Lenalidomide and dexamethasone; or Dexamethasone; or Daratumumab and dexa",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 14,
+      "best": {
+        "pmid": "33428749",
+        "level": "animal",
+        "quote": "suppressed tumor growth, and increased survival of mice orthotopically engrafted with GSCs."
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "26681765",
+        "quote": "While bortezomib and carfilzomib, the 2 proteasome inhibitors approved for treatment of multiple myeloma, have little activity against malignant gliomas in vivo"
+      },
+      "againstVerified": true,
+      "brain": null,
+      "brainVerified": false,
+      "summary": "Carfilzomib shows in vitro and orthotopic mouse activity against glioblastoma, but one abstract notes little in vivo activity for unformulated carfilzomib and provides no evidence of BBB penetration."
+    },
+    {
+      "drug": "cariprazine",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "CARIPRAZINE",
+      "indication": "1 . INDICATIONS AND USAGE VRAYLAR ® is indicated for: • Treatment of schizophrenia in adult and pediatric patients 13 years of age and older [see Clinical Studies ( 14.1 )] • Acute treatment of manic or mixed episodes associated with bipolar I disorder in adult and pediatric patients 10 years of age",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 1,
+      "best": {
+        "pmid": "42356545",
+        "level": "animal",
+        "quote": "In mice, it suppressed GBM allograft growth without overt systemic toxicity."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": {
+        "pmid": "22537450",
+        "quote": "had good absorption, excellent brain penetration and advantageous safety profile."
+      },
+      "brainVerified": true,
+      "summary": "Cariprazine inhibited GBM cells in vitro and suppressed GBM growth in mice, and it shows brain penetration."
+    },
+    {
+      "drug": "ceftazidime",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "CEFTAZIDIME",
+      "indication": "INDICATIONS AND USAGE Ceftazidime for injection, USP is indicated for the treatment of patients with infections caused by susceptible strains of the designated organisms in the following diseases: Lower Respiratory Tract Infections, including pneumonia, caused by Pseudomonas aeruginosa and other Pse",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 1,
+      "best": {
+        "pmid": "35563520",
+        "level": "in vitro",
+        "quote": "increases tumor DNA damage and sensitivity to DNA-damaging agents in vitro in distinct aggressive mouse and human cancer lines, including glioblastoma multiforme, ovarian cancer, bladder cancer, and melanoma."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": {
+        "pmid": "2671141",
+        "quote": "Penetration into the cerebrospinal fluid is excellent especially for cefotaxime, ceftazidime, ceftriaxone, and ceftizoxime."
+      },
+      "brainVerified": true,
+      "summary": "Ceftazidime depleted tumor PDL1 and increased sensitivity to DNA-damaging agents in vitro including glioblastoma lines, and penetrates cerebrospinal fluid."
+    },
+    {
+      "drug": "cetirizine",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "CETIRIZINE HYDROCHLORIDE",
+      "indication": "Uses temporarily relieves these symptoms due to hay fever or other upper respiratory allergies: runny nose sneezing itchy, watery eyes itching of the nose or throat",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 2,
+      "best": {
+        "pmid": "37779953",
+        "level": "in vitro",
+        "quote": "Both the compounds exhibited significant antiproliferative effects on the abovementioned cell lines in a dose-dependent manner."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": {
+        "pmid": "12584158",
+        "quote": "The brain-to-plasma area under the curve (AUC) ratio was 4-, 2-, and >14-fold higher in KO compared with WT mice for cetirizine, loratadine, and desloratadine, respectively."
+      },
+      "brainVerified": true,
+      "summary": "Cetirizine showed dose-dependent antiproliferative effects on glioblastoma cells in vitro and has measurable but P-glycoprotein-limited brain penetration in mice."
+    },
+    {
+      "drug": "chloramphenicol",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "CHLORAMPHENICOL SODIUM SUCCINATE",
+      "indication": "",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 61,
+      "best": {
+        "pmid": "37380755",
+        "level": "in vitro",
+        "quote": "combined treatment of CAP and 2-DG drastically inhibits cell growth of glioblastoma cell lines even under normal glucose conditions; therefore, this treatment could be effective for glioblastoma patients."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": null,
+      "brainVerified": false,
+      "summary": "In vitro studies report chloramphenicol inhibits glioblastoma cell growth, with no counter-evidence or brain penetration data stated in these abstracts."
+    },
+    {
+      "drug": "ciclopirox",
+      "papers": 2,
+      "approvedUS": true,
+      "fdaName": "CICLOPIROX",
+      "indication": "INDICATIONS AND USAGE (To understand fully the indication for this product, please read the entire INDICATIONS AND USAGE section of the labeling.) Ciclopirox Topical Solution, 8% as a component of a comprehensive management program, is indicated as topical treatment in immunocompetent patients with ",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 6,
+      "best": {
+        "pmid": "33674562",
+        "level": "in vitro",
+        "quote": "Herein, we show that CPX displays strong anti-tumorigenic activity on GBM."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": {
+        "pmid": "32140390",
+        "quote": "post-ischemic treatment with ciclopirox olamine (CPX), a potent antifungal clinical drug, alleviated brain infarction, neurological deficits and brain edema in a classic rat model of ischemic stroke."
+      },
+      "brainVerified": true,
+      "summary": "Ciclopirox shows in vitro anti-glioblastoma activity and in vivo brain effects in stroke models, with no glioblastoma negative-effect data in these abstracts."
+    },
+    {
+      "drug": "cidofovir",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "CIDOFOVIR DIHYDRATE",
+      "indication": "INDICATION AND USAGE Cidofovir injection is indicated for the treatment of CMV retinitis in patients with acquired immunodeficiency syndrome (AIDS). THE SAFETY AND EFFICACY OF CIDOFOVIR INJECTION HAVE NOT BEEN ESTABLISHED FOR TREATMENT OF OTHER CMV INFECTIONS (SUCH AS PNEUMONITIS OR GASTROENTERITIS)",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 7,
+      "best": {
+        "pmid": "24170543",
+        "level": "animal",
+        "quote": "Combination therapy with CDV and radiotherapy significantly extended the survival of mice bearing intracranial glioblastoma tumors."
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "26603162",
+        "quote": "We found no cytotoxicity of cidofovir and discussed possible reasons for discrepancy from previous findings of others."
+      },
+      "againstVerified": true,
+      "brain": null,
+      "brainVerified": false,
+      "summary": "Cidofovir showed anti-glioblastoma activity in animal models but one in vitro study reported no cytotoxicity."
+    },
+    {
+      "drug": "cilostazol",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "CILOSTAZOL",
+      "indication": "1 INDICATIONS AND USAGE Cilostazol tablets are indicated for the reduction of symptoms of intermittent claudication, as demonstrated by an increased walking distance. Cilostazol is a phosphodiesterase III inhibitor (PDE III inhibitor) indicated for the reduction of symptoms of intermittent claudicat",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 5,
+      "best": {
+        "pmid": "33948351",
+        "level": "animal",
+        "quote": "We found that Cilostazol delayed tumor in vivo growth and prolonged survival."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": null,
+      "brainVerified": false,
+      "summary": "Cilostazol showed anti-glioblastoma activity in vitro and in an intracranial mouse model by restoring BK channel activity."
+    },
+    {
+      "drug": "cimetidine",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "CIMETIDINE",
+      "indication": "INDICATIONS AND USAGE Cimetidine tablets are indicated in: 1. Short-term treatment of active duodenal ulcer. Most patients heal within 4 weeks and there is rarely reason to use cimetidine tablets at full dosage for longer than 6 to 8 weeks (see DOSAGE AND ADMINISTRATION: Duodenal Ulcer ). Concomitan",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 14,
+      "best": {
+        "pmid": "28423558",
+        "level": "human trial",
+        "quote": "The patients treated with CLOVA cocktail in combination with TMZ showed increased survival compared to the control group treated with TMZ alone."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": null,
+      "brainVerified": false,
+      "summary": "A phase I/II study reported increased survival with a cimetidine-containing cocktail plus temozolomide versus temozolomide alone in recurrent glioblastoma, with supporting animal data for cimetidine plus temozolomide."
+    },
+    {
+      "drug": "clemastine",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "CLEMASTINE FUMARATE",
+      "indication": "INDICATIONS AND USAGE Clemastine Fumarate Syrup is indicated for the relief of symptoms associated with allergic rhinitis such as sneezing, rhinorrhea, pruritus and lacrimation. Clemastine Fumarate Syrup is indicated for use in pediatric populations (age 6 years through 12) and adults (see DOSAGE AN",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 2,
+      "best": {
+        "pmid": "37760589",
+        "level": "animal",
+        "quote": "we showed that a neural stem cell-derived mouse glioma model displaying predominantly proneural features was similarly susceptible to clemastine treatment."
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "40371642",
+        "quote": "Clemastine-treated patients had significantly higher treatment-induced disability progression slopes compared with the remaining TRAP-MS participants."
+      },
+      "againstVerified": true,
+      "brain": {
+        "pmid": "35372341",
+        "quote": "Clemastine penetrates the blood brain barrier efficiently and promotes remyelination in different animal models of neurodegeneration including multiple sclerosis, ischemia and Alzheimer's disease."
+      },
+      "brainVerified": true,
+      "summary": "Clemastine shows in vitro and mouse glioma model activity against glioblastoma stemness, crosses the blood-brain barrier, but has reported toxicity including accelerated disability in progressive MS."
+    },
+    {
+      "drug": "clioquinol",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "HYDROCORTISONE, CLIOQUINOL, ZINC OXIDE",
+      "indication": "Uses ICHYBUM is a medicated cream used to help relieve the symptoms of pruritis ani and other afflictions involving chronic itching around the anus",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 5,
+      "best": {
+        "pmid": "26725099",
+        "level": "in vitro",
+        "quote": "Combination treatment synergistically inhibited the viability of glioma cells but not mouse normal neuron HT22 cells"
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "29247315",
+        "quote": "The therapeutic activity of the resultant formulation was evaluated in two subcutaneous tumor models (glioblastoma and ovarian cancers) but was not active."
+      },
+      "againstVerified": true,
+      "brain": null,
+      "brainVerified": false,
+      "summary": "Clioquinol shows in vitro anti-glioblastoma activity alone and in combination, but a copper-clioquinol liposomal formulation was not active in subcutaneous tumor models."
+    },
+    {
+      "drug": "clofarabine",
+      "papers": 2,
+      "approvedUS": true,
+      "fdaName": "CLOFARABINE",
+      "indication": "1 INDICATIONS AND USAGE Clofarabine injection is indicated for the treatment of pediatric patients 1 to 21 years old with relapsed or refractory acute lymphoblastic leukemia after at least two prior regimens. Clofarabine injection is a nucleoside metabolic inhibitor indicated for the treatment of pe",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 8,
+      "best": {
+        "pmid": "39315277",
+        "level": "in vitro",
+        "quote": "in-vitro experiments validated Clofarabine and Ciclopirox as highly efficacious in selectively targeting GBM cancer cells."
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "23004932",
+        "quote": "Clofarabine had no effect on the growth of SF-295 glioblastoma, which was not enhanced by radiation."
+      },
+      "againstVerified": true,
+      "brain": {
+        "pmid": "16115942",
+        "quote": "The median CSF penetration was 5% (range, 3-26%)."
+      },
+      "brainVerified": true,
+      "summary": "Clofarabine shows in vitro activity against GBM cells but had no effect on SF-295 glioblastoma xenograft growth and shows only modest CSF penetration."
+    },
+    {
+      "drug": "clofazimine",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "CLOFAZIMINE",
+      "indication": "1 INDICATIONS AND USAGE LAMPRENE is an antimycobacterial indicated for the treatment of lepromatous leprosy, including dapsone-resistant lepromatous leprosy and lepromatous leprosy complicated by erythema nodosum leprosum. ( 1.1 ) To prevent the development of drug-resistance, LAMPRENE should be use",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 8,
+      "best": {
+        "pmid": "40053076",
+        "level": "animal",
+        "quote": "Notably, the combination of clofazimine and anti-PD-1 therapy significantly reduced tumor growth and intracranial invasion in orthotopic GBM mouse models, resulting in extended survival."
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "28869943",
+        "quote": "However, in vivo experiments revealed that the drugs had no effect on orthotopic brain tumors in vivo."
+      },
+      "againstVerified": true,
+      "brain": {
+        "pmid": "31018124",
+        "quote": "Although clofazimine does not cross the blood-brain barrier,"
+      },
+      "brainVerified": true,
+      "summary": "Clofazimine shows in vitro and animal-model anti-glioblastoma activity, especially in combination therapy, but failed against orthotopic tumors in one study and is reported not to cross the blood-brain barrier."
+    },
+    {
+      "drug": "clomipramine",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "CLOMIPRAMINE HYDROCHLORIDE",
+      "indication": "INDICATIONS AND USAGE Clomipramine hydrochloride capsules, USP is indicated for the treatment of obsessions and compulsions in patients with Obsessive-Compulsive Disorder (OCD). The obsessions or compulsions must cause marked distress, be time-consuming, or significantly interfere with social or occ",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 13,
+      "best": {
+        "pmid": "16055945",
+        "level": "in vitro",
+        "quote": "Paroxetine and fluoxetine, SSRIs, clomipramine, a TCA, but not imipramine or mianserin (an atypical antidepressant), caused apoptosis in both cell lines, as assessed by flow cytometry of propidium iodide-stained C6 cells and typical fluorescence microscopy in glioma cells."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": {
+        "pmid": "35179776",
+        "quote": "Antidepressants, which are BBB-permeable, have been reported to exhibit cytotoxicity against tumor cells."
+      },
+      "brainVerified": true,
+      "summary": "Clomipramine induced apoptosis in glioma cell lines in vitro, and antidepressants as a class are described as BBB-permeable."
+    },
+    {
+      "drug": "clozapine",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "CLOZAPINE",
+      "indication": "1 INDICATIONS AND USAGE Clozapine orally disintegrating tablets (Clozapine ODT) is an atypical antipsychotic indicated for: Treatment of severely ill patients with schizophrenia who fail to respond adequately to standard antipsychotic treatment. Because of the risks of severe neutropenia and of seiz",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 22,
+      "best": {
+        "pmid": "40724598",
+        "level": "in vitro",
+        "quote": "CLZ exhibited the highest cytotoxicity in both cell lines, suggesting strong anticancer potential and also synergism among the different combinations, particularly in SH-SY5Y."
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "37451530",
+        "quote": "Clozapine, a widely used antipsychotics, has been demonstrated to alter the permeability of BMVECs, but the underlying mechanisms of this effect are not fully understood."
+      },
+      "againstVerified": true,
+      "brain": {
+        "pmid": "31001591",
+        "quote": "the widely used agonist clozapine N-oxide undergoes conversion to clozapine, which penetrates the blood-brain barrier but has an unfavorable side effect profile."
+      },
+      "brainVerified": true,
+      "summary": "Clozapine shows in vitro cytotoxicity against glioblastoma cells, penetrates the blood-brain barrier, but has been shown to alter brain endothelial permeability."
+    },
+    {
+      "drug": "dactinomycin",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "DACTINOMYCIN",
+      "indication": "1 INDICATIONS AND USAGE Dactinomycin for Injection is an actinomycin indicated for the treatment of: adult and pediatric patients with Wilms tumor, as part of a multi-phase, combination chemotherapy regimen. ( 1.1 ) adult and pediatric patients with rhabdomyosarcoma, as part of a multi-phase, combin",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 4,
+      "best": {
+        "pmid": "69017",
+        "level": "in vitro",
+        "quote": "All three drugs caused rapid tissue culture cell death with direct injection, and impeded tumour growth when given intraperitoneally."
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "69017",
+        "quote": "but neither drug had a significant effect against local tumours treated with implanted drug capsules."
+      },
+      "againstVerified": true,
+      "brain": {
+        "pmid": "7300888",
+        "quote": "because chemotherapeutic agents do not penetrate the blood-brain barrier."
+      },
+      "brainVerified": true,
+      "summary": "Dactinomycin killed human glioblastoma cells in vitro but showed no significant effect against local tumours with implanted capsules and is described as not penetrating the blood-brain barrier."
+    },
+    {
+      "drug": "dorzolamide",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "DORZOLAMIDE HYDROCHLORIDE",
+      "indication": "1 INDICATIONS AND USAGE Dorzolamide Hydrochloride Ophthalmic Solution is indicated in the treatment of elevated intraocular pressure in patients with ocular hypertension or open-angle glaucoma. Dorzolamide Hydrochloride Ophthalmic Solution is a carbonic anhydrase inhibitor indicated for the treatmen",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 2,
+      "best": {
+        "pmid": "40910234",
+        "level": "in vitro",
+        "quote": "Dorzolamide and TMZ significantly inhibited proliferation, migration, and invasion while promoting apoptosis in U87 cells; the combination had the strongest effect (P<0.001)."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": null,
+      "brainVerified": false,
+      "summary": "In vitro testing showed dorzolamide inhibited glioblastoma cell proliferation, migration and invasion, with no contrary evidence or brain penetration data stated in these abstracts."
+    },
+    {
+      "drug": "doxazosin",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "DOXAZOSIN",
+      "indication": "1 INDICATIONS AND USAGE Doxazosin tablets are an alpha 1 adrenergic antagonist indicated for: • Signs and symptoms of Benign Prostatic Hyperplasia (BPH) • Treatment of HypertensionTreatment of Hypertension 1.1 Benign Prostatic Hyperplasia (BPH) Doxazosin tablets are indicated for the treatment of th",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 12,
+      "best": {
+        "pmid": "24516604",
+        "level": "in vitro",
+        "quote": "The small molecule hERG ligand doxazosin induced concentration-dependent apoptosis of human LNT-229 (EC50 = 35 µM) and U87MG (EC50 = 29 µM) GB cells, accompanied by cell cycle arrest in the G0/G1 phase."
+      },
+      "bestVerified": false,
+      "against": {
+        "pmid": "27123999",
+        "quote": "observed that doxazosin induced cell death on a small percentage of non-tumor cells."
+      },
+      "againstVerified": true,
+      "brain": {
+        "pmid": "1677547",
+        "quote": "whereas doxazosin, which partitions poorly into the brain, did not block cirazoline's effect."
+      },
+      "brainVerified": true,
+      "summary": "Doxazosin induces apoptosis and cell cycle arrest in glioblastoma cells in vitro but partitions poorly into the brain and can affect a small percentage of non-tumor cells."
+    },
+    {
+      "drug": "doxycycline",
+      "papers": 3,
+      "approvedUS": true,
+      "fdaName": "DOXYCYCLINE",
+      "indication": "INDICATIONS AND USAGE To reduce the development of drug-resistant bacteria and maintain effectiveness of doxycycline and other antibacterial drugs, doxycycline should be used only to treat or prevent infections that are proven or strongly suspected to be caused by susceptible bacteria. When culture ",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 99,
+      "best": {
+        "pmid": "34533110",
+        "level": "in vitro",
+        "quote": "Individual treatment with DOXY and AZI decreased U87 cell viability in dose- and time-dependent, and quantitatively comparable to TMZ."
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "30961616",
+        "quote": "No survival advantage was observed in DXC-treated mice as compared to vehicle-treated mice by this radiosensitizing protocol."
+      },
+      "againstVerified": true,
+      "brain": {
+        "pmid": "30961616",
+        "quote": "Since DXC presents favorable pharmacokinetics properties including the capacity to cross the blood-brain barrier, it has been hypothesized that it could radiosensitize brain tumors as well."
+      },
+      "brainVerified": true,
+      "summary": "In vitro studies report doxycycline decreases glioma cell viability and proliferation, but an orthotopic mouse study found no survival advantage as a radiosensitizer."
+    },
+    {
+      "drug": "doxylamine",
+      "papers": 2,
+      "approvedUS": true,
+      "fdaName": "DOXYLAMINE SUCCINATE",
+      "indication": "Use helps to reduce difficulty in falling asleep",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 2,
+      "best": {
+        "pmid": "41476462",
+        "level": "in vitro",
+        "quote": "Both agents demonstrated superior efficacy in vitro, with lower IC50 values (&#x223c;750 &#x3bc;M for Doxylamine and &#x223c;300 &#x3bc;M for Gemfibrozil) compared to TMZ (&#x223c;1.25 mM)."
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "41476462",
+        "quote": "However, at these concentrations, the free drugs still exhibited off-target toxicity to noncancerous cells."
+      },
+      "againstVerified": true,
+      "brain": {
+        "pmid": "40595852",
+        "quote": "we, for the first time, identify drugs with the ability to cross the blood brain barrier (BBB), with potential cytotoxic effects beyond TMZ, and with autophagy inhibitory potential, which can be further explored for repurposing"
+      },
+      "brainVerified": true,
+      "summary": "Doxylamine showed in vitro anti-glioblastoma activity superior to temozolomide but with off-target toxicity to noncancerous cells at effective concentrations."
+    },
+    {
+      "drug": "econazole",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "ECONAZOLE NITRATE",
+      "indication": "1 INDICATIONS AND USAGE Ecoza (econazole nitrate) topical foam, 1%, is indicated for the treatment of interdigital tinea pedis caused by Trichophyton rubrum, Trichophyton mentagrophytes, and Epidermophyton floccosum in patients 12 years of age and older. Ecoza is an azole antifungal indicated for th",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 10,
+      "best": {
+        "pmid": "33050088",
+        "level": "in vitro",
+        "quote": "GBM cell cytotoxicity screening of several ion channel drugs identified three drugs with potent cell killing efficacy: flunarizine dihydrochloride, econazole nitrate, and quinine hydrochloride dihydrate."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": null,
+      "brainVerified": false,
+      "summary": "In vitro screening found econazole nitrate had potent cell-killing efficacy in GBM cells and reduced invadopodia activity."
+    },
+    {
+      "drug": "edaravone",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "EDARAVONE",
+      "indication": "1 INDICATIONS AND USAGE RADICAVA and RADICAVA ORS are indicated for the treatment of amyotrophic lateral sclerosis (ALS). RADICAVA and RADICAVA ORS are indicated for the treatment of amyotrophic lateral sclerosis (ALS). ( 1 )",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 4,
+      "best": {
+        "pmid": "39423824",
+        "level": "animal",
+        "quote": "edaravone treatment in preclinical models delays glioblastoma tumorigenesis, sensitizes their response to IR, and prolongs the lifespan of animals."
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "29350596",
+        "level": null,
+        "quote": "inhibition of ROS generation by edaravone completely eliminated the cytotoxic effects of 5-ALA-SDT."
+      },
+      "againstVerified": true,
+      "brain": {
+        "pmid": "39423824",
+        "quote": "Targeting glioblastoma with a brain-penetrant drug that impairs brain tumor stem cells via NLE1-Notch1 complex."
+      },
+      "brainVerified": true,
+      "summary": "Edaravone impairs glioblastoma stem cells and prolongs survival in preclinical models, but as a ROS scavenger it can also block ROS-mediated glioma cytotoxicity in vitro."
+    },
+    {
+      "drug": "emodin",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "GLYCERIN",
+      "indication": "1、Clean and dry hair 2、Spray this product evenly on the scalp and hair 3、Massage your scalp and hair with your fingers for 2-3 minutes.",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 25,
+      "best": {
+        "pmid": "30218594",
+        "level": "animal",
+        "quote": "The growth of U87MG, subcutaneously injected in nude mice with severe combined immunodeficiency, is inhibited without any appreciable toxic effects on the animals after AE treatment."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": {
+        "pmid": "37066699",
+        "quote": "Further modification of the nanocarrier with transferrin (Tf) and polyethylene glycol-poly (lactic-co-glycolic acid) (PEG-PLGA) improves its penetration through the BBB and tumor targeting, respectively."
+      },
+      "brainVerified": true,
+      "summary": "Preclinical in vitro and animal studies report emodin/aloe-emodin inhibits glioblastoma cell growth, invasion, and migration, with brain delivery typically requiring specialized carriers."
+    },
+    {
+      "drug": "eribulin",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "ERIBULIN MESYLATE",
+      "indication": "1 INDICATIONS AND USAGE Eribulin mesylate injection is a microtubule inhibitor indicated for the treatment of patients with: Metastatic breast cancer who have previously received at least two chemotherapeutic regimens for the treatment of metastatic disease. Prior therapy should have included an ant",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 12,
+      "best": {
+        "pmid": "29758120",
+        "level": "animal",
+        "quote": "The concomitant eribulin and radiation treatment significantly prolonged the survival of mice harboring intracerebral glioma xenografts compared with eribulin or radiation alone (P < .0001)."
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "39422741",
+        "quote": "intracerebral eribulin levels were not sufficient to predict eribulin would have consistent clinically meaningful activity against tumors in the brain."
+      },
+      "againstVerified": true,
+      "brain": {
+        "pmid": "31099446",
+        "quote": "A pharmacokinetics study showed that eribulin quickly penetrated brain tumors and remained at a high concentration even when it was washed away from plasma, kidney or liver 24 hours after intravenous injection."
+      },
+      "brainVerified": false,
+      "summary": "Eribulin shows anti-glioblastoma activity in mouse intracerebral models and penetrates brain tumors in mice, but human microdialysis data suggest brain levels may be insufficient for consistent clinical activity."
+    },
+    {
+      "drug": "finasteride",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "FINASTERIDE",
+      "indication": "1 INDICATIONS AND USAGE Finasteride tablets are indicated for the treatment of male pattern hair loss (androgenetic alopecia) in MEN ONLY . Efficacy in bitemporal recession has not been established. Finasteride tablets are not indicated for use in women. Finasteride is a 5α-reductase inhibitor indic",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 12,
+      "best": {
+        "pmid": "34575486",
+        "level": "in vitro",
+        "quote": "We showed that finasteride inhibited the maintenance of glioma stem-like cells and repressed the proliferation of glioblastoma."
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "40528055",
+        "quote": "Further, the synthesized drug significantly decreased cell migration and invasion at a lower concentration than finasteride, which was ineffective even at IC50 value."
+      },
+      "againstVerified": true,
+      "brain": {
+        "pmid": "34575486",
+        "quote": "Finasteride, an FDA-approved medication for the treatment of benign prostate hyperplasia and androgenic alopecia, is already known to pass through the blood-brain barrier and possess antiproliferative activity of prostate epithelial cells."
+      },
+      "brainVerified": true,
+      "summary": "In vitro studies report finasteride inhibits glioblastoma proliferation, though one study found it ineffective against migration and invasion, and it is reported to cross the blood-brain barrier."
+    },
+    {
+      "drug": "fluphenazine",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "FLUPHENAZINE DECANOATE",
+      "indication": "INDICATIONS AND USAGE: Fluphenazine Decanoate Injection is a long-acting parenteral antipsychotic drug intended for use in the management of patients requiring prolonged parenteral neuroleptic therapy (e.g., chronic schizophrenics). Fluphenazine Decanoate Injection has not been shown effective in th",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 10,
+      "best": {
+        "pmid": "41772197",
+        "level": "animal",
+        "quote": "Additionally, we demonstrate that Fluphenazine hydrochloride binds to and inhibits DDX39A, thereby suppressing GB growth, invasion, and the immunosuppressive function of macrophages."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": {
+        "pmid": "7531409",
+        "quote": "They are attractive candidates for use against tumors of the central nervous system since they readily pass the blood-brain barrier and accumulate in the brain."
+      },
+      "brainVerified": true,
+      "summary": "Fluphenazine shows in vitro and in vivo anti-glioblastoma activity in preclinical models and crosses the blood-brain barrier."
+    },
+    {
+      "drug": "fluvoxamine",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "FLUVOXAMINE MALEATE",
+      "indication": "1 INDICATIONS AND USAGE Fluvoxamine maleate extended-release capsules is a selective serotonin reuptake inhibitor (SSRI) indicated for the treatment of obsessive compulsive disorder (OCD) ( 1 ). Efficacy was demonstrated in: One 12-week study fluvoxamine maleate extended-release capsules in adults (",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 4,
+      "best": {
+        "pmid": "26988603",
+        "level": "animal",
+        "quote": "Daily treatment of athymic mice bearing human glioma-initiating cells with fluvoxamine blocked tumor cell invasion and prolonged the survival with almost same dose of anti-depressant effect."
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "24530235",
+        "quote": "Central nervous system drugs such as imipramine, fluvoxamine, paroxetine, reboxetine, citalopram and donepezil did not affect cell viability or [methyl-(3)H]choline uptake."
+      },
+      "againstVerified": true,
+      "brain": {
+        "pmid": "26988603",
+        "quote": "confirmed as drug penetration through the blood-brain barrier (BBB) and accumulation of whole brain including brain tumor with no drug toxicity."
+      },
+      "brainVerified": true,
+      "summary": "Fluvoxamine showed anti-invasive and survival-prolonging effects in a mouse glioma model and in vitro glioblastoma assays, but did not affect glioblastoma cell viability in one in vitro choline-uptake study."
+    },
+    {
+      "drug": "fulvestrant",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "FULVESTRANT",
+      "indication": "1 INDICATIONS AND USAGE Fulvestrant Injection is an estrogen receptor antagonist indicated for the treatment of: Hormone receptor (HR)-positive, human epidermal growth factor receptor 2 (HER2)-negative advanced breast cancer in postmenopausal women not previously treated with endocrine therapy. ( 1 ",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 9,
+      "best": {
+        "pmid": "22162424",
+        "level": "human trial",
+        "quote": "The observed response was superior to the historical controls (P = 0.006 Whitman U-test)."
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "37687164",
+        "quote": "Unfortunately, non-cancer HaCaT cells were the most sensitive to the tested constructs, which forced a change in the approach to the use of ER and EGFR receptors as a goal in cancer therapy."
+      },
+      "againstVerified": true,
+      "brain": {
+        "pmid": "17686882",
+        "quote": "specific ERalpha blockade with a pure antiestrogen, fulvestrant, that does not penetrate the blood-brain barrier"
+      },
+      "brainVerified": true,
+      "summary": "Fulvestrant has been tested in a small human pilot including glioblastoma and shows preclinical anti-glioma activity, but it is described as not penetrating the blood-brain barrier."
+    },
+    {
+      "drug": "gemfibrozil",
+      "papers": 3,
+      "approvedUS": true,
+      "fdaName": "GEMFIBROZIL",
+      "indication": "INDICATIONS AND USAGE Gemfibrozil Tablets are indicated as adjunctive therapy to diet for: 1. Treatment of adult patients with very high elevations of serum triglyceride levels (Types IV and V hyperlipidemia) who present a risk of pancreatitis and who do not respond adequately to a determined dietar",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 6,
+      "best": {
+        "pmid": "40595852",
+        "level": "in vitro",
+        "quote": "Evaluation of the GBM inhibitory potential of these drugs through in-vitro and three-dimensional spheroid assay showed promising results."
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "41476462",
+        "quote": "However, at these concentrations, the free drugs still exhibited off-target toxicity to noncancerous cells."
+      },
+      "againstVerified": true,
+      "brain": {
+        "pmid": "40595852",
+        "quote": "we, for the first time, identify drugs with the ability to cross the blood brain barrier (BBB), with potential cytotoxic effects beyond TMZ, and with autophagy inhibitory potential, which can be further explored for repurposing"
+      },
+      "brainVerified": true,
+      "summary": "Gemfibrozil inhibited glioblastoma cell viability in vitro, is described as able to cross the blood-brain barrier, but free drug showed off-target toxicity to noncancerous cells."
+    },
+    {
+      "drug": "glimepiride",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "GLIMEPIRIDE",
+      "indication": "1 INDICATIONS AND USAGE Glimepiride tablets are indicated as an adjunct to diet and exercise to improve glycemic control in adults with type 2 diabetes mellitus [see Clinical Studies (14.1) ]. Limitations of Use Glimepiride tablets should not be used for the treatment of type 1 diabetes mellitus or ",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 1,
+      "best": {
+        "pmid": "34488821",
+        "level": "animal",
+        "quote": "combining radiotherapy and glimepiride significantly reduced GBM growth and improved survival in a GBM orthotopic xenograft mouse model."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": null,
+      "brainVerified": false,
+      "summary": "Glimepiride combined with radiation reduced tumor growth and improved survival in an orthotopic glioblastoma xenograft mouse model."
+    },
+    {
+      "drug": "griseofulvin",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "GRISEOFULVIN",
+      "indication": "INDICASTIONS AND USAGE Griseofulvin tablets, USP are indicated for the treatment of dermatophyte infections of the skin not adequately treated by topical therapy, hair and nails, namely: Tinea corporis Tinea pedis Tinea cruris Tinea barbae Tinea capitis Tinea unguium when caused by one or more of th",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 1,
+      "best": {
+        "pmid": "42710153",
+        "level": "animal",
+        "quote": "In vivo, oral administration of GF significantly inhibited tumor growth in vivo"
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": null,
+      "brainVerified": false,
+      "summary": "Preclinical data show griseofulvin inhibits glioblastoma growth in cell and orthotopic mouse models, with clinical benefit unproven."
+    },
+    {
+      "drug": "hydralazine",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "HYDRALAZINE HYDROCHLORIDE",
+      "indication": "INDICATIONS AND USAGE Essential hypertension, alone or as an adjunct.",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 8,
+      "best": {
+        "pmid": "41052584",
+        "level": "animal",
+        "quote": "The acrolein scavenger hydralazine also inhibited NETosis in vitro and both subcutaneous and orthotopic glioma models."
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "16448574",
+        "quote": "Hydralazine showed no growth inhibitory effect on cervical, colon, breast, sarcoma, glioma, and head & neck cancer cell lines when used alone."
+      },
+      "againstVerified": true,
+      "brain": {
+        "pmid": "21058733",
+        "quote": "While hydralazine would require specific chemical modifications for use as an AD therapeutic itself (to improve blood brain barrier permeability, reduce vasoactive side effects, and optimization for amyloid inhibition)"
+      },
+      "brainVerified": true,
+      "summary": "Hydralazine shows in vitro and animal-model activity relevant to glioblastoma but showed no growth inhibition of glioma cells alone and has reported blood-brain barrier permeability limitations."
+    },
+    {
+      "drug": "iloperidone",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "ILOPERIDONE",
+      "indication": "1 INDICATIONS AND USAGE FANAPT ® is indicated for: Treatment of schizophrenia in adults [see Clinical Studies (14.1) ]. Acute treatment of manic or mixed episodes associated with bipolar I disorder in adults [see Clinical Studies (14.2) ] . FANAPT is an atypical antipsychotic indicated for: Treatmen",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 1,
+      "best": {
+        "pmid": "38927341",
+        "level": "in vitro",
+        "quote": "ILO (p < 0.05) and TMZ (p < 0.01) significantly inhibited the growth of U-87MG cells at all tested doses."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": null,
+      "brainVerified": false,
+      "summary": "In vitro testing showed iloperidone inhibited growth of glioblastoma cell lines, with no counter-evidence or brain-penetration data stated for the parent drug in these abstracts."
+    },
+    {
+      "drug": "istradefylline",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "ISTRADEFYLLINE",
+      "indication": "1 INDICATIONS AND USAGE NOURIANZ is indicated as adjunctive treatment to levodopa/carbidopa in adult patients with Parkinson's disease (PD) experiencing \"off\" episodes. NOURIANZ is an adenosine receptor antagonist indicated as adjunctive treatment to levodopa/carbidopa in adult patients with Parkins",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 3,
+      "best": {
+        "pmid": "40544936",
+        "level": "in vitro",
+        "quote": "Three-dimensional (3D) spheroid model of 1321N1 GBM cells further demonstrated that riluzole inhibits ∼50 % higher cell growth inhibition than istradefylline with effective"
+      },
+      "bestVerified": false,
+      "against": null,
+      "againstVerified": false,
+      "brain": {
+        "pmid": "25676023",
+        "quote": "Istradefylline easily crosses the blood-brain barrier and shows a high affinity to the human A2A receptor."
+      },
+      "brainVerified": true,
+      "summary": "In vitro comparative data suggest istradefylline has antiglioblastoma activity but less than riluzole, and istradefylline crosses the blood-brain barrier."
+    },
+    {
+      "drug": "ivermectin",
+      "papers": 2,
+      "approvedUS": true,
+      "fdaName": "IVERMECTIN",
+      "indication": "INDICATIONS AND USAGE Ivermectin is indicated for the treatment of the following infections: Strongyloidiasis of the intestinal tract Ivermectin is indicated for the treatment of intestinal (i.e., nondisseminated) strongyloidiasis due to the nematode parasite Strongyloides stercoralis . This indicat",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 15,
+      "best": {
+        "pmid": "27771251",
+        "level": "animal",
+        "quote": "Ivermectin significantly suppresses the growth of two independent glioblastoma xenograft mouse models."
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "40497800",
+        "quote": "Treatment with IVM-MCM did not decrease the tumor size."
+      },
+      "againstVerified": true,
+      "brain": {
+        "pmid": "34268580",
+        "quote": "BBB Pgp activity in the model was optimized using measured CSF data for the Pgp substrates ivermectin, indinavir, vincristine, docetaxel, paclitaxel, olanzapine and citalopram"
+      },
+      "brainVerified": true,
+      "summary": "In vitro and animal xenograft studies report ivermectin inhibits glioblastoma growth, with no human glioblastoma efficacy data in these abstracts."
+    },
+    {
+      "drug": "ketorolac",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "KETOROLAC TROMETHAMINE",
+      "indication": "INDICATIONS AND USAGE Carefully consider the potential benefits and risks of ketorolac tromethamine and other treatment options before deciding to use ketorolac. Use the lowest effective dose for the shortest duration consistent with individual patient treatment goals (see WARNINGS ). Acute Pain in ",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 3,
+      "best": {
+        "pmid": "33861592",
+        "level": "in vitro",
+        "quote": "The selected inhibitors (R-ketorolac and ML141 for Cdc42 and R-ketorolac and EHT 1864 for Rac1) have been successfully employed to reduce the infiltration propensity of GBM in live cell imaging studies."
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "15546138",
+        "quote": "Furthermore, only celecoxib showed Akt phosphorylation reduction and an anti-invasivness in glioblastoma cells, whereas aspirin, ketoprofen, ketorolac, and naproxen did not."
+      },
+      "againstVerified": true,
+      "brain": {
+        "pmid": "33389746",
+        "quote": "we chronically infused mice with ketorolac, a non-specific COX inhibitor that does not cross the blood-brain barrier (BBB), under normoxia or 50% isobaric hypoxia (10% O2 by volume)."
+      },
+      "brainVerified": true,
+      "summary": "R-ketorolac reduced glioblastoma infiltration in live cell imaging, ketorolac lacked anti-invasiveness in another glioblastoma cell study, and ketorolac is described as not crossing the blood-brain barrier."
+    },
+    {
+      "drug": "lazertinib",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "LAZERTINIB",
+      "indication": "1 INDICATIONS AND USAGE LAZCLUZE, in combination with amivantamab, is indicated for the first-line treatment of adult patients with locally advanced or metastatic non-small cell lung cancer (NSCLC) with epidermal growth factor receptor (EGFR) exon 19 deletions or exon 21 L858R substitution mutations",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 3,
+      "best": {
+        "pmid": "42276053",
+        "level": "animal",
+        "quote": "Additionally, lazertinib demonstrated superior efficacy to standard therapies in GBO transplantation mouse model."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": {
+        "pmid": "37365915",
+        "quote": "However, lazertinib, an emerging EGFR-TKI, has shown higher selectivity toward EGFR mutations and improved penetration of the blood-brain barrier compared to osimertinib in preclinical studies."
+      },
+      "brainVerified": true,
+      "summary": "Lazertinib showed efficacy in a glioblastoma organoid transplantation mouse model and is reported to penetrate the blood-brain barrier in preclinical studies."
+    },
+    {
+      "drug": "lomitapide",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "LOMITAPIDE MESYLATE",
+      "indication": "1 INDICATIONS AND USAGE JUXTAPID is indicated as an adjunct to a low-fat diet and exercise and other low density lipoprotein cholesterol (LDL-C) therapies to reduce LDL-C in adults and pediatric patients aged 2 years and older with homozygous familial hypercholesterolemia (HoFH). JUXTAPID is a micro",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 4,
+      "best": {
+        "pmid": "40923320",
+        "level": "animal",
+        "quote": "Concomitant treatment with lomitapide and temozolomide (TMZ) prolonged survival and delayed tumor recurrence in a mouse glioblastoma model, compared with treatment xwith TMZ alone."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": {
+        "pmid": "38569065",
+        "quote": "efficient BBB permeability, and tumor targeting ability."
+      },
+      "brainVerified": true,
+      "summary": "Preclinical mouse models report lomitapide has anti-glioblastoma activity alone or with temozolomide, with nanoparticle delivery described as BBB-permeable."
+    },
+    {
+      "drug": "lumefantrine",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "ARTEMETHER AND LUMEFANTRINE",
+      "indication": "1 INDICATIONS AND USAGE Coartem Tablets are indicated for treatment of acute, uncomplicated malaria infections due to Plasmodium falciparum (P. falciparum) in patients 2 months of age and older with a bodyweight of 5 kg and above. Coartem Tablets have been shown to be effective in geographical regio",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 1,
+      "best": {
+        "pmid": "32409605",
+        "level": "animal",
+        "quote": "Lumefantrine promoted growth suppression and apoptosis in vitro in parental and radio/TMZ-resistant GBM and inhibited tumor growth without toxicity in vivo in U87MG GBM and radio/TMZ-resistant GBM orthotopic tumor models."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": null,
+      "brainVerified": false,
+      "summary": "Lumefantrine inhibited Fli-1 and suppressed growth in parental and radio/TMZ-resistant GBM in vitro and in orthotopic tumor models in vivo."
+    },
+    {
+      "drug": "maraviroc",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "MARAVIROC",
+      "indication": "1 INDICATIONS AND USAGE Maraviroc tablets are indicated in combination with other antiretroviral agents for the treatment of only CCR5-tropic human immunodeficiency virus type 1 (HIV-1) infection in adult and pediatric patients 2 years of age and older weighing at least 10 kg. Limitations of Use: • ",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 7,
+      "best": {
+        "pmid": "41570802",
+        "level": "animal",
+        "quote": "Targeting CCR5 with genetic knockdown or the approved drug maraviroc impairs GSC stemness and prolongs survival in GBM models."
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "26603162",
+        "quote": "We also found no cytotoxicity from acyclovir or maraviroc also in contradistinction to predictions."
+      },
+      "againstVerified": true,
+      "brain": {
+        "pmid": "20601852",
+        "quote": "Four patients had CSF concentrations above the protein-adjusted inhibitory concentration (IC90) of 0.57 ng/ml (0.06-10.7) with a median of 102 ng/ml (35-173)."
+      },
+      "brainVerified": true,
+      "summary": "Maraviroc inhibits glioblastoma invasion/stemness in vitro and in animal models but showed no direct cytotoxicity in one glioma cell study, while human CSF measurements show it reaches the brain."
+    },
+    {
+      "drug": "medroxyprogesterone acetate",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "MEDROXYPROGESTERONE ACETATE",
+      "indication": "1 INDICATIONS AND USAGE Medroxyprogesterone acetate injectable suspension is indicated for use by females of reproductive potential to prevent pregnancy. Limitations of Use: The use of medroxyprogesterone acetate injectable suspension is not recommended as a long-term (i.e., longer than 2 years) bir",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 7,
+      "best": {
+        "pmid": "30055402",
+        "level": "animal",
+        "quote": "Lastly, MPA suppressed growth of C6 glioma implanted into rat brain."
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "11692144",
+        "quote": "MPA had a slight though insignificant activity to reduce the fatality of C6 glioma"
+      },
+      "againstVerified": true,
+      "brain": {
+        "pmid": "670006",
+        "quote": "MPA-related materials are capable of crossing the blood-brain barrier and could potentially exert their ventilatory stimulant effect by some central mechanism."
+      },
+      "brainVerified": true,
+      "summary": "MPA shows in vitro and animal activity against glioma models, crosses the blood-brain barrier, but one animal study found only insignificant survival benefit."
+    },
+    {
+      "drug": "mitoxantrone",
+      "papers": 2,
+      "approvedUS": true,
+      "fdaName": "MITOXANTRONE",
+      "indication": "INDICATIONS AND USAGE Mitoxantrone injection, USP (concentrate) is indicated for reducing neurologic disability and/or the frequency of clinical relapses in patients with secondary (chronic) progressive, progressive relapsing, or worsening relapsing-remitting multiple sclerosis (i.e., patients whose",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 51,
+      "best": {
+        "pmid": "37105343",
+        "level": "animal",
+        "quote": "NP-MTX mixed with free MTX in combination with pTOP DNA vaccine increased the median survival of GL261-bearing mice"
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "30923616",
+        "quote": "cardiotoxic side effects from systemic delivery limit its effectiveness for clinical treatment"
+      },
+      "againstVerified": true,
+      "brain": {
+        "pmid": "17614744",
+        "quote": "Mitoxantrone (MTX) is a water-soluble anticancer drug that poorly penetrates the BBB"
+      },
+      "brainVerified": true,
+      "summary": "Mitoxantrone shows in vitro and animal-model activity against glioblastoma but poorly penetrates the blood-brain barrier and has delivery and toxicity limitations."
+    },
+    {
+      "drug": "mometasone",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "MOMETASONE FUROATE",
+      "indication": "1 INDICATIONS AND USAGE ASMANEX HFA is a corticosteroid indicated for: Maintenance treatment of asthma as prophylactic therapy in patients 5 years of age and older. ( 1.1 ) Important limitations: Not indicated for the relief of acute bronchospasm. ( 1.1 ) 1.1 Treatment of Asthma ASMANEX ® HFA is ind",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 2,
+      "best": {
+        "pmid": "26954019",
+        "level": "in vitro",
+        "quote": "Eight of the fourteen drugs showed significant anti-proliferative activity against glioblastoma; i.e., ivermectin, trifluridine, astemizole, amlodipine, maprotiline, apomorphine, mometasone, and nortriptyline."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": null,
+      "brainVerified": false,
+      "summary": "Mometasone showed significant anti-proliferative activity against glioblastoma in a drug-repositioning screen."
+    },
+    {
+      "drug": "montelukast",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "MONTELUKAST SODIUM",
+      "indication": "1 INDICATIONS AND USAGE Montelukast sodium chewable tablets are a leukotriene receptor antagonist indicated for: • Prophylaxis and chronic treatment of asthma in patients 2 years of age and older ( 1.1 ). • Acute prevention of exercise-induced bronchoconstriction (EIB) in patients 6 years of age and",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 4,
+      "best": {
+        "pmid": "27006494",
+        "level": "in vitro",
+        "quote": "we found that montelukast, clioquinol, and disulfiram (DSF) were cytotoxic against a large panel of patient-derived BTICs."
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "21488208",
+        "quote": "Montelukast (1 &#x3bc;mol/L) alone did not affect C6 cell differentiation"
+      },
+      "againstVerified": true,
+      "brain": {
+        "pmid": "33374646",
+        "quote": "Furthermore, there were measurable amounts of MTK present in the cerebrospinal fluid (CSF)."
+      },
+      "brainVerified": true,
+      "summary": "Montelukast shows in vitro cytotoxic and anti-migratory effects on glioblastoma cells, was detected in CSF, but alone did not affect C6 glioma differentiation."
+    },
+    {
+      "drug": "moxidectin",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "MOXIDECTIN",
+      "indication": "1 INDICATIONS AND USAGE Moxidectin Tablets are indicated for the treatment of onchocerciasis due to Onchocerca volvulus in adult and pediatric patients aged 4 years and older and weighing at least 13 kg [see Clinical Studies ( 14 )] . Limitations of Use: Moxidectin Tablets does not kill adult Onchoc",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 5,
+      "best": {
+        "pmid": "40231611",
+        "level": "animal",
+        "quote": "Oral administration of 3.5 mg/kg moxidectin suppressed the growth of GBM tumors by 90% in an intracranial tumor model."
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "19619412",
+        "quote": "2 strains of the senescence-accelerated mouse (SAMP8 and SAMR1) sustained considerable mortality after routine prophylactic treatment."
+      },
+      "againstVerified": true,
+      "brain": {
+        "pmid": "19619412",
+        "quote": "The moxidectin concentration in brain of SAMP8 mice was 18 times that in controls, and that in brain of SAMR1 mice was 14 times higher than in controls"
+      },
+      "brainVerified": true,
+      "summary": "Moxidectin shows animal intracranial activity against glioblastoma but can accumulate in brain causing toxicosis in sensitive mice."
+    },
+    {
+      "drug": "nebivolol",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "NEBIVOLOL",
+      "indication": "1 INDICATIONS AND USAGE Nebivolol is a beta-adrenergic blocking agent indicated for the treatment of hypertension, to lower blood pressure. Lowering blood pressure reduces the risk of fatal and nonfatal cardiovascular events, primarily strokes and myocardial infarctions.( 1.1 ) 1.1 Hypertension Nebi",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 1,
+      "best": {
+        "pmid": "42030279",
+        "level": "animal",
+        "quote": "nebivolol administration significantly attenuated orthotopic GBM xenograft progression and extended survival in tumor-bearing murine models."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": null,
+      "brainVerified": false,
+      "summary": "Nebivolol showed preclinical anti-GBM activity via mitochondrial and AKT/mTOR/4EBP1 effects in cell lines and orthotopic murine models."
+    },
+    {
+      "drug": "nicardipine",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "NICARDIPINE HYDROCHLORIDE",
+      "indication": "INDICATIONS AND USAGE I. Stable Angina Nicardipine hydrochloride capsules are indicated for the management of patients with chronic stable angina (effort-associated angina). Nicardipine hydrochloride capsules may be used alone or in combination with beta-blockers. II. Hypertension Nicardipine hydroc",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 20,
+      "best": {
+        "pmid": "26881613",
+        "level": "human observational",
+        "quote": "At the last chemotherapy, MRI scan showed the cancer almost completely disappeared with significantly improved clinic condition."
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "2166928",
+        "quote": "a Ca2+ channel blocker (nicardipine), and growth factors (epidermal growth factor and insulin-like growth factor I), did not affect the binding to tissue sections derived from gliomas or from normal frontal cortices."
+      },
+      "againstVerified": true,
+      "brain": null,
+      "brainVerified": false,
+      "summary": "Nicardipine shows in vitro sensitization of glioma cells and stem cells to chemotherapy and a case report of tumor disappearance, without stated blood-brain barrier penetration data."
+    },
+    {
+      "drug": "nimodipine",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "NIMODIPINE",
+      "indication": "INDICATIONS AND USAGE Nimodipine is indicated for the improvement of neurological outcome by reducing the incidence and severity of ischemic deficits in patients with subarachnoid hemorrhage from ruptured intracranial berry aneurysms regardless of their post-ictus neurological condition (i.e., Hunt ",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 22,
+      "best": {
+        "pmid": "39990231",
+        "level": "animal",
+        "quote": "Additionally, our studies revealed that the classic calcium inhibitor nimodipine (ND) decreased CANX expression and thus enhanced the sensitivity to TMZ."
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "11550305",
+        "quote": "Concurrent exposure to paclitaxel and either nimodipine or verapamil, inhibitors of P-glycoprotein activity, did not increase sensitivity, demonstrating that the fivefold range in sensitivity was not due to P-glycoprotein-mediated drug efflux."
+      },
+      "againstVerified": true,
+      "brain": {
+        "pmid": "28344178",
+        "quote": "In most cases (94.3%), nimodipine remained below the limit of quantification (0.5 ng/mL) within the brain (microdialysis, cerebrospinal fluid), even during targeted, local application (IA nimodipine)."
+      },
+      "brainVerified": true,
+      "summary": "Nimodipine shows in vitro and animal-model signals of anti-glioblastoma activity mainly by enhancing chemotherapy sensitivity, but failed to enhance paclitaxel sensitivity in one study and shows very low measurable brain concentrations."
+    },
+    {
+      "drug": "nortriptyline",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "NORTRIPTYLINE HYDROCHLORIDE",
+      "indication": "INDICATIONS AND USAGE Nortriptyline hydrochloride capsules are indicated for the relief of symptoms of depression. Endogenous depressions are more likely to be alleviated than are other depressive states.",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 5,
+      "best": {
+        "pmid": "26954019",
+        "level": "in vitro",
+        "quote": "Eight of the fourteen drugs showed significant anti-proliferative activity against glioblastoma; i.e., ivermectin, trifluridine, astemizole, amlodipine, maprotiline, apomorphine, mometasone, and nortriptyline."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": {
+        "pmid": "4074608",
+        "quote": "Also in the cerebrospinal fluid (CSF) the mean level of 10-OH-NT (67 +/- 20 nmol l-1) was higher than that of NT (39 +/- 23 nmol l-1)."
+      },
+      "brainVerified": true,
+      "summary": "Nortriptyline showed significant anti-proliferative activity against glioblastoma in cell-based assays and was detected in CSF."
+    },
+    {
+      "drug": "pamidronate",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "PAMIDRONATE DISODIUM",
+      "indication": "INDICATIONS AND USAGE Hypercalcemia of Malignancy Pamidronate disodium, in conjunction with adequate hydration, is indicated for the treatment of moderate or severe hypercalcemia associated with malignancy, with or without bone metastases. Patients who have either epidermoid or non-epidermoid tumors",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 4,
+      "best": {
+        "pmid": "38531616",
+        "level": "in vitro",
+        "quote": "we found that pamidronate and nimodipine, drugs predicted to be efficacious against the brain tumor glioblastoma (GBM), inhibited the growth of a GBM cell line and cells isolated from a patient-derived xenograft (PDX)."
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "40076788",
+        "quote": "However, this additive effect was lost when γ9δ2 TCR-ligand interaction was boosted by pamidronate."
+      },
+      "againstVerified": false,
+      "brain": null,
+      "brainVerified": false,
+      "summary": "Abstracts report in vitro anti-glioblastoma activity of pamidronate but also loss of additive effect in one combination model, with no brain penetration data stated."
+    },
+    {
+      "drug": "pantoprazole",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "PANTOPRAZOLE SODIUM",
+      "indication": "1 INDICATIONS AND USAGE Pantoprazole Sodium for Injection is indicated for treatment of: gastroesophageal reflux disease (GERD) and a history of erosive esophagitis (EE) for up to 10 days in adults. pathological hypersecretory conditions including Zollinger-Ellison (ZE) Syndrome in adults. Limitatio",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 7,
+      "best": {
+        "pmid": "31392597",
+        "level": "animal",
+        "quote": "Twelve mice were scanned approximately 11 ± 1 days after implanting 105 U87 human glioblastoma multiforme cells in the brain, before and after intraperitoneal injection of a combination of five drugs (quercetin, cariporide, dichloroacetate, acetazolamide, and pantoprazole) with and without glucose."
+      },
+      "bestVerified": false,
+      "against": null,
+      "againstVerified": false,
+      "brain": {
+        "pmid": "27104875",
+        "quote": "Cerebrospinal fluid concentration of total pantoprazole was 2.79 ng/ml (1.59-7.3) and reached 2.0% (1.0-4.5%) of simultaneous serum concentrations."
+      },
+      "brainVerified": true,
+      "summary": "Pantoprazole shows in vitro anti-glioma activity and, as part of a 5-drug combination, acidified U87 glioblastoma in mice, and is detectable in human CSF at ~2% of serum levels."
+    },
+    {
+      "drug": "papaverine",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "PAPAVERINE HYDROCHLORIDE",
+      "indication": "INDICATIONS AND USAGE Papaverine is recommended in various conditions accompanied by spasm of smooth muscle, such as vascular spasm associated with acute myocardial infarction (coronary occlusion), angina pectoris, peripheral and pulmonary embolism, peripheral vascular disease in which there is a va",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 18,
+      "best": {
+        "pmid": "31810939",
+        "level": "animal",
+        "quote": "delayed tumour growth in the U87MG xenograft mouse model."
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "6324652",
+        "quote": "are unresponsive to treatment with the beta-adrenergic agonist isoproterenol and the phosphodiesterase inhibitor papaverine."
+      },
+      "againstVerified": true,
+      "brain": {
+        "pmid": "12488800",
+        "quote": "Papaverine is a non-specific vasodilatory drug, which was found to unexpectedly cause opening of the blood-brain barrier (BBB)."
+      },
+      "brainVerified": true,
+      "summary": "Papaverine inhibits human glioblastoma cell growth in vitro and delays tumor growth in a mouse xenograft model, with loss of effect in low-receptor rat glioma models, and can open the blood-brain barrier."
+    },
+    {
+      "drug": "paroxetine",
+      "papers": 3,
+      "approvedUS": true,
+      "fdaName": "PAROXETINE HYDROCHLORIDE HEMIHYDRATE",
+      "indication": "1 INDICATIONS AND USAGE Paroxetine tablets are indicated in adults for the treatment of: Major depressive disorder (MDD) Obsessive compulsive disorder (OCD) Panic disorder (PD) Social anxiety disorder (SAD) Generalized anxiety disorder (GAD) Posttraumatic stress disorder (PTSD) Paroxetine tablets ar",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 11,
+      "best": {
+        "pmid": "41542034",
+        "level": "animal",
+        "quote": "leading to greater lymphocyte circulation, activation, and improved survival in an orthotopic syngeneic mouse model."
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "24530235",
+        "quote": "Central nervous system drugs such as imipramine, fluvoxamine, paroxetine, reboxetine, citalopram and donepezil did not affect cell viability or [methyl-(3)H]choline uptake."
+      },
+      "againstVerified": true,
+      "brain": {
+        "pmid": "40180243",
+        "quote": "Paroxetine exposure in the brain was higher when it was administered at the beginning of the active phase (ZT13) compared with the rest phase (ZT1) (p < 0.001)"
+      },
+      "brainVerified": false,
+      "summary": "Paroxetine shows animal-level activity improving survival in GBM models, reaches the brain, but did not affect glioblastoma cell viability in one in vitro uptake study."
+    },
+    {
+      "drug": "pentamidine",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "PENTAMIDINE ISETHIONATE",
+      "indication": "INDICATIONS AND USAGE Pentamidine Isethionate is indicated for the prevention of Pneumocystis jiroveci pneumonia (PJP) in high-risk, HIV-infected patients defined by one or both of the following criteria: i. a history of one or more episodes of PJP ii. a peripheral CD4+ (T4 helper/inducer) lymphocyt",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 4,
+      "best": {
+        "pmid": "37142416",
+        "level": "animal",
+        "quote": "Pentamidine treatment suppressed proliferation and stemness in glioma-initiating cell lines."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": {
+        "pmid": "31007068",
+        "quote": "Liposomes transported 87% of the dose, PCL NPs 66% of the dose and free pentamidine penetration was 63% of the dose."
+      },
+      "brainVerified": true,
+      "summary": "Pentamidine shows antiproliferative effects in glioma-initiating and glioblastoma models including a xenograft mouse model, with in vitro BBB model penetration reported."
+    },
+    {
+      "drug": "perphenazine",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "PERPHENAZINE",
+      "indication": "INDICATIONS AND USAGE Perphenazine tablets, USP are indicated for use in the treatment of schizophrenia and for the control of severe nausea and vomiting in adults. Perphenazine tablets, USP have not been shown effective for the management of behavioral complications in patients with mental retardat",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 14,
+      "best": {
+        "pmid": "39392921",
+        "level": "animal",
+        "quote": "In vivo evaluation showed that combining PER and TMZ extended the survival period of the mouse orthotopic xenograft model."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": {
+        "pmid": "29441946",
+        "quote": "Phenothiazine derivatives possess biological properties very useful for cancer therapy, such as antiemetic and sedative activity as well as good blood-brain barrier permeability."
+      },
+      "brainVerified": true,
+      "summary": "Perphenazine shows in vitro cytotoxicity against glioma/glioblastoma cells and extends survival in a mouse orthotopic xenograft model when combined with temozolomide."
+    },
+    {
+      "drug": "phenazopyridine",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "PHENAZOPYRIDINE HYDROCHLORIDE",
+      "indication": "Use Fast relief from urinary pain, burning, urgency and frequency associated with urinary tract infections.",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 1,
+      "best": {
+        "pmid": "40631213",
+        "level": "in vitro",
+        "quote": "Several compounds tested showed inhibition of stearoyl-CoA formation in U87MG cells when added to an in vitro enzyme assay. These included drugs triflupromazine, phenazopyridine, chlorpromazine, emodin, and perphenazine which are approved for treating other conditions."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": null,
+      "brainVerified": false,
+      "summary": "Phenazopyridine inhibited ACSVL3-mediated stearoyl-CoA formation in U87MG cells in an in vitro enzyme assay."
+    },
+    {
+      "drug": "pimavanserin",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "PIMAVANSERIN TARTRATE",
+      "indication": "1 INDICATIONS AND USAGE NUPLAZID ® is indicated for the treatment of hallucinations and delusions associated with Parkinson's disease psychosis [ see Clinical Studies (14) ] . NUPLAZID is an atypical antipsychotic indicated for the treatment of hallucinations and delusions associated with Parkinson'",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 2,
+      "best": {
+        "pmid": "34363007",
+        "level": "animal",
+        "quote": "In vivo, the growth of subcutaneous and orthotopic glioblastoma xenografts was markedly suppressed by PIM."
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "34363007",
+        "quote": "Interestingly, the genes upregulated by PIM were largely associated with cholesterol homeostasis, which may contribute to PIM's side effects and should be given more attention."
+      },
+      "againstVerified": true,
+      "brain": {
+        "pmid": "32174544",
+        "quote": "which showed that pimavanserin penetrates the blood-brain barrier and reaches a Cmax of 21.9 ± 6.66 ng/g in 2.0 h."
+      },
+      "brainVerified": false,
+      "summary": "Pimavanserin suppressed glioblastoma xenograft growth in vivo and penetrates the blood-brain barrier in mice."
+    },
+    {
+      "drug": "pimozide",
+      "papers": 2,
+      "approvedUS": true,
+      "fdaName": "PIMOZIDE",
+      "indication": "INDICATIONS & USAGE Pimozide tablets are indicated for the suppression of motor and phonic tics in patients with Tourette’s Disorder who have failed to respond satisfactorily to standard treatment. Pimozide tablets are not intended as a treatment of first choice nor is it intended for the treatment ",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 28,
+      "best": {
+        "pmid": "32971907",
+        "level": "animal",
+        "quote": "Oral administration of 25 mg/kg pimozide suppressed the intracranially implanted U-87MG tumor growth by 45% in athymic nude mice."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": {
+        "pmid": "29958636",
+        "quote": "due to its highly traversing capability through the blood-brain barrier, pimozide highly deserves to be studied in animal models of drug resistant refractory cancers and glioblastoma"
+      },
+      "brainVerified": true,
+      "summary": "Preclinical in vitro and animal studies report pimozide inhibits glioblastoma growth via autophagy and other mechanisms, with no human efficacy data in the provided abstracts."
+    },
+    {
+      "drug": "piperine",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "MANNOSE, 5-HYDROXYTRYPTOPHAN, ACETALDEHYDE, ACETYLCHOLINE CHLORIDE, ASCORBICUM ACIDUM, ASPARTAME, BUTYLATED HYDROXYTOLUENE, CAFFEIC ACID, CANDIDA ALBICANS, CINNAMIC ACID, CONIFERYL ALCOHOL, COUMARINUM, DOPAMINE HYDROCHLORIDE, ESTRADIOL, GABA (GAMMA-AMINOBUTYRIC ACID), GALLICUM ACIDUM, HISTAMINUM HYDROCHLORICUM, HYDROCORTISONE, INDOLUM, L-DOPA, L-PHENYLALANINE, MELATONIN, MENADIONE, NOREPINEPHRINE (BITARTRATE), PETROSELINUM CRISPUM, PHENYL ISOTHIOCYANATE, PIPERINE, PROGESTERONE, PYRROLE, QUERCETIN,",
+      "indication": "INDICATIONS: May temporarily relieve symptoms associated with sensitivities to phenolic compounds such as rash, fatigue, and lack of concentration.** **Claims based on traditional homeopathic practice, not accepted medical evidence. Not FDA evaluated.",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 10,
+      "best": {
+        "pmid": "34929651",
+        "level": "human trial",
+        "quote": "The overall median survival was 19.9 (95% CI:14.1-25.7) months."
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "40286187",
+        "quote": "Piperine's toxicity and berberine's poor bioavailability suggest the need for novel drug formulations."
+      },
+      "againstVerified": true,
+      "brain": {
+        "pmid": "40578941",
+        "quote": "Piperine, a bioactive compound in black pepper, crosses the blood-brain barrier (BBB) and exhibits anti-cancer effects."
+      },
+      "brainVerified": true,
+      "summary": "Piperine shows in vitro anti-glioblastoma activity and BBB penetration, with only combination-therapy phase I human data available."
+    },
+    {
+      "drug": "pramipexole",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "PRAMIPEXOLE DIHYDROCHLORIDE",
+      "indication": "1 INDICATIONS AND USAGE Pramipexole dihydrochloride extended-release tablets are indicated for the treatment of Parkinson's disease. Pramipexole dihydrochloride extended-release tablet is a non-ergot dopamine agonist indicated for the treatment of Parkinson’s disease (PD) (1)",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 1,
+      "best": {
+        "pmid": "42404464",
+        "level": "human observational",
+        "quote": "Despite these poor prognostic factors, he achieved a progression-free survival of 15 months and did not succumb to tumor progression."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": {
+        "pmid": "17307202",
+        "quote": "These results suggest that pramipexole is, at least in part, transported across the BBB by an organic cation-sensitive transporter."
+      },
+      "brainVerified": true,
+      "summary": "Two glioblastoma cases with concurrent dopamine agonist use including pramipexole showed prolonged survival, and pramipexole is transported across the blood-brain barrier."
+    },
+    {
+      "drug": "praziquantel",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "PRAZIQUANTEL",
+      "indication": "1 INDICATIONS AND USAGE Praziquantel tablets are indicated in patients aged 1 year and older for the treatment of the following infections: Schistosomiasis due to all species of schistosoma (for example, Schistosoma mekongi, Schistosoma japonicum, Schistosoma mansoni and Schistosoma hematobium ), an",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 10,
+      "best": {
+        "pmid": "42491797",
+        "level": "human observational",
+        "quote": "Both glioblastoma patients showed tumor regression with extended survival, although one glioblastoma patient died from a fall with head injury in 2025 after submitting this article."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": {
+        "pmid": "26958418",
+        "quote": "Albendazole is the preferred drug for the treatment of racemose NCC due to its superior cerebrospinal fluid penetration compared to praziquantel"
+      },
+      "brainVerified": true,
+      "summary": "A small case series reported tumor regression with extended survival in glioblastoma patients treated with AMA-guided antiparasitic combinations including praziquantel, with only docking-level supportive data otherwise."
+    },
+    {
+      "drug": "prazosin",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "PRAZOSIN HYDROCHLORIDE",
+      "indication": "INDICATIONS AND USAGE Prazosin hydrochloride capsules are indicated for the treatment of hypertension, to lower blood pressure. Lowering blood pressure reduces the risk of fatal and nonfatal cardiovascular events, primarily strokes and myocardial infarctions. These benefits have been seen in control",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 16,
+      "best": {
+        "pmid": "39740841",
+        "level": "human observational",
+        "quote": "Recent contrast-enhanced magnetic resonance imaging revealed no evidence of malignancy, with Case 1 remaining disease-free for seven years and Case 2 for two years of follow-up."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": {
+        "pmid": "27179911",
+        "quote": "other blood pressure lowering agents such as prazosin (alpha-1 adrenoceptor antagonist) and isradipine (L-Type Ca(2+) channel blocker), but not the NO-donor ISDN, tended to attenuate induced hyperactivity in rats at high doses."
+      },
+      "brainVerified": true,
+      "summary": "Prazosin shows in vitro anti-glioblastoma activity, animal xenograft efficacy, and long-term disease-free human case reports with local cavity infusion, plus high-dose CNS activity in rats."
+    },
+    {
+      "drug": "protriptyline",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "PROTRIPTYLINE HYDROCHLORIDE",
+      "indication": "INDICATIONS AND USAGE Protriptyline hydrochloride tablets are indicated for the treatment of symptoms of mental depression in patients who are under close medical supervision. Its activating properties make it particularly suitable for withdrawn and anergic patients.",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 2,
+      "best": {
+        "pmid": "35120529",
+        "level": "in vitro",
+        "quote": "In particular, cell lines showed significantly higher sensitivities to Norcyclobenzaprine and Protriptyline which were predicted to bind targets to disrupt a certain molecular function such as DNA repair, response to hormones, or DNA-templated transcription, and may lead to an effect on survival-related pathways including cell cycle arrest, response to ER stress, glucose transport, and regulation of autophagy."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": null,
+      "brainVerified": false,
+      "summary": "Protriptyline showed higher sensitivity in glioma cell lines than temozolomide and was predicted by virtual screening to bind glioma-related targets."
+    },
+    {
+      "drug": "quetiapine",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "QUETIAPINE",
+      "indication": "1 INDICATIONS & USAGE Quetiapine is an atypical antipsychotic indicated for the treatment of: Schizophrenia ( 1.1 ) Bipolar I disorder manic episodes ( 1.2 ) Bipolar disorder, depressive episodes ( 1.2 ) 1.1 Schizophrenia Quetiapine is indicated for the treatment of schizophrenia. The efficacy of qu",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 12,
+      "best": {
+        "pmid": "28415586",
+        "level": "animal",
+        "quote": "(i) QUE monotherapy can effectively suppress GSCs-initiated tumor growth"
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": null,
+      "brainVerified": false,
+      "summary": "In mouse orthotopic xenograft models, quetiapine monotherapy suppressed glioma stem cell-initiated tumor growth."
+    },
+    {
+      "drug": "quinine",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "QUININE SALICYLATE",
+      "indication": "Uses: See symptoms on front panel. Relieves dizziness *",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 23,
+      "best": {
+        "pmid": "24656405",
+        "level": "animal",
+        "quote": "Vacquinol-1 displays excellent in vivo pharmacokinetics and brain exposure, attenuates disease progression, and prolongs survival in a GBM animal model."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": {
+        "pmid": "15215568",
+        "quote": "examining its effect on quinine uptake into the central nervous system in rats"
+      },
+      "brainVerified": true,
+      "summary": "Quinine derivatives showed in vitro cytotoxicity against glioma cells and prolonged survival in a GBM animal model, with quinine reported to undergo uptake into the central nervous system in rats."
+    },
+    {
+      "drug": "ranolazine",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "RANOLAZINE",
+      "indication": "1 INDICATIONS AND USAGE Ranolazine extended-release tablet is indicated for the treatment of chronic angina. Ranolazine extended-release tablet may be used with beta-blockers, nitrates, calcium channel blockers, anti-platelet therapy, lipid-lowering therapy, ACE inhibitors, and angiotensin receptor ",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 2,
+      "best": {
+        "pmid": "33854970",
+        "level": "animal",
+        "quote": "In the orthotopic Gl261 and CT2A syngeneic murine models of GBM, DCA, Rano, and DCA/Rano increased median survival and induced focal tumor necrosis and hemorrhage."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": {
+        "pmid": "35882281",
+        "quote": "Ranolazine exerted neuroprotective effects by suppressing brain pathologies and restoring cognitive function."
+      },
+      "brainVerified": true,
+      "summary": "Ranolazine showed in vitro synergy with oncolytic virus in glioblastoma stem-like cells and improved survival in orthotopic murine glioblastoma models, with reported neuroprotective brain effects in rats."
+    },
+    {
+      "drug": "ribavirin",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "RIBAVIRIN",
+      "indication": "1 INDICATIONS AND USAGE Ribavirin capsules are a nucleoside analogue indicated in combination with interferon alfa-2b (pegylated and nonpegylated) for the treatment of Chronic Hepatitis C (CHC) in patients 3 years of age or older with compensated liver disease. ( 1.1 ) Patients with the following ch",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 16,
+      "best": {
+        "pmid": "27941882",
+        "level": "animal",
+        "quote": "ribavirin treatment in vivo significantly enhances chemo-radiotherapy efficacy and improves survival of rats and mice orthotopically implanted with gliosarcoma tumors or glioma stem-like cells, respectively."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": {
+        "pmid": "2873344",
+        "quote": "Ribavirin enters cerebrospinal fluid."
+      },
+      "brainVerified": true,
+      "summary": "In orthotopic rodent glioma models ribavirin enhanced chemo-radiotherapy and improved survival, and ribavirin enters cerebrospinal fluid."
+    },
+    {
+      "drug": "sodium phenylbutyrate",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "SODIUM PHENYLBUTYRATE",
+      "indication": "INDICATIONS AND USAGE Sodium phenylbutyrate tablets are indicated as adjunctive therapy in the chronic management of patients with urea cycle disorders involving deficiencies of carbamylphosphate synthetase (CPS), ornithine transcarbamylase (OTC), or argininosuccinic acid synthetase (AS). It is indi",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 6,
+      "best": {
+        "pmid": "12241121",
+        "level": "human observational",
+        "quote": "We report a 44-year-old female with a recurrent, multicentric, malignant glioma who experienced a durable remission lasting more than four years."
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "12241121",
+        "quote": "reduced to 9 g/day and eventually to 4.5 g/day to eliminate mild, reversible side effects."
+      },
+      "againstVerified": true,
+      "brain": null,
+      "brainVerified": false,
+      "summary": "A case report describes durable remission of recurrent malignant glioma with sodium phenylbutyrate, supported by animal and in vitro studies showing anti-glioma effects."
+    },
+    {
+      "drug": "stiripentol",
+      "papers": 3,
+      "approvedUS": true,
+      "fdaName": "STIRIPENTOL",
+      "indication": "1 INDICATIONS AND USAGE DIACOMIT is indicated for the treatment of seizures associated with Dravet syndrome (DS) in patients taking clobazam who are 6 months of age and older and weighing 7 kg or more. There are no clinical data to support the use of DIACOMIT as monotherapy in Dravet syndrome. DIACO",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 9,
+      "best": {
+        "pmid": "42206447",
+        "level": "animal",
+        "quote": "Pharmacological inhibition of lactate production with Stiripentol reduced H4K12la level, intracranial tumor growth, and immunosuppressive cell infiltration, while improving survival and response to immune checkpoint based therapy in experimental models."
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "42035940",
+        "quote": "Inhibition of LDH by STP was moderate but not potent."
+      },
+      "againstVerified": true,
+      "brain": {
+        "pmid": "38477507",
+        "quote": "which can cross the blood-brain barrier and inhibit lactate dehydrogenase A/B (LDHA/B) activity"
+      },
+      "brainVerified": true,
+      "summary": "Preclinical in vitro and mouse model studies report stiripentol reduces glioblastoma growth via LDH/lactate-related mechanisms, with moderate LDH inhibition noted."
+    },
+    {
+      "drug": "tepotinib",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "TEPOTINIB HYDROCHLORIDE",
+      "indication": "1 INDICATIONS AND USAGE TEPMETKO is indicated for the treatment of adult patients with metastatic non-small cell lung cancer (NSCLC) harboring mesenchymal-epithelial transition ( MET ) exon 14 skipping alterations. TEPMETKO is a kinase inhibitor indicated for the treatment of adult patients with met",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 4,
+      "best": {
+        "pmid": "42111027",
+        "level": "human observational",
+        "quote": "Tepotinib demonstrated clinical benefit, with partial response observed in 2 patients, stable disease in 2 patients, and progressive disease in 1 patient."
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "36915128",
+        "quote": "Glioma cell viability or proliferation are unaffected by genetic or pharmacological MET inhibition using tepotinib or CRISPR/Cas9-engineered Met gene knockout and MET inhibition fails to sensitize glioma cells to irradiation in vitro."
+      },
+      "againstVerified": true,
+      "brain": {
+        "pmid": "34942492",
+        "quote": "The calculated unbound brain-to-plasma ratio was 0.25, indicating brain penetration sufficient for intracranial target inhibition."
+      },
+      "brainVerified": true,
+      "summary": "Tepotinib penetrates the brain and shows clinical benefit in MET-altered glioblastoma case reports/series and prolonged survival in mouse glioma models with radiotherapy, but had no direct antiproliferative or radiosensitizing effect on glioma cells in vitro."
+    },
+    {
+      "drug": "thimerosal",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "THUJA OCCIDENTALIS, MEZEREUM, SILICEA, CALCAREA CARBONICA, MORBILLINUM, PAROTIDINUM, PERTUSSINUM, RUBELLA NOSODE, TETANUS TOXIN, CARCINOSIN, ANTIMONIUM CRUDUM, LEDUM PALUSTRE, THIMEROSAL, POLIOMYELITIS NOSODE",
+      "indication": "USES: • For the temporary relief of symptoms including: • fever • headache • muscle pain • rash • cough • lethargy • aching back These statements are based upon homeopathic principles. They have not been reviewed by the Food and Drug Administration.",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 8,
+      "best": {
+        "pmid": "38325586",
+        "level": "in vitro",
+        "quote": "Our novel results show that TmHg decreased cellular viability (>50%) and migration (up to 90% decrease in wound closure), reduced thioredoxin reductase (TrxR/TXNRD1) and thioredoxin (Trx) activity, and increased reactive oxygen species (ROS) generation."
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "15527868",
+        "quote": "Thimerosal-induced cytotoxicity was associated with depletion of intracellular GSH in both cell lines."
+      },
+      "againstVerified": true,
+      "brain": {
+        "pmid": "35813817",
+        "quote": "Thimerosal effectively crosses the blood-brain barrier (BBB), thus reaching effective concentrations for the treatment of GBM."
+      },
+      "brainVerified": true,
+      "summary": "In vitro studies report thimerosal reduces glioblastoma cell viability, crosses the blood-brain barrier, but also shows neurotoxicity associated with glutathione depletion."
+    },
+    {
+      "drug": "thioridazine",
+      "papers": 4,
+      "approvedUS": true,
+      "fdaName": "THIORIDAZINE HYDROCHLORIDE",
+      "indication": "INDICATIONS AND USAGE Thioridazine hydrochloride tablets are indicated for the management of schizophrenic patients who fail to respond adequately to treatment with other antipsychotic drugs. Due to the risk of significant, potentially life threatening, proarrhythmic effects with thioridazine treatm",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 15,
+      "best": {
+        "pmid": "30289977",
+        "level": "animal",
+        "quote": "Thioridazine in combination with TMZ significantly inhibits brain tumor growth in vivo"
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "28806703",
+        "quote": "However, thioridazine alone does not induce apoptosis in head and neck squamous cell carcinoma (AMC-HN4), human breast carcinoma (MDA-MB231), and human glioma (U87MG) cells."
+      },
+      "againstVerified": true,
+      "brain": null,
+      "brainVerified": false,
+      "summary": "Thioridazine shows in vitro and in vivo anti-glioblastoma activity, particularly in combination with temozolomide, though alone it did not induce apoptosis in U87MG glioma cells in one study."
+    },
+    {
+      "drug": "tigecycline",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "TIGECYCLINE",
+      "indication": "1 INDICATIONS AND USAGE Tigecycline for injection is a tetracycline class antibacterial indicated in patients 18 years of age and older for: Complicated skin and skin structure infections ( 1.1 ) Complicated intra-abdominal infections ( 1.2 ) Community-acquired bacterial pneumonia ( 1.3 ) Limitation",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 3,
+      "best": {
+        "pmid": "26823491",
+        "level": "animal",
+        "quote": "Tigecycline effectively upregulated miR-199b-5p expression and inhibited tumor growth in the xenograft tumor model of U87 glioma cells."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": {
+        "pmid": "24131423",
+        "quote": "Tigecycline weakly penetrates CSF the CSF-to-serum concentration ratio was 0.079 and CSF-to-serum AUC(0-12) ratio was 0.067."
+      },
+      "brainVerified": true,
+      "summary": "Tigecycline inhibited glioma growth in cell and xenograft models but weakly penetrates CSF."
+    },
+    {
+      "drug": "tranylcypromine",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "TRANYLCYPROMINE",
+      "indication": "1 INDICATIONS AND USAGE Tranylcypromine tablets are indicated for the treatment of major depressive disorder (MDD) in adult patients who have not responded adequately to other antidepressants. Tranylcypromine tablets are not indicated for the initial treatment of MDD due to the potential for serious",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 9,
+      "best": {
+        "pmid": "25795306",
+        "level": "animal",
+        "quote": "The combination of vorinostat and tranylcypromine reduced GSC viability and displayed efficacy in the U87 xenograft model."
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "27480195",
+        "quote": "The results of our studies demonstrated that imipramine and tranylcypromine reduced the cytotoxic efficacy of temozolomide under some oxygen conditions while fluoxetine did not demonstrate such effects."
+      },
+      "againstVerified": true,
+      "brain": null,
+      "brainVerified": false,
+      "summary": "Tranylcypromine shows in vitro anti-glioblastoma activity alone and with HDAC inhibitors and efficacy in a xenograft model, but reduced temozolomide cytotoxicity under some conditions."
+    },
+    {
+      "drug": "triamterene",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "TRIAMTERENE AND HYDROCHLOROTHIAZIDE",
+      "indication": "INDICATIONS AND USAGE: This fixed combination drug is not indicated for the initial therapy of edema or hypertension except in individuals in whom the development of hypokalemia cannot be risked. Triamterene and hydrochlorothiazide is indicated for the treatment of hypertension or edema in patients ",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 2,
+      "best": {
+        "pmid": "42471757",
+        "level": "animal",
+        "quote": "decreased invasiveness in 3D models, and antitumor activity in vivo in GSC-xenografted zebrafish embryos"
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "30866733",
+        "quote": "It is found that the Furosemide and Triamterene have significant cytotoxic effects on normal human astrocytes"
+      },
+      "againstVerified": true,
+      "brain": {
+        "pmid": "234832",
+        "quote": "Earlier in vivo studies revealed a low concentration of triamterene in the brain of guinea pigs and baboons"
+      },
+      "brainVerified": true,
+      "summary": "Triamterene shows preclinical anti-glioblastoma activity including in vivo zebrafish xenografts, but brain concentrations were low in early animal studies and cytotoxic effects on normal astrocytes were reported."
+    },
+    {
+      "drug": "trifluoperazine",
+      "papers": 3,
+      "approvedUS": true,
+      "fdaName": "TRIFLUOPERAZINE HYDROCHLORIDE",
+      "indication": "INDICATIONS AND USAGE For the management of schizophrenia. Trifluoperazine HCl is effective for the short-term treatment of generalized non-psychotic anxiety. However, trifluoperazine HCl is not the first drug to be used in therapy for most patients with non-psychotic anxiety because certain risks a",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 35,
+      "best": {
+        "pmid": "32358191",
+        "level": "animal",
+        "quote": "Continuous treatment with TFP and a single dose of radiation reduced the number of GICs in vivo and prolonged survival in syngeneic and patient-derived orthotopic xenograft (PDOX) mouse models of GBM."
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "29614416",
+        "quote": "However, trifluoperazine did not increase the survival time in mice models of glioblastoma."
+      },
+      "againstVerified": true,
+      "brain": null,
+      "brainVerified": false,
+      "summary": "Preclinical studies report anti-glioblastoma activity of trifluoperazine in vitro and in mouse models, with one report of lack of survival benefit and promotion of proliferation at low concentration."
+    },
+    {
+      "drug": "trifluridine",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "TRIFLURIDINE",
+      "indication": "INDICATIONS AND USAGE: Trifluridine Ophthalmic Solution is indicated for the treatment of primary keratoconjunctivitis and recurrent epithelial keratitis due to herpes simplex virus, types 1 and 2.",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 1,
+      "best": {
+        "pmid": "26954019",
+        "level": "in vitro",
+        "quote": "Eight of the fourteen drugs showed significant anti-proliferative activity against glioblastoma; i.e., ivermectin, trifluridine, astemizole, amlodipine, maprotiline, apomorphine, mometasone, and nortriptyline."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": null,
+      "brainVerified": false,
+      "summary": "Trifluridine was predicted by transcriptional signatures and showed significant anti-proliferative activity against glioblastoma in cell-based experiments."
+    },
+    {
+      "drug": "trihexyphenidyl",
+      "papers": 2,
+      "approvedUS": true,
+      "fdaName": "TRIHEXYPHENIDYL HYDROCHLORIDE",
+      "indication": "INDICATIONS AND USAGE Trihexyphenidyl is indicated as an adjunct in the treatment of all forms of parkinsonism (postencephalitic, arteriosclerotic, and idiopathic). It is often useful as adjuvant therapy when treating these forms of parkinsonism with levodopa. Additionally, it is indicated for the c",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 2,
+      "best": {
+        "pmid": "39386028",
+        "level": "animal",
+        "quote": "In vivo trials of THP in immunocompromised mice carry orthotopic MES-GBMs showed moderate response to the drug."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": null,
+      "brainVerified": false,
+      "summary": "Trihexyphenidyl showed in vitro activity against glioblastoma stem cells and moderate in vivo response in orthotopic mouse models."
+    },
+    {
+      "drug": "turmeric",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "GLUCOSAMINE SULFATE POTASSIUM CHLORIDE,WHITE WILLOW BARK EXTRACT,EGGSHELL MEMBRANE COLLAGEN,CHONDROITIN SULFATE,TURMERIC ROOT EXTRACT,BROMELAIN,SOY LECITHIN",
+      "indication": "",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 50,
+      "best": {
+        "pmid": "29346317",
+        "level": "animal",
+        "quote": "The intratumor presence of such tumoricidal immune cells was associated with concomitant suppression of tumor-load, and apoptosis of GBM and GBM stem cells."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": null,
+      "brainVerified": false,
+      "summary": "Preclinical in vitro and animal studies report anti-glioblastoma activity of turmeric-derived curcumin formulations, without reported lack of effect or toxicity in these abstracts."
+    },
+    {
+      "drug": "venetoclax",
+      "papers": 2,
+      "approvedUS": true,
+      "fdaName": "VENETOCLAX",
+      "indication": "1 INDICATIONS AND USAGE VENCLEXTA is a BCL-2 inhibitor indicated: For the treatment of adult patients with chronic lymphocytic leukemia (CLL) or small lymphocytic lymphoma (SLL). ( 1.1 ) In combination with azacitidine, or decitabine, or low-dose cytarabine for the treatment of newly diagnosed acute",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 18,
+      "best": {
+        "pmid": "35344040",
+        "level": "animal",
+        "quote": "Combining venetoclax with radiotherapy significantly enhanced the survival of mice with DMG tumors."
+      },
+      "bestVerified": true,
+      "against": {
+        "pmid": "41784189",
+        "quote": "however, no positive safety profile was observed in glioblastoma grade IV (GBM)."
+      },
+      "againstVerified": true,
+      "brain": {
+        "pmid": "37215448",
+        "quote": "Venetoclax was detected in cerebrospinal fluid (CSF) samples, with concentrations ranging from < 0.1 to 26 ng/mL (mean, 3.6 ng/mL) and a plasma:CSF ratio ranging from 44 to 1559 (mean, 385)."
+      },
+      "brainVerified": true,
+      "summary": "Preclinical animal models show venetoclax combinations can enhance anti-glioma activity and venetoclax is detectable in CSF, but systematic review found no positive safety profile in grade IV glioblastoma."
+    },
+    {
+      "drug": "zileuton",
+      "papers": 1,
+      "approvedUS": true,
+      "fdaName": "ZILEUTON",
+      "indication": "1 INDICATIONS AND USAGE Zileuton extended-release tablets are indicated for the prophylaxis and chronic treatment of asthma in adults and children 12 years of age and older. Zileuton extended-release tablets are not indicated for use in the reversal of bronchospasm in acute asthma attacks. Therapy w",
+      "trialsGlioblastoma": 0,
+      "trialsGlioma": 0,
+      "papersAll": 3,
+      "best": {
+        "pmid": "37695758",
+        "level": "animal",
+        "quote": "zileuton, an Alox5 inhibitor approved for asthma treatment, significantly improves the efficacy of temozolomide in mice without causing toxicity."
+      },
+      "bestVerified": true,
+      "against": null,
+      "againstVerified": false,
+      "brain": null,
+      "brainVerified": false,
+      "summary": "Preclinical studies report in vitro metabolic effects in glioblastoma cell lines and improved temozolomide efficacy with zileuton in mice."
+    }
+  ]
+}

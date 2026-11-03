@@ -1,0 +1,434 @@
+# Mission Zero · tous les textes du film, page par page
+
+Corrige directement dans ce fichier : réécris le texte après le « → », ou écris « SUPPRIMER ».
+Ne touche pas aux repères (P1-1, P1-2…) : ils me servent à reporter chaque correction au bon endroit.
+« écran » = texte affiché dans l’image · « sous-titre » = la phrase en bas · « démo » = texte de la démo animée.
+
+## Page 1 · La boucle
+
+- **P1-1** · écran : MISSION ZERO  → 
+- **P1-2** · écran : un objectif, aucun plan  → 
+- **P1-3** · sous-titre : Mission Zero.  → 
+- **P1-4** · écran : Objectif  → 
+- **P1-5** · sous-titre : Un objectif. Aucun plan.  → 
+- **P1-6** · écran : Hypothèses  → 
+- **P1-7** · sous-titre : Des hypothèses.  → 
+- **P1-8** · écran : Action  → 
+- **P1-9** · sous-titre : Une action : chercher, lire une page entière.  → 
+- **P1-10** · écran : Observation  → 
+- **P1-11** · sous-titre : Ce qu’il observe.  → 
+- **P1-12** · écran : Évaluation  → 
+- **P1-13** · sous-titre : Il s’évalue : une note, une leçon, un pivot.  → 
+- **P1-14** · sous-titre : Il tourne jusqu’à atteindre l’objectif.  → 
+- **P1-15** · sous-titre : VERIFIED : chaque page citée est relue, citation exacte exigée.  → 
+- **P1-16** · sous-titre : Une nouvelle mission.  → 
+- **P1-17** · sous-titre : Observation : la citation n’est pas sur la page.  → 
+- **P1-18** · sous-titre : NOT VERIFIED : le vérificateur ne trouve pas la citation sur la page.  → 
+- **P1-19** · sous-titre : Mission Zero se corrige seul : il relit la page, réécrit ou retire.  → 
+- **P1-20** · sous-titre : Corrigé. Il repart de zéro, sans personne.  → 
+- **P1-21** · sous-titre : Le vérificateur revalide tout, depuis le début.  → 
+- **P1-22** · sous-titre : Tout tient.  → 
+- **P1-23** · sous-titre : Objectif : VERIFIED.  → 
+- **P1-24** · tampon : VERIFIED  → 
+- **P1-25** · écran : Où l’envoyer ?  → 
+- **P1-26** · sous-titre : Où l’envoyer ?  → 
+
+## Page 2 · Où l’envoyer ?
+
+- **P2-1** · écran : OÙ L’ENVOYER ?  → 
+- **P2-2** · sous-titre : Le point arrive. La boucle attend un objectif.  → 
+- **P2-3** · écran : la boucle  → 
+- **P2-4** · écran : chercher · lire · vérifier  → 
+- **P2-5** · sous-titre : Même boucle, zéro code.  → 
+- **P2-6** · écran : 🪐 L’espace  → 
+- **P2-7** · sous-titre : L’espace…  → 
+- **P2-8** · écran : 🩺 La médecine  → 
+- **P2-9** · sous-titre : la médecine…  → 
+- **P2-10** · écran : 🔎 La recherche web  → 
+- **P2-11** · sous-titre : la recherche web…  → 
+- **P2-12** · écran : 💬 Les assistants IA  → 
+- **P2-13** · sous-titre : les assistants IA…  → 
+- **P2-14** · écran : 📚 L’encyclopédie  → 
+- **P2-15** · sous-titre : l’encyclopédie…  → 
+- **P2-16** · écran : 📰 La presse  → 
+- **P2-17** · sous-titre : la presse…  → 
+- **P2-18** · écran : 🛒 Le commerce en ligne  → 
+- **P2-19** · sous-titre : le commerce en ligne…  → 
+- **P2-20** · écran : 🏦 La banque  → 
+- **P2-21** · sous-titre : la banque…  → 
+- **P2-22** · écran : ⚖️ Le droit  → 
+- **P2-23** · sous-titre : le droit…  → 
+- **P2-24** · écran : 🛡 La cybersécurité  → 
+- **P2-25** · sous-titre : la cybersécurité…  → 
+- **P2-26** · écran : 🎓 L’université  → 
+- **P2-27** · sous-titre : l’université…  → 
+- **P2-28** · écran : 🏛 L’État  → 
+- **P2-29** · sous-titre : l’État.  → 
+- **P2-30** · sous-titre : Partout où l’on cherche, Mission Zero s’installe.  → 
+- **P2-31** · écran : 1 · La cybersécurité.  → 
+- **P2-32** · sous-titre : D’abord, la cybersécurité.  → 
+
+## Page 3 · Constat · sans Mission Zero
+
+- **P3-1** · écran : SANS MISSION ZERO  → 
+- **P3-2** · écran : VOTRE SITE WEB E-COMMERCE  → 
+- **P3-3** · écran : 🌿 Maison Verde · boutique  → 
+- **P3-4** · écran : Boutique · Panier · Mon compte  → 
+- **P3-5** · écran : Monstera  → 
+- **P3-6** · écran : 49 €  → 
+- **P3-7** · écran : Ficus  → 
+- **P3-8** · écran : 120 €  → 
+- **P3-9** · écran : Olivier  → 
+- **P3-10** · écran : 89 €  → 
+- **P3-11** · écran : 🛒 Panier · 3 articles · 258 €  → 
+- **P3-12** · écran : Payer  → 
+- **P3-13** · sous-titre : Une boutique en ligne. Elle tourne.  → 
+- **P3-14** · écran : ✔ Commande #1001 · payée · 49 €  → 
+- **P3-15** · sous-titre : Les commandes tombent.  → 
+- **P3-16** · écran : ✔ Commande #1002 · payée · 120 €  → 
+- **P3-17** · écran : ✔ Commande #1003 · expédiée · 258 €  → 
+- **P3-18** · écran : jQuery 1.8.3 · PHP 7.2  → 
+- **P3-19** · sous-titre : Tout va bien.  → 
+- **P3-20** · écran : ● site conforme  → 
+- **P3-21** · sous-titre : Conforme. Aujourd’hui.  → 
+- **P3-22** · écran : VOTRE ADMIN WEB  → 
+- **P3-23** · écran : 👩‍💻  → 
+- **P3-24** · écran : souvent seule  → 
+- **P3-25** · écran : site · clients · sécurité  → 
+- **P3-26** · sous-titre : Une équipe : une personne, souvent.  → 
+- **P3-27** · écran : ⚠ en-têtes absents  → 
+- **P3-28** · sous-titre : Une faille : en-têtes absents.  → 
+- **P3-29** · écran : ● 1 faille ouverte  → 
+- **P3-30** · sous-titre : Rouge.  → 
+- **P3-31** · écran : 🔧 corrige à la main  → 
+- **P3-32** · écran : quand elle peut  → 
+- **P3-33** · sous-titre : Elle corrige à la main.  → 
+- **P3-34** · écran : ✔ en-têtes ajoutés  → 
+- **P3-35** · sous-titre : Corrigé.  → 
+- **P3-36** · sous-titre : Vert.  → 
+- **P3-37** · écran : ⚠ prix modifiable  → 
+- **P3-38** · sous-titre : Une autre : le prix modifiable.  → 
+- **P3-39** · écran : le soir  → 
+- **P3-40** · sous-titre : Elle corrige, le soir.  → 
+- **P3-41** · écran : ✔ prix verrouillé  → 
+- **P3-42** · écran : ⚠ carte en clair  → 
+- **P3-43** · sous-titre : Deux de plus : la carte bancaire en clair…  → 
+- **P3-44** · écran : ⚠ jQuery 2012  → 
+- **P3-45** · sous-titre : …et une bibliothèque de 2012.  → 
+- **P3-46** · écran : ● 2 failles ouvertes  → 
+- **P3-47** · écran : ⏳ pas le temps  → 
+- **P3-48** · écran : ni budget, ni compétence  → 
+- **P3-49** · sous-titre : Pas le temps. Pas le budget.  → 
+- **P3-50** · écran : ⚠ mot de passe faible  → 
+- **P3-51** · sous-titre : Une cinquième. Elle restera ouverte.  → 
+- **P3-52** · écran : ● 3 failles ouvertes  → 
+- **P3-53** · écran : 8 sites sur 10 sans protection CSP  → 
+- **P3-54** · écran : 26 sites lus par MYTHOZOR ARGUS · octobre 2026 · 81 % sans CSP  → 
+- **P3-55** · sous-titre : 8 sites sur 10 sans protection CSP. 26 sites lus par ARGUS.  → 
+- **P3-56** · tampon : NOT SECURE  → 
+- **P3-57** · écran : INSTALL  → 
+- **P3-58** · écran : MISSION ZERO  → 
+- **P3-59** · sous-titre : On installe Mission Zero.  → 
+
+## Page 4 · On installe Mission Zero
+
+- **P4-1** · démo : ÉTAPE 2 · ON INSTALLE MISSION ZERO  → 
+- **P4-2** · démo : Un développeur de l’équipe récupère Mission Zero sur GitHub  → 
+- **P4-3** · démo : [terminal]  → 
+- **P4-4** · démo : [terminal] $ git c  → 
+- **P4-5** · démo : [terminal] $ git clone htt  → 
+- **P4-6** · démo : [terminal] $ git clone https://gith  → 
+- **P4-7** · démo : [terminal] $ git clone https://github.com/c  → 
+- **P4-8** · démo : [terminal] $ git clone https://github.com/cryptorage  → 
+- **P4-9** · démo : [terminal] $ git clone https://github.com/cryptoragency/miss  → 
+- **P4-10** · démo : [terminal] $ git clone https://github.com/cryptoragency/missionzero.g  → 
+- **P4-11** · démo : [terminal] $ git clone https://github.com/cryptoragency/missionzero.git  → 
+- **P4-12** · démo : [terminal] Receiving objects: 100% (412/412), done.  → 
+- **P4-13** · démo : [terminal] $  → 
+- **P4-14** · démo : [terminal] $ cd missio  → 
+- **P4-15** · démo : [terminal] $ cd missionzero &&  → 
+- **P4-16** · démo : [terminal] $ cd missionzero && npm inst  → 
+- **P4-17** · démo : [terminal] $ cd missionzero && npm install  → 
+- **P4-18** · démo : [terminal] added 184 packages in 6s  → 
+- **P4-19** · démo : [terminal] $ echo "MO  → 
+- **P4-20** · démo : [terminal] $ echo "MODEL_API_K  → 
+- **P4-21** · démo : [terminal] $ echo "MODEL_API_KEY=••••"  → 
+- **P4-22** · démo : [terminal] $ echo "MODEL_API_KEY=••••" > .env  → 
+- **P4-23** · démo : [terminal] $ cp -r e  → 
+- **P4-24** · démo : [terminal] $ cp -r examples/  → 
+- **P4-25** · démo : [terminal] $ cp -r examples/static-si  → 
+- **P4-26** · démo : [terminal] $ cp -r examples/static-site ../ma  → 
+- **P4-27** · démo : [terminal] $ cp -r examples/static-site ../maison-verd  → 
+- **P4-28** · démo : [terminal] $ cp -r examples/static-site ../maison-verde  → 
+- **P4-29** · démo : [terminal] $ code ..  → 
+- **P4-30** · démo : [terminal] $ code ../maison-v  → 
+- **P4-31** · démo : [terminal] $ code ../maison-verde/jou  → 
+- **P4-32** · démo : [terminal] $ code ../maison-verde/journeys.tes  → 
+- **P4-33** · démo : [terminal] $ code ../maison-verde/journeys.test.js  → 
+- **P4-34** · démo : [terminal] + const PA  → 
+- **P4-35** · démo : [terminal] + const PAGES = ['/', '/p  → 
+- **P4-36** · démo : [terminal] + const PAGES = ['/', '/panier', '/paiem  → 
+- **P4-37** · démo : [terminal] + const PAGES = ['/', '/panier', '/paiement']; // les  → 
+- **P4-38** · démo : [terminal] + const PAGES = ['/', '/panier', '/paiement']; // les parcours vitau  → 
+- **P4-39** · démo : [terminal] + const PAGES = ['/', '/panier', '/paiement']; // les parcours vitaux  → 
+- **P4-40** · démo : [terminal] + const APIS = [  → 
+- **P4-41** · démo : [terminal] + const APIS = ['https://paieme  → 
+- **P4-42** · démo : [terminal] + const APIS = ['https://paiement.example'];  → 
+- **P4-43** · démo : [terminal] $ node --t  → 
+- **P4-44** · démo : [terminal] $ node --test ../m  → 
+- **P4-45** · démo : [terminal] $ node --test ../maison-ver  → 
+- **P4-46** · démo : [terminal] $ node --test ../maison-verde/journ  → 
+- **P4-47** · démo : [terminal] $ node --test ../maison-verde/journeys.test.  → 
+- **P4-48** · démo : [terminal] $ node --test ../maison-verde/journeys.test.js  → 
+- **P4-49** · démo : [terminal] ✔ parcours vitaux : verts sur la copie  → 
+- **P4-50** · démo : [terminal] $ npm  → 
+- **P4-51** · démo : [terminal] $ npm run repa  → 
+- **P4-52** · démo : [terminal] $ npm run repair -- --s  → 
+- **P4-53** · démo : [terminal] $ npm run repair -- --scan --po  → 
+- **P4-54** · démo : [terminal] $ npm run repair -- --scan --policy --lo  → 
+- **P4-55** · démo : [terminal] $ npm run repair -- --scan --policy --login=none  → 
+- **P4-56** · démo : [terminal] $ npm run repair -- --scan --policy --login=none --site=.  → 
+- **P4-57** · démo : [terminal] $ npm run repair -- --scan --policy --login=none --site=../maison  → 
+- **P4-58** · démo : [terminal] $ npm run repair -- --scan --policy --login=none --site=../maison-verde  → 
+- **P4-59** · démo : [terminal] scan · Maison Verde · 5 failles  → 
+- **P4-60** · démo : [terminal] → ici, Mission Zero répare sur une copie, un humain valide  → 
+
+## Page 5 · Correction · avec Mission Zero
+
+- **P5-1** · écran : AVEC MISSION ZERO  → 
+- **P5-2** · écran : VOTRE SITE · 5 failles  → 
+- **P5-3** · écran : en ligne  → 
+- **P5-4** · sous-titre : Le même site. Cinq failles.  → 
+- **P5-5** · écran : FAILLE SCAN  → 
+- **P5-6** · écran : ⚠ 5 failles  → 
+- **P5-7** · sous-titre : FAILLE SCAN : cinq failles.  → 
+- **P5-8** · écran : Mission Zero part de zéro  → 
+- **P5-9** · écran : une copie · aucun plan · tout doit être VERIFIED  → 
+- **P5-10** · sous-titre : Mission Zero part de zéro. Une copie, tout doit être VERIFIED.  → 
+- **P5-11** · écran : Correctif n°1  → 
+- **P5-12** · écran : sur la copie  → 
+- **P5-13** · sous-titre : Correctif n°1, sur la copie.  → 
+- **P5-14** · écran : Réserves  → 
+- **P5-15** · écran : écrites  → 
+- **P5-16** · sous-titre : Contrôle 1 : les réserves, écrites. Vert.  → 
+- **P5-17** · écran : Relecture  → 
+- **P5-18** · écran : cause ou symptôme ?  → 
+- **P5-19** · sous-titre : Contrôle 2 : la relecture. Vert.  → 
+- **P5-20** · écran : Regard  → 
+- **P5-21** · écran : Muse Spark regarde  → 
+- **P5-22** · sous-titre : Contrôle 3 : Muse Spark regarde la page, SAM compte les champs.  → 
+- **P5-23** · sous-titre : Rouge.  → 
+- **P5-24** · écran : le contrôle 3 refuse  → 
+- **P5-25** · écran : ✖ page de paiement : formulaire disparu  → 
+- **P5-26** · écran : à refaire  → 
+- **P5-27** · écran : vu par Muse Spark sur la page  → 
+- **P5-28** · sous-titre : Le contrôle 3 refuse le correctif n°1 : formulaire de paiement disparu.  → 
+- **P5-29** · écran : Correctif n°2  → 
+- **P5-30** · écran : copie neuve  → 
+- **P5-31** · écran : Mission Zero  → 
+- **P5-32** · écran : écrit la correction  → 
+- **P5-33** · sous-titre : Mission Zero écrit le correctif n°2, sur une copie neuve.  → 
+- **P5-34** · sous-titre : Contrôles 1 et 2 rejoués : verts.  → 
+- **P5-35** · écran : 1 et 2 rejoués · verts  → 
+- **P5-36** · écran : page revue · aucun problème  → 
+- **P5-37** · sous-titre : Contrôle 3 : Muse Spark revoit la page, aucun problème. Vert.  → 
+- **P5-38** · écran : Rescan  → 
+- **P5-39** · écran : faille disparue ?  → 
+- **P5-40** · sous-titre : Contrôle 4 : la faille a disparu. Vert.  → 
+- **P5-41** · écran : Parcours  → 
+- **P5-42** · écran : tests client  → 
+- **P5-43** · sous-titre : Contrôle 5 : les tests du client. Vert.  → 
+- **P5-44** · écran : patch prêt · une réserve écrite  → 
+- **P5-45** · écran : un humain valide  → 
+- **P5-46** · sous-titre : Cinq verts : VERIFIED. Une réserve écrite : relire les sources. Un humain valide le patch.  → 
+- **P5-47** · écran : VOTRE SITE · 0 faille  → 
+- **P5-48** · écran : ✔ corrigée · en live  → 
+- **P5-49** · sous-titre : Corrigée, en live.  → 
+- **P5-50** · tampon : VERIFIED  → 
+- **P5-51** · écran : ✔ 0 faille  → 
+- **P5-52** · sous-titre : FAILLE SCAN : zéro. Tout est vert.  → 
+
+## Page 6 · Choix : l’espace
+
+- **P6-1** · écran : OÙ L’ENVOYER ?  → 
+- **P6-2** · sous-titre : Le point revient.  → 
+- **P6-3** · écran : la boucle  → 
+- **P6-4** · écran : chercher · lire · vérifier  → 
+- **P6-5** · sous-titre : La boucle, inchangée.  → 
+- **P6-6** · écran : 🪐 L’espace  → 
+- **P6-7** · écran : 🩺 La médecine  → 
+- **P6-8** · écran : 🔎 La recherche web  → 
+- **P6-9** · écran : 💬 Les assistants IA  → 
+- **P6-10** · écran : 📚 L’encyclopédie  → 
+- **P6-11** · écran : 📰 La presse  → 
+- **P6-12** · écran : 🛒 Le commerce en ligne  → 
+- **P6-13** · écran : 🏦 La banque  → 
+- **P6-14** · écran : ⚖️ Le droit  → 
+- **P6-15** · écran : 🛡 La cybersécurité  → 
+- **P6-16** · écran : 🎓 L’université  → 
+- **P6-17** · écran : 🏛 L’État  → 
+- **P6-18** · écran : 2 · L’espace.  → 
+- **P6-19** · sous-titre : Deuxième voyage : l’espace.  → 
+
+## Page 7 · Démo : l’espace
+
+- **P7-1** · démo : SANS MISSION ZERO  → 
+- **P7-2** · démo : ÉTAPE 1 · AVANT · LA QUESTION À UNE IA ORDINAIRE  → 
+- **P7-3** · démo : Recherche IA  → 
+- **P7-4** · démo : Chercher  → 
+- **P7-5** · démo : L’IA répond  → 
+- **P7-6** · démo : SOURCES  → 
+- **P7-7** · démo : Hercule, 19,7 km/s · manuel de 1981 · sans adresse  → 
+- **P7-8** · démo : 3 vitesses au centième · MNRAS 2010 · injoignable  → 
+- **P7-9** · démo : la galaxie, 240 km/s · Reid 2014 · lisible  → 
+- **P7-10** · démo : 600 km/s, Grand Attracteur · 1988 · injoignable  → 
+- **P7-11** · démo : le fond du ciel, 369,82 km/s · Planck 2020 · injoignable  → 
+- **P7-12** · démo : RÉSULTAT  → 
+- **P7-13** · démo : Oui, le système solaire va vers un endroit inconnu, à 19,7 km/s  → 
+- **P7-14** · démo : 4 sources sur 5 injoignables · personne n’a ouvert les pages · 1 centime, 20 secondes  → 
+- **P7-15** · démo : [tampon] NOT VERIFIED  → 
+- **P7-16** · démo : INSTALL MISSION ZERO  → 
+- **P7-17** · démo : ÉTAPE 2 · ON INSTALLE MISSION ZERO  → 
+- **P7-18** · démo : Un développeur de l’équipe récupère Mission Zero sur GitHub  → 
+- **P7-19** · démo : [terminal]  → 
+- **P7-20** · démo : [terminal] $ git clone https://github.com/  → 
+- **P7-21** · démo : [terminal] $ git clone https://github.com/cryptoragency/missionzero.git  → 
+- **P7-22** · démo : [terminal] Receiving objects: 100% (412/412), done.  → 
+- **P7-23** · démo : [terminal] $ cd missionzero &&  → 
+- **P7-24** · démo : [terminal] $ cd missionzero && npm install  → 
+- **P7-25** · démo : [terminal] added 184 packages in 6s  → 
+- **P7-26** · démo : [terminal] $ echo "MODEL_API_KEY=•••• MZ_API_KE  → 
+- **P7-27** · démo : [terminal] $ echo "MODEL_API_KEY=•••• MZ_API_KEY=••••" > .env  → 
+- **P7-28** · démo : [terminal] $ npm run api  → 
+- **P7-29** · démo : [terminal] Mission Zero API · http://127.0.0.1:3000/api/verify  → 
+- **P7-30** · démo : [terminal] $ code recherche.js  → 
+- **P7-31** · démo : [terminal] const reponse = await ia.chercher(question);  → 
+- **P7-32** · démo : [terminal] + const mz = a  → 
+- **P7-33** · démo : [terminal] + const mz = await fetch('http://127.0.0.1:3000/api/verify', {  → 
+- **P7-34** · démo : [terminal] + method: 'PO  → 
+- **P7-35** · démo : [terminal] + method: 'POST', headers: { authorization: 'Bearer ' + MZ_API_KEY },  → 
+- **P7-36** · démo : [terminal] + bod  → 
+- **P7-37** · démo : [terminal] + body: JSON.stringify({ question, reponse, sources }) }).then(r => r.json());  → 
+- **P7-38** · démo : [terminal] afficher(reponse, mz.verdict); // VERIFIED ou NOT VERIFIED  → 
+- **P7-39** · démo : [terminal] → ici, Mission Zero vérifie avant d’afficher  → 
+- **P7-40** · démo : [terminal] $  → 
+- **P7-41** · démo : AVEC MISSION ZERO  → 
+- **P7-42** · démo : ÉTAPE 3 · APRÈS · LA MÊME QUESTION PASSE PAR MISSION ZERO  → 
+- **P7-43** · démo : Mission Zero lit les pages  → 
+- **P7-44** · démo : Hercule, 20 km/s · Univ. du Maryland · lisible  → 
+- **P7-45** · démo : 230 km/s · NASA, mot pour mot · lisible  → 
+- **P7-46** · démo : 369 km/s · Cambridge · lisible  → 
+- **P7-47** · démo : 631 km/s · Nature, 2014 · lisible  → 
+- **P7-48** · démo : Oui, le système solaire va vers un endroit inconnu : 20 km/s vers Hercule, 230 km/s autour de la galaxie, 631 km/s vers le Grand Attracteur  → 
+- **P7-49** · démo : 4 pages lues, chaque chiffre relu sur sa page · ce qu’il n’a pas pu lire, il le dit · 1 dollar  → 
+- **P7-50** · démo : [tampon] VERIFIED  → 
+- **P7-51** · démo : [recherche] Le système solaire va-t-il quelque part ?  → 
+
+## Page 8 · Choix : la médecine
+
+- **P8-1** · écran : OÙ L’ENVOYER ?  → 
+- **P8-2** · sous-titre : Le point revient.  → 
+- **P8-3** · écran : la boucle  → 
+- **P8-4** · écran : chercher · lire · vérifier  → 
+- **P8-5** · sous-titre : La boucle, toujours la même.  → 
+- **P8-6** · écran : 🪐 L’espace  → 
+- **P8-7** · écran : 🩺 La médecine  → 
+- **P8-8** · écran : 🔎 La recherche web  → 
+- **P8-9** · écran : 💬 Les assistants IA  → 
+- **P8-10** · écran : 📚 L’encyclopédie  → 
+- **P8-11** · écran : 📰 La presse  → 
+- **P8-12** · écran : 🛒 Le commerce en ligne  → 
+- **P8-13** · écran : 🏦 La banque  → 
+- **P8-14** · écran : ⚖️ Le droit  → 
+- **P8-15** · écran : 🛡 La cybersécurité  → 
+- **P8-16** · écran : 🎓 L’université  → 
+- **P8-17** · écran : 🏛 L’État  → 
+- **P8-18** · écran : 3 · La médecine.  → 
+- **P8-19** · sous-titre : Dernier voyage : la médecine.  → 
+
+## Page 9 · Démo : le labo de Fleming
+
+- **P9-1** · démo : Labos · réseau mondial de sondes  → 
+- **P9-2** · démo : SANS MISSION ZERO  → 
+- **P9-3** · démo : ÉTAPE 1 · AVANT · LES SONDES, SANS MISSION ZERO  → 
+- **P9-4** · démo : Londres  → 
+- **P9-5** · démo : boîte 7  → 
+- **P9-6** · démo : croissance · 0 h  → 
+- **P9-7** · démo : Paris  → 
+- **P9-8** · démo : boîte 3  → 
+- **P9-9** · démo : Boston  → 
+- **P9-10** · démo : boîte 12  → 
+- **P9-11** · démo : Tokyo  → 
+- **P9-12** · démo : boîte 5  → 
+- **P9-13** · démo : Genève  → 
+- **P9-14** · démo : boîte 9  → 
+- **P9-15** · démo : São Paulo  → 
+- **P9-16** · démo : boîte 2  → 
+- **P9-17** · démo : reconstitution, données fictives  → 
+- **P9-18** · démo : Pas de hasard.  → 
+- **P9-19** · démo : Pas de supposition.  → 
+- **P9-20** · démo : Que des preuves,  → 
+- **P9-21** · démo : par des chiffres.  → 
+- **P9-22** · démo : Les vraies données de santé  → 
+- **P9-23** · démo : ne peuvent pas être montrées :  → 
+- **P9-24** · démo : reconstitution, données fictives.  → 
+- **P9-25** · démo : croissance · 1 h  → 
+- **P9-26** · démo : croissance · 2 h  → 
+- **P9-27** · démo : croissance · 3 h  → 
+- **P9-28** · démo : croissance · 4 h  → 
+- **P9-29** · démo : croissance · 5 h  → 
+- **P9-30** · démo : croissance · 6 h  → 
+- **P9-31** · démo : ÉTAT  → 
+- **P9-32** · démo : les bactéries poussent  → 
+- **P9-33** · démo : croissance · 7 h  → 
+- **P9-34** · démo : CHANGEMENT  → 
+- **P9-35** · démo : la courbe chute  → 
+- **P9-36** · démo : croissance · 8 h  → 
+- **P9-37** · démo : CAUSE  → 
+- **P9-38** · démo : inconnue · boîte jetée  → 
+- **P9-39** · démo : RÉSULTAT  → 
+- **P9-40** · démo : Les bactéries meurent. Pourquoi ? On ne sait pas.  → 
+- **P9-41** · démo : la boîte part à la poubelle, la découverte avec elle  → 
+- **P9-42** · démo : [tampon] NOT VERIFIED  → 
+- **P9-43** · démo : INSTALL MISSION ZERO  → 
+- **P9-44** · démo : ÉTAPE 2 · ON INSTALLE MISSION ZERO  → 
+- **P9-45** · démo : Un développeur de l’équipe récupère Mission Zero sur GitHub  → 
+- **P9-46** · démo : [terminal] $ git c  → 
+- **P9-47** · démo : [terminal]  → 
+- **P9-48** · démo : [terminal] $ git clone https://github.com/cryptoragency/missi  → 
+- **P9-49** · démo : [terminal] $ git clone https://github.com/cryptoragency/missionzero.git  → 
+- **P9-50** · démo : [terminal] Receiving objects: 100% (412/412), done.  → 
+- **P9-51** · démo : [terminal] $ cd missionzero && npm install  → 
+- **P9-52** · démo : [terminal] added 184 packages in 6s  → 
+- **P9-53** · démo : [terminal] $ echo "MODEL  → 
+- **P9-54** · démo : [terminal] $ echo "MODEL_API_KEY=•••• MZ_API_KEY=••••" > .env  → 
+- **P9-55** · démo : [terminal] $ npm run api  → 
+- **P9-56** · démo : [terminal] Mission Zero API · http://127.0.0.1:3000/api/verify  → 
+- **P9-57** · démo : [terminal] $ co  → 
+- **P9-58** · démo : [terminal] $ code recherche.js  → 
+- **P9-59** · démo : [terminal] const reponse = await ia.chercher(question);  → 
+- **P9-60** · démo : [terminal] + const mz = await fetch('http://127.0.0.1:3000  → 
+- **P9-61** · démo : [terminal] + const mz = await fetch('http://127.0.0.1:3000/api/verify', {  → 
+- **P9-62** · démo : [terminal] + method: 'POST', headers: { authorization: 'Be  → 
+- **P9-63** · démo : [terminal] + method: 'POST', headers: { authorization: 'Bearer ' + MZ_API_KEY },  → 
+- **P9-64** · démo : [terminal] + body: JSON.stringify({ question, repo  → 
+- **P9-65** · démo : [terminal] + body: JSON.stringify({ question, reponse, sources }) }).then(r => r.json());  → 
+- **P9-66** · démo : [terminal] afficher(reponse, mz.verdict); // VERIFIED ou NOT VERIFIED  → 
+- **P9-67** · démo : [terminal] → ici, Mission Zero vérifie avant d’afficher  → 
+- **P9-68** · démo : [terminal] $  → 
+- **P9-69** · démo : AVEC MISSION ZERO  → 
+- **P9-70** · démo : ÉTAPE 3 · APRÈS · LES MÊMES SONDES PASSENT PAR MISSION ZERO  → 
+- **P9-71** · démo : MISSION ZERO  → 
+- **P9-72** · démo : elles meurent : −92 % en 6 h  → 
+- **P9-73** · démo : seule la boîte 7 change  → 
+- **P9-74** · démo : Mission Zero signale la chute dans la seule boîte 7.  → 
+- **P9-75** · démo : vu dans les données · les 5 autres labos ne bougent pas · au chercheur de conclure  → 
+- **P9-76** · démo : [tampon] VERIFIED  → 
+- **P9-77** · démo : Fleming l’a vu par hasard en 1928. Mission Zero le signale au chercheur.  → 
+
+## Page 10 · La fin
+
+- **P10-1** · écran : MISSION ZERO  → 
+- **P10-2** · écran : Un besoin ou un problème à régler ?  → 
+- **P10-3** · écran : Je suis votre réponse !  → 
+- **P10-4** · écran : CRYPTOR.AGENCY  → 

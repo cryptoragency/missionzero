@@ -1,0 +1,57 @@
+{
+  "date": "2026-11-02T11:33:04.014Z",
+  "usd": 0.06090944999999999,
+  "rows": [
+    {
+      "nct": "NCT00190762",
+      "verdict": "FOUND",
+      "via": "pubmed (model queries)",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/18375898/",
+      "quote": "Phase III trial of pemetrexed plus best supportive care compared with best supportive care in previously treated patients with advanced malignant pleural mesothelioma.",
+      "why": "Same second-line pemetrexed+BSC vs BSC design in advanced MPM with 243 enrolled matching the registry's 240 participants.",
+      "tried": [
+        "pubmed: pemetrexed[tiab] AND mesothelioma[tiab] AND \"best supportive care\"[tiab]",
+        "pubmed: pemetrexed[tiab] AND \"pleural mesothelioma\"[tiab] AND previously treated[tiab] AND supportive care[tiab]"
+      ]
+    },
+    {
+      "nct": "NCT02191540",
+      "verdict": "FOUND",
+      "via": "pubmed (model queries)",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/26639937/",
+      "quote": "This study was designed as a single arm, multicenter, and open-label phase III clinical trial to evaluate efficacy and safety of chemical pleurodesis using mistletoe extraction (ABNOVAviscum(&#xae;) Injection).",
+      "why": "It matches the registry's Phase 3 single-arm multicenter open-label design, mistletoe drug, and malignant pleural effusion indication.",
+      "tried": [
+        "pubmed: (mistletoe[tiab] OR \"Viscum album\"[tiab] OR viscum[tiab]) AND (\"malignant pleural effusion\"[tiab])",
+        "pubmed: (mistletoe extract[tiab] OR viscum[tiab] OR \"Viscum album\"[tiab]) AND (pleural effusion[tiab] OR pleurodesis[tiab])"
+      ]
+    },
+    {
+      "nct": "NCT02526784",
+      "verdict": "FOUND",
+      "via": "EU CTR (browser)",
+      "url": "https://www.clinicaltrialsregister.eu/ctr-search/trial/2015-000357-20/results",
+      "quote": "A total of 122 subjects were screened, of which 2 subjects were screening failures.",
+      "why": "The text lists the same NCT number, drug, disease and design and reports the primary pain-score comparison result.",
+      "tried": [
+        "pubmed: degarelix[tiab] AND prostate cancer[tiab] AND subcutaneous[tiab] AND intramuscular[tiab]",
+        "pubmed: degarelix[tiab] AND prostate[tiab] AND injection technique[tiab] AND administration[tiab]",
+        "euctr 2015-000357-20 read"
+      ]
+    },
+    {
+      "nct": "NCT00241449",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: fulvestrant[tiab] AND tamoxifen[tiab] AND postmenopausal[tiab] AND advanced breast cancer[tiab]",
+        "pubmed: ICI 182,780[tiab] AND tamoxifen[tiab] AND metastatic breast cancer[tiab]",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    }
+  ]
+}

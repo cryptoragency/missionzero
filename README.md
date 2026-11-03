@@ -115,7 +115,7 @@ Reading it: `minimal`, `low` and `medium` all reach 10/10 with both figures quot
 - **Finding**: one problem reported by a scanner, on a given URL, with its evidence.
 - **Flaw**: the weakness in the site that a finding points at.
 - **Fix**: the change Mission Zero proposes for a finding.
-- **Patch**: the fix written as a file that a human reviews and applies. The agent never applies it to the live site.
+- **Patch**: the fix written as a file that a human reviews and applies. The agent never applies it to the live site. An automatic mode (allowed flaws only, applied after the same checks, rolled back by itself if a journey breaks) is planned after the hackathon, in MYTHOZOR, the agency's platform; it is not in this repository.
 
 Statuses of a fix:
 

@@ -28,7 +28,7 @@ const sBgeo = (function () {
   const okChip = (i, label) => { const c = chips[i]; return '<rect class="chip ok" x="' + f(c.x - W / 2) + '" y="' + f(c.y - H / 2) + '" width="' + W + '" height="' + H + '" rx="' + H / 2 + '"/><text class="chip-t" x="' + f(c.x) + '" y="' + f(c.y + 7) + '" text-anchor="middle" style="font-size:19px">✔ ' + label + '</text>'; };
   const exit = '<g class="a" data-k="?" data-dur="1000" data-d="1050"><path class="arrow" pathLength="1" d="M' + (CX + RB) + ',' + CY + ' L1633.3,' + CY + '"/></g>';
   step('<g class="a" data-k="?" data-dur="1300" data-d="1400"><path class="arrow" pathLength="1" d="M-33.3,' + CY + ' L' + (CX - RB) + ',' + CY + '"/></g>');
-  step('<g class="b" data-k="?" data-d="1600"><circle class="ring lit" cx="' + CX + '" cy="' + CY + '" r="' + RB + '"/><text class="lbl m acc" x="' + CX + '" y="' + (CY - 4) + '" text-anchor="middle">la boucle</text><text class="lbl xs" x="' + CX + '" y="' + (CY + 22) + '" text-anchor="middle">chercher · lire · vérifier</text></g>');
+  step('<g class="b" data-k="?" data-d="1600"><circle class="ring lit" cx="' + CX + '" cy="' + CY + '" r="' + RB + '"/><text class="lbl m acc" x="' + CX + '" y="' + (CY - 4) + '" text-anchor="middle">MISSION ZERO</text><text class="lbl xs" x="' + CX + '" y="' + (CY + 22) + '" text-anchor="middle">chercher · lire · vérifier</text></g>');
   chips.forEach((c, i) => step('<g class="fan" data-k="?" data-d="' + (i === 11 ? 1500 : 380) + '"' + (ids[i] ? ' id="' + ids[i] + '"' : '') + ' style="transform-origin:' + f(c.x) + 'px ' + f(c.y) + 'px;--fx:' + f(CX - c.x) + 'px;--fy:' + f(CY - c.y) + 'px"><rect class="chip next" x="' + f(c.x - W / 2) + '" y="' + f(c.y - H / 2) + '" width="' + W + '" height="' + H + '" rx="' + H / 2 + '"/><text class="chip-t" x="' + f(c.x) + '" y="' + f(c.y + 7) + '" text-anchor="middle" style="font-size:19px">' + c.label + '</text></g>'));
   const base = k;
   // 1er passage : la sécurité d'un site.
@@ -37,22 +37,22 @@ const sBgeo = (function () {
   step('<g class="b" data-k="?" data-d="2400"><text class="lbl amber" x="800" y="70" text-anchor="middle" style="font-size:26px">Premier voyage : la cybersécurité.</text></g>', 'securite');
   step(exit, 'securite');
   // 2e passage : la sécurité prouvée, le fil vers l'espace, puis il ressort à droite.
-  step('<g class="b" data-k="?" data-hide="#bS" data-d="1400">' + okChip(9, 'La cybersécurité · VERIFIED') + '</g>', 'espace');
+  step('<g class="b" data-k="?" data-d="1"><text class="lbl xs" x="0" y="0"> </text></g>', 'espace'); // puce « VERIFIED » retirée (gérant, 1er novembre : pas de mouvement)
   step('<g class="a" data-k="?" data-zoom="#bE" data-dur="1000"><path class="arrow" pathLength="1" d="' + fil(0) + '"/></g>', 'espace');
   step('<g class="b" data-k="?" data-d="2400"><text class="lbl amber" x="800" y="70" text-anchor="middle" style="font-size:26px">Deuxième voyage : l\'espace.</text></g>', 'espace');
   step(exit, 'espace');
   // 3e passage : sécurité et espace prouvés, le fil vers la médecine, puis il ressort à droite.
-  step('<g class="b" data-k="?" data-hide="#bS" data-d="700">' + okChip(9, 'La cybersécurité · VERIFIED') + '</g>', 'medecine');
-  step('<g class="b" data-k="?" data-hide="#bE" data-d="1400">' + okChip(0, 'L\'espace · VERIFIED') + '</g>', 'medecine');
+  step('<g class="b" data-k="?" data-d="1"><text class="lbl xs" x="0" y="0"> </text></g>', 'medecine');
+  step('<g class="b" data-k="?" data-d="1"><text class="lbl xs" x="0" y="0"> </text></g>', 'medecine');
   step('<g class="a" data-k="?" data-zoom="#bM" data-dur="1000"><path class="arrow" pathLength="1" d="' + fil(1) + '"/></g>', 'medecine');
   step('<g class="b" data-k="?" data-d="2400"><text class="lbl amber" x="800" y="70" text-anchor="middle" style="font-size:26px">Dernier voyage : la médecine.</text></g>', 'medecine');
   step(exit, 'medecine');
-  const sec = '  <section class="scene" id="sB">\n    <header><h2>OÙ L\'ENVOYER ?</h2><span class="t">l\'écran des choix</span></header>\n    <svg viewBox="0 0 1600 900" role="img" aria-label="La boucle au centre et, autour, tout ce qu\'on peut lui demander">\n      ' + out.join('\n      ') + '\n    </svg>\n    <div class="caption" id="cB"></div>\n  </section>\n';
+  const sec = '  <section class="scene" id="sB">\n    <header><h2>OÙ L\'INTÉGRER ?</h2><span class="t">l\'écran des choix</span></header>\n    <svg viewBox="0 0 1600 900" role="img" aria-label="La boucle au centre et, autour, tout ce qu\'on peut lui demander">\n      ' + out.join('\n      ') + '\n    </svg>\n    <div class="caption" id="cB"></div>\n  </section>\n';
   const nulls = (n) => Array(n).fill(null);
   const cap = {
-    securite: ['Le point arrive. La boucle attend un objectif.', 'Même boucle, zéro code.', 'L\'espace…', 'la médecine…', 'la recherche web…', 'les assistants IA…', 'l\'encyclopédie…', 'la presse…', 'le commerce en ligne…', 'la banque…', 'le droit…', 'la cybersécurité…', 'l\'université…', 'l\'État.', 'Partout où l\'on cherche, Mission Zero s\'installe.', null, '<b>D\'abord, la cybersécurité.</b>', null],
-    espace: ['Le point revient.', 'La boucle, inchangée.'].concat(nulls(12), ['La cybersécurité&nbsp;: <b>VERIFIED</b>.', null, '<b>Deuxième voyage&nbsp;: l\'espace.</b>', null]),
-    medecine: ['Le point revient.', 'La boucle, toujours la même.'].concat(nulls(12), [null, 'L\'espace&nbsp;: <b>VERIFIED</b>.', null, '<b>Dernier voyage&nbsp;: la médecine.</b>', null]),
+    securite: [null, 'Même boucle, zéro code.', 'L\'espace…', 'la médecine…', 'la recherche web…', 'les assistants IA…', 'l\'encyclopédie…', 'la presse…', 'le commerce en ligne…', 'la banque…', 'le droit…', 'la cybersécurité…', 'l\'université…', 'l\'État.', 'Partout où l\'on cherche, Mission Zero s\'installe.', null, '<b>Exemple 1&nbsp;: la cybersécurité.</b>', null],
+    espace: [null, null].concat(nulls(12), [null, null, '<b>Exemple 2&nbsp;: l\'espace.</b>', null]),
+    medecine: [null, null].concat(nulls(12), [null, null, null, '<b>Exemple 3&nbsp;: la médecine.</b>', null]),
   };
   Object.keys(cap).forEach((p) => { const n = base + out.filter((x) => x.includes('data-pass="' + p + '"')).length; if (cap[p].length !== n) throw new Error('sB ' + p + ' : ' + n + ' étapes, ' + cap[p].length + ' légendes'); });
   return { sec, cap };
@@ -162,17 +162,42 @@ const addExit3 = (x) => { const i = x.lastIndexOf('\n    </svg>'); return x.slic
 const pick = (id, next) => { let x = src.slice(src.indexOf('<section class="scene" id="' + id + '">'), src.indexOf('<section class="scene" id="' + next + '">')); var i = x.indexOf("<div class=\"bar\">"); if (i >= 0) { var j = x.indexOf("</div>", i) + 7; x = x.slice(0, i) + x.slice(j); } return x; };
 const marks = (sec, n) => { var o = sec.indexOf('<svg viewBox="0 0 1600 900"'); var oe = sec.indexOf('>', o) + 1; var dots = ''; for (var i = 0; i < 5; i++) dots += '<circle class="mark' + (i < n ? ' done' : i === n ? ' now' : '') + '" cx="' + (1446 + i * 26) + '" cy="38" r="6"/>'; return sec.slice(0, oe) + '<g class="marks">' + dots + '</g>' + sec.slice(oe); };
 const titled = (sec, label, cls, sub) => { var o = sec.indexOf('<svg viewBox="0 0 1600 900"'); var oe = sec.indexOf('>', o) + 1; var ce = sec.indexOf('</svg>', oe); var head = '<text class="lbl ' + cls + '" x="800" y="40" text-anchor="middle" style="font-size:26px;letter-spacing:.2em;font-weight:700">' + label + '</text>' + (sub ? '<text class="lbl s" x="800" y="70" text-anchor="middle" style="font-size:20px;letter-spacing:.08em">' + sub + '</text>' : ''); return sec.slice(0, oe) + head + '<g transform="translate(' + (sub ? '40,84) scale(0.95)' : '32,56) scale(0.96)') + '">' + sec.slice(oe, ce) + '</g>' + sec.slice(ce); };
-const sB = titled(sBgeo.sec, 'OÙ L’ENVOYER ?', 'amber'), sE = titled(sEgeo.sec, 'L’ESPACE · AVEC MISSION ZERO', 'acc'), sM = titled(sMgeo.sec, 'LA MÉDECINE · AVEC MISSION ZERO', 'acc'), sZ = sZgeo.sec;
+const sB = titled(sBgeo.sec, 'OÙ L’INTÉGRER ?', 'amber'), sE = titled(sEgeo.sec, 'L’ESPACE · AVEC MISSION ZERO', 'acc'), sM = titled(sMgeo.sec, 'LA MÉDECINE · AVEC MISSION ZERO', 'acc'), sZ = sZgeo.sec;
 const s1 = titled(fixS1(pick('s1', 's2')), 'SANS MISSION ZERO', 'red'), s2 = titled(s2geo.sec, 'AVEC MISSION ZERO', 'acc'), s3 = titled((function (x) { var i = x.indexOf('<g class="b" data-k="19"><text class="lbl acc" x="800" y="822"'); if (i < 0) return x; var j = x.indexOf('</g>', i) + 4; return x.slice(0, i) + x.slice(j); })(addExit3(fixS3(pick('s3', 'sE')))), 'EXEMPLE D’UTILISATION AVEC MISSION ZERO', 'acc', 'MYTHOZOR ARGUS · surveillance cybersécurité');
-const S0 = marks(s0, 0), S1 = marks(s1, 1), S2 = marks(s2, 2), SE = marks(sE, 3), SM = marks(sM, 4);
+// Page 3 (gérant, 1er novembre) : une étape d’installation de Mission Zero, comme dans les démos.
+const INSTALL_STEPS = "\n      <g class=\"b\" data-k=\"24\" id=\"inst\" data-d=\"1400\"><rect x=\"1180\" y=\"664\" width=\"380\" height=\"146\" rx=\"22\" fill=\"#2ee6a0\" style=\"filter:drop-shadow(0 0 18px rgba(46,230,160,.55))\"/><text x=\"1370\" y=\"726\" text-anchor=\"middle\" fill=\"#06281c\" style=\"font-size:30px;font-weight:900;letter-spacing:.04em\">INSTALLER</text><text x=\"1370\" y=\"770\" text-anchor=\"middle\" fill=\"#06281c\" style=\"font-size:30px;font-weight:900;letter-spacing:.04em\">MISSION ZERO</text></g>\n      <g class=\"b cur\" data-k=\"25\" data-d=\"1000\"><path d=\"M1440,748 L1440,786 L1450,776 L1457,793 L1464,790 L1457,774 L1471,774 Z\" fill=\"#fff\" stroke=\"#000\" stroke-width=\"2\" stroke-linejoin=\"round\"/></g>\n      <g class=\"b press\" data-k=\"26\" data-hide=\"#inst\" data-d=\"1700\"><rect x=\"1186\" y=\"670\" width=\"368\" height=\"134\" rx=\"20\" fill=\"#1fbf86\"/><text x=\"1370\" y=\"726\" text-anchor=\"middle\" fill=\"#06281c\" style=\"font-size:30px;font-weight:900;letter-spacing:.04em\">INSTALLER</text><text x=\"1370\" y=\"770\" text-anchor=\"middle\" fill=\"#06281c\" style=\"font-size:30px;font-weight:900;letter-spacing:.04em\">MISSION ZERO</text><path d=\"M1440,748 L1440,786 L1450,776 L1457,793 L1464,790 L1457,774 L1471,774 Z\" fill=\"#fff\" stroke=\"#000\" stroke-width=\"2\" stroke-linejoin=\"round\"/></g>";
+const addInstall = (x) => { const i = x.lastIndexOf('\n    </g></svg>'); if (i < 0) throw new Error('page 3 : fin introuvable'); return (x.slice(0, i) + INSTALL_STEPS + x.slice(i)).replace('<g class="b" data-k="23">', '<g class="b" data-k="23" data-d="3000" data-stamp-on="#admin">').replace('<g class="b" data-k="6">', '<g class="b" data-k="6" id="admin">'); };
+const S0 = marks(s0, 0), S1 = marks(addInstall(s1), 1), S2 = marks(s2, 2), SE = marks(sE, 3), SM = marks(sM, 4);
 const CAP = {
-  s0: geo.cap, sDe: [null], sDm: [null],
+  s0: geo.cap, sDe: [null], sDm: [null], sDb: [null],
   sB: sBgeo.cap.securite, sB2: sBgeo.cap.espace, sB3: sBgeo.cap.medecine,
-  s1: [null, 'Une boutique en ligne. Elle tourne.', 'Les commandes tombent.', null, 'Tout va bien.', 'Conforme. Aujourd’hui.', 'Une équipe : une personne, souvent.', 'Une faille : aucun en-tête de sécurité.', 'Rouge.', 'Elle corrige à la main.', 'Corrigé.', 'Vert.', 'Une autre : le prix changé par le client.', 'Rouge.', 'Elle corrige, le soir.', 'Corrigé.', 'Vert.', 'Deux de plus : la carte bancaire en clair…', '…et une bibliothèque de 2012.', 'Rouge.', 'Pas le temps. Pas le budget.', 'Une cinquième. Elle restera ouverte.', 'Rouge.', '<b>8 sites sur 10 restent exposés.</b> La seule question, c’est quand.'],
+  s1: [null, 'Une boutique en ligne qui tourne.', 'Les commandes tombent.', null, 'Tout va bien.', 'Conforme. Aujourd’hui.', 'Une équipe : une personne, souvent.', 'Une faille : aucun en-tête de sécurité.', 'Rouge.', 'Elle corrige à la main.', 'Corrigé.', 'Vert.', 'Une autre : le prix changé par le client.', 'Rouge.', 'Elle corrige, le soir.', 'Corrigé.', 'Vert.', 'Deux de plus : la carte bancaire en clair…', '…et une bibliothèque de 2012.', 'Rouge.', 'Pas le temps. Pas le budget.', 'Une cinquième. Elle restera ouverte.', 'Rouge.', '<b>8 sites sur 10 restent exposés.</b> La seule question, c’est quand.'],
   s2: s2geo.cap,
-  s3: ['Chez vous, sur votre machine. Aucun serveur à nous.', 'Votre site, sur votre serveur.', '<b>MYTHOZOR ARGUS</b> surveille, jour et nuit.', null, null, null, null, null, null, 'Tout est vert.', 'Une nouvelle faille. ARGUS la voit. Rouge.', null, '<b>Mission Zero</b> la prend. Copie, correctif, cinq contrôles, patch.', null, 'Vous validez d’un clic. Ou en automatique.', null, 'ARGUS vérifie à nouveau.', 'Rouge repassé au vert. Sans vous réveiller.'],
+  s3: ['Chez vous, sur votre machine. Aucun serveur à nous.', 'Votre site, sur votre serveur.', '<b>MYTHOZOR ARGUS</b> surveille, jour et nuit.', null, null, null, null, null, null, 'Tout est vert.', 'Une nouvelle faille. ARGUS la voit. Rouge.', null, '<b>Mission Zero</b> la prend. Copie, correctif, cinq contrôles, patch.', null, 'Vous validez d’un clic. L’automatique viendra dans MYTHOZOR.', null, 'ARGUS vérifie à nouveau.', 'Rouge repassé au vert, après votre clic.'],
 };
-CAP.s3 = CAP.s3.concat([null]); CAP.sE = sEgeo.cap; CAP.sM = sMgeo.cap; CAP.sZ = sZgeo.cap;
+CAP.s3 = CAP.s3.concat([null]); CAP.s1 = CAP.s1.concat(['On installe <b>Mission Zero</b>.', null, null]); CAP.sE = sEgeo.cap; CAP.sM = sMgeo.cap; CAP.sZ = sZgeo.cap;
+// Les sous-titres = les résumés de page dits par la voix (gérant, 2 novembre : « fais des résumés de page », « il faut être pro »).
+// Chaque phrase est posée à une étape de la page, réparties à intervalles égaux ; une phrase reste affichée jusqu'à la suivante.
+// Le texte complet et sa version anglaise : video/VOIX-PRESENTATION-2026-11-02.md ; les traductions : build/film-en.json (cap).
+const VOIX = {
+  s0: ['Un objectif, aucun plan.', '<b>Mission Zero</b> cherche, lit et vérifie.', 'Il recommence jusqu’à ce que tout soit prouvé.'],
+  sB: ['Partout où une réponse doit être juste.', 'Premier exemple, la cybersécurité.'],
+  s1: ['Votre admin web corrige les failles une à une.', 'Mais elles arrivent plus vite que les corrections.', '49 972 failles publiées en 2025. Plus du double qu’en 2021.'],
+  sDb: ['En quelques commandes, <b>Mission Zero</b> connaît les parcours vitaux de votre site.'],
+  s2: ['Il corrige sur une copie, jamais sur votre site.', 'Cinq contrôles par correctif. Ici, un refusé, puis refait.', { t: 'Un humain valide. Vous gardez le dernier mot.', at: 'okpatch' }],
+  sB2: ['Deuxième exemple, l’espace.'],
+  sDe: ['Seule, l’IA donne 4 chiffres et aucun ne se retrouve sur sa source. Avec <b>Mission Zero</b>, chaque chiffre a sa page.'],
+  sB3: ['Troisième exemple, la médecine.'],
+  sDm: ['673 études, 9 pistes contre le cancer du cerveau. Chercheurs, donnez-nous l’accès aux données de laboratoire.'],
+  sZ: ['Ce que ça a coûté et ce qu’il faut pour aller plus loin.', 'N’attendez pas. Sur 26 sites analysés, 8 sur 10 n’ont pas de protection CSP.', process.argv.includes('--client') ? '' : 'Le code et toutes les preuves sont publics dès le 4 novembre.'],
+};
+for (const [k, phrases] of Object.entries(VOIX)) {
+  const n = Math.max(1, (CAP[k] || [null]).length), out = new Array(n).fill(null);
+  phrases.forEach((p, i) => { let idx = Math.min(n - 1, Math.floor((i * n) / phrases.length));
+    if (p && typeof p === 'object') { const src = { s2: s2geo.sec }[k] || ''; const m = src.match(new RegExp('data-k="(\\d+)"[^>]*id="' + p.at + '"')) || src.match(new RegExp('id="' + p.at + '"[^>]*data-k="(\\d+)"')); if (m) idx = Math.min(n - 1, Number(m[1]) - 1); p = p.t; }
+    out[idx] = p; });
+  CAP[k] = out;
+}
 // Apostrophes typographiques dans tout le texte affiché (jamais dans le code ni les attributs).
 const typo = (h) => h.replace(/>([^<]+)</g, (m, t) => '>' + t.replace(/'/g, '’') + '<');
 // Le moteur : celui du 30 (fil et point ensemble, zooms, alerte, éventail), plus les passages de l'écran des choix, les
@@ -192,6 +217,35 @@ const script = `<script>
   // La place d'origine de chaque rond (gérant, 1er novembre : « quand on remet à lire, les ronds disparaissent ») : reset la leur rend.
   var HOMES = []; document.querySelectorAll('.rg').forEach(function (rg) { var hp = rg.parentNode; if (HOMES.indexOf(hp) < 0) { HOMES.push(hp); hp._kids = Array.prototype.slice.call(hp.children); } });
   var SEEK = false;
+  // ---- version anglaise (gérant, 1er novembre) : les textes passent par build/film-en.json quand le film est en anglais ----
+  var MZL = window.MZ_LANG === 'en' ? window.MZ_EN : null;
+  function mzNorm(s) { return String(s || '').replace(/<[^>]+>/g, '').split('&nbsp;').join(' ').split(String.fromCharCode(160)).join(' ').replace(/[ ]+/g, ' ').trim(); }
+  function mzMiss(k) { (window.MZ_MISSING = window.MZ_MISSING || []).indexOf(k) < 0 && window.MZ_MISSING.push(k); }
+  function trCap(t) { if (!MZL || !t) return t; var k = mzNorm(t), e = MZL.cap[k]; if (!e) { mzMiss('sous-titre : ' + k); return t; } return e; }
+  function trUi(s) { if (!MZL) return s; var e = MZL.ui[mzNorm(s)]; return e || s; }
+  function trScene(root) { if (!MZL || !root) return; Array.prototype.forEach.call(root.querySelectorAll('svg text'), function (t) { if (t.getAttribute('data-tr') || t.children.length) return; t.setAttribute('data-tr', '1'); var k = mzNorm(t.textContent); if (!k) return; var e = MZL.screen[k]; if (e) t.textContent = e; else if (/[a-zéèàù]/.test(k)) mzMiss('écran : ' + k); }); }
+  // ---- le logo de Mission Zero devant chaque « Mission Zero » (gérant, 1er novembre) ----
+  var MZNS = 'http://www.w3.org/2000/svg';
+  function mzIcon(c, dot) { return '<path d="M4,80 C34,80 44,70 44,50" fill="none" stroke="' + c + '" stroke-opacity=".85" stroke-width="8"/><circle cx="64" cy="50" r="20" fill="none" stroke="' + c + '" stroke-width="9"/><circle cx="64" cy="50" r="8" fill="' + dot + '"/>'; }
+  function mzDark(col) { var m = String(col).match(/[0-9]+/g); return m && (Number(m[0]) + Number(m[1]) + Number(m[2])) < 200; }
+  // dans du HTML : le logo en ligne, à la taille du texte
+  function mzh(s, dark) { return String(s).replace(/(mission zero)/gi, '<svg class="mzi" viewBox="0 0 100 100" width="1.05em" height="1.05em" style="vertical-align:-.18em;margin-right:.28em;overflow:visible">' + (dark ? mzIcon('#06281c', '#06281c') : mzIcon('#2ee6a0', '#fff')) + '</svg>$1'); }
+  // dans un texte SVG : on ouvre la place devant les mots et on y pose le logo
+  function mzSvgText(t) {
+    if (t.getAttribute('data-mz') || t.closest('.mzlogo')) return; var s = t.textContent, i = s.search(/mission zero/i); if (i < 0 || t.children.length) return;
+    t.setAttribute('data-mz', '1'); var fsz = parseFloat(getComputedStyle(t).fontSize) || 20, w = fsz * 1.05, gap = fsz * 0.3;
+    var cx0 = null; try { var b0 = t.getBBox(); cx0 = b0.x + b0.width / 2; } catch (e) { cx0 = null; }
+    var before = s.slice(0, i), rest = s.slice(i); t.textContent = '';
+    if (before) { var a = document.createElementNS(MZNS, 'tspan'); a.textContent = before; t.appendChild(a); }
+    var b = document.createElementNS(MZNS, 'tspan'); b.textContent = rest; b.setAttribute('dx', String(w + gap)); t.appendChild(b);
+    var p; try { p = t.getStartPositionOfChar(before.length); } catch (e) { return; }
+    var dark = mzDark(getComputedStyle(t).fill), g = document.createElementNS(MZNS, 'g'); g.setAttribute('class', 'mzlogo nopen');
+    g.setAttribute('transform', 'translate(' + (p.x - w - gap * 0.45).toFixed(1) + ',' + (p.y - fsz * 0.36 - w / 2).toFixed(1) + ') scale(' + (w / 100).toFixed(4) + ')');
+    g.innerHTML = dark ? mzIcon('#06281c', '#06281c') : mzIcon('#2ee6a0', '#fff'); t.parentNode.insertBefore(g, t.nextSibling);
+    if ((t.getAttribute('text-anchor') || getComputedStyle(t).textAnchor) === 'middle' && cx0 !== null) { var bb = t.getBBox(), left = Math.min(bb.x, p.x - w - gap * 0.45), right = bb.x + bb.width, sh = (left + right) / 2 - cx0;
+      if (Math.abs(sh) > 0.5) { t.setAttribute('x', String(Number(t.getAttribute('x')) - sh)); g.setAttribute('transform', 'translate(' + (p.x - w - gap * 0.45 - sh).toFixed(1) + ',' + (p.y - fsz * 0.36 - w / 2).toFixed(1) + ') scale(' + (w / 100).toFixed(4) + ')'); } }
+  }
+  function mzScan(root) { if (root) Array.prototype.forEach.call(root.querySelectorAll('text'), mzSvgText); }
   var DEMO = { el: null, t0: 0, off: 0, raf: 0 };
   function demoPost(el, t) { try { el.contentWindow.postMessage({ mzSeek: t }, '*'); } catch (e) { /* rien */ } }
   function demoStop() { if (DEMO.raf) cancelAnimationFrame(DEMO.raf); DEMO.raf = 0; DEMO.el = null; }
@@ -234,7 +288,7 @@ const script = `<script>
     }
     list.forEach(function (o) { o.p.style.strokeDashoffset = '1'; var q = o.p.getPointAtLength(0); if (o.c) { o.c.setAttribute('cx', q.x); o.c.setAttribute('cy', q.y); o.c.classList.add('go'); } });
     requestAnimationFrame(frame);
-    (step.dataset.pulses || '').split(',').filter(Boolean).forEach(function (r) { var m = r.split('@'), f = m[1].split(':'); setTimeout(function () { if (my === gen) pulse(m[0], f[1] === 'strong'); }, Math.round(Number(f[0]) * dur)); });
+    (step.dataset.pulses || '').split(',').filter(Boolean).forEach(function (r) { var m = r.split('@'), f = m[1].split(':'); setTimeout(function () { if (my !== gen) return; pulse(m[0], f[1] === 'strong' || f[1] === 'lit'); if (f[1] === 'lit') { var rl = document.getElementById(m[0]); if (rl) { rl.classList.remove('unval', 'bad'); rl.classList.add('lit'); } } }, Math.round(Number(f[0]) * dur)); });
   }
   function pulse(id, strong) { var el = document.getElementById(id); if (!el) return; el.classList.remove('pulse', 'strong'); void el.getBBox(); el.classList.add('pulse'); if (strong) el.classList.add('strong'); setTimeout(function () { el.classList.remove('pulse', 'strong'); }, strong ? 1300 : 700); }
   // Le compteur de vitesse de l'espace : il monte, il ne redescend jamais. Le ciel d'étoiles vient vers vous, comme par le pare-brise.
@@ -261,19 +315,39 @@ const script = `<script>
   function startStars() { initStars(); if (!starsOn) { starsOn = true; lastT = 0; requestAnimationFrame(tickStars); } }
   function stopStars() { starsOn = false; starSpeed = 0.03; }
   // Le tampon plein écran (gérant, 31 octobre) : il claque sur toute la scène, se lit, puis s'efface.
-  function stampIt(spec) {
+  function stampIt(spec, step) {
     var sc = document.querySelector('.scene.active'); if (!sc) return; var m = spec.split(':'), kind = m[0], txt = m.slice(1).join(':');
     var old = sc.querySelector('.bigstamp'); if (old) old.remove();
     var d = document.createElement('div'); d.className = 'bigstamp ' + kind; var w = sc.getBoundingClientRect().width || 1280;
-    d.innerHTML = '<span style="font-size:' + Math.round(w * 0.05) + 'px;border-width:' + Math.round(w * 0.005) + 'px">' + txt + '</span>';
+    var D = Math.round(w * 0.12), parts = txt.split(' · '), main = parts[0].replace(' ', '<br>'), num = parts[1] ? '<small>' + parts[1] + '</small>' : '';
+    d.innerHTML = '<span style="width:' + D + 'px;height:' + D + 'px;font-size:' + Math.round(D * (parts[0].length > 8 ? 0.15 : 0.16)) + 'px;border-width:' + Math.max(3, Math.round(D * 0.03)) + 'px">' + main + num + '</span>';
+    var sr = sc.getBoundingClientRect(), er = null, cx, cy, on = step && step.dataset && step.dataset.stampOn ? document.querySelector(step.dataset.stampOn) : null;
+    // posé SUR un élément désigné (gérant, 1er novembre : NOT SECURE sur l'admin web qui corrige à la main)
+    if (on) { var ob = on.getBBox(), om = on.parentNode.getScreenCTM(); d.style.left = Math.round(om.a * (ob.x + ob.width / 2) + om.e - sr.left - D / 2) + 'px'; d.style.top = Math.round(om.d * (ob.y + ob.height / 2) + om.f - sr.top - D / 2) + 'px'; sc.appendChild(d); return; } // il reste jusqu'à la fin de la page (gérant, 1er novembre) ; reset() l'enlève au changement de page
+    // la place finale de l'élément (sans l'animation de son apparition), en coordonnées de l'écran
+    try { var bb = step.getBBox(), m = step.parentNode.getScreenCTM(); if (bb.width > 0) er = { left: m.a * bb.x + m.e, top: m.d * bb.y + m.f, width: bb.width * m.a, height: bb.height * m.d }; } catch (e) { er = null; }
+    // à côté de l'élément : la première place qui ne couvre aucun texte affiché
+    var texts = Array.prototype.filter.call(sc.querySelectorAll('text'), function (t) { return t.textContent.trim() && t.closest('.on') && !t.closest('.hidden'); }).map(function (t) { var q = t.getBoundingClientRect(); return { l: q.left - sr.left, t: q.top - sr.top, r: q.right - sr.left, b: q.bottom - sr.top }; });
+    var hits = function (x, y) { var R = D / 2; return texts.filter(function (q) { var nx = Math.max(q.l, Math.min(x, q.r)), ny = Math.max(q.t, Math.min(y, q.b)); return Math.hypot(nx - x, ny - y) < R; }).length; };
+    var cands = [];
+    if (er && er.width > 30 && er.height > 20) { var ex = er.left - sr.left, ey = er.top - sr.top, ew = er.width, eh = er.height, g = 12;
+      cands = [[ex + ew + D / 2 + g, ey + eh / 2], [ex - D / 2 - g, ey + eh / 2], [ex + ew + D / 2 + g, ey + D / 2], [ex + ew + D / 2 + g, ey + eh - D / 2], [ex + ew - D / 2, ey - D / 2 - g], [ex + ew - D / 2, ey + eh + D / 2 + g], [ex + D / 2, ey - D / 2 - g]]; }
+    cands.push([sr.width * 0.86, sr.height * 0.24], [sr.width * 0.14, sr.height * 0.24]);
+    var inS = function (c) { return c[0] - D / 2 >= 4 && c[0] + D / 2 <= sr.width - 4 && c[1] - D / 2 >= 4 && c[1] + D / 2 <= sr.height - 4; };
+    var best = null; cands.filter(inS).some(function (c) { if (!hits(c[0], c[1])) { best = c; return true; } return false; });
+    if (!best) best = cands.filter(inS).sort(function (p, q) { return hits(p[0], p[1]) - hits(q[0], q[1]); })[0] || cands[cands.length - 2];
+    cx = best[0]; cy = best[1];
+    d.style.left = Math.round(cx - D / 2) + 'px'; d.style.top = Math.round(cy - D / 2) + 'px';
     sc.appendChild(d); var my = gen; setTimeout(function () { if (my === gen) d.classList.add('out'); }, 2300); setTimeout(function () { d.remove(); }, 2900);
   }
   function act(step) {
-    if (step.dataset.stamp && !SEEK) stampIt(step.dataset.stamp);
+    if (step.dataset.stamp && !SEEK) stampIt(step.dataset.stamp, step);
+    // en saut ou en pas à pas, les bulles que la mine a déjà repassées sont vertes tout de suite
+    if (SEEK && step.dataset.pulses) step.dataset.pulses.split(',').forEach(function (r) { var m = r.split('@'); if (/:lit$/.test(m[1] || '')) { var rl = document.getElementById(m[0]); if (rl) { rl.classList.remove('unval', 'bad'); rl.classList.add('lit'); } } });
     if (step.dataset.demo && !SEEK) { var de = document.getElementById(step.dataset.demo); if (de) { if (PL.playing) { if (!PL.off) demoStart(de, 0); } else { demoStop(); demoPost(de, 0); } } }
     if (step.dataset.video && !SEEK) { var vv = document.getElementById(step.dataset.video); if (vv) { try { vv.currentTime = 0; var pr = vv.play(); if (pr && pr.catch) pr.catch(function () {}); } catch (e) { /* rien */ } } }
     (step.dataset.hide || '').split(',').filter(Boolean).forEach(function (h) { document.querySelector(h).classList.add('hidden'); });
-    (step.dataset.ring || '').split(',').filter(Boolean).forEach(function (r) { var id = r.split(':')[0], mode = r.split(':')[1] || 'lit'; var el = document.getElementById(id); el.classList.remove('lit', 'bad'); if (mode !== 'off') el.classList.add(mode); });
+    (step.dataset.ring || '').split(',').filter(Boolean).forEach(function (r) { var id = r.split(':')[0], mode = r.split(':')[1] || 'lit'; var el = document.getElementById(id); el.classList.remove('lit', 'bad', 'unval'); if (mode !== 'off') el.classList.add(mode); });
     if (step.dataset.shrink) { var sh = document.getElementById(step.dataset.shrink); if (sh) sh.classList.add('shrink'); }
     if (step.dataset.zoom2) { var zz = document.getElementById(step.dataset.zoom2); if (zz) { zz.parentNode.appendChild(zz); void zz.getBoundingClientRect(); zz.classList.add('zoomx'); zz.parentNode.classList.add('zooming'); } }
     if (step.dataset.unzoom) { var uz = document.getElementById(step.dataset.unzoom); if (uz) { uz.classList.remove('zoomx'); uz.parentNode.classList.remove('zooming'); } }
@@ -297,9 +371,11 @@ const script = `<script>
   }
   function contour(step) {
     var shapes = Array.prototype.filter.call(step.querySelectorAll('rect, circle'), function (el) {
-      if (el.classList.contains('runner') || el.classList.contains('mark') || el.closest('.rg') || el.closest('.fan')) return false;
+      if (el.classList.contains('runner') || el.classList.contains('mark') || el.closest('.rg') || el.closest('.fan') || el.closest('.nopen')) return false;
       var cs = getComputedStyle(el); if (!cs.stroke || cs.stroke === 'none' || cs.strokeOpacity === '0' || parseFloat(cs.strokeWidth) === 0) return false;
-      var b = el.getBBox(); return b.width > 6 && b.height > 6;
+      var b = el.getBBox(); if (el.tagName === 'rect' && (b.width < 150 || b.height < 60)) return false; if (b.width <= 6 || b.height <= 6) return false;
+      var r0 = el.getBoundingClientRect(), svg0 = el.ownerSVGElement; var inside = Array.prototype.some.call(svg0.querySelectorAll('rect'), function (o) { if (o === el) return false; var q = o.getBoundingClientRect(); if (q.width * q.height <= r0.width * r0.height) return false; var oc = getComputedStyle(o); if (!oc.stroke || oc.stroke === 'none') return false; return r0.left >= q.left - 2 && r0.right <= q.right + 2 && r0.top >= q.top - 2 && r0.bottom <= q.bottom + 2; });
+      return !inside;
     });
     if (!shapes.length) return;
     var my = gen, dur = 650, orb = window.MZORB && window.MZORB.where ? window.MZORB.where() : null;
@@ -355,7 +431,7 @@ const script = `<script>
     document.querySelectorAll('#' + id + ' .zoom').forEach(function (z) { z.classList.remove('zoom'); });
     document.querySelectorAll('#' + id + ' .hidden').forEach(function (z) { z.classList.remove('hidden'); });
     document.querySelectorAll('#' + id + ' .hand').forEach(function (z) { z.classList.remove('on'); });
-    document.querySelectorAll('#' + id + ' .ring').forEach(function (r) { if (r.id) r.classList.remove('lit', 'bad'); });
+    document.querySelectorAll('#' + id + ' .ring').forEach(function (r) { if (r.id) r.classList.remove('lit', 'bad', 'unval'); });
     document.querySelectorAll('#' + id + ' .field').forEach(function (r) { r.classList.remove('gone'); });
     document.querySelectorAll('#' + id + ' .chip').forEach(function (r) { if (r.id) r.classList.remove('ok', 'ko'); });
     document.querySelectorAll('#' + id + ' .runner').forEach(function (c) { c.classList.remove('go'); });
@@ -365,29 +441,29 @@ const script = `<script>
     document.getElementById(capId(id)).innerHTML = '';
   }
   function caps(id) { if (id !== 'sB') return CAP[id]; return pass[id] === 'espace' ? CAP.sB2 : pass[id] === 'medecine' ? CAP.sB3 : CAP.sB; }
-  function caption(id, k) { var t = caps(id)[k - 1]; if (t) document.getElementById(capId(id)).innerHTML = t; }
+  function caption(id, k) { var t = caps(id)[k - 1]; if (t) document.getElementById(capId(id)).innerHTML = mzh(trCap(t)); }
   // Le lecteur (gérant, 1er novembre) : pages numérotées, lecture / pause, avance / recul de 5 s ou d'une page, curseur.
   // Le temps du curseur est celui du film à ×1 ; chaque pas a sa place sur la ligne du temps.
   var PL = { ci: 0, id: null, k: 0, list: [], playing: false, done: null, quick: false, off: 0, t0: 0, w0: 0, end: 0 };
   function isQuick(id) { return id === 'sB' && pass[id] !== 'securite' && pass[id] !== 'all'; }
   function base(s) { return Number(s.dataset.d) || (s.classList.contains('a') ? 1100 : 1300); }
-  function delayOf(s, quick, real) { var d = real ? Math.round(base(s) * speedOf(s)) : base(s); if (quick && !s.dataset.pass && !s.classList.contains('a')) d = Math.min(d, 220); if (s.classList.contains('a')) d = Math.max(d, Math.round((Number(s.dataset.dur0) || Number(s.dataset.dur) || 0) * (real ? RATE : 1)) + 60); return d; }
-  function tail(list) { return list.length && list[list.length - 1].classList.contains('a') ? 0 : 1800; }
-  function show(id) { document.querySelectorAll('.scene').forEach(function (s) { s.classList.toggle('active', s.id === id); }); fitDemos(); }
+  function delayOf(s, quick, real) { if (quick && !s.dataset.pass) return 0; var d = real ? Math.round(base(s) * speedOf(s)) : base(s); if (quick && !s.dataset.pass && !s.classList.contains('a')) d = Math.min(d, 220); if (s.classList.contains('a')) d = Math.max(d, Math.round((Number(s.dataset.dur0) || Number(s.dataset.dur) || 0) * (real ? RATE : 1)) + 60); return d; }
+  function tail(list) { var l = list[list.length - 1]; return !l || l.classList.contains('a') || l.dataset.demo ? 0 : 1800; } // une démo enchaîne sans attendre
+  function show(id) { document.querySelectorAll('.scene').forEach(function (s) { s.classList.toggle('active', s.id === id); }); fitDemos(); trScene(document.getElementById(id)); mzScan(document.getElementById(id)); }
   var t0 = 0, clock = document.getElementById('clock');
   function tick() { if (t0) clock.textContent = Math.round((Date.now() - t0) / 100) / 10 + ' s'; }
   setInterval(tick, 200);
   // Le film complet : la boucle, les choix, la sécurité (boutique, correction), les choix, l'espace, les choix, la médecine, la fin.
-  var CHAIN = [['s0'], ['sB', 'securite'], ['s1'], ['s2'], ['sB', 'espace'], ['sDe'], ['sB', 'medecine'], ['sDm'], ['sZ']];
-  var NAMES = ['La boucle', 'Où l’envoyer ?', 'Constat · sans Mission Zero', 'Correction · avec Mission Zero', 'Choix : l’espace', 'Démo : l’espace', 'Choix : la médecine', 'Démo : le labo de Fleming', 'La fin'];
-  var IDS = ['s0', 'sB', 's1', 's2', 'sE', 'sDe', 'sDm', 'sZ'];
+  var CHAIN = [['s0'], ['sB', 'securite'], ['s1'], ['sDb'], ['s2'], ['sB', 'espace'], ['sDe'], ['sB', 'medecine'], ['sDm'], ['sZ']]; // la médecine remise le 2 novembre (vrais résultats, demo.html?ex=medecine) ; avant : retirée (2 novembre, recommandation appliquée sans réponse du gérant) : aucun écart prouvé en faveur de Mission Zero
+  var NAMES = ['La boucle', 'Où l’intégrer ?', 'Constat · sans Mission Zero', 'On installe Mission Zero', 'Correction · avec Mission Zero', 'Choix · l’espace', 'Démo · l’espace', 'Choix · la médecine', 'Démo · la médecine', 'La fin'];
+  var IDS = ['s0', 'sB', 's1', 'sDb', 's2', 'sE', 'sDe', 'sDm', 'sZ'];
   var TL = [], TOTAL = 0;
-  CHAIN.forEach(function (c, i) { var keep = pass[c[0]]; pass[c[0]] = c[1] || 'all'; var list = steps(c[0]), q = isQuick(c[0]), t = 0, st = []; list.forEach(function (s) { st.push(t); t += delayOf(s, q, false); }); t += tail(list); pass[c[0]] = keep; TL.push({ id: c[0], p: c[1] || 'all', start: TOTAL, starts: st, len: t, name: NAMES[i] }); TOTAL += t; });
+  CHAIN.forEach(function (c, i) { var keep = pass[c[0]]; pass[c[0]] = c[1] || 'all'; var list = steps(c[0]), q = isQuick(c[0]), t = 0, st = []; list.forEach(function (s) { st.push(t); t += delayOf(s, q, false); }); t += tail(list); pass[c[0]] = keep; TL.push({ id: c[0], p: c[1] || 'all', start: TOTAL, starts: st, len: t, name: trUi(NAMES[i]) }); TOTAL += t; });
   function stopAll() { demoStop(); IDS.forEach(function (id) { clearTimeout(timers[id]); }); document.querySelectorAll('video').forEach(function (v) { try { v.pause(); } catch (e) { /* rien */ } }); stopStars(); document.body.classList.remove('black'); }
   function stepStart(k) { var e = TL[PL.ci]; if (!e) return TOTAL; return e.start + (k < e.starts.length ? e.starts[k] : e.len); }
   function pos() { if (PL.end) return TOTAL; if (!PL.playing) return PL.t0; return Math.max(PL.t0, Math.min(TOTAL - 1, PL.t0 + (Date.now() - PL.w0) / RATE, stepStart(PL.k) - 1)); }
   // Le sous-titre en cours : le dernier non vide jusqu'à l'étape montrée (un saut ne doit pas l'effacer).
-  function lastCap(id, k) { var c = caps(id) || [], el = document.getElementById(capId(id)); el.innerHTML = ''; for (var j = k; j >= 1; j--) if (c[j - 1]) { el.innerHTML = c[j - 1]; return; } }
+  function lastCap(id, k) { var c = caps(id) || [], el = document.getElementById(capId(id)); el.innerHTML = ''; for (var j = k; j >= 1; j--) if (c[j - 1]) { el.innerHTML = mzh(trCap(c[j - 1])); return; } }
   function play(id, done, p, fromK, offMs) {
     clearTimeout(timers[id]); pass[id] = p || pass[id] || 'all'; reset(id);
     var list = steps(id); PL.id = id; PL.list = list; PL.done = done; PL.k = 0; PL.quick = isQuick(id); PL.off = offMs || 0;
@@ -402,7 +478,10 @@ const script = `<script>
   function next() {
     var id = PL.id, list = PL.list;
     if (PL.k >= list.length) { if (PL.done) timers[id] = setTimeout(PL.done, tail(list)); return; }
-    var s = list[PL.k]; PL.t0 = stepStart(PL.k) + PL.off; PL.w0 = Date.now(); PL.k += 1; PL.shown = PL.k; fire(s); caption(id, PL.k);
+    var s = list[PL.k]; PL.t0 = stepStart(PL.k) + PL.off; PL.w0 = Date.now(); PL.k += 1; PL.shown = PL.k;
+    // écran des choix déjà vu : l'image est posée d'un coup (gérant, 1er novembre : « tu ne le reconstruis pas »)
+    if (PL.quick && !s.dataset.pass) { SEEK = true; s.classList.add('on', 'drawn', 'seeked'); act(s); SEEK = false; caption(id, PL.k); timers[id] = setTimeout(next, 0); return; }
+    fire(s); caption(id, PL.k);
     var d = delayOf(s, PL.quick, true);
     if (PL.off && s.dataset.video) { var vv = document.getElementById(s.dataset.video); if (vv) { try { vv.currentTime = PL.off / 1000; } catch (e) { /* rien */ } } d = Math.max(200, d - PL.off); }
     if (PL.off && s.dataset.demo) { var de2 = document.getElementById(s.dataset.demo); if (de2) demoStart(de2, PL.off / 1000); d = Math.max(200, d - Math.round(PL.off * RATE)); }
@@ -442,7 +521,7 @@ const script = `<script>
   function ui() {
     var at = pos(); if (!dragging) bar.value = String(at);
     document.getElementById('cTime').textContent = mmss(at) + ' / ' + mmss(TOTAL);
-    var lab = 'Page ' + (PL.ci + 1) + ' / ' + TL.length + ' · ' + TL[PL.ci].name + ' · étape ' + (PL.shown || 0) + ' / ' + (PL.list ? PL.list.length : 0);
+    var lab = 'Page ' + (PL.ci + 1) + ' / ' + TL.length + ' · ' + TL[PL.ci].name + (MZL ? ' · step ' : ' · étape ') + (PL.shown || 0) + ' / ' + (PL.list ? PL.list.length : 0);
     document.getElementById('cPage').textContent = lab; document.getElementById('cBadge').textContent = (PL.ci + 1) + ' / ' + TL.length;
     document.getElementById('cPlay').textContent = PL.playing ? '⏸' : '▶';
     ticks.querySelectorAll('.tick').forEach(function (t, i) { t.classList.toggle('now', i === PL.ci); });
@@ -452,7 +531,8 @@ const script = `<script>
   bar.addEventListener('input', function () { PL.playing = false; seek(Number(bar.value)); });
   bar.addEventListener('change', function () { dragging = false; if (wasPlaying) { PL.playing = true; seek(Number(bar.value)); } wasPlaying = false; ui(); });
   document.getElementById('cPlay').addEventListener('click', toggle);
-  (function () { var row = document.querySelector('.ctl-row'), tm = document.getElementById('cTime'); var g = document.getElementById('grid'), x = document.getElementById('x2'); g.textContent = 'Schémas'; row.insertBefore(x, tm); row.insertBefore(g, tm); })();
+  if (MZL) document.querySelectorAll('.filmbar button, .ctl-row button').forEach(function (b) { var e = MZL.ui[mzNorm(b.textContent)]; if (e) b.textContent = e; });
+  (function () { var row = document.querySelector('.ctl-row'), tm = document.getElementById('cTime'); var g = document.getElementById('grid'), x = document.getElementById('x2'); g.textContent = window.MZ_LANG === 'en' ? 'Diagrams' : 'Schémas'; row.insertBefore(x, tm); row.insertBefore(g, tm); })();
   document.getElementById('grid').addEventListener('click', function () { document.querySelector('.filmbar').style.display = ''; });
   document.getElementById('cStepB').addEventListener('click', stepB);
   document.getElementById('cStepF').addEventListener('click', stepF);
@@ -468,7 +548,7 @@ const script = `<script>
   });
   document.getElementById('go').addEventListener('click', function () { film(0); });
   document.querySelectorAll('[data-ch]').forEach(function (b) { b.addEventListener('click', function () { var i = -1; TL.forEach(function (e, j) { if (i < 0 && e.id === b.dataset.ch && (!b.dataset.pass || e.p === b.dataset.pass)) i = j; }); if (i < 0) return; PL.playing = true; if (!t0) t0 = Date.now(); goPage(i, 0, 0); }); });
-  document.getElementById('grid').addEventListener('click', function () { PL.playing = false; stopAll(); document.body.classList.remove('film'); IDS.forEach(all); ui(); });
+  document.getElementById('grid').addEventListener('click', function () { PL.playing = false; stopAll(); document.body.classList.remove('film'); IDS.forEach(all); IDS.forEach(function (id) { trScene(document.getElementById(id)); mzScan(document.getElementById(id)); }); ui(); });
   function all(id) { clearTimeout(timers[id]); pass[id] = id === 'sB' ? 'medecine' : 'all'; reset(id); var list = steps(id); SEEK = true; list.forEach(function (s) { s.classList.add('on', 'drawn'); act(s); }); SEEK = false; document.querySelectorAll('#' + id + ' .shrink').forEach(function (c) { c.classList.remove('shrink'); }); document.body.classList.remove('black'); caption(id, list.length); }
   window.MZF = { stepF: stepF, stepB: stepB, film: film, play: play, seek: seek, goPage: goPage, toggle: toggle, pos: pos, TL: TL, TOTAL: TOTAL, CHAIN: CHAIN, CAP: CAP, steps: steps, pass: pass, PL: PL };
   var q = new URLSearchParams(location.search);
@@ -494,9 +574,9 @@ const extra = `<style>
 @keyframes ringpulse { 0% { stroke-width:3; filter:none; } 30% { stroke-width:7; filter:drop-shadow(0 0 10px rgba(46,230,160,.9)); } 100% { stroke-width:3; filter:none; } }
 @keyframes ringpulse-strong { 0% { stroke-width:3; filter:none; } 25% { stroke-width:9; filter:drop-shadow(0 0 18px rgba(46,230,160,1)); } 100% { stroke-width:3; filter:drop-shadow(0 0 6px rgba(46,230,160,.6)); } }
 /* L'alerte prise en compte : le rond rouge clignote. */
-.chip.ko.blink, .lbl.red.blink { animation: blink .5s steps(2, start) 5; }
+.chip.ko.blink, .lbl.red.blink { animation: blink .5s steps(2, start) 2; }
 /* L'alerte : le contour du rond clignote en rouge vif, épais, avec un halo rouge. */
-.ring.bad.blink { animation: alarm .5s ease-in-out 7; }
+.ring.bad.blink { animation: alarm .5s ease-in-out 2; }
 @keyframes alarm { 0%, 100% { stroke:rgba(255,107,97,.85); stroke-width:3; filter:none; } 50% { stroke:#ff3b30; stroke-width:11; filter:drop-shadow(0 0 16px rgba(255,59,48,1)); } }
 .caption .r { color:var(--red); font-weight:700; }
 @keyframes blink { to { opacity:.25; } }
@@ -505,7 +585,7 @@ const extra = `<style>
 .rg.zoomx { transform: translate(var(--zx), var(--zy)) scale(3.4); }
 .rg.zoomx .ring { fill:#0f2b2c; stroke-width:2; filter: drop-shadow(0 0 4px rgba(46,230,160,.9)); } .rg.zoomx .arrow { stroke-width:2; }
 /* Un rond en alerte : le fil vert posé sur son contour s'efface, pour que le rouge se voie. */
-.rg:has(.ring.bad) .arrow.split { opacity:0; }
+.rg:has(.ring.bad) .arrow.split, .rg:has(.ring.unval) .arrow.split { opacity:0; }
 /* Pendant le zoom, tout le reste de la boucle s'efface : rien sous le rond, rien autour. */
 #loop > :not(.rg) { transition: opacity .4s; } #loop.zooming > .on:not(.zoomx), #loop.zooming > .a:not(.zoomx) { opacity:0 !important; }
 .a.drawn .arrow.split { marker-end:none; }
@@ -519,20 +599,24 @@ const extra = `<style>
 /* La fin : le zéro tracé par le fil, la coupure au noir, le néon qui s'allume en dernier (un seul allumage, pas de boucle). */
 .arrow.zero { stroke:var(--acc); stroke-width:7; }
 body.black { background:#000; } body.black .scene { background:#000; } body.black .caption { visibility:hidden; }
-.neon { fill:#39ffb0; filter: drop-shadow(0 0 6px #2ee6a0) drop-shadow(0 0 18px rgba(46,230,160,.8)); }
+.neon { fill:#39ffb0; stroke:#0a3b2a; stroke-width:1.6px; paint-order:stroke fill; filter: drop-shadow(0 0 1.5px rgba(57,255,176,.95)) drop-shadow(0 0 10px rgba(46,230,160,.35)) drop-shadow(0 3px 0 #062b1f); } /* MISSION ZERO net sur fond bleu (gérant, 2 novembre : « ça fait flou ») */ #s0 .b[data-k="1"] text.acc { font-weight:800; stroke:#06101f; stroke-width:3px; paint-order:stroke fill; filter: drop-shadow(0 0 1px rgba(57,255,176,.8)); }
 .b.on .neon { animation: neon 1.6s linear both; }
 /* Le point écrit : chaque lettre se trace à son tour (contour), puis se remplit. */
 .hand tspan { fill: transparent; stroke: #fff; stroke-width: 2; stroke-dasharray: 700; stroke-dashoffset: 700; transition: stroke-dashoffset .45s linear, fill .35s linear; }
 .hand.on tspan { stroke-dashoffset: 0; fill: #fff; }
 .hand.neonw tspan { stroke: #39ffb0; } .hand.neonw.on tspan { fill: #39ffb0; }
-.hand.neonw.on { filter: drop-shadow(0 0 6px #2ee6a0) drop-shadow(0 0 18px rgba(46,230,160,.8)); }
+.hand.neonw.on { filter: drop-shadow(0 0 1.5px rgba(57,255,176,.95)) drop-shadow(0 0 10px rgba(46,230,160,.35)); }
 .arrow.ghost { stroke: none; } .a.drawn .arrow.ghost { marker-end: none; }
 /* La barre de lecture (gérant, 1er novembre), en bas, et le numéro de page posé sur l'image. Masquées à l'enregistrement. */
 body { padding-bottom:120px; }
 html:not(.record) body.film .scene svg { max-height:calc(100vh - 210px) !important; }
 html:not(.record) body.film .scene video { width:min(100%, calc((100vh - 210px) * 16 / 9)); height:auto; }
 html:not(.record) body.film .wrap > h1, html:not(.record) body.film .filmbar { display:none; }
-.b.shoutlabel.on.seeked, .b.shout.on.seeked { animation:none !important; }
+.b.shoutlabel.on.seeked, .b.shout.on.seeked, .b.cur.on.seeked { animation:none !important; }
+.fan.seeked, .rg.seeked { transition:none !important; }
+.scene svg.mzi, .caption svg.mzi, svg.mzi { width:1.05em !important; height:1.05em !important; max-height:none !important; max-width:none !important; display:inline !important; margin:0 .28em 0 0 !important; vertical-align:-.18em; }
+.b.cur { transform-box: view-box; } .b.cur.on { opacity:1 !important; animation: curin .9s cubic-bezier(.2,.8,.2,1) both; } @keyframes curin { from { transform: translate(230px, 280px); } to { transform: none; } }
+.b.press.on rect { transform-box: fill-box; transform-origin: center; animation: btnpress .35s ease-out; } @keyframes btnpress { 0% { transform: scale(.94); } 100% { transform: none; } }
 .tick { font-size:14px !important; padding:3px 8px !important; } .ctl-row button { min-height:40px; }
 .demoBox { position:relative; width:min(100%, 1280px); aspect-ratio:16/9; margin:0 auto; overflow:hidden; border-radius:12px; background:#0d1526; }
 .demoBox iframe { position:absolute; left:0; top:0; width:1280px; height:720px; border:0; transform-origin:0 0; }
@@ -547,7 +631,10 @@ html:not(.record) body.film .demoBox { width:min(100%, calc((100vh - 210px) * 16
 .record .ctl, .record #cBadge { display:none !important; } html.record body { padding-bottom:0; }
 /* Le tampon plein écran : grand, incliné, double liseré, il claque (×2,6 → ×1), se lit, s'efface. */
 .scene { position:relative; }
-.bigstamp { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; pointer-events:none; z-index:40; }
+.bigstamp { position:absolute; display:block; pointer-events:none; z-index:40; }
+/* Le tampon rond (gérant, 1er novembre : « un tampon rond plus petit et non centré ») : double cercle, incliné. */
+.bigstamp span { display:flex !important; flex-direction:column; align-items:center; justify-content:center; box-sizing:border-box; border-radius:50% !important; padding:0 !important; text-align:center; line-height:1.05 !important; letter-spacing:.05em !important; white-space:normal !important; }
+.bigstamp span small { font-size:.42em; letter-spacing:.1em; margin-top:.35em; opacity:.85; }
 .bigstamp span { display:inline-block; border-style:solid; border-radius:18px; padding:.12em .38em; font-weight:900; letter-spacing:.12em; line-height:1; white-space:nowrap; font-family:"Segoe UI Black","Segoe UI",system-ui,sans-serif; background:rgba(13,21,38,.80); box-shadow: inset 0 0 0 4px rgba(13,21,38,.9), inset 0 0 0 6px currentColor; animation: stampin .32s cubic-bezier(.2,.9,.25,1.2) both; }
 .bigstamp.ko span { color:#ff4b3e; border-color:#ff4b3e; } .bigstamp.ok span { color:#2ee6a0; border-color:#2ee6a0; }
 .bigstamp.out span { opacity:0; transform: rotate(-12deg) scale(1.04); transition: opacity .5s, transform .5s; }
@@ -572,7 +659,7 @@ const demoScene = (id, title, sub, ex, ms) => `  <section class="scene" id="${id
     <div class="caption" id="c${id.slice(1)}"></div>
   </section>
 `;
-// Durées des démos (demo.html, zoom du 1er novembre compris) : espace 60,23 s, labo 59,96 s ; vérifiées par le banc de recette.
+// Durées des démos (demo.html, zoom du 1er novembre compris) : espace 66,53 s (zoom de fin compris), labo 59,96 s ; vérifiées par le banc de recette.
 const videoScene = (id, title, sub, file, ms) => `  <section class="scene" id="${id}">
     <header><h2>${title}</h2><span class="t">${sub}</span></header>
     <video id="v${id}" src="demo/out/${file}" muted playsinline preload="auto" width="1280" height="720"></video>
@@ -580,8 +667,11 @@ const videoScene = (id, title, sub, file, ms) => `  <section class="scene" id="$
     <div class="caption" id="c${id.slice(1)}"></div>
   </section>
 `;
-const sDe = demoScene('sDe', 'DÉMO · L’ESPACE', 'avant, on installe Mission Zero, après', 'espace', 60400);
-const sDm = demoScene('sDm', 'DÉMO · LA MÉDECINE', 'le labo de Fleming, en réseau mondial : avant, on installe Mission Zero, après', 'labo', 60100);
+const DUR_BOUTIQUE = 23400; // demo.html?ex=boutique : 23,23 s mesurées (intégration au site comprise)
+const sDb = demoScene('sDb', 'ÉTAPE 2 · ON INSTALLE MISSION ZERO', 'la boutique : un développeur récupère Mission Zero sur GitHub', 'boutique', DUR_BOUTIQUE);
+const sDe = demoScene('sDe', 'DÉMO · L’ESPACE', 'avant, on installe Mission Zero, après', 'espace', 47850);
+// La médecine (gérant, 2 novembre) : « il vérifie, il surveille » remplace le labo de Fleming (données fictives). demo.html?ex=medecine : 48,15 s mesurées.
+const sDm = demoScene('sDm', 'DÉMO · LA MÉDECINE', 'le glioblastome : de 673 études à 9 pistes', 'medecine', 50100); // demo.html?ex=medecine : 50 s
 let html = `<!doctype html>
 <html lang="fr">
 <meta charset="utf-8">
@@ -589,14 +679,26 @@ let html = `<!doctype html>
 ${style}
 ${extra}
 ${bille.style}
+<style>${fs.readFileSync(__dirname + '/cinema.css', 'utf8')}</style>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <radialGradient id="mzGlass" cx="38%" cy="30%" r="75%"><stop offset="0" stop-color="#ffffff" stop-opacity=".42"/><stop offset=".35" stop-color="#9cc4ff" stop-opacity=".20"/><stop offset="1" stop-color="#0d2350" stop-opacity=".55"/></radialGradient>
+  <radialGradient id="mzGlassOk" cx="38%" cy="30%" r="75%"><stop offset="0" stop-color="#eafff6" stop-opacity=".70"/><stop offset=".35" stop-color="#3ff2b0" stop-opacity=".35"/><stop offset="1" stop-color="#06392b" stop-opacity=".70"/></radialGradient>
+  <radialGradient id="mzGlassRed" cx="38%" cy="30%" r="75%"><stop offset="0" stop-color="#fff0ee" stop-opacity=".65"/><stop offset=".35" stop-color="#ff6b61" stop-opacity=".35"/><stop offset="1" stop-color="#4a0f12" stop-opacity=".70"/></radialGradient>
+  <linearGradient id="mzPlate" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity=".20"/><stop offset=".5" stop-color="#ffffff" stop-opacity=".09"/><stop offset="1" stop-color="#0d2350" stop-opacity=".30"/></linearGradient>
+  <linearGradient id="mzPlateOk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9dffd9" stop-opacity=".32"/><stop offset=".55" stop-color="#3ff2b0" stop-opacity=".12"/><stop offset="1" stop-color="#06392b" stop-opacity=".35"/></linearGradient>
+  <linearGradient id="mzPlateRed" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffb1aa" stop-opacity=".32"/><stop offset=".55" stop-color="#ff6b61" stop-opacity=".14"/><stop offset="1" stop-color="#4a0f12" stop-opacity=".38"/></linearGradient>
+  <linearGradient id="mzPlateBlue" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b8ccff" stop-opacity=".34"/><stop offset=".55" stop-color="#5b8cff" stop-opacity=".16"/><stop offset="1" stop-color="#0d2350" stop-opacity=".38"/></linearGradient>
+  <linearGradient id="mzWire" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3ff2b0"/><stop offset="1" stop-color="#8fd8ff"/></linearGradient>
+</defs></svg>
 <div class="wrap">
   <h1>Mission Zero, le film · une minute <small>Le modèle du 29 octobre, raccourci : des phrases courtes, les flèches qui se dessinent, le point qui court devant, chaque élément qui apparaît et reste. Voix française (le fondateur), sous-titres anglais incrustés au montage.</small></h1>
-  <div class="filmbar"><button class="big" id="go">▶ Lancer le film</button><button data-ch="s0">1 · La boucle</button><button data-ch="sB" data-pass="securite">2 · Où l'envoyer ?</button><button data-ch="s1">3 · Constat</button><button data-ch="s2">4 · Correction</button><button data-ch="sB" data-pass="espace">5 · Choix : l'espace</button><button data-ch="sDe">6 · Démo : l'espace</button><button data-ch="sB" data-pass="medecine">7 · Choix : la médecine</button><button data-ch="sDm">8 · Démo : Fleming</button><button data-ch="sZ">9 · La fin</button><button id="grid">Voir tous les schémas</button><button id="x2" title="Vitesse de lecture : ×1, ×2, ×3, ×4, ×5, ×6, ×10">×1</button><span id="clock" style="color:var(--mut)"></span></div>
-  <div id="cBadge">1 / 9</div>
+  <div class="filmbar"><button class="big" id="go">▶ Lancer le film</button><button data-ch="s0">1 · La boucle</button><button data-ch="sB" data-pass="securite">2 · Où l'intégrer ?</button><button data-ch="s1">3 · Constat</button><button data-ch="sDb">4 · On installe</button><button data-ch="s2">5 · Correction</button><button data-ch="sB" data-pass="espace">6 · Choix · l'espace</button><button data-ch="sDe">7 · Démo · l'espace</button><button data-ch="sB" data-pass="medecine">8 · Choix · la médecine</button><button data-ch="sDm">9 · Démo · la médecine</button><button data-ch="sZ">10 · La fin</button><button id="grid">Voir tous les schémas</button><button id="x2" title="Vitesse de lecture : ×1, ×2, ×3, ×4, ×5, ×6, ×10">×1</button><span id="clock" style="color:var(--mut)"></span></div>
+  <div id="cBadge">1 / 10</div>
   <div class="ctl"><div class="ctl-row"><button id="cPrevP" title="Page précédente (Page ↑)">⏮</button><button id="cBack" title="Reculer de 5 s (←)">⏪ 5 s</button><button id="cStepB" title="Étape précédente (Maj + ←)">◀ étape</button><button id="cPlay" title="Lecture / pause (espace)">▶</button><button id="cStepF" title="Étape suivante (Maj + →)">étape ▶</button><button id="cFwd" title="Avancer de 5 s (→)">5 s ⏩</button><button id="cNextP" title="Page suivante (Page ↓)">⏭</button><span id="cTime">0:00</span><span id="cPage"></span></div><div class="ctl-track"><div id="cTicks"></div><input type="range" id="cBar" min="0" max="1" step="100" value="0" aria-label="Position dans le film"></div></div>
 ${typo(S0)}
 ${typo(sB)}
 ${typo(S1)}
+${sDb}
 ${typo(S2)}
 ${typo(SE)}
 ${sDe}
@@ -610,16 +712,17 @@ ${script}
 // Textes courts, partout (gérant, 30 octobre 18 h 50) : chaque mot compte, on enlève le surplus. Appliqués sur le film assemblé,
 // textes du dessin (entre > et <) et légendes (entre guillemets du JSON).
 const COURT = [
+  ['Monstera', 'Fleur'], ['Ficus', 'Arbre'], ['Olivier', 'Outil de jardin'], // P3-5, P3-7, P3-9 (gérant, 1er novembre)
   ['Premier voyage : la cybersécurité.', '1 · La cybersécurité.'], ['Deuxième voyage : l’espace.', '2 · L’espace.'], ['Dernier voyage : la médecine.', '3 · La médecine.'], ['🛡 La sécurité d’un site', '🛡 La cybersécurité'],
   ['🌿 Maison Verde · boutique en ligne', '🌿 Maison Verde · boutique'], ['une personne, souvent', 'souvent seule'], ['le site, les clients, la sécurité', 'site · clients · sécurité'],
   ['⚠ aucun en-tête de sécurité', '⚠ en-têtes absents'], ['quand elle a le temps', 'quand elle peut'], ['le soir, après les commandes', 'le soir'], ['⚠ carte bancaire en clair', '⚠ carte en clair'],
-  ['⚠ jQuery 2012 · 4 failles connues', '⚠ jQuery 2012'], ['pas les compétences, pas le budget', 'ni budget, ni compétence'], ['⚠ mot de passe faible accepté', '⚠ mot de passe faible'],
-  ['sur 26 sites d’entreprises scannés par MYTHOZOR ARGUS, 81 % sans protection contre l’injection de code', '26 sites lus par MYTHOZOR ARGUS · octobre 2026 · 81 % sans CSP'], ['8 sites sur 10 restent exposés', '8 sites sur 10 sans protection CSP'],
+  ['⚠ jQuery 2012 · 4 failles connues', '⚠ jQuery 1.8.3'], ['pas les compétences, pas le budget', 'ni budget, ni compétence'], ['⚠ mot de passe faible accepté', '⚠ mot de passe faible'],
+  ['sur 26 sites d’entreprises scannés par MYTHOZOR ARGUS, 81 % sans protection contre l’injection de code', '26 sites analysés · octobre 2026 · 81 % sans CSP'], ['8 sites sur 10 restent exposés', '8 sites sur 10 sans CSP'],
   ['Ça arrive. C’est certain. La seule question, c’est quand.', ' '],
   ['sur vos serveurs · rien ne sort', 'sur votre machine · aucun serveur à nous'], ['🌿 votre site · votre serveur', '🌿 votre site'], ['35 contrôles, en continu, jour et nuit', '35 contrôles · jour et nuit'],
   ['⚠ nouvelle faille, en direct', '⚠ nouvelle faille'], ['en-têtes : protection sautée', 'en-têtes sautés'], ['Mission Zero, branché', 'Mission Zero'], ['VERIFIED · correctif, sur une copie', 'VERIFIED · sur une copie'],
-  ['mode manuel : un clic par correctif, dans votre espace', 'manuel : un clic, dans votre espace'], ['appliqué tout seul, vous êtes prévenu, vous pouvez revenir en arrière', 'tout seul · prévenu · retour possible'],
-  ['les deux existent : c’est vous qui choisissez', 'vous choisissez'], ['et MYTHOZOR ARGUS vérifie à nouveau', 'ARGUS revérifie'], ['✔ corrigé, tout est vert', '✔ tout est vert'], ['le rouge est repassé au vert', ' '],
+  ['mode manuel : un clic par correctif, dans votre espace', 'manuel : un clic, dans votre espace'], ['appliqué tout seul, vous êtes prévenu, vous pouvez revenir en arrière', 'automatique : après, dans MYTHOZOR'],
+  ['les deux existent : c’est vous qui choisissez', 'aujourd’hui : vous validez'], ['et MYTHOZOR ARGUS vérifie à nouveau', 'ARGUS revérifie'], ['✔ corrigé, tout est vert', '✔ tout est vert'], ['le rouge est repassé au vert', ' '],
   ['« On va quelque part ? » Posée deux fois.', '« On va quelque part ? » · deux fois'], ['Sans Mission Zero · le modèle seul', 'SANS MISSION ZERO'], ['Avec Mission Zero', 'AVEC MISSION ZERO'],
   ['4 sources sur 5 : personne ne peut les ouvrir', '4 sources sur 5 · introuvables'], ['4 chiffres · 1 dollar · chacun avec sa page', '4 chiffres · 1 dollar · chacun sa page'], ['ce qu’il n’a pas pu lire, il le dit', 'pas lu ? il le dit'],
   ['km/s · et vous ne sentez rien', 'km/s'], ['Hercule, 19,7 km/s · manuel de 1981', 'Hercule, 19,7 km/s · 1981'], ['Trois vitesses au centième · 2010', '3 vitesses au centième · 2010'],
@@ -640,24 +743,27 @@ const court = (h) => {
   return h;
 };
 html = court(html);
-const DEV = process.argv.includes('--dev');
+const DEV = process.argv.includes('--dev'); const EN = process.argv.includes('--en');
+if (EN) { html = html.replace('<html lang="fr">', '<html lang="en">').split('&amp;lang=fr').join('&amp;lang=en').replace('<meta charset="utf-8">', '<meta charset="utf-8">\n<script>window.MZ_LANG = "en"; window.MZ_EN = ' + fs.readFileSync(__dirname + '/film-en.json', 'utf8').replace(/<\//g, '<\\/') + ';</script>').replace('<title>Mission Zero · le film</title>', '<title>Mission Zero · the film</title>'); }
 if (DEV) html = html.replace('<title>Mission Zero · le film</title>', '<title>Mission Zero · le film · DEV</title>').replace('Mission Zero, le film · une minute <small>', 'Mission Zero, le film · VERSION DE DEV <small>');
 if (require.main === module) {
   // Les tampons des verdicts (gérant, 31 octobre : « toujours, partout »).
   // Gérant, 1er novembre : n° 1, 4, 5, 7 et 9 enlevés ; « NOT SECURE » à la fin de la page 3 (le constat). Les démos portent les leurs.
   // 1er novembre (2) : le n° 1 (NOT VERIFIED de la boucle) enlevé à son tour.
-  const STAMPS = [['s0', 43, 'ok:VERIFIED'], ['s1', 23, 'ko:NOT SECURE'], ['s2', 16, 'ko:NOT VERIFIED'], ['s2', '#okpatch', 'ok:VERIFIED']];
+  const STAMPS = [['s0', '#gv2', 'ok:VERIFIED'], ['s1', 23, 'ko:NOT SECURE'], ['s2', '#siteOk', 'ok:VERIFIED']];
   const ORDRE = ['s0', 's1', 's2'];
   const kDe = ([id, k]) => { if (typeof k !== 'string') return k; const a = html.indexOf('<section class="scene" id="' + id + '">'); const i = html.indexOf('id="' + k.slice(1) + '"', a); const t = html.slice(html.lastIndexOf('<', i), i); const m = t.match(/data-k="(\d+)"/); return m ? Number(m[1]) : 999; };
   const joues = STAMPS.filter((x) => ORDRE.includes(x[0])).sort((x, y) => ORDRE.indexOf(x[0]) - ORDRE.indexOf(y[0]) || kDe(x) - kDe(y));
-  if (DEV) joues.forEach((x, i) => { x[2] = x[2] + ' · n°' + (i + 1); });
   console.log('tampons joués :', joues.map((x) => x[2] + ' (' + x[0] + ' ' + x[1] + ')').join(' | '));
   STAMPS.forEach(([id, k, spec]) => {
     const a = html.indexOf('<section class="scene" id="' + id + '">'), b = html.indexOf('</section>', a); if (a < 0) throw new Error('tampon : scène ' + id);
     const sec = html.slice(a, b), key = typeof k === 'string' ? 'id="' + k.slice(1) + '"' : 'data-k="' + k + '"'; if (!sec.includes(key)) throw new Error('tampon : ' + id + ' pas ' + k);
     html = html.slice(0, a) + sec.replace(key, key + ' data-stamp="' + spec + '"') + html.slice(b);
   });
-  fs.writeFileSync(__dirname + (DEV ? '/../film-v4-dev.html' : '/../film-v4.html'), html);
+  html += '\n' + fs.readFileSync(__dirname + '/reflet.html', 'utf8'); // le reflet de lumière avant la fin de chaque page (gérant, 2 novembre)
+  const CLIENT = process.argv.includes('--client');
+  html = html.replace(/<title>[^<]*<\/title>/, '<title>Mission Zero · HACKATHON ' + (CLIENT ? 'CLIENT' : 'META') + (EN ? ' · the presentation' : ' · la présentation') + '</title>');
+  fs.writeFileSync(__dirname + '/../film-v4' + (EN ? '-en' : '') + (CLIENT ? '-client' : '') + (DEV ? '-dev' : '') + '.html', html);
   console.log('film-v4.html', html.length, 'octets; s0 steps:', (s0.match(/data-k=/g) || []).length, 'sB steps:', (sB.match(/data-k=/g) || []).length, 's1 steps:', (s1.match(/data-k=/g) || []).length);
 }
 // Source unique du film (décision du gérant, 30 octobre) : build-v4.cjs → film-v4.html.

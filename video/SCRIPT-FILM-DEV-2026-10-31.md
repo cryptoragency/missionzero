@@ -54,10 +54,18 @@ La colonne « Aujourd'hui » ci-dessous date du 31 octobre (4 min 43) ; les dém
 | 1 | 1 · La boucle | NOT VERIFIED | le vérificateur ne trouve pas la citation |
 | 2 | 1 · La boucle | VERIFIED | après la correction du rédacteur |
 | 3 | 3 · Constat | NOT SECURE | fin du constat : 8 sites sur 10 sans protection CSP (26 sites lus par ARGUS) |
-| 4 | 4 · Correction | NOT VERIFIED | page de paiement altérée : à refaire |
-| 5 | 4 · Correction | VERIFIED | cinq contrôles verts, un humain valide le patch |
+| – | 5 · Correction | (retiré : on est dans la boucle avec Mission Zero) | le contrôle 3 refuse : formulaire de paiement disparu, à refaire |
+| 5 | 5 · Correction | VERIFIED | cinq contrôles verts, une réserve écrite, un humain valide le patch |
 
 Démos (pages 6 et 8) : le cadre RÉSULTAT est zoomé 4 s, on revient, 1 s, NOT VERIFIED ; à la fin, VERIFIED tenu jusqu'au bout de la page.
+
+## Page 5 · Correction : la vraie exécution (gérant, 1er novembre)
+
+La page suit l'exécution du 28 octobre, 11 h 18, faille F05 (examples/repair-maison-verde/repair-2026-10-28-11-18/F05/repair.json) : le regard de Muse Spark refuse le correctif n°1 (la page de paiement n'a plus de formulaire), Mission Zero écrit le correctif n°2 sur une copie neuve, le regard le valide, et Mission Zero écrit une réserve (« relire les sources », recommandation notée 3/10). Les tampons n'ont plus de numéro. Le film a 10 pages : la page 4 « On installe Mission Zero » (terminal, mode réparation) suit le bouton INSTALL de la page 3.
+
+## Qui applique le patch (gérant, 1er novembre)
+
+Mission Zero (sur Muse Spark) corrige et prouve tout seul : il réécrit la réponse et repart de zéro sans personne (page 1, src/zero.js), il écrit le correctif n°2 (page 4), toujours sur une copie. **Un humain valide le patch** : rien n'est appliqué tout seul sur le vrai site. L'application automatique (failles autorisées, retour arrière automatique) viendra après le hackathon, dans MYTHOZOR. Le README le dit aussi.
 
 ## Revue des agents (1er novembre) : appliqué
 

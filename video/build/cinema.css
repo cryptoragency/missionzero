@@ -1,0 +1,90 @@
+/* Couche « cinéma » (gérant, 2 novembre : « plus cinéma, éclairé, des rondeurs, du réalisme, on se croirait en 1830,
+   c'est sombre, ça fait peur » ; « il faut une ambiance Mission Zero »). Posée PAR-DESSUS le style existant : rien n'est
+   retiré, on l'enlève d'un coup en supprimant cette couche. Ambiance Mission Zero gardée (nuit, bleu, menthe), mais
+   éclairée : une lumière douce tombe du haut, du verre (transparence, reflet), des volumes arrondis, des ombres portées.
+   Repères 2026 : retenue, typo nette, rythme premium, « liquid glass ». */
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
+
+:root {
+  --bg:#0b1630; --fg:#f4f7ff; --mut:#c3cfe8; --line:rgba(255,255,255,.22); --card:rgba(255,255,255,.08);
+  --acc:#3ff2b0; --acc2:rgba(63,242,176,.85); --accf:rgba(63,242,176,.16);
+  --glow-acc: 0 0 18px rgba(63,242,176,.55);
+}
+html { background:#081127; }
+body, svg, button, .caption, .card { font-family:"Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif !important; }
+body {
+  background:
+    radial-gradient(1400px 760px at 50% -22%, rgba(90,140,255,.24), transparent 60%),
+    radial-gradient(900px 620px at 92% 108%, rgba(63,242,176,.10), transparent 60%),
+    linear-gradient(180deg, #0f1d3d 0%, #0b1630 50%, #081127 100%) fixed !important;
+}
+
+/* La scène : une grande plaque de verre éclairée par le haut. */
+.scene {
+  position:relative; overflow:hidden;
+  background: linear-gradient(180deg, rgba(255,255,255,.075) 0%, rgba(255,255,255,.035) 40%, rgba(255,255,255,.02) 100%) !important;
+  border:1px solid rgba(255,255,255,.24) !important; border-radius:30px !important;
+  box-shadow: 0 40px 90px rgba(4,12,32,.45), 0 8px 24px rgba(4,12,32,.30), inset 0 1px 0 rgba(255,255,255,.35), inset 0 -1px 0 rgba(255,255,255,.06) !important;
+  backdrop-filter: blur(18px) saturate(140%);
+}
+/* le projecteur : une nappe de lumière douce au-dessus du centre */
+.scene::before { content:""; position:absolute; inset:-30% -10% auto -10%; height:80%; pointer-events:none;
+  background: radial-gradient(ellipse at 50% 0%, rgba(170,200,255,.13), rgba(140,180,255,.04) 45%, transparent 70%); }
+/* un reflet qui passe lentement sur le verre, comme une lumière de studio */
+.scene::after { content:""; position:absolute; inset:0; pointer-events:none; border-radius:inherit;
+  background: linear-gradient(115deg, transparent 35%, rgba(255,255,255,.06) 45%, rgba(255,255,255,.12) 50%, rgba(255,255,255,.06) 55%, transparent 65%);
+  background-size: 260% 100%; background-position: 130% 0; mix-blend-mode: screen; }
+/* le reflet passe UNE fois, juste avant la fin de chaque page (gérant, 2 novembre), déclenché par reflet.html */
+body.mzSheenGo .scene::after { animation: mzSheen 2.4s ease-in-out forwards; }
+@keyframes mzSheen { 0% { background-position: 130% 0; } 100% { background-position: -30% 0; } }
+/* le projecteur passe SOUS le contenu (isolation), le reflet passe dessus, très léger ; aucun calque n'est repositionné */
+.scene { isolation:isolate; } .scene::before { z-index:-1; } .scene::after { z-index:5; opacity:.7; }
+
+/* Les volumes : ronds = sphères de verre, cadres = plaques arrondies, avec ombre portée et liseré de lumière. */
+.ring, .mini { fill:url(#mzGlass) !important; stroke:rgba(255,255,255,.55) !important; stroke-dasharray:none !important; stroke-width:2.5 !important;
+  filter: drop-shadow(0 14px 22px rgba(4,12,32,.45)) drop-shadow(0 2px 4px rgba(4,12,32,.35)); }
+.ring.lit { fill:url(#mzGlassOk) !important; stroke:rgba(140,255,215,.95) !important;
+  filter: drop-shadow(0 0 16px rgba(63,242,176,.55)) drop-shadow(0 14px 22px rgba(4,12,32,.4)); }
+.ring.bad { fill:url(#mzGlassRed) !important; stroke:rgba(255,150,140,.95) !important;
+  filter: drop-shadow(0 0 16px rgba(255,107,97,.5)) drop-shadow(0 14px 22px rgba(4,12,32,.4)); }
+circle.box, circle.chip { filter: drop-shadow(0 14px 22px rgba(4,12,32,.45)); }
+.box, .chip, .tile, .badge, .pill { rx:18px; ry:18px; }
+.box { fill:url(#mzPlate) !important; stroke:rgba(255,255,255,.30) !important; stroke-width:1.6 !important;
+  filter: drop-shadow(0 18px 30px rgba(4,12,32,.42)) drop-shadow(0 2px 5px rgba(4,12,32,.30)); }
+.box.gold, .box.ok { fill:url(#mzPlateOk) !important; stroke:rgba(110,250,200,.85) !important; stroke-width:2 !important;
+  filter: drop-shadow(0 0 22px rgba(63,242,176,.28)) drop-shadow(0 18px 30px rgba(4,12,32,.40)); }
+.box.red { fill:url(#mzPlateRed) !important; stroke:rgba(255,140,130,.9) !important; stroke-width:2 !important;
+  filter: drop-shadow(0 0 22px rgba(255,107,97,.25)) drop-shadow(0 18px 30px rgba(4,12,32,.40)); }
+.box.blue { fill:url(#mzPlateBlue) !important; stroke:rgba(140,175,255,.85) !important; }
+.chip { fill:url(#mzPlate) !important; stroke:rgba(255,255,255,.32) !important; filter: drop-shadow(0 10px 18px rgba(4,12,32,.40)); }
+.chip.ok { fill:url(#mzPlateOk) !important; stroke:rgba(110,250,200,.9) !important; }
+.chip.ko { fill:url(#mzPlateRed) !important; stroke:rgba(255,140,130,.9) !important; }
+.tile { fill:rgba(255,255,255,.10) !important; stroke:rgba(255,255,255,.28) !important; }
+
+/* Les fils : plus pleins, lumineux, avec un halo. */
+.arrow { stroke:#4ff5b8 !important; stroke-width:6 !important; filter: drop-shadow(0 0 6px rgba(63,242,176,.55)); }
+.arrow.red { stroke:rgba(255,130,120,.95) !important; filter: drop-shadow(0 0 6px rgba(255,107,97,.5)); }
+.arrow.ghost { stroke:none !important; filter:none; }
+.runner { fill:#fff; filter: drop-shadow(0 0 10px rgba(63,242,176,1)) drop-shadow(0 0 22px rgba(63,242,176,.7)) !important; }
+
+/* La typo : nette, un peu plus grande, blanche sur verre, un léger relief. */
+.lbl { fill:#f6f9ff; font-weight:700; letter-spacing:-.005em; paint-order: stroke fill; stroke: rgba(8,20,48,.35); stroke-width: 2px; }
+.lbl.s, .lbl.xs { fill:#d3dcf0; font-weight:500; stroke:none; }
+.lbl.acc { fill:#5ff7bf; } .lbl.red { fill:#ff8a80; } .lbl.amber { fill:#ffd88a; }
+.neon { fill:#5ff7bf !important; }
+
+/* Les sous-titres : façon cinéma, centrés, sur une bande de verre sombre. */
+.caption { text-align:center !important; font-size:1.3rem !important; font-weight:600; color:#fff;
+  text-shadow: 0 2px 10px rgba(4,12,32,.85), 0 0 2px rgba(4,12,32,.9); }
+.caption b { color:#6ff8c6 !important; }
+
+/* Les cartes-titres et la fin : même lumière. */
+.card { border-radius:30px !important; border:1px solid rgba(255,255,255,.24) !important;
+  background: radial-gradient(ellipse at 50% 0%, rgba(110,160,255,.20), transparent 60%), linear-gradient(180deg, #11214a, #0a1430) !important;
+  box-shadow: 0 40px 90px rgba(4,12,32,.45), inset 0 1px 0 rgba(255,255,255,.35); }
+.card .n, .card.end .s { text-shadow: var(--glow-acc); }
+
+/* Les boutons du lecteur : arrondis, verre. */
+button { border-radius:999px !important; background: linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,.06)) !important;
+  border:1px solid rgba(255,255,255,.26) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 6px 14px rgba(4,12,32,.3); }
+.filmbar .big { background: linear-gradient(180deg, rgba(63,242,176,.45), rgba(63,242,176,.18)) !important; border-color: rgba(120,255,210,.8) !important; }

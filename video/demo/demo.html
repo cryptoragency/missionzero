@@ -30,6 +30,7 @@ html, body { margin:0; background:var(--bg); color:var(--fg); font-family:"Segoe
 #app .box.focus { border-color:#5b8cff; box-shadow:0 0 0 4px rgba(91,140,255,.18); }
 #app .box .clip { position:absolute; left:62px; right:28px; top:0; bottom:0; overflow:hidden; }
 #app .box .q { position:absolute; left:0; top:0; font-size:24px; }
+#app .box.mz::before { content:none; }
 #app .box::before { content:"🔍"; position:absolute; left:24px; top:0; font-size:22px; opacity:.7; }
 #app .caret { display:inline-block; width:2px; height:28px; background:var(--fg); vertical-align:-5px; margin-left:2px; }
 #app .btn { position:absolute; left:904px; top:150px; width:170px; height:62px; border-radius:31px; background:#5b8cff; color:#fff; font-size:22px; font-weight:700; line-height:62px; text-align:center; transition:none; }
@@ -44,14 +45,16 @@ html, body { margin:0; background:var(--bg); color:var(--fg); font-family:"Segoe
 #app .result .sub { font-size:16px; color:var(--mut); margin-top:6px; line-height:1.3; }
 #app .result .stamp { position:absolute; right:18px; top:50%; border:3px solid; border-radius:10px; padding:6px 14px; font-size:22px; font-weight:900; letter-spacing:.12em; text-transform:uppercase; text-align:center; line-height:1.02; white-space:nowrap; box-shadow: inset 0 0 0 4px var(--bg), inset 0 0 0 6px currentColor; background:rgba(13,21,38,.55); }
 #app .result.ko .stamp { color:#ff4b3e; border-color:#ff4b3e; } #app .result.ok .stamp { color:#2ee6a0; border-color:#2ee6a0; }
-#app .install { position:absolute; left:1090px; width:172px; height:112px; border-radius:14px; background:var(--acc); color:#06281c; font-weight:900; font-size:21px; line-height:1.15; letter-spacing:.04em; text-align:center; display:flex; align-items:center; justify-content:center; box-sizing:border-box; padding:0 10px; }
+#app .install { position:absolute; left:1080px; width:190px; height:128px; border-radius:14px; background:var(--acc); color:#06281c; font-weight:900; font-size:21px; line-height:1.15; letter-spacing:.04em; text-align:center; display:flex; align-items:center; justify-content:center; box-sizing:border-box; padding:0 10px; }
 #app .bigstamp { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; pointer-events:none; z-index:30; }
 #app .bigstamp span { display:inline-block; border:6px solid; border-radius:14px; padding:.12em .38em; background:rgba(13,21,38,.80) !important; font-size:64px; font-weight:900; letter-spacing:.12em; line-height:1; white-space:nowrap; font-family:"Segoe UI Black","Segoe UI",system-ui,sans-serif; background:rgba(13,21,38,.62); box-shadow: inset 0 0 0 6px rgba(13,21,38,.9), inset 0 0 0 10px currentColor; }
 #app .bigstamp.ko span { color:#ff4b3e; border-color:#ff4b3e; } #app .bigstamp.ok span { color:#2ee6a0; border-color:#2ee6a0; }
 #lab .bigstamp { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; pointer-events:none; z-index:30; }
 #lab .bigstamp span { display:inline-block; border:6px solid; border-radius:14px; padding:.12em .38em; background:rgba(13,21,38,.80) !important; font-size:64px; font-weight:900; letter-spacing:.12em; line-height:1; white-space:nowrap; font-family:"Segoe UI Black","Segoe UI",system-ui,sans-serif; background:rgba(13,21,38,.62); box-shadow: inset 0 0 0 6px rgba(13,21,38,.9), inset 0 0 0 10px currentColor; }
+#app .bigstamp, #lab .bigstamp { right:auto !important; bottom:auto !important; width:auto !important; height:auto !important; display:block; }
+#app .bigstamp span, #lab .bigstamp span { width:190px; height:190px; font-size:28px !important; border-width:5px !important; border-radius:50% !important; display:flex !important; flex-direction:column; align-items:center; justify-content:center; padding:0 !important; text-align:center; line-height:1.05 !important; letter-spacing:.05em !important; white-space:normal !important; box-sizing:border-box; }
 #lab .bigstamp.ko span { color:#ff4b3e; border-color:#ff4b3e; } #lab .bigstamp.ok span { color:#2ee6a0; border-color:#2ee6a0; }
-#lab .install { position:absolute; left:1060px; top:560px; width:190px; height:112px; border-radius:14px; background:var(--acc); color:#06281c; font-weight:900; font-size:22px; line-height:1.15; letter-spacing:.04em; text-align:center; display:flex; align-items:center; justify-content:center; box-sizing:border-box; padding:0 10px; }
+#lab .install { position:absolute; left:1044px; top:556px; width:206px; height:128px; border-radius:14px; background:var(--acc); color:#06281c; font-weight:900; font-size:22px; line-height:1.15; letter-spacing:.04em; text-align:center; display:flex; align-items:center; justify-content:center; box-sizing:border-box; padding:0 10px; }
 #lab .install.press { transform:scale(.95); background:#22c98a; }
 #app .install.press { transform:scale(.95); background:#22c98a; }
 #app .rows { position:absolute; left:240px; top:268px; width:830px; }
@@ -75,6 +78,63 @@ html, body { margin:0; background:var(--bg); color:var(--fg); font-family:"Segoe
 /* ---- le curseur, le noir ---- */
 #cursor { position:absolute; left:0; top:0; width:28px; height:36px; pointer-events:none; filter:drop-shadow(0 2px 4px rgba(0,0,0,.6)); }
 #black { position:absolute; inset:0; background:#000; opacity:0; pointer-events:none; }
+
+/* la médecine (2 novembre) : trois actes, la même lumière que le film */
+#med { padding:0; }
+#med .mtitle, #med .mend { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; opacity:0; transform:translateY(14px); transition:opacity .8s, transform .8s; }
+#med .mtitle.on, #med .mend.on { opacity:1; transform:none; }
+#med .mk { color:#5ff7bf; font-weight:800; letter-spacing:.32em; font-size:20px; text-shadow:0 0 18px rgba(63,242,176,.5); }
+#med .mh { font-size:54px; font-weight:800; line-height:1.12; margin-top:18px; color:#fff; }
+#med .ms { font-size:20px; color:#c3cfe8; margin-top:20px; }
+#med .mhead { position:absolute; left:60px; top:34px; right:60px; font-size:30px; font-weight:800; color:#fff; }
+#med .msub { position:absolute; left:60px; top:82px; right:60px; font-size:17px; color:#c3cfe8; }
+#med .mfun { position:absolute; left:60px; top:132px; width:700px; display:grid; gap:14px; }
+#med .mfun.small { gap:11px; }
+#med .mrow { box-sizing:border-box; padding:14px 22px; border-radius:20px; display:flex; align-items:baseline; gap:16px; opacity:0; transform:translateX(-20px); transition:opacity .6s, transform .6s;
+  background:linear-gradient(180deg, rgba(255,255,255,.17), rgba(255,255,255,.06)); border:1px solid rgba(255,255,255,.28); box-shadow:0 14px 30px rgba(4,12,32,.35), inset 0 1px 0 rgba(255,255,255,.3); }
+#med .mrow.on { opacity:1; transform:none; }
+#med .mrow b { font-size:40px; font-weight:800; min-width:110px; color:#fff; } #med .mfun.small .mrow b { font-size:32px; }
+#med .mrow span { font-size:17px; color:#dfe7f8; }
+#med .mrow.ok { background:linear-gradient(180deg, rgba(110,250,200,.30), rgba(63,242,176,.10)); border-color:rgba(110,250,200,.8); } #med .mrow.ok b { color:#7dffcf; }
+#med .mrow.ko { background:linear-gradient(180deg, rgba(255,160,150,.30), rgba(255,107,97,.10)); border-color:rgba(255,140,130,.85); } #med .mrow.ko b { color:#ffb1aa; }
+#med .mbig { position:absolute; left:60px; top:470px; width:700px; font-size:26px; color:#fff; opacity:0; transition:opacity .8s; } #med .mbig.on { opacity:1; } #med .mbig b { color:#ffb1aa; }
+#med .mproof, #med .mlead { position:absolute; box-sizing:border-box; padding:18px 22px; border-radius:22px; font-size:17px; color:#fff; opacity:0; transform:translateY(12px); transition:opacity .7s, transform .7s;
+  background:linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.06)); border:1px solid rgba(110,250,200,.6); box-shadow:0 18px 40px rgba(4,12,32,.4), inset 0 1px 0 rgba(255,255,255,.3); }
+#med .mproof { left:800px; top:150px; width:420px; } #med .mproof.on, #med .mlead.on { opacity:1; transform:none; }
+#med .mpk { font-size:13px; letter-spacing:.18em; color:#c3cfe8; margin-bottom:8px; }
+#med i { display:block; font-style:normal; color:#e8fff6; margin:10px 0 12px; line-height:1.35; }
+#med .mok { display:inline-block; padding:5px 12px; border-radius:999px; font-size:13px; font-weight:800; letter-spacing:.08em; color:#06281c; background:linear-gradient(180deg,#7dffcf,#2fd99a); }
+#med .mleads { position:absolute; left:800px; top:128px; width:430px; }
+#med .mlead { position:relative; margin-bottom:12px; padding:14px 18px; }
+#med .mld { font-size:21px; font-weight:800; } #med .mld span { font-size:14px; font-weight:500; color:#c3cfe8; margin-left:10px; }
+#med .mlead i { margin:6px 0 8px; font-size:15px; }
+#med .mfoot { position:absolute; left:60px; right:60px; bottom:34px; font-size:16px; color:#dfe7f8; opacity:0; transition:opacity .8s; } #med .mfoot.on { opacity:1; }
+#med .mblock { display:inline-block; padding:3px 12px; border-radius:999px; font-weight:800; font-size:14px; letter-spacing:.06em; color:#3a2600; background:linear-gradient(180deg,#ffe3a1,#ffc95c); vertical-align:1px; }
+#med .meh { font-size:46px; font-weight:800; line-height:1.18; color:#fff; } #med .meh b { color:#7dffcf; }
+#med .mk.mkbig { font-size:52px; letter-spacing:.14em; line-height:1.1; }
+#med .mes { font-size:22px; color:#c3cfe8; margin-top:22px; }
+#med .mvx { position:absolute; left:60px; top:130px; width:700px; display:grid; gap:9px; }
+#med .mvr { display:grid; grid-template-columns:190px 1fr 64px; align-items:center; gap:14px; opacity:0; transform:translateX(-16px); transition:opacity .5s, transform .5s; }
+#med .mvr.on { opacity:1; transform:none; }
+#med .mvn { font-size:17px; color:#dfe7f8; text-align:right; }
+#med .mvb { height:26px; border-radius:13px; background:linear-gradient(90deg, rgba(140,180,255,.75), rgba(91,140,255,.35)); box-shadow:0 8px 18px rgba(4,12,32,.35), inset 0 1px 0 rgba(255,255,255,.35); }
+#med .mvr b { font-size:22px; font-weight:800; color:#fff; }
+#med .mvr.low .mvb { background:linear-gradient(90deg, rgba(110,250,200,.95), rgba(63,242,176,.45)); } #med .mvr.low .mvn, #med .mvr.low b { color:#7dffcf; }
+/* couche cinéma (démo) : gérant 2 novembre, « éclairé, des rondeurs, ambiance Mission Zero » ; même lumière que le film */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+html, body { font-family:'Plus Jakarta Sans','Segoe UI',system-ui,sans-serif !important;
+  background: radial-gradient(1100px 600px at 50% -24%, rgba(90,140,255,.24), transparent 60%), radial-gradient(700px 480px at 95% 110%, rgba(63,242,176,.09), transparent 60%), linear-gradient(180deg,#0f1d3d 0%,#0b1630 50%,#081127 100%) !important; }
+:root { --fg:#f4f7ff; --mut:#c3cfe8; --line:rgba(255,255,255,.24); --acc:#3ff2b0; --acc2:rgba(63,242,176,.85); --accf:rgba(63,242,176,.16); }
+#app .bar { background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.05)) !important; box-shadow: inset 0 -1px 0 rgba(255,255,255,.12); }
+#app .box { background: linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,.07)) !important; border-color: rgba(255,255,255,.3) !important; box-shadow: 0 14px 30px rgba(4,12,32,.35), inset 0 1px 0 rgba(255,255,255,.3); }
+#app .btn { background: linear-gradient(180deg,#7aa4ff,#4f7ff0) !important; box-shadow: 0 12px 26px rgba(40,80,200,.45), inset 0 1px 0 rgba(255,255,255,.45); }
+#app .result { border-radius:24px !important; box-shadow: 0 22px 46px rgba(4,12,32,.40), inset 0 1px 0 rgba(255,255,255,.22); }
+#app .result.ok { background: linear-gradient(180deg, rgba(110,250,200,.26), rgba(63,242,176,.08)) !important; }
+#app .result.ko { background: linear-gradient(180deg, rgba(255,160,150,.24), rgba(255,107,97,.08)) !important; }
+#app .install { border-radius:24px !important; background: linear-gradient(180deg,#7dffcf,#2fd99a) !important; box-shadow: 0 18px 40px rgba(20,160,110,.45), inset 0 1px 0 rgba(255,255,255,.6); }
+#app .chip { border-radius:999px; }
+#term .win { border-radius:22px !important; background: linear-gradient(180deg,#0e1a33,#0a1328) !important; box-shadow: 0 30px 70px rgba(4,12,32,.55), inset 0 1px 0 rgba(255,255,255,.12); }
+#app .bigstamp span, #lab .bigstamp span { border-radius:22px !important; background: rgba(12,28,62,.72) !important; backdrop-filter: blur(8px); box-shadow: 0 20px 50px rgba(4,12,32,.5); }
 </style>
 </head>
 <body>
@@ -88,16 +148,18 @@ html, body { margin:0; background:var(--bg); color:var(--fg); font-family:"Segoe
     <div class="srch" id="srch"></div>
     <div class="rows" id="rows"></div>
     <div class="result" id="result"></div>
+    <svg id="mzfav" viewBox="0 0 100 100" style="position:absolute;display:none;z-index:25;overflow:visible"><path d="M4,80 C34,80 44,70 44,50" fill="none" stroke="#2ee6a0" stroke-opacity=".8" stroke-width="5"/><circle cx="64" cy="50" r="20" fill="none" stroke="#2ee6a0" stroke-width="7"/><circle cx="64" cy="50" r="7" fill="#fff" style="filter:drop-shadow(0 0 4px rgba(46,230,160,.95))"/></svg>
     <div class="install" id="install"></div>
     <div class="bigstamp" id="bigstamp"><span id="bigstampT"></span></div>
   </div>
   <div id="lab" class="page"><svg id="labsvg" viewBox="0 0 1280 720" width="1280" height="720"></svg>
     <div class="bigstamp" id="labstamp"><span id="labstampT"></span></div>
     <div class="install" id="labinstall"></div></div>
+  <div id="med" class="page"></div>
   <div id="term" class="page">
     <div class="step" id="termStep"></div>
     <div class="title" id="termTitle"></div>
-    <div class="win"><div class="tb"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i>dev@acme · bash</div><pre id="pre"></pre></div>
+    <div class="win"><div class="tb"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i>dev@maison-verde · bash</div><pre id="pre"></pre></div>
   </div>
   <svg id="cursor" viewBox="0 0 28 36"><path d="M2 2 L2 28 L9 21 L14 33 L19 31 L14 19 L24 19 Z" fill="#fff" stroke="#000" stroke-width="2" stroke-linejoin="round"/></svg>
   <div id="black"></div>
@@ -106,36 +168,40 @@ html, body { margin:0; background:var(--bg); color:var(--fg); font-family:"Segoe
 (function () {
   var Q = new URLSearchParams(location.search), EX = Q.get('ex') || 'espace', L = Q.get('lang') === 'en' ? 'en' : 'fr';
   var T = {
-    fr: { app: 'Recherche IA', sans: 'SANS MISSION ZERO', avec: 'AVEC MISSION ZERO', btn: 'Chercher', loadSans: 'L’IA répond', loadAvec: 'Mission Zero lit les pages', sources: 'SOURCES', lisible: 'lisible', inj: 'injoignable', sansAdr: 'sans adresse', stepA: 'ÉTAPE 1 · AVANT · LA QUESTION À UNE IA ORDINAIRE', stepB: 'ÉTAPE 2 · ON INSTALLE MISSION ZERO', stepC: 'ÉTAPE 3 · APRÈS · LA MÊME QUESTION PASSE PAR MISSION ZERO', res: 'RÉSULTAT', stampKo: 'NOT VERIFIED', stampOk: 'VERIFIED', install: 'INSTALL MISSION ZERO', dev: 'Un développeur de l’équipe récupère <b>Mission Zero</b> sur GitHub', ready: 'Mission Zero · prêt', wired: '→ ici, Mission Zero vérifie avant d’afficher' },
-    en: { app: 'AI Search', sans: 'WITHOUT MISSION ZERO', avec: 'WITH MISSION ZERO', btn: 'Search', loadSans: 'The AI answers', loadAvec: 'Mission Zero reads the pages', sources: 'SOURCES', lisible: 'readable', inj: 'unreachable', sansAdr: 'no address', stepA: 'STEP 1 · BEFORE · THE QUESTION TO AN ORDINARY AI', stepB: 'STEP 2 · INSTALLING MISSION ZERO', stepC: 'STEP 3 · AFTER · THE SAME QUESTION GOES THROUGH MISSION ZERO', res: 'RESULT', stampKo: 'NOT VERIFIED', stampOk: 'VERIFIED', install: 'INSTALL MISSION ZERO', dev: 'A developer on the team gets <b>Mission Zero</b> from GitHub', ready: 'Mission Zero · ready', wired: '→ here, Mission Zero checks before anything is shown' }
+    fr: { app: 'Recherche IA', sans: 'SANS MISSION ZERO', avec: 'AVEC MISSION ZERO', btn: 'Chercher', loadSans: 'L’IA répond', loadAvec: 'Mission Zero lit les pages', sources: 'SOURCES', lisible: 'lisible', inj: 'injoignable', sansAdr: 'sans adresse', absent: 'pas sur la page', veille: 'surveillé', stepA: 'ÉTAPE 1 · AVANT · LA QUESTION À UNE IA ORDINAIRE', stepB: 'ÉTAPE 2 · ON INSTALLE MISSION ZERO', stepShop: 'ON INSTALLE MISSION ZERO', stepC: 'ÉTAPE 3 · APRÈS · LA MÊME QUESTION PASSE PAR MISSION ZERO', res: 'RÉSULTAT', stampKo: 'NOT VERIFIED', stampOk: 'VERIFIED', install: 'INSTALL MISSION ZERO', dev: 'Un développeur de l’équipe récupère <b>Mission Zero</b> sur GitHub', ready: 'Mission Zero · prêt', wired: '→ ici, Mission Zero vérifie avant d’afficher' },
+    en: { app: 'AI Search', sans: 'WITHOUT MISSION ZERO', avec: 'WITH MISSION ZERO', btn: 'Search', loadSans: 'The AI answers', loadAvec: 'Mission Zero reads the pages', sources: 'SOURCES', lisible: 'readable', inj: 'unreachable', sansAdr: 'no address', absent: 'not on the page', veille: 'watched', stepA: 'STEP 1 · BEFORE · THE QUESTION TO AN ORDINARY AI', stepB: 'STEP 2 · INSTALLING MISSION ZERO', stepShop: 'INSTALLING MISSION ZERO', stepC: 'STEP 3 · AFTER · THE SAME QUESTION GOES THROUGH MISSION ZERO', res: 'RESULT', stampKo: 'NOT VERIFIED', stampOk: 'VERIFIED', install: 'INSTALL MISSION ZERO', dev: 'A developer on the team gets <b>Mission Zero</b> from GitHub', ready: 'Mission Zero · ready', wired: '→ here, Mission Zero checks before anything is shown' }
   }[L];
   // ---- les trois exemples ----
   var DATA = {
     espace: {
+      // Corrigé le 2 novembre (relecture indépendante) : AVANT = la vraie réponse du modèle seul, 4 chiffres
+      // (examples/film-2026-10-29/sans-mission-zero.md) ; aucun n'est retrouvé sur sa source : 4 liens morts ou sans adresse,
+      // et la seule page lisible (Reid 2014) dit 240 km/s, pas les 230 km/s de la réponse (sans-mission-zero-verifie.json).
+      // APRÈS = les 4 missions (apex-solaire, galaxie, fond-du-ciel, laniakea) : 0,898 $ au total.
       q: { fr: 'Le système solaire va-t-il quelque part ?', en: 'Is the solar system heading somewhere?' },
       sans: {
-        result: { fr: 'Oui, le système solaire va vers un endroit inconnu, à 19,7 km/s', en: 'Yes, the solar system is heading somewhere unknown, at 19.7 km/s' },
+        result: { fr: 'Oui · 19,7 km/s vers Hercule, 230 km/s autour de la galaxie, 600 km/s vers le Grand Attracteur, 369,82 km/s par rapport au fond du ciel', en: 'Yes · 19.7 km/s toward Hercules, 230 km/s around the Galaxy, 600 km/s toward the Great Attractor, 369.82 km/s relative to the sky background' },
         rows: [
           { t: { fr: 'Hercule, 19,7 km/s · manuel de 1981', en: 'Hercules, 19.7 km/s · 1981 textbook' }, c: 'sansAdr' },
-          { t: { fr: '3 vitesses au centième · MNRAS 2010', en: '3 speeds to the hundredth · MNRAS 2010' }, c: 'inj' },
-          { t: { fr: 'la galaxie, 240 km/s · Reid 2014', en: 'the Galaxy, 240 km/s · Reid 2014' }, c: 'lisible' },
+          { t: { fr: '3 vitesses · MNRAS 2010', en: '3 speeds · MNRAS 2010' }, c: 'inj' },
+          { t: { fr: 'la galaxie, 230 km/s · Reid 2014 (la page dit 240)', en: 'the Galaxy, 230 km/s · Reid 2014 (the page says 240)' }, c: 'absent' },
           { t: { fr: '600 km/s, Grand Attracteur · 1988', en: '600 km/s, Great Attractor · 1988' }, c: 'inj' },
           { t: { fr: 'le fond du ciel, 369,82 km/s · Planck 2020', en: 'sky background, 369.82 km/s · Planck 2020' }, c: 'inj' }
         ],
-        verdict: { fr: '4 sources sur 5 injoignables · personne n’a ouvert les pages · 1 centime, 20 secondes', en: '4 sources out of 5 nowhere to be found · nobody opened the pages · 1 cent, 20 seconds' }
+        verdict: { fr: '0 chiffre sur 4 retrouvé sur sa source · 4 liens morts ou sans adresse · 1 centime', en: '0 figure out of 4 found on its source · 4 dead or missing links · 1 cent' }
       },
       avec: {
-        result: { fr: 'Oui, le système solaire va vers un endroit inconnu : 20 km/s vers Hercule, 230 km/s autour de la galaxie, 631 km/s vers le Grand Attracteur', en: 'Yes, the solar system is heading somewhere unknown: 20 km/s toward Hercules, 230 km/s around the Galaxy, 631 km/s toward the Great Attractor' },
+        result: { fr: 'Oui · vers Hercule, 828 000 km/h (230 km/s) autour de la galaxie, 369 km/s par rapport au fond du ciel, 631 km/s pour notre groupe de galaxies', en: 'Yes · toward Hercules, 828,000 km/h (230 km/s) around the Galaxy, 369 km/s relative to the sky background, 631 km/s for our group of galaxies' },
         rows: [
-          { t: { fr: 'Hercule, 20 km/s · Univ. du Maryland', en: 'Hercules, 20 km/s · Univ. of Maryland' }, c: 'lisible' },
-          { t: { fr: '230 km/s · NASA, mot pour mot', en: '230 km/s · NASA, word for word' }, c: 'lisible' },
+          { t: { fr: 'vers Hercule · Univ. du Maryland', en: 'toward Hercules · Univ. of Maryland' }, c: 'lisible' },
+          { t: { fr: '828 000 km/h (230 km/s) · NASA', en: '828,000 km/h (230 km/s) · NASA' }, c: 'lisible' },
           { t: { fr: '369 km/s · Cambridge', en: '369 km/s · Cambridge' }, c: 'lisible' },
-          { t: { fr: '631 km/s · Nature, 2014', en: '631 km/s · Nature, 2014' }, c: 'lisible' }
+          { t: { fr: '631 km/s · Nature 2014 (arXiv)', en: '631 km/s · Nature 2014 (arXiv)' }, c: 'lisible' }
         ],
-        verdict: { fr: '4 pages lues, chaque chiffre relu sur sa page · ce qu’il n’a pas pu lire, il le dit · 1 dollar', en: '4 pages read, every figure re-read on its page · what it could not read, it says so · 1 dollar' }
+        verdict: { fr: '4 pages lues · 4 citations relues mot pour mot · 0,90 $', en: '4 pages read · 4 quotes re-read word for word · $0.90' }
       },
-      run: { fr: ['plan · 4 hypothèses : apex solaire, galaxie, fond du ciel, Grand Attracteur', 'search · 11 résultats', 'read_page · astro.umd.edu · l’apex solaire', 'read_page · nasa.gov · la vitesse du Soleil dans la galaxie', 'read_page · cam.ac.uk · le dipôle du fond du ciel', 'read_page · nature.com · Laniakea, 2014', 'verify ✔ 20 km/s · citation relue sur la page', 'verify ✔ 230 km/s · citation relue sur la page', 'verify ✔ 369 km/s · citation relue sur la page', 'verify ✔ 631 km/s · citation relue sur la page', 'judge · 4 vertes · 0 rouge', 'cost · environ 1 $ · 4 missions · evidence/film-2026-10-29/'],
-             en: ['plan · 4 hypotheses: solar apex, Galaxy, sky background, Great Attractor', 'search · 11 results', 'read_page · astro.umd.edu · the solar apex', 'read_page · nasa.gov · the Sun’s speed in the Galaxy', 'read_page · cam.ac.uk · the sky background dipole', 'read_page · nature.com · Laniakea, 2014', 'verify ✔ 20 km/s · quote re-read on the page', 'verify ✔ 230 km/s · quote re-read on the page', 'verify ✔ 369 km/s · quote re-read on the page', 'verify ✔ 631 km/s · quote re-read on the page', 'judge · 4 green · 0 red', 'cost · $1.01 · 4 missions · evidence/film-2026-10-29/'] }
+      run: { fr: ['plan · 4 hypothèses · apex solaire, galaxie, fond du ciel, Grand Attracteur', 'search · 11 résultats', 'read_page · astro.umd.edu · l’apex solaire', 'read_page · nasa.gov · la vitesse du Soleil dans la galaxie', 'read_page · cam.ac.uk · le dipôle du fond du ciel', 'read_page · arxiv.org · Laniakea (Nature 2014)', 'verify ✔ Hercule · citation relue sur la page', 'verify ✔ 828 000 km/h · citation relue sur la page', 'verify ✔ 369 km/s · citation relue sur la page', 'verify ✔ 631 km/s · citation relue sur la page', 'judge · 4 vertes · 0 rouge', 'cost · 0,90 $ · 4 missions · evidence/film-2026-10-29/'],
+             en: ['plan · 4 hypotheses · solar apex, Galaxy, sky background, Great Attractor', 'search · 11 results', 'read_page · astro.umd.edu · the solar apex', 'read_page · nasa.gov · the Sun’s speed in the Galaxy', 'read_page · cam.ac.uk · the sky background dipole', 'read_page · arxiv.org · Laniakea (Nature 2014)', 'verify ✔ Hercules · quote re-read on the page', 'verify ✔ 828,000 km/h · quote re-read on the page', 'verify ✔ 369 km/s · quote re-read on the page', 'verify ✔ 631 km/s · quote re-read on the page', 'judge · 4 green · 0 red', 'cost · $0.90 · 4 missions · evidence/film-2026-10-29/'] }
     },
     stress: {
       q: { fr: 'Le stress fait-il varier le cancer ?', en: 'Does stress change cancer?' },
@@ -186,10 +252,70 @@ html, body { margin:0; background:var(--bg); color:var(--fg); font-family:"Segoe
     }
   };
   DATA.labo = { q: { fr: 'labo', en: 'lab' } };
+  // La médecine (gérant, 2 novembre : « il vérifie, il surveille », à la place du labo de Fleming). Données réelles du 2 novembre :
+  // AVANT = le modèle seul (examples/film-2026-10-29/tuberculose/sans-mission-zero-derniers-chiffres.json) : il donne 2023 pour
+  // « les derniers chiffres », 0 sur 3 sur la page citée ; APRÈS = la mission du même matin (examples/film-2026-10-29/tuberculose-derniers-chiffres/) :
+  // 2024 lu sur les pages de l'OMS, 2 citations vertes, 0 rouge, taux de guérison non trouvé et dit, note 5/10, 0,30 $ ;
+  // la veille = watch/sources.json « Essais vaccins tuberculose », 1er relevé du 30 octobre, 100 essais.
+  DATA.medecine = {
+    q: { fr: 'Tuberculose : quels sont les derniers chiffres de l’OMS ?', en: 'Tuberculosis: what are the latest WHO figures?' },
+    sans: {
+      result: { fr: '« Les derniers chiffres sont ceux de 2023 » : 10,8 millions de malades · 1,25 million de morts · 88 % de guérison', en: '“The latest figures are for 2023”: 10.8 million fell ill · 1.25 million died · 88% cured' },
+      rows: [
+        { t: { fr: '2023, donné pour le plus récent · who.int, rapport 2024', en: '2023, given as the latest · who.int, 2024 report' }, c: 'absent' },
+        { t: { fr: '1,25 million de morts · who.int, rapport 2024', en: '1.25 million deaths · who.int, 2024 report' }, c: 'absent' },
+        { t: { fr: '88 % de guérison · who.int, rapport 2024', en: '88% cured · who.int, 2024 report' }, c: 'absent' }
+      ],
+      verdict: { fr: 'des chiffres d’un an, donnés pour les derniers · 0 sur 3 sur la page citée · aucune page lue', en: 'year-old figures, given as the latest · 0 out of 3 on the cited page · no page read' }
+    },
+    avec: {
+      result: { fr: 'En 2024 : 10,7 millions de malades · 1,23 million de morts · le taux de guérison n’est pas sur les pages lues : il le dit', en: 'In 2024: 10.7 million fell ill · 1.23 million died · the cure rate is not on the pages read: it says so' },
+      rows: [
+        { t: { fr: '« 10.7 million people developed TB » · OMS · 2024', en: '“10.7 million people developed TB” · WHO · 2024' }, c: 'lisible' },
+        { t: { fr: '« 1.23 million people died » · fiche OMS · 2024', en: '“1.23 million people died” · WHO fact sheet · 2024' }, c: 'lisible' },
+        { t: { fr: 'taux de guérison · aucune citation · il ne l’invente pas', en: 'cure rate · no quote found · it does not make it up' }, c: 'absent' },
+        { t: { fr: 'chaque semaine · 100 essais de vaccins · ClinicalTrials.gov', en: 'every week · 100 vaccine trials · ClinicalTrials.gov' }, c: 'veille' }
+      ],
+      verdict: { fr: 'il vérifie : les chiffres de 2024, lus ce jour, 2 citations relues, 0,30 $ · il surveille : un humain décide', en: 'it verifies: the 2024 figures, read today, 2 quotes re-read, $0.30 · it watches: a human decides' }
+    },
+    run: { fr: ['plan · la fiche OMS du jour, le dernier rapport', 'read_page · who.int · fiche tuberculose', 'read_page · afro.who.int · tuberculose', 'verify ✔ 10,7 millions · 2024 · citation relue sur la page', 'verify ✔ 1,23 million · 2024 · citation relue sur la page', 'taux de guérison · aucune citation · dit, pas inventé', 'judge · 5/10 · 2 vertes · 0 rouge · un chiffre manque', 'cost · 0,30 $ · 4 min', 'watch · clinicaltrials.gov · 100 essais relus chaque semaine'],
+           en: ['plan · today’s WHO fact sheet, the latest report', 'read_page · who.int · tuberculosis fact sheet', 'read_page · afro.who.int · tuberculosis', 'verify ✔ 10.7 million · 2024 · quote re-read on the page', 'verify ✔ 1.23 million · 2024 · quote re-read on the page', 'cure rate · no quote · said, not made up', 'judge · 5/10 · 2 green · 0 red · one figure missing', 'cost · $0.30 · 4 min', 'watch · clinicaltrials.gov · 100 trials re-read every week'] }
+  };
+  DATA.boutique = { q: { fr: 'boutique', en: 'shop' } };
   var D = DATA[EX];
   var lerp = function (a, b, t) { return a + (b - a) * t; };
   var ease = function (t) { t = Math.max(0, Math.min(1, t)); return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; };
   var $ = function (id) { return document.getElementById(id); };
+  // ---- le logo de Mission Zero devant chaque « Mission Zero » (gérant, 1er novembre) ----
+  var MZNS = 'http://www.w3.org/2000/svg';
+  function mzIcon(c, dot) { return '<path d="M4,80 C34,80 44,70 44,50" fill="none" stroke="' + c + '" stroke-opacity=".85" stroke-width="8"/><circle cx="64" cy="50" r="20" fill="none" stroke="' + c + '" stroke-width="9"/><circle cx="64" cy="50" r="8" fill="' + dot + '"/>'; }
+  function mzDark(col) { var m = String(col).match(/\d+/g); return m && (Number(m[0]) + Number(m[1]) + Number(m[2])) < 200; }
+  // dans du HTML : le logo en ligne, à la taille du texte
+  function mzh(s, dark) { return String(s).replace(/(mission zero)/gi, '<svg class="mzi" viewBox="0 0 100 100" width="1.05em" height="1.05em" style="vertical-align:-.18em;margin-right:.28em;overflow:visible">' + (dark ? mzIcon('#06281c', '#06281c') : mzIcon('#2ee6a0', '#fff')) + '</svg>$1'); }
+  // dans un texte SVG : on ouvre la place devant les mots et on y pose le logo
+  function mzSvgText(t) {
+    if (t.getAttribute('data-mz') || t.closest('.mzlogo')) return; var s = t.textContent, i = s.search(/mission zero/i); if (i < 0 || t.children.length) return;
+    t.setAttribute('data-mz', '1'); var fsz = parseFloat(getComputedStyle(t).fontSize) || 20, w = fsz * 1.05, gap = fsz * 0.3;
+    var cx0 = null; try { var b0 = t.getBBox(); cx0 = b0.x + b0.width / 2; } catch (e) { cx0 = null; }
+    var before = s.slice(0, i), rest = s.slice(i); t.textContent = '';
+    if (before) { var a = document.createElementNS(MZNS, 'tspan'); a.textContent = before; t.appendChild(a); }
+    var b = document.createElementNS(MZNS, 'tspan'); b.textContent = rest; b.setAttribute('dx', String(w + gap)); t.appendChild(b);
+    var p; try { p = t.getStartPositionOfChar(before.length); } catch (e) { return; }
+    var dark = mzDark(getComputedStyle(t).fill), g = document.createElementNS(MZNS, 'g'); g.setAttribute('class', 'mzlogo nopen');
+    g.setAttribute('transform', 'translate(' + (p.x - w - gap * 0.45).toFixed(1) + ',' + (p.y - fsz * 0.36 - w / 2).toFixed(1) + ') scale(' + (w / 100).toFixed(4) + ')');
+    g.innerHTML = dark ? mzIcon('#06281c', '#06281c') : mzIcon('#2ee6a0', '#fff'); t.parentNode.insertBefore(g, t.nextSibling);
+    if ((t.getAttribute('text-anchor') || getComputedStyle(t).textAnchor) === 'middle' && cx0 !== null) { var bb = t.getBBox(), left = Math.min(bb.x, p.x - w - gap * 0.45), right = bb.x + bb.width, sh = (left + right) / 2 - cx0;
+      if (Math.abs(sh) > 0.5) { t.setAttribute('x', String(Number(t.getAttribute('x')) - sh)); g.setAttribute('transform', 'translate(' + (p.x - w - gap * 0.45 - sh).toFixed(1) + ',' + (p.y - fsz * 0.36 - w / 2).toFixed(1) + ') scale(' + (w / 100).toFixed(4) + ')'); } }
+  }
+  // le bouton INSTALL : trois lignes, le logo devant MISSION (gérant, 1er novembre : « ça déborde, fais-le plus grand »)
+  function mzInstall() { return '<span style="display:block">' + (L === 'en' ? 'INSTALL' : 'INSTALLER') + '<br><svg class="mzi" viewBox="0 0 100 100" width="1.05em" height="1.05em" style="vertical-align:-.18em;margin-right:.28em;overflow:visible">' + mzIcon('#06281c', '#06281c') + '</svg>MISSION<br>ZERO</span>'; }
+  var LAB_EN = { 'Labos · réseau mondial de sondes': 'Labs · worldwide sensor network', 'ÉTAPE 1 · AVANT · LES SONDES, SANS MISSION ZERO': 'STEP 1 · BEFORE · THE SENSORS, WITHOUT MISSION ZERO', 'ÉTAPE 3 · APRÈS · LES MÊMES SONDES PASSENT PAR MISSION ZERO': 'STEP 3 · AFTER · THE SAME SENSORS GO THROUGH MISSION ZERO',
+    'SANS MISSION ZERO': 'WITHOUT MISSION ZERO', 'AVEC MISSION ZERO': 'WITH MISSION ZERO', 'Londres': 'London', 'Genève': 'Geneva', 'ÉTAT': 'STATE', 'CHANGEMENT': 'CHANGE', 'RÉSULTAT': 'RESULT', 'les bactéries poussent': 'the bacteria grow', 'la courbe chute': 'the curve drops', 'inconnue · boîte jetée': 'unknown · dish thrown out',
+    'elles meurent : −92 % en 6 h': 'they die: −92% in 6 h', 'seule la boîte 7 change': 'only dish 7 changes', 'Les bactéries meurent. Pourquoi ? On ne sait pas.': 'The bacteria die. Why? Nobody knows.', 'la boîte part à la poubelle, la découverte avec elle': 'the dish goes in the bin, and the discovery with it',
+    'Mission Zero signale la chute dans la seule boîte 7.': 'Mission Zero flags the drop in dish 7 only.', 'vu dans les données · les 5 autres labos ne bougent pas · au chercheur de conclure': 'seen in the data · the 5 other labs don’t move · the researcher draws the conclusion',
+    'Fleming l’a vu par hasard en 1928. Mission Zero le signale au chercheur.': 'Fleming saw it by chance in 1928. Mission Zero flags it to the researcher.', 'reconstitution, données fictives': 'reconstruction, fictional data' };
+  function labEN(root) { Array.prototype.forEach.call(root.querySelectorAll('text'), function (t) { if (t.children.length) return; var s = t.textContent, e = LAB_EN[s]; if (!e) { var m = s.match(/^boîte (\d+)$/); if (m) e = 'dish ' + m[1]; m = s.match(/^croissance · (\d+) h$/); if (m) e = 'growth · ' + m[1] + ' h'; } if (e) t.textContent = e; }); }
+  function mzScan(root) { if (root) Array.prototype.forEach.call(root.querySelectorAll('text'), mzSvgText); }
   // Le zoom sur le résultat AVANT (gérant, 1er novembre) : 0,6 s d'approche, 4 s dessus, 0,6 s de retour, 1 s d'attente, puis le tampon.
   var ZIN = 0.6, ZHOLD = 4.0, ZOUT = 0.6, ZWAIT = 1.0;
   function zoomK(u, t0) { if (u < t0) return 0; var a = u - t0; if (a < ZIN) return ease(a / ZIN); a -= ZIN; if (a < ZHOLD) return 1; a -= ZHOLD; if (a < ZOUT) return 1 - ease(a / ZOUT); return 0; }
@@ -201,13 +327,13 @@ html, body { margin:0; background:var(--bg); color:var(--fg); font-family:"Segoe
     var q = D.q[L], typeDur = Math.min(3.4, 0.06 * q.length);
     var tField = 1.4, tType = tField + 0.3, tTypeEnd = tType + typeDur, tBtn = tTypeEnd + 0.9, tClick = tBtn + 0.25;
     var loadDur = cfg.avec ? 2.2 : 1.3, tAnswer = tClick + loadDur, tRows = tAnswer + 0.5, rowGap = 0.75;
-    var tVerdict = tRows + cfg.rows.length * rowGap + 0.7, tZoom = tVerdict + 0.6, tStamp = cfg.avec ? tVerdict + 0.5 : tZoom + ZIN + ZHOLD + ZOUT + ZWAIT, tInstall = tStamp + 2.3, tGo = tInstall + 0.5, tPress = tGo + 0.9;
-    var dur = cfg.avec ? tStamp + 3.4 : tPress + 1.4;
-    var cardTop = 268 + cfg.rows.length * 47 + 22, instX = 1090 + 86, instY = cardTop + 56;
+    var tVerdict = tRows + cfg.rows.length * rowGap + 0.7, tZoom = tVerdict + 0.6, tStamp = tZoom + ZIN + ZHOLD + ZOUT + ZWAIT, tInstall = tStamp + 2.3, tGo = tInstall + 0.5, tPress = tGo + 0.9;
+    var dur = cfg.avec ? tStamp + 1.8 : tPress + 1.4; // le VERIFIED final : 1,8 s, puis on enchaîne (gérant, 1er novembre)
+    var cardTop = 268 + cfg.rows.length * 47 + 22, instX = 1080 + 95, instY = cardTop + 60;
     return { dur: dur, render: function (u) {
       $('appName').textContent = T.app;
-      $('badge').textContent = cfg.avec ? T.avec : T.sans; $('badge').className = 'badge ' + (cfg.avec ? 'ok' : 'ko');
-      $('step').textContent = cfg.avec ? T.stepC : T.stepA;
+      $('badge').innerHTML = mzh(cfg.avec ? T.avec : T.sans); $('badge').className = 'badge ' + (cfg.avec ? 'ok' : 'ko');
+      $('step').innerHTML = mzh(cfg.avec ? T.stepC : T.stepA);
       $('btn').textContent = T.btn;
       // le curseur : d'en bas à droite vers le champ, puis vers le bouton
       var cx, cy;
@@ -223,45 +349,61 @@ html, body { margin:0; background:var(--bg); color:var(--fg); font-family:"Segoe
       $('q').innerHTML = esc(q.slice(0, n)) + (caret ? '<span class="caret"></span>' : '');
       // une question longue défile vers la gauche, comme dans un vrai champ
       var inner = 640 - 62 - 28 - 4, w = $('q').offsetWidth; $('q').style.left = (w > inner ? inner - w : 0) + 'px';
-      $('box').className = 'box' + (u >= tField && u < tClick ? ' focus' : '');
+      $('box').className = 'box' + (u >= tField && u < tClick ? ' focus' : '') + (cfg.avec ? ' mz' : '');
+      var fav = $('mzfav'); if (!cfg.avec) fav.style.display = 'none'; else { var kf = ease(Math.min(1, Math.max(0, (u - 0.3) / 1.1))), sz = lerp(200, 40, kf); fav.style.display = 'block'; fav.style.width = sz + 'px'; fav.style.height = sz + 'px'; fav.style.left = lerp(640 - 100, 250, kf).toFixed(1) + 'px'; fav.style.top = lerp(300 - 100, 161, kf).toFixed(1) + 'px'; }
       $('btn').className = 'btn' + (u >= tClick && u < tClick + 0.25 ? ' press' : '');
       // le chargement
       var loading = u >= tClick && u < tAnswer;
       $('load').style.display = loading ? 'block' : 'none';
-      if (loading) { var dots = 1 + Math.floor((u - tClick) * 3) % 3; $('load').innerHTML = esc(cfg.avec ? T.loadAvec : T.loadSans) + ' <b></b><b style="opacity:' + (dots > 1 ? 1 : .25) + '"></b><b style="opacity:' + (dots > 2 ? 1 : .25) + '"></b>'; }
+      if (loading) { var dots = 1 + Math.floor((u - tClick) * 3) % 3; $('load').innerHTML = mzh(esc(cfg.avec ? T.loadAvec : T.loadSans)) + ' <b></b><b style="opacity:' + (dots > 1 ? 1 : .25) + '"></b><b style="opacity:' + (dots > 2 ? 1 : .25) + '"></b>'; }
       // d'abord les preuves
       $('srch').style.display = u >= tAnswer ? 'block' : 'none'; $('srch').textContent = T.sources;
       // les sources, une à une
       var html = '';
-      cfg.rows.forEach(function (r, i) { if (u >= tRows + i * rowGap) html += '<div class="row">' + esc(r.t[L]) + '<span class="chip ' + (r.c === 'lisible' ? 'ok' : 'ko') + '">' + T[r.c] + '</span></div>'; });
+      var noRed = false; // gérant 3/11 : les liens morts doivent se voir (pastilles rouges remises sur la page espace)
+      cfg.rows.forEach(function (r, i) { if (u >= tRows + i * rowGap) html += '<div class="row">' + esc(r.t[L]) + (noRed ? '' : '<span class="chip ' + (r.c === 'lisible' || r.c === 'veille' ? 'ok' : 'ko') + '">' + T[r.c] + '</span>') + '</div>'; });
       $('rows').innerHTML = html;
       // puis le résultat, sous les preuves : bidon et tamponné « invérifiable » avant, « confirmé » après
       var r = $('result'); r.style.display = u >= tVerdict ? 'block' : 'none'; r.style.top = (268 + cfg.rows.length * 47 + 22) + 'px';
       r.className = 'result ' + (cfg.avec ? 'ok' : 'ko');
       var ks = (u - tStamp) / 0.26, sc = ks < 0 ? 0 : ks < 1 ? 2.6 - 1.6 * (1 - Math.pow(1 - ks, 3)) : 1, so = ks < 0 ? 0 : Math.min(1, ks * 2.5);
       var sty = 'transform:translateY(-50%) rotate(-12deg) scale(' + sc.toFixed(3) + ');opacity:' + so.toFixed(3);
-      r.innerHTML = '<div class="lab">' + T.res + '</div><div class="txt">' + esc(cfg.result[L]) + '</div><div class="sub">' + esc(cfg.verdict[L]) + '</div>';
+      r.innerHTML = '<div class="lab">' + T.res + (cfg.avec ? ' · ' + mzh(L === 'en' ? 'verified by Mission Zero' : 'vérifié par Mission Zero') : '') + '</div><div class="txt">' + esc(cfg.result[L]) + '</div><div class="sub">' + esc(cfg.verdict[L]) + '</div>';
       // le tampon plein écran : il claque (×2,6 → ×1), tient 1,8 s, s'efface en 0,5 s
       // le VERIFIED de la fin reste jusqu'à la fin de la page (gérant, 1er novembre : « je ne vois pas le VERIFIED »)
-      var bs = $('bigstamp'), hold = cfg.avec ? 99 : 1.8, fade = u > tStamp + hold ? Math.max(0, 1 - (u - tStamp - hold) / 0.5) : 1;
-      var zk = cfg.avec ? 0 : zoomK(u, tZoom), rh = r.offsetHeight || 120; applyZoom($('app'), zk, 240 + 415, (268 + cfg.rows.length * 47 + 22) + rh / 2, Math.min(1240 / 830, 680 / rh)); $('cursor').style.opacity = zk > 0.01 ? '0' : '1';
+      var bs = $('bigstamp'), hold = 99, fade = u > tStamp + hold ? Math.max(0, 1 - (u - tStamp - hold) / 0.5) : 1;
+      var zk = zoomK(u, tZoom), rh = r.offsetHeight || 120; applyZoom($('app'), zk, 240 + 415, (268 + cfg.rows.length * 47 + 22) + rh / 2, Math.min(1240 / 830, 680 / rh)); $('cursor').style.opacity = zk > 0.01 ? '0' : '1';
       bs.className = 'bigstamp ' + (cfg.avec ? 'ok' : 'ko'); bs.style.display = ks >= 0 && fade > 0 ? 'flex' : 'none';
-      $('bigstampT').textContent = cfg.avec ? T.stampOk : T.stampKo;
+      $('bigstampT').innerHTML = (cfg.avec ? T.stampOk : T.stampKo).replace(' ', '<br>'); if (cfg.avec) { bs.style.left = '1080px'; bs.style.top = Math.round(cardTop + (r.offsetHeight || 120) / 2 - 95) + 'px'; } else { bs.style.left = '545px'; bs.style.top = '265px'; } // AVANT : au milieu, jusqu'à l'installation (gérant, 1er novembre)
       $('bigstampT').style.cssText = 'transform:rotate(-12deg) scale(' + sc.toFixed(3) + ');opacity:' + (so * fade).toFixed(3);
       // le bouton INSTALL MISSION ZERO (page AVANT seulement), pressé par le curseur
-      var ib = $('install'); ib.style.display = !cfg.avec && u >= tInstall ? 'flex' : 'none'; ib.style.top = cardTop + 'px'; ib.textContent = T.install;
+      var ib = $('install'); ib.style.display = !cfg.avec && u >= tInstall ? 'flex' : 'none'; ib.style.top = (cardTop - 4) + 'px'; ib.innerHTML = mzInstall();
       var glow = 0.35 + 0.35 * Math.sin((u - tInstall) * 6); ib.style.boxShadow = '0 0 ' + (18 + 16 * glow).toFixed(0) + 'px rgba(46,230,160,' + glow.toFixed(2) + ')';
       ib.className = 'install' + (u >= tPress && u < tPress + 0.3 ? ' press' : '');
     } };
   }
   // ---- la page « terminal » : le dev clone Mission Zero, installe, lance la mission ----
-  function termTimeline() {
+  function termTimeline(kind) {
     var q = D.q[L];
     var SPEED = 34; // caractères par seconde
     var items = [], t = 0.6;
     var cmd = function (s, out, pause) { items.push({ t: t, cmd: s }); t += s.length / SPEED + 0.35; (out || []).forEach(function (o, i) { items.push({ t: t + i * 0.12, out: o }); }); t += (out ? out.length * 0.12 : 0) + (pause || 0.7); };
-    cmd('git clone https://github.com/cryptoragency/mission0.git', ['<span class="m">Receiving objects: 100% (412/412), done.</span>']);
-    cmd('cd mission0 && npm install', ['<span class="m">added 184 packages in 6s</span>']);
+    // chiffres vérifiés le 2 novembre : git rev-list --all --objects = 2223 ; package-lock.json = 13 paquets
+    cmd('git clone https://github.com/cryptoragency/missionzero.git', ['<span class="m">Receiving objects: 100% (2223/2223), done.</span>']);
+    cmd('cd missionzero && npm install', ['<span class="m">added 13 packages</span>']);
+    if (kind === 'shop') {
+      // le vrai site de démonstration du dépôt : demo-site (Maison Verde) ; ses 7 parcours vitaux sont dans demo-site/journeys.test.js,
+      // ses 15 failles dans demo-site/findings.example.json ; la commande est celle de package.json (repair) et bench/run-repair.js
+      cmd('echo "MODEL_API_KEY=••••" > .env', [], 0.5);
+      cmd('code demo-site/journeys.test.js', [], 0.4);
+      ["{ name: 'add to cart and see the total', … }   // " + (L === 'en' ? 'a vital journey' : 'un parcours vital'), "{ name: 'reach the checkout and pay', … }"].forEach(function (line) { items.push({ t: t, out: '<span class="code">  ' + esc(line) + '</span>' }); t += 0.5; });
+      t += 0.3;
+      cmd('node --test demo-site/journeys.test.js', ['<span class="ok">' + (L === 'en' ? '✔ 7 vital journeys · green' : '✔ 7 parcours vitaux · verts') + '</span>'], 0.6);
+      cmd('npm run repair -- demo-site/findings.example.json --site=demo-site', ['<span class="m">Maison Verde · 15 ' + (L === 'en' ? 'flaws to repair' : 'failles à réparer') + '</span>'], 0.8);
+      items.push({ t: t, out: '<span class="ok big">' + (L === 'en' ? '→ here, Mission Zero repairs on a copy, a human approves' : '→ ici, Mission Zero répare sur une copie, un humain valide') + '</span>' }); t += 0.2;
+      var tAct0 = t + 0.6, dur0 = tAct0 + 3.0;
+      return { dur: dur0, render: function (u) { renderTerm(u); } };
+    }
     cmd('echo "MODEL_API_KEY=••••  MZ_API_KEY=••••" > .env', [], 0.6);
     cmd('npm run api', ['<span class="ok">Mission Zero API · http://127.0.0.1:3000/api/verify</span>'], 0.9);
     // le code de l'application : la recherche existante, puis la ligne qui appelle Mission Zero, juste avant d'afficher (gérant, 31 octobre)
@@ -269,11 +411,12 @@ html, body { margin:0; background:var(--bg); color:var(--fg); font-family:"Segoe
     items.push({ t: t, out: '<span class="code">  const reponse = await ia.chercher(question);</span>' }); t += 0.5;
     var ADD = ["const mz = await fetch('http://127.0.0.1:3000/api/verify', {", "  method: 'POST', headers: { authorization: 'Bearer ' + MZ_API_KEY },", "  body: JSON.stringify({ question, reponse, sources }) }).then(r => r.json());"];
     ADD.forEach(function (line) { items.push({ t: t, add: line }); t += line.length / 60 + 0.25; });
-    items.push({ t: t, out: '<span class="code">  afficher(reponse, mz.verdict);  <span class="m">// VERIFIED ou NOT VERIFIED</span></span>' }); t += 0.9;
+    items.push({ t: t, out: '<span class="code">  afficher(reponse, mz.verdict);  <span class="m">// ' + (L === 'en' ? 'VERIFIED or NOT VERIFIED' : 'VERIFIED ou NOT VERIFIED') + '</span></span>' }); t += 0.9;
     items.push({ t: t, out: '<span class="ok big">' + esc(T.wired) + '</span>' }); t += 0.2;
-    var dur = t + 3.6;
-    return { dur: dur, render: function (u) {
-      $('termStep').textContent = T.stepB; $('termTitle').innerHTML = T.dev;
+    var tAct = t + 0.6, dur = tAct + 3.0;
+    return { dur: dur, render: function (u) { renderTerm(u); } };
+    function renderTerm(u) {
+      $('termStep').innerHTML = mzh(kind === 'shop' ? T.stepShop : T.stepB); // page 4 : pas d'étape 1 avant, donc pas de numéro (relecture du 2 novembre) $('termTitle').innerHTML = mzh(T.dev);
       var html = '';
       items.forEach(function (it) {
         if (u < it.t) return;
@@ -283,9 +426,9 @@ html, body { margin:0; background:var(--bg); color:var(--fg); font-family:"Segoe
       });
       var last = items[items.length - 1];
       if (u >= last.t + 0.4 && Math.floor(u * 2) % 2 === 0) html += '<span class="c">$</span> <span class="blk"></span>';
-      $('pre').innerHTML = html;
+      $('pre').innerHTML = mzh(html);
       $('cursor').style.transform = 'translate(1180px,660px)';
-    } };
+    }
   }
   // ---- les trois pages, bout à bout, avec un noir de 0,5 s entre elles ----
   // ---- le labo de Fleming, en réseau mondial ----
@@ -300,17 +443,22 @@ html, body { margin:0; background:var(--bg); color:var(--fg); font-family:"Segoe
       ? [['ÉTAT', 'les bactéries poussent', 'ok'], ['CHANGEMENT', 'elles meurent : −92 % en 6 h', 'ok'], ['CAUSE', 'seule la boîte 7 change', 'ok']]
       : [['ÉTAT', 'les bactéries poussent', '?'], ['CHANGEMENT', 'la courbe chute', '?'], ['CAUSE', 'inconnue · boîte jetée', 'ko']];
     var tTxt = 5.0, gap = 1.1, n = ROWS.length;
-    var tRes = tTxt + n * gap + 0.6, tZoom = tRes + 0.6, tStamp = avec ? tRes + 0.5 : tZoom + ZIN + ZHOLD + ZOUT + ZWAIT, tEnd = tStamp + 3.0, tInstall = tStamp + 2.3, tGo = tInstall + 0.5, tPress = tGo + 0.9;
-    var INTRO = avec ? 0 : 2.6; // la page AVANT s'ouvre sur le titre en grand
-    var dur = (avec ? tEnd + 3.0 : tPress + 1.4) + INTRO;
+    var tRes = tTxt + n * gap + 0.6, tZoom = tRes + 0.6, tStamp = tZoom + ZIN + ZHOLD + ZOUT + ZWAIT, tEnd = tStamp + 1.0, tInstall = tStamp + 2.3, tGo = tInstall + 0.5, tPress = tGo + 0.9;
+    // la page AVANT s'ouvre sur quatre titres en grand, l'un après l'autre (gérant, 1er novembre)
+    var TITRES = L === 'en'
+      ? [{ d: 2.2, l: ['No [r]chance[/r].'] }, { d: 2.2, l: ['No [r]guesswork[/r].'] }, { d: 3.0, l: ['Only [g]proof[/g],', 'in [g]numbers[/g].'] }, { d: 4.4, box: true, l: ['Real health data', 'cannot be shown:', 'a reconstruction, fictional data.'] }]
+      : [{ d: 2.2, l: ['Pas de [r]hasard[/r].'] }, { d: 2.2, l: ['Pas de [r]supposition[/r].'] }, { d: 3.0, l: ['Que des [g]preuves[/g],', 'par des [g]chiffres[/g].'] }, { d: 4.4, box: true, l: ['Les vraies données de santé', 'ne peuvent pas être montrées :', 'reconstitution, données fictives.'] }];
+    var INTRO = avec ? 0 : TITRES.reduce(function (a, x) { return a + x.d; }, 0) + 0.5;
+    var dur = (avec ? tEnd + 2.2 : tPress + 1.4) + INTRO;
     return { dur: dur, render: function (u0) {
       var u = Math.max(0, u0 - INTRO);
       var h = '', hour = Math.min(8, u * 1.1);
       h += '<rect x="0" y="0" width="1280" height="72" fill="rgba(255,255,255,.03)"/><line x1="0" y1="72" x2="1280" y2="72" stroke="rgba(255,255,255,.16)"/>';
-      h += '<circle cx="47" cy="38" r="7" fill="#5b8cff"/><text x="66" y="46" fill="#e8edf7" style="font-size:22px;font-weight:700">Labos · réseau mondial de sondes</text>';
-      h += '<rect x="' + (avec ? 1028 : 1016) + '" y="20" width="' + (avec ? 212 : 224) + '" height="38" rx="19" fill="' + (avec ? 'rgba(46,230,160,.12)' : 'rgba(180,35,24,.22)') + '" stroke="' + (avec ? 'rgba(46,230,160,.72)' : '#ff6b61') + '" stroke-width="2"/><text x="' + (avec ? 1134 : 1128) + '" y="45" text-anchor="middle" fill="' + (avec ? '#2ee6a0' : '#ff6b61') + '" style="font-size:15px;font-weight:700;letter-spacing:.1em">' + (avec ? 'AVEC MISSION ZERO' : 'SANS MISSION ZERO') + '</text>';
+      if (avec) { var favH = '', kf = ease(Math.min(1, Math.max(0, (u0 - 0.3) / 1.1))), sz = lerp(200, 36, kf), lx = lerp(640 - 100, 29, kf), ly = lerp(300 - 100, 20, kf); var favH = '<g transform="translate(' + lx.toFixed(1) + ',' + ly.toFixed(1) + ') scale(' + (sz / 100).toFixed(3) + ')">' + "<path d=\"M4,80 C34,80 44,70 44,50\" fill=\"none\" stroke=\"#2ee6a0\" stroke-opacity=\".8\" stroke-width=\"5\"/><circle cx=\"64\" cy=\"50\" r=\"20\" fill=\"none\" stroke=\"#2ee6a0\" stroke-width=\"7\"/><circle cx=\"64\" cy=\"50\" r=\"7\" fill=\"#fff\" style=\"filter:drop-shadow(0 0 4px rgba(46,230,160,.95))\"/>" + '</g>'; } else h += '<circle cx="47" cy="38" r="7" fill="#5b8cff"/>';
+      h += '<text x="66" y="46" fill="#e8edf7" style="font-size:22px;font-weight:700">Labos · réseau mondial de sondes</text>';
+      h += '<rect x="' + (avec ? 1000 : 966) + '" y="20" width="' + (avec ? 240 : 274) + '" height="38" rx="19" fill="' + (avec ? 'rgba(46,230,160,.12)' : 'rgba(180,35,24,.22)') + '" stroke="' + (avec ? 'rgba(46,230,160,.72)' : '#ff6b61') + '" stroke-width="2"/><text x="' + (avec ? 1120 : 1103) + '" y="45" text-anchor="middle" fill="' + (avec ? '#2ee6a0' : '#ff6b61') + '" style="font-size:15px;font-weight:700;letter-spacing:.1em">' + (avec ? 'AVEC MISSION ZERO' : 'SANS MISSION ZERO') + '</text>';
       h += '<text x="40" y="104" fill="#a9b4cc" style="font-size:15px;letter-spacing:.14em">' + (avec ? 'ÉTAPE 3 · APRÈS · LES MÊMES SONDES PASSENT PAR MISSION ZERO' : 'ÉTAPE 1 · AVANT · LES SONDES, SANS MISSION ZERO') + '</text>';
-      var banner = '<rect x="742" y="84" width="498" height="30" rx="15" fill="rgba(255,210,122,.14)" stroke="#ffd27a" stroke-width="2"/><text x="991" y="105" text-anchor="middle" fill="#ffd27a" style="font-size:16px;font-weight:700">Et si Fleming avait eu Mission Zero ? · reconstitution, données fictives</text>';
+      var banner = '<rect x="940" y="84" width="300" height="30" rx="15" fill="rgba(255,210,122,.14)" stroke="#ffd27a" stroke-width="2"/><text x="1090" y="105" text-anchor="middle" fill="#ffd27a" style="font-size:16px;font-weight:700">reconstitution, données fictives</text>';
       LABS.forEach(function (lab, i) {
         var col = i % 3, row = Math.floor(i / 3), x = 40 + col * 278, y = 122 + row * 208, W = 262, H = 196, cx = x + 70, cy = y + 104;
         var hit = !!lab[2], cl = hit ? cleared(u) : 0, ko = hit && u > tDrop + 0.6;
@@ -340,39 +488,103 @@ html, body { margin:0; background:var(--bg); color:var(--fg); font-family:"Segoe
       // le résultat
       if (u >= tRes) {
         var ok = avec, ry = 548;
-        h += '<rect x="40" y="' + ry + '" width="' + (ok ? 1200 : 1000) + '" height="140" rx="16" fill="' + (ok ? 'rgba(46,230,160,.12)' : 'rgba(180,35,24,.22)') + '" stroke="' + (ok ? 'rgba(46,230,160,.72)' : '#ff6b61') + '" stroke-width="2"/>';
+        h += '<rect x="40" y="' + ry + '" width="1000" height="140" rx="16" fill="' + (ok ? 'rgba(46,230,160,.12)' : 'rgba(180,35,24,.22)') + '" stroke="' + (ok ? 'rgba(46,230,160,.72)' : '#ff6b61') + '" stroke-width="2"/>';
         h += '<text x="66" y="' + (ry + 34) + '" fill="#a9b4cc" style="font-size:15px;letter-spacing:.16em">RÉSULTAT</text>';
         h += '<text x="66" y="' + (ry + 72) + '" fill="#e8edf7" style="font-size:25px;font-weight:600">' + (ok ? 'Mission Zero signale la chute dans la seule boîte 7.' : 'Les bactéries meurent. Pourquoi ? On ne sait pas.') + '</text>';
         h += '<text x="66" y="' + (ry + 108) + '" fill="#a9b4cc" style="font-size:17px">' + (ok ? 'vu dans les données · les 5 autres labos ne bougent pas · au chercheur de conclure' : 'la boîte part à la poubelle, la découverte avec elle') + '</text>';
       }
       if (avec && u >= tEnd) h += '<text x="640" y="' + 712 + '" text-anchor="middle" fill="#2ee6a0" style="font-size:19px;font-weight:700">Fleming l’a vu par hasard en 1928. Mission Zero le signale au chercheur.</text>';
       // le titre : en grand au centre, lu, puis il glisse à sa place en haut à droite
-      var kb = INTRO ? ease(Math.min(1, Math.max(0, (u0 - 1.9) / 0.7))) : 1, sb = lerp(2.5, 1, kb), tx = lerp(640 - 991, 0, kb), ty = lerp(360 - 99, 0, kb);
-      if (kb < 1) h += '<rect x="0" y="0" width="1280" height="720" fill="#0d1526" opacity="' + (0.94 * (1 - kb)).toFixed(3) + '"/>';
-      h += '<g transform="translate(' + tx.toFixed(1) + ',' + ty.toFixed(1) + ') translate(991,99) scale(' + sb.toFixed(3) + ') translate(-991,-99)" opacity="' + (INTRO ? Math.min(1, u0 / 0.3) : 1).toFixed(3) + '">' + banner + '</g>';
-      $('labsvg').innerHTML = h;
+      h += banner;
+      if (INTRO && u0 < INTRO) {
+        // le voile, puis chaque titre : il apparaît (0,25 s), se lit, s'efface (0,25 s)
+        h += '<rect x="0" y="0" width="1280" height="720" fill="#0d1526" opacity="' + (0.97 * Math.min(1, (INTRO - u0) / 0.5)).toFixed(3) + '"/>';
+        var t0 = 0; TITRES.forEach(function (x) { var a = u0 - t0, d = x.d; t0 += d; if (a < 0 || a > d) return;
+          var op = Math.min(1, a / 0.25, (d - a) / 0.25), sc = 1.07 - 0.07 * ease(Math.min(1, a / 0.45)), n = x.l.length;
+          var fs = x.box ? 44 : n > 1 ? 70 : 84, lh = x.box ? 60 : 92, g = '';
+          if (x.box) g += '<rect x="250" y="' + (360 - n * lh / 2 - 34) + '" width="780" height="' + (n * lh + 52) + '" rx="22" fill="rgba(255,210,122,.08)" stroke="#ffd27a" stroke-width="3"/>';
+          x.l.forEach(function (ln, i) { var y = 360 + (i - (n - 1) / 2) * lh + fs * 0.36;
+            var t = ln.replace(/\[r\](.*?)\[\/r\]/g, '<tspan fill="#ff6b61" style="text-decoration:line-through;text-decoration-thickness:6px">$1</tspan>').replace(/\[g\](.*?)\[\/g\]/g, '<tspan fill="#2ee6a0">$1</tspan>');
+            g += '<text x="640" y="' + y.toFixed(1) + '" text-anchor="middle" fill="' + (x.box ? '#ffd27a' : '#e8edf7') + '" style="font-size:' + fs + 'px;font-weight:' + (x.box ? 700 : 900) + ';letter-spacing:' + (x.box ? '.01em' : '-.01em') + '">' + t + '</text>'; });
+          h += '<g opacity="' + op.toFixed(3) + '" transform="translate(640,360) scale(' + sc.toFixed(4) + ') translate(-640,-360)">' + g + '</g>'; });
+      }
+      if (avec) h += favH;
+      $('labsvg').innerHTML = h; if (L === 'en') labEN($('labsvg')); mzScan($('labsvg'));
       // le zoom sur le cadre RÉSULTAT (encadré en jaune par le gérant) : on centre sur son texte
-      var zk = avec ? 0 : zoomK(u, tZoom); applyZoom($('lab'), zk, 540, 618, 1.24);
+      var zk = zoomK(u, tZoom); applyZoom($('lab'), zk, 540, 618, 1.24); // avant ET après : zoom sur le résultat (gérant, 1er novembre)
       // le tampon plein écran
       var ks = (u - tStamp) / 0.26, sc = ks < 0 ? 0 : ks < 1 ? 2.6 - 1.6 * (1 - Math.pow(1 - ks, 3)) : 1, so = ks < 0 ? 0 : Math.min(1, ks * 2.5);
       var hold = avec ? 99 : 1.8, fade = u > tStamp + hold ? Math.max(0, 1 - (u - tStamp - hold) / 0.5) : 1, bs = $('labstamp');
       bs.className = 'bigstamp ' + (avec ? 'ok' : 'ko'); bs.style.display = ks >= 0 && fade > 0 ? 'flex' : 'none';
-      $('labstampT').textContent = avec ? T.stampOk : T.stampKo;
+      $('labstampT').innerHTML = (avec ? T.stampOk : T.stampKo).replace(' ', '<br>'); bs.style.left = avec ? '1045px' : '1060px'; bs.style.top = avec ? '465px' : '500px';
       $('labstampT').style.cssText = 'transform:rotate(-12deg) scale(' + sc.toFixed(3) + ');opacity:' + (so * fade).toFixed(3);
       // le bouton INSTALL MISSION ZERO (avant seulement), pressé par le curseur
-      var ib = $('labinstall'); ib.style.display = !avec && u >= tInstall ? 'flex' : 'none'; ib.textContent = T.install;
+      var ib = $('labinstall'); ib.style.display = !avec && u >= tInstall ? 'flex' : 'none'; ib.innerHTML = mzInstall();
       var glow = 0.35 + 0.35 * Math.sin((u - tInstall) * 6); ib.style.boxShadow = '0 0 ' + (18 + 16 * glow).toFixed(0) + 'px rgba(46,230,160,' + glow.toFixed(2) + ')';
       ib.className = 'install' + (u >= tPress && u < tPress + 0.3 ? ' press' : '');
       var cx2 = 1180, cy2 = 700; if (!avec && u >= tGo) { var k3 = ease((u - tGo) / 0.8); cx2 = lerp(1180, 1155, k3); cy2 = lerp(700, 616, k3); }
       $('cursor').style.transform = 'translate(' + cx2 + 'px,' + cy2 + 'px)'; $('cursor').style.opacity = zk > 0.01 ? '0' : '1';
     } };
   }
-  var LAB = EX === 'labo';
-  var A = LAB ? labTimeline(false) : appTimeline({ avec: false, result: D.sans.result, rows: D.sans.rows, verdict: D.sans.verdict });
-  var B = termTimeline();
-  var C = LAB ? labTimeline(true) : appTimeline({ avec: true, result: D.avec.result, rows: D.avec.rows, verdict: D.avec.verdict });
-  var GAP = 0.5, FADE = 0.35;
-  var pages = [{ id: LAB ? 'lab' : 'app', tl: A }, { id: 'term', tl: B }, { id: LAB ? 'lab' : 'app', tl: C }];
+  // ---- la médecine (gérant, 2 novembre : « je veux voir le remplacement des bactéries ») : les vrais résultats du jour ----
+  // Sources : examples/unreported-trials/ (README, audit-2026-11-02.md, stage5.json) et examples/repurposing-gbm/ (e-strict.json).
+  // Là où un chiffre attend encore Mission Zero, l'écran dit « API blocked » (accès Meta restreint le 2 novembre, 12 h 30 UTC).
+  function medTimeline() {
+    // Une seule histoire (gérant, 2 novembre) : le glioblastome, de 673 articles à 9 pistes, puis l'appel aux laboratoires.
+    // Sources : examples/repurposing-gbm/ (a-items.json, b-approved.json, c-trials.json, e-strict.json). « API blocked » = contrôle
+    // final par Mission Zero en attente (accès Meta restreint le 2 novembre, 12 h 30 UTC).
+    var EN = L === 'en';
+    var t = function (fr, en) { return EN ? en : fr; };
+    var fmt = function (n) { return EN ? n.toLocaleString('en-US') : n.toLocaleString('fr-FR').replace(/\u202f/g, '\u00a0'); };
+    var BLOCK = '<span class="mblock">API blocked</span>';
+    var T1 = 4.4, T2 = 34.0, T3 = 41.5, dur = 50.0;
+    var count = function (u, a, b, n) { var k = ease(Math.max(0, Math.min(1, (u - a) / (b - a)))); return Math.round(n * k); };
+    var on = function (u, a) { return u >= a ? ' on' : ''; };
+    function funnel(u, base, rows) {
+      return rows.map(function (r, i) { var a = base + i * 2.0; var n = count(u, a, a + 1.4, r.n);
+        return '<div class="mrow' + on(u, a) + (r.cls ? ' ' + r.cls : '') + '" style="width:' + r.w + '%"><b>' + fmt(n) + '</b><span>' + r.l + '</span></div>'; }).join('');
+    }
+    var LEADS = [
+      { d: t('Moxidectine', 'Moxidectin'), u: t('antiparasitaire', 'antiparasitic'), q: t('« suppressed the growth of GBM tumors by 90% in an intracranial tumor model »', '“suppressed the growth of GBM tumors by 90% in an intracranial tumor model”'), p: '40231611' },
+      { d: 'Fluvoxamine', u: t('antidépresseur', 'antidepressant'), q: t('« blocked tumor cell invasion and prolonged the survival »', '“blocked tumor cell invasion and prolonged the survival”'), p: '26988603' },
+      { d: 'Amlodipine', u: t('tension artérielle', 'blood pressure'), q: t('« significantly reduced tumor volume and prolonged median survival of tumor-bearing mice »', '“significantly reduced tumor volume and prolonged median survival of tumor-bearing mice”'), p: '40701313' }
+    ];
+    return { dur: dur, render: function (u) {
+      var h = '';
+      if (u < T1) {
+        h += '<div class="mtitle' + on(u, 0.2) + '"><div class="mk">' + t('LA MÉDECINE · LE GLIOBLASTOME', 'MEDICINE · GLIOBLASTOMA') + '</div><div class="mh">' + t('Le cancer du cerveau le plus agressif.<br>Mission Zero cherche des pistes.', 'The most aggressive brain cancer.<br>Mission Zero looks for leads.') + '</div><div class="ms">' + t('Données publiques réelles · 2 novembre 2026', 'Real public data · 2 November 2026') + '</div></div>';
+      } else if (u < T2) {
+        var w = u - T1;
+        h += '<div class="mhead">' + t('Des médicaments déjà autorisés, jamais testés contre ce cancer', 'Approved drugs, never tested against this cancer') + '</div>';
+        h += '<div class="msub">' + t('Mission Zero lit les études, vérifie chaque phrase, puis cherche les essais sous tous les noms du médicament', 'Mission Zero reads the studies, checks every sentence, then looks for trials under every name of the drug') + '</div>';
+        h += '<div class="mfun small">' + funnel(w, 0.8, [
+          { n: 673, w: 100, l: t('études lues', 'studies read') },
+          { n: 366, w: 86, l: t('médicaments testés dans ces études, effet relevé, phrase vérifiée', 'drugs tested in these studies, effect noted, sentence checked') },
+          { n: 211, w: 74, l: t('avec une notice officielle de la FDA', 'with an official FDA label') },
+          { n: 95, w: 62, l: t('sans essai enregistré sous leur nom', 'with no trial registered under their name') },
+          { n: 9, w: 56, l: t('effet chez l\u2019animal et passage dans le cerveau · citations vérifiées', 'effect in animals and brain penetration · quotes checked'), cls: 'ok' }
+        ]) + '</div>';
+        if (w > 11.5) h += '<div class="mleads">' + LEADS.map(function (x, i) { return '<div class="mlead' + on(w, 11.7 + i * 2.2) + '"><div class="mld">' + x.d + '<span>' + x.u + '</span></div><i>' + x.q + '</i><span class="mok">VERIFIED · PubMed ' + x.p + '</span></div>'; }).join('') + '</div>';
+        if (w > 20.0) h += '<div class="mfoot on">' + t('Chez la souris, pas encore chez l\u2019humain · pour aller plus loin, un accès autorisé aux données de laboratoire · coût ≈ 2,30 $', 'In mice, not yet in humans · to go further, authorised access to lab data · cost ≈ $2.30') + '</div>';
+      } else if (u < T3) {
+        var z = u - T2;
+        h += '<div class="mend' + on(z, 0.2) + '"><div class="meh">' + t('Des pistes pour les chercheurs.<br><b>Pas des traitements.</b>', 'Leads for researchers.<br><b>Not treatments.</b>') + '</div><div class="mes">' + t('Chaque chiffre a sa page. Un humain décide.', 'Every figure has its page. A human decides.') + '</div></div>';
+      } else {
+        var c = u - T3;
+        h += '<div class="mend' + on(c, 0.2) + '"><div class="mk mkbig">' + t('CHERCHEURS, LABORATOIRES', 'RESEARCHERS, LABS') + '</div><div class="meh" style="margin-top:18px">' + t('Apportez-nous vos <b>données de laboratoire</b>.', 'Bring us your <b>lab data</b>.') + '</div><div class="mes">' + t('Nous lisons tout, nous prouvons tout, <b>vous décidez</b>.<br>Lecture prouvée, essais déjà faits, contradiction, veille.', 'We read everything, we prove everything, <b>you decide</b>.<br>Proven reading, trials already run, contradiction, continuous watch.') + '</div></div>';
+      }
+      $('med').innerHTML = mzh(h); var cur = $('cursor'); if (cur) cur.style.opacity = '0';
+    } };
+  }
+  var MED = EX === 'medecine';
+  var LAB = EX === 'labo', SHOP = EX === 'boutique';
+  var A = SHOP || MED ? null : LAB ? labTimeline(false) : appTimeline({ avec: false, result: D.sans.result, rows: D.sans.rows, verdict: D.sans.verdict });
+  // installations après la 1re (gérant, 1er novembre) : le terminal en accéléré, 4 s au plus
+  var fit = function (tl, d) { var f = tl.dur / d; return { dur: d, render: function (u) { tl.render(Math.min(tl.dur, u * f)); } }; };
+  var B = SHOP ? termTimeline('shop') : fit(termTimeline(''), 4.0);
+  var C = SHOP || MED ? null : LAB ? labTimeline(true) : appTimeline({ avec: true, result: D.avec.result, rows: D.avec.rows, verdict: D.avec.verdict });
+  var GAP = 0, FADE = 0; // plus d'écran noir entre les parties : on enchaîne (gérant, 1er novembre)
+  var pages = MED ? [{ id: 'med', tl: medTimeline() }] : SHOP ? [{ id: 'term', tl: B }] : [{ id: LAB ? 'lab' : 'app', tl: A }, { id: 'term', tl: B }, { id: LAB ? 'lab' : 'app', tl: C }];
   var starts = []; var acc = 0; pages.forEach(function (p) { starts.push(acc); acc += p.tl.dur + GAP; });
   var TOTAL = acc - GAP;
   function seek(t) {
@@ -382,7 +594,48 @@ html, body { margin:0; background:var(--bg); color:var(--fg); font-family:"Segoe
     $(p.id).classList.add('on');
     p.tl.render(Math.max(0, Math.min(p.tl.dur, u)));
     var black = u < 0 ? 1 : u < FADE ? 1 - u / FADE : u > p.tl.dur - FADE ? Math.min(1, (u - (p.tl.dur - FADE)) / FADE) : 0;
-    if (u > p.tl.dur) black = 1;
+    if (u > p.tl.dur) black = 0; // après la dernière image : on la garde, jamais de noir
+    $('black').style.opacity = black.toFixed(3);
+    return true;
+  }
+  window.__demo = { seek: seek, total: TOTAL, ex: EX, lang: L, starts: starts };
+  window.addEventListener('message', function (e) { var d = e.data || {}; if (typeof d.mzSeek === 'number') seek(d.mzSeek); });
+  try { if (window.parent !== window) window.parent.postMessage({ mzDemo: EX, total: TOTAL }, '*'); } catch (e) { /* rien */ }
+  seek(Number(Q.get('t') || 0));
+})();
+</script>
+</body>
+</html>
+, 'In mice, not yet in humans · to go further, authorised access to lab data · cost ≈ $2.30') + '</div>';
+      } else if (u < T3) {
+        var z = u - T2;
+        h += '<div class="mend' + on(z, 0.2) + '"><div class="meh">' + t('Des pistes pour les chercheurs.<br><b>Pas des traitements.</b>', 'Leads for researchers.<br><b>Not treatments.</b>') + '</div><div class="mes">' + t('Chaque chiffre a sa page. Un humain décide.', 'Every figure has its page. A human decides.') + '</div></div>';
+      } else {
+        var c = u - T3;
+        h += '<div class="mend' + on(c, 0.2) + '"><div class="mk mkbig">' + t('CHERCHEURS, LABORATOIRES', 'RESEARCHERS, LABS') + '</div><div class="meh" style="margin-top:18px">' + t('Apportez-nous vos <b>données de laboratoire</b>.', 'Bring us your <b>lab data</b>.') + '</div><div class="mes">' + t('Nous lisons tout, nous prouvons tout, <b>vous décidez</b>.<br>Lecture prouvée, essais déjà faits, contradiction, veille.', 'We read everything, we prove everything, <b>you decide</b>.<br>Proven reading, trials already run, contradiction, continuous watch.') + '</div></div>';
+      }
+      $('med').innerHTML = mzh(h); var cur = $('cursor'); if (cur) cur.style.opacity = '0';
+    } };
+  }
+  var MED = EX === 'medecine';
+  var LAB = EX === 'labo', SHOP = EX === 'boutique';
+  var A = SHOP || MED ? null : LAB ? labTimeline(false) : appTimeline({ avec: false, result: D.sans.result, rows: D.sans.rows, verdict: D.sans.verdict });
+  // installations après la 1re (gérant, 1er novembre) : le terminal en accéléré, 4 s au plus
+  var fit = function (tl, d) { var f = tl.dur / d; return { dur: d, render: function (u) { tl.render(Math.min(tl.dur, u * f)); } }; };
+  var B = SHOP ? termTimeline('shop') : fit(termTimeline(''), 4.0);
+  var C = SHOP || MED ? null : LAB ? labTimeline(true) : appTimeline({ avec: true, result: D.avec.result, rows: D.avec.rows, verdict: D.avec.verdict });
+  var GAP = 0, FADE = 0; // plus d'écran noir entre les parties : on enchaîne (gérant, 1er novembre)
+  var pages = MED ? [{ id: 'med', tl: medTimeline() }] : SHOP ? [{ id: 'term', tl: B }] : [{ id: LAB ? 'lab' : 'app', tl: A }, { id: 'term', tl: B }, { id: LAB ? 'lab' : 'app', tl: C }];
+  var starts = []; var acc = 0; pages.forEach(function (p) { starts.push(acc); acc += p.tl.dur + GAP; });
+  var TOTAL = acc - GAP;
+  function seek(t) {
+    var i = pages.length - 1; while (i > 0 && t < starts[i]) i--;
+    var p = pages[i], u = t - starts[i];
+    document.querySelectorAll('.page').forEach(function (el) { el.classList.remove('on'); });
+    $(p.id).classList.add('on');
+    p.tl.render(Math.max(0, Math.min(p.tl.dur, u)));
+    var black = u < 0 ? 1 : u < FADE ? 1 - u / FADE : u > p.tl.dur - FADE ? Math.min(1, (u - (p.tl.dur - FADE)) / FADE) : 0;
+    if (u > p.tl.dur) black = 0; // après la dernière image : on la garde, jamais de noir
     $('black').style.opacity = black.toFixed(3);
     return true;
   }

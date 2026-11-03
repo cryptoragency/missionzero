@@ -1,0 +1,49 @@
+{
+  "date": "2026-11-02T07:59:29.640Z",
+  "model": "muse-spark-1.3",
+  "note": "model alone, no tools, no reading, no verification; its sources then checked by the Mission Zero verifier",
+  "question": "Tuberculosis: what are the latest WHO figures, for the most recent year reported? How many people fell ill worldwide, how many died, and what share of treated people are cured? Answer with precise figures, the year they refer to, and cite your sources (title, year, URL).",
+  "answer": "The latest consolidated WHO figures are for **2023**, published in the **WHO Global Tuberculosis Report 2024**:\n\n* **Fell ill worldwide in 2023: 10.8 million people**\n> including 6.0 million men, 3.6 million women and 1.3 million children, with TB present in all countries and age groups.\n\n* **Died worldwide in 2023: 1.25 million people**\n> including 1.09 million HIV-negative people and 161,000 people with HIV. TB was again the leading cause of death from a single infectious agent in 2023, ahead of COVID-19.\n\n* **Share of treated people successfully treated / cured: 88%**\n> treatment success rate of 88% among people enrolled on drug-susceptible TB treatment in the 2022 cohort. 8.2 million people were newly diagnosed and treated in 2023, up from 7.5 million in 2022.\n\nSources:\n- WHO, Global tuberculosis report 2024, 2024, https://www.who.int/teams/global-tuberculosis-programme/tb-reports/global-tuberculosis-report-2024\n- WHO, Tuberculosis Fact Sheet / Global tuberculosis report 2024 news release 29 Oct 2024, 2024, https://www.who.int/news/item/29-10-2024-tuberculosis-resurges-as-top-infectious-disease-killer\n\n[{\"claim\":\"10.8 million people fell ill with TB worldwide in 2023\",\"url\":\"https://www.who.int/teams/global-tuberculosis-programme/tb-reports/global-tuberculosis-report-2024\"},{\"claim\":\"1.25 million people died from TB worldwide in 2023, including 1.09 million HIV-negative and 161,000 with HIV\",\"url\":\"https://www.who.int/teams/global-tuberculosis-programme/tb-reports/global-tuberculosis-report-2024\"},{\"claim\":\"88% treatment success rate among people treated for drug-susceptible TB in the 2022 cohort reported in 2024\",\"url\":\"https://www.who.int/teams/global-tuberculosis-programme/tb-reports/global-tuberculosis-report-2024\"}]",
+  "items": [
+    {
+      "claim": "10.8 million people fell ill with TB worldwide in 2023",
+      "url": "https://www.who.int/teams/global-tuberculosis-programme/tb-reports/global-tuberculosis-report-2024"
+    },
+    {
+      "claim": "1.25 million people died from TB worldwide in 2023, including 1.09 million HIV-negative and 161,000 with HIV",
+      "url": "https://www.who.int/teams/global-tuberculosis-programme/tb-reports/global-tuberculosis-report-2024"
+    },
+    {
+      "claim": "88% treatment success rate among people treated for drug-susceptible TB in the 2022 cohort reported in 2024",
+      "url": "https://www.who.int/teams/global-tuberculosis-programme/tb-reports/global-tuberculosis-report-2024"
+    }
+  ],
+  "result": {
+    "results": [
+      {
+        "claim": "10.8 million people fell ill with TB worldwide in 2023",
+        "url": "https://www.who.int/teams/global-tuberculosis-programme/tb-reports/global-tuberculosis-report-2024",
+        "verdict": "unsupported",
+        "color": "red",
+        "detail": "nearest passages: \"TB research & innovation Featured topics Asymptomatic TB Engagement of civil society and communities affected by TB MAF-TB: progress and way forward TB & pregnancy The 2023 national TB inventory study in Indonesia Countr\" \"In 2023, TB returned to being the world’s leading infectious disease killer, surpassing COVID-19.\" \"Download Read More More on TB 29 October 2024 News release Tuberculosis resurges as top infectious disease killer 13 November 2025 10 facts on tuberculosis 24 March 2026 Tuberculosis\""
+      },
+      {
+        "claim": "1.25 million people died from TB worldwide in 2023, including 1.09 million HIV-negative and 161,000 with HIV",
+        "url": "https://www.who.int/teams/global-tuberculosis-programme/tb-reports/global-tuberculosis-report-2024",
+        "verdict": "unsupported",
+        "color": "red",
+        "detail": "nearest passages: \"Download Read More Explore more detailed and interactive content Standard topics 1.\" \"TB research & innovation Featured topics Asymptomatic TB Engagement of civil society and communities affected by TB MAF-TB: progress and way forward TB & pregnancy The 2023 national TB inventory study in Indonesia Countr\" \"In 2023, TB returned to being the world’s leading infectious disease killer, surpassing COVID-19.\""
+      },
+      {
+        "claim": "88% treatment success rate among people treated for drug-susceptible TB in the 2022 cohort reported in 2024",
+        "url": "https://www.who.int/teams/global-tuberculosis-programme/tb-reports/global-tuberculosis-report-2024",
+        "verdict": "unsupported",
+        "color": "red",
+        "detail": "nearest passages: \"Global tuberculosis report 2024 Overview The WHO Global tuberculosis report 2024 provides a comprehensive and up-to-date assessment of the TB epidemic and of progress in prevention, diagnosis and treatment of the disease\" \"In 2024, 193 countries and areas with more than 99% of the world&rsquo;s population and TB cases reported data.\" \"Global Tuberculosis Report 2024 Skip to main content Burden estimates in the 2024 edition of the Global tuberculosis report are out of date.\""
+      }
+    ],
+    "green": 0,
+    "red": 3
+  },
+  "usd": 0.01428525
+}

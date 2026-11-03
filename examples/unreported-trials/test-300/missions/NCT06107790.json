@@ -1,0 +1,30 @@
+{
+  "nct": "NCT06107790",
+  "folder": "evidence/2026-11-02-09-40-25-3",
+  "code": 0,
+  "answer": "NOT FOUND: No publication or results page for NCT06107790 was identified after searching registry mirrors, PubMed by drug plus condition plus phase plus sponsor, EU register, sponsor results site and conference abstracts. Registry pages describe a Phase 3 interventional study of HS022 and Trastuzumab in HER2-positive Breast Cancer with ClinicalTrials.gov ID NCT06107790.",
+  "sources": [
+    {
+      "url": "https://clinicaltrials.gov/study/NCT06107790",
+      "contribution": "ClinicalTrials.gov ID NCT06107790"
+    },
+    {
+      "url": "https://clinicaltrials.gg/study/NCT06107790",
+      "contribution": "A Phase 3 interventional study"
+    },
+    {
+      "url": "https://clinicaltrials.gg/study/NCT06107790",
+      "contribution": "interventional study of HS022 and Trastuzumab"
+    },
+    {
+      "url": "https://clinicaltrials.gg/study/NCT06107790",
+      "contribution": "study in HER2-positive Breast Cancer"
+    }
+  ],
+  "judge": {
+    "score": 5,
+    "green": 3,
+    "red": 1
+  },
+  "usd": 0.31176075
+}

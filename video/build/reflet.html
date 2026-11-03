@@ -1,0 +1,15 @@
+<!-- Le reflet de lumière (gérant, 2 novembre : « l'effet lumière qui passe en fond, juste avant la fin d'une page, sur les
+     10 pages »). Présentation HTML seulement. 2,4 s avant la fin de chaque page, le reflet glisse une fois sur la plaque de verre. -->
+<script>
+(function () {
+  var fired = {}, last = -1, LEAD = 2400;
+  function pass() { var b = document.body; b.classList.remove('mzSheenGo'); void b.offsetWidth; b.classList.add('mzSheenGo'); setTimeout(function () { b.classList.remove('mzSheenGo'); }, 2700); }
+  setInterval(function () {
+    var F = window.MZF; if (!F || !F.TL || !F.TL.length) return;
+    var t = F.pos(), TL = F.TL, i = 0; while (i + 1 < TL.length && t >= TL[i + 1].start) i++;
+    if (i < last) fired = {}; last = i;                       // retour en arrière : le reflet repassera
+    var end = i + 1 < TL.length ? TL[i + 1].start : F.TOTAL, left = end - t;
+    if (left > 0 && left <= LEAD && !fired[i] && t > TL[i].start + 500) { fired[i] = true; pass(); }
+  }, 120);
+})();
+</script>

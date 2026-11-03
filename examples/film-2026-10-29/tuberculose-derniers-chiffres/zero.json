@@ -1,0 +1,25 @@
+{
+  "decision": {
+    "reset": true,
+    "rule": "C",
+    "reason": "the note drifts: 7.3 on the last 3 missions against 10.0 on the 3 before"
+  },
+  "archive": {
+    "archived": "memory\\archive\\lessons-2026-11-02T08-00-55-689Z.json",
+    "count": 30
+  },
+  "withMemory": {
+    "score": 5,
+    "green": 2,
+    "red": 0,
+    "usd": 0.11197175
+  },
+  "fromZero": {
+    "score": 4,
+    "green": 2,
+    "red": 3,
+    "usd": 0.18333475
+  },
+  "kept": "with-memory",
+  "why": "judge 4/10 from zero against 5/10 with memory"
+}

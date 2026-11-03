@@ -1,0 +1,1078 @@
+{
+  "date": "2026-11-02T11:51:00.457Z",
+  "usd": 0.6660192500000002,
+  "rows": [
+    {
+      "nct": "NCT00003884",
+      "verdict": "FOUND",
+      "via": "pubmed (model queries)",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/12915606/",
+      "quote": "Patients were randomly assigned to receive zoledronic acid (4 or 8 mg) or placebo every 3 weeks for 9 months, with concomitant antineoplastic therapy.",
+      "why": "This matches the registry's drug doses, placebo comparator, and population of bone metastases from solid tumors other than breast or prostate cancer in a randomized double-blind trial.",
+      "tried": [
+        "pubmed: zoledronic acid[tiab] AND placebo[tiab] AND solid tumors[tiab] AND bone metastases[tiab]",
+        "pubmed: zoledronate[tiab] AND placebo[tiab] AND lung cancer[tiab] AND skeletal metastases[tiab]"
+      ]
+    },
+    {
+      "nct": "NCT06107790",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: trastuzumab[tiab] AND vinorelbine[tiab] AND HER2-positive[tiab] AND breast cancer[tiab] AND biosimilar[tiab]",
+        "pubmed: trastuzumab[tiab] AND vinorelbine[tiab] AND HER2-positive breast cancer[tiab] AND equivalence[tiab]",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT00063726",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: bortezomib[tiab] AND dexamethasone[tiab] AND multiple myeloma[tiab]",
+        "pubmed: bortezomib[tiab] AND dexamethasone[tiab] AND myeloma[tiab] AND relapsed[tiab]",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT00005623",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: cyproterone acetate[tiab] AND placebo[tiab] AND hot flashes[tiab] AND prostate cancer[tiab]",
+        "pubmed: cyproterone[tiab] AND placebo[tiab] AND hot flush*[tiab] AND prostate[tiab]",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT00002742",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: nystatin[tiab] AND amphotericin B[tiab] AND neutropen*[tiab] AND fever[tiab]",
+        "pubmed: liposomal nystatin[tiab] AND amphotericin[tiab] AND empiric[tiab] AND (leukemia[tiab] OR lymphoma[tiab] OR neutropenic[tiab])",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT02076815",
+      "verdict": "FOUND",
+      "via": "pubmed (model queries)",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/30919941/",
+      "quote": "The mean screening platelet counts were 822&#xa0;&#xd7;&#xa0;109 /l (95% confidence interval (CI) 707-936&#xa0;&#xd7;&#xa0;109 /l) and 797&#xa0;&#xd7;&#xa0;109 /l (95% CI 708-883&#xa0;&#xd7;&#xa0;109 /l) for A-PR and the reference product, respectively.",
+      "why": "It matches design, disease, drugs, TEAM-ET 2.0 name, and 106 randomized patients.",
+      "tried": [
+        "pubmed: anagrelide[tiab] AND (essential thrombocythemia[tiab] OR essential thrombocythaemia[tiab]) AND (retard[tiab] OR prolonged-release[tiab] OR extended-release[tiab] OR slow-release[tiab])",
+        "pubmed: TEAM-ET[tiab] AND anagrelide[tiab] AND (essential thrombocythemia[tiab] OR essential thrombocythaemia[tiab])"
+      ]
+    },
+    {
+      "nct": "NCT03413579",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: (nimotuzumab[tiab] OR HR3[tiab] OR h-R3[tiab]) AND (cervical cancer[tiab] OR cervical carcinoma[tiab]) AND (cisplatin[tiab] AND vinorelbine[tiab])",
+        "pubmed: (nimotuzumab[tiab] OR HR3[tiab] OR h-R3[tiab]) AND cervical[tiab] AND (cisplatin[tiab] OR vinorelbine[tiab] OR navelbine[tiab]) AND (placebo[tiab] OR randomized[tiab] OR randomised[tiab])",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT03727074",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: fluorouracil[tiab] AND actinic keratosis[tiab] AND bioequivalence[tiab]",
+        "pubmed: fluorouracil cream[tiab] AND actinic keratosis[tiab] AND vehicle[tiab]",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT00156156",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: asoprisnil[tiab] AND (uterine fibroid*[tiab] OR uterine leiomyoma*[tiab] OR leiomyomata[tiab] OR fibroid uterus[tiab])",
+        "pubmed: asoprisnil[tiab] AND (continuation[tiab] OR long-term safety[tiab]) AND (fibroid*[tiab] OR leiomyoma*[tiab] OR menorrhagia[tiab])",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT02040935",
+      "verdict": "FOUND",
+      "via": "EU CTR (browser)",
+      "url": "https://www.clinicaltrialsregister.eu/ctr-search/trial/2013-000829-31/results",
+      "quote": "The first 3 administrations were done at hospital, after that participants were permitted to self administer under the supervision of a healthcare professional (HCP).",
+      "why": "Title, EudraCT 2013-000829-31, sponsor Roche, and trastuzumab SC match the registry record and the text reports primary AE results.",
+      "tried": [
+        "pubmed: trastuzumab[tiab] AND HOMERUS[tiab]",
+        "pubmed: trastuzumab[tiab] AND breast cancer[tiab] AND subcutaneous[tiab] AND home[tiab]",
+        "euctr 2013-000829-31 read"
+      ]
+    },
+    {
+      "nct": "NCT01674855",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: (pegteograstim[tiab] OR pegylated G-CSF[tiab]) AND (filgrastim[tiab] OR G-CSF[tiab]) AND neutropenia[tiab]",
+        "pubmed: pegteograstim[tiab] AND chemotherapy-induced neutropenia[tiab]",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT00784680",
+      "verdict": "FOUND",
+      "via": "pubmed (model queries)",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/15514369/",
+      "quote": "A total of 1,021 women were enrolled onto the QoL subprotocol. All had completed primary treatment (surgery +/- radiotherapy +/- chemotherapy) and were to receive 5 years of adjuvant treatment with anastrozole (n = 335), tamoxifen (n = 347), or a combination (n = 339) of both.",
+      "why": "It reports the ATAC quality-of-life subprotocol comparing the same three adjuvant arms of anastrozole vs tamoxifen vs combination in postmenopausal breast cancer.",
+      "tried": [
+        "pubmed: anastrozole[tiab] AND tamoxifen[tiab] AND breast cancer[tiab] AND quality of life[tiab]",
+        "pubmed: anastrozole[tiab] AND tamoxifen[tiab] AND ATAC[tiab] AND quality of life[tiab]"
+      ]
+    },
+    {
+      "nct": "NCT03936218",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: goserelin[tiab] AND advanced prostate cancer[tiab] AND pharmacodynamics[tiab]",
+        "pubmed: goserelin[tiab] AND prostate cancer[tiab] AND (Zoladex[tiab] OR goserelin[tiab]) AND (randomised[tiab] OR randomized[tiab])",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT00270101",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: (epoetin alfa[tiab] OR epoetin[tiab] OR erythropoietin[tiab] OR r-huEPO[tiab]) AND multiple myeloma[tiab] AND anemia[tiab] AND placebo[tiab]",
+        "pubmed: (epoetin[tiab] OR erythropoietin[tiab]) AND myeloma[tiab] AND anemia[tiab] AND placebo[tiab]",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT00335075",
+      "verdict": "FOUND",
+      "via": "pubmed (model queries)",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/23570586/",
+      "quote": "A total of 151 patients with recurrent GBM or AA were enrolled into this randomized, multicentre and open-label study.",
+      "why": "This matches the registry's 151 participants, recurrent GBM/AA population, and randomized multicentre open-label design comparing temozolomide versus semustine.",
+      "tried": [
+        "pubmed: temozolomide[tiab] AND semustine[tiab] AND glioblastoma[tiab]",
+        "pubmed: temozolomide[tiab] AND methyl-CCNU[tiab] AND (glioblastoma[tiab] OR astrocytoma[tiab])"
+      ]
+    },
+    {
+      "nct": "NCT02526784",
+      "verdict": "FOUND",
+      "via": "EU CTR (browser)",
+      "url": "https://www.clinicaltrialsregister.eu/ctr-search/trial/2015-000357-20/results",
+      "quote": "Overall, 120 subjects were randomised (Intention-to-Treat analysis set) but only 119 subjects were dosed as one subject withdrew from the trial and did not receive IMP.",
+      "why": "Text lists the same NCT number, sponsor, degarelix SC vs IM design, and reports primary pain-score results.",
+      "tried": [
+        "pubmed: degarelix[tiab] AND prostate cancer[tiab] AND (subcutaneous[tiab] OR intramuscular[tiab]) AND injection[tiab]",
+        "pubmed: degarelix[tiab] AND prostate[tiab] AND (injection technique[tiab] OR injection site[tiab] OR administration[tiab])",
+        "euctr 2015-000357-20 read"
+      ]
+    },
+    {
+      "nct": "NCT00683995",
+      "verdict": "FOUND",
+      "via": "pubmed (model queries)",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/24839047/",
+      "quote": "Efficacy and safety of sublingual fentanyl orally disintegrating tablet at doses determined by titration for the treatment of breakthrough pain in Japanese cancer patients: a multicenter, randomized, placebo-controlled, double-blind phase III trial.",
+      "why": "This title matches the registry drug KW-2246 fentanyl, breakthrough cancer pain population, and Phase III randomized placebo-controlled double-blind design with matching size around 42-43 subjects.",
+      "tried": [
+        "pubmed: fentanyl[tiab] AND breakthrough pain[tiab] AND cancer[tiab] AND placebo[tiab]",
+        "pubmed: sublingual fentanyl[tiab] AND breakthrough cancer pain[tiab] AND placebo[tiab]"
+      ]
+    },
+    {
+      "nct": "NCT01126892",
+      "verdict": "FOUND",
+      "via": "pubmed (model queries)",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/22961257/",
+      "quote": "Delayed initiation of front-line imatinib therapy predicts for poor response to nilotinib as second-line treatment of imatinib-resistant or intolerant CML: single center report of the ENACT trial in Lebanon.",
+      "why": "It reports ENACT results for nilotinib as second-line treatment of imatinib-resistant or intolerant CML, matching the registry's drug, population, and ENACT acronym/design.",
+      "tried": [
+        "pubmed: nilotinib[tiab] AND ENACT[tiab] AND (chronic myeloid leukemia[tiab] OR CML[tiab])",
+        "pubmed: nilotinib[tiab] AND imatinib[tiab] AND (resistant[tiab] OR intolerant[tiab]) AND (chronic myeloid leukemia[tiab] OR CML[tiab]) AND (blast crisis[tiab] OR accelerated phase[tiab] OR chronic phase[tiab])"
+      ]
+    },
+    {
+      "nct": "NCT01050829",
+      "verdict": "FOUND",
+      "via": "pubmed (model queries)",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/24692302/",
+      "quote": "A multicenter, randomized, controlled, single-blind comparison phase III study to determine the efficacy and safety of gadobutrol 1.0 M versus gadopentetate dimeglumine following single injection in patients referred for contrast-enhanced MRI of the body regions or extremities.",
+      "why": "This matches the registry's design, drugs, and body/extremities population with a similar size (363 vs 370).",
+      "tried": [
+        "pubmed: gadobutrol[tiab] AND gadopentetate[tiab] AND body[tiab] AND magnetic resonance imaging[tiab]",
+        "pubmed: gadobutrol[tiab] AND gadopentetate dimeglumine[tiab] AND contrast-enhanced[tiab] AND magnetic resonance imaging[tiab]"
+      ]
+    },
+    {
+      "nct": "NCT00598312",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: leuprolide[tiab] AND prostate cancer[tiab] AND 22.5[tiab]",
+        "pubmed: leuprorelin[tiab] AND prostate cancer[tiab] AND injectable suspension[tiab]",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT00661102",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: capecitabine[tiab] AND (dexpantenol[tiab] OR bepantol[tiab]) AND corticosteroid*[tiab] AND hand-foot[tiab]",
+        "pubmed: capecitabine[tiab] AND hand-foot syndrome[tiab] AND (prophylaxis[tiab] OR prophylactic[tiab]) AND (breast[tiab] OR colorectal[tiab])",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT00681551",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: gadopentetate[tiab] AND brain metastases[tiab] AND (dose comparison[tiab] OR double dose[tiab])",
+        "pubmed: gadopentetic acid[tiab] AND metastatic brain tumor[tiab] AND (0.1 mmol/kg[tiab] OR 0.2 mmol/kg[tiab])",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT00921375",
+      "verdict": "FOUND",
+      "via": "pubmed (model queries)",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/25104205/",
+      "quote": "An open-label, multicenter, phase-III study was conducted on 100 eligible patients with high risk for TLS.",
+      "why": "This matches the registry's 100-patient open-label rasburicase prevention/treatment trial for malignancy-associated hyperuricemia.",
+      "tried": [
+        "pubmed: rasburicase[tiab] AND hyperuricemia[tiab] AND malignancy[tiab]",
+        "pubmed: rasburicase[tiab] AND (hyperuricemia[tiab] OR hyperuricaemia[tiab]) AND (tumor lysis[tiab] OR malignancy-associated[tiab])"
+      ]
+    },
+    {
+      "nct": "NCT00401323",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: docetaxel[tiab] AND cisplatin[tiab] AND fluorouracil[tiab] AND head[tiab] AND neck[tiab] AND squamous[tiab]",
+        "pubmed: docetaxel[tiab] AND cisplatin[tiab] AND 5-FU[tiab] AND recurrent[tiab] AND metastatic[tiab] AND head and neck carcinoma[tiab]",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT03381417",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: pegfilgrastim[tiab] AND breast cancer[tiab] AND neutropenia[tiab] AND biosimilar[tiab]",
+        "pubmed: pegfilgrastim[tiab] AND breast[tiab] AND neutropenia[tiab] AND (Neulasta[tiab] OR Neulastim[tiab] OR biosimilar[tiab] OR randomized[tiab])",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT00068952",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: (edotecarin[tiab] OR J-107088[tiab]) AND glioblastoma[tiab]",
+        "pubmed: (edotecarin[tiab] OR J-107088[tiab]) AND (temozolomide[tiab] OR carmustine[tiab] OR BCNU[tiab] OR lomustine[tiab] OR CCNU[tiab])",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT00004255",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: (T-cell depleted[tiab] OR T cell depleted[tiab] OR in vitro-treated[tiab] OR processed bone marrow[tiab]) AND (bone marrow transplantation[tiab]) AND (leukemia[tiab]) AND (randomized[tiab] OR randomised[tiab])",
+        "pubmed: (T depletion[tiab] OR T-cell depletion[tiab] OR processed[tiab]) AND (unrelated bone marrow[tiab] OR allogeneic bone marrow[tiab]) AND (graft-versus-host[tiab] OR graft versus host[tiab] OR GVHD[tiab]) AND (leukemia[tiab] OR myelodysplastic[tiab])",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT06910514",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: (endoscopic mucosal resection[tiab] AND (colon[tiab] OR colonic[tiab] OR colorectal[tiab]) AND (hyaluronate[tiab] OR hyaluronic acid[tiab] OR mucopolysaccharide[tiab] OR glycosaminoglycan[tiab]) AND saline[tiab])",
+        "pubmed: (EMR[tiab] AND (colonic neoplasms[tiab] OR colonic lesions[tiab]) AND (submucosal injection[tiab] OR lifting solution[tiab] OR irrigation solution[tiab]) AND (saline[tiab] AND (hyaluronic[tiab] OR hyaluronate[tiab] OR mucopolysaccharide[tiab])) )",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT00523107",
+      "verdict": "FOUND",
+      "via": "pubmed (model queries)",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/22309959/",
+      "quote": "Patients with advanced cancer and moderate to severe CRF were randomized to receive either PG2 or a placebo (normal saline, NS) in the first treatment cycle (four weeks) in a double-blind manner",
+      "why": "This matches the registry's PG2 vs placebo design in advanced cancer patients with fatigue.",
+      "tried": [
+        "pubmed: PG2[tiab] AND fatigue[tiab] AND cancer[tiab]",
+        "pubmed: Astragalus polysaccharide*[tiab] AND fatigue[tiab] AND placebo[tiab]"
+      ]
+    },
+    {
+      "nct": "NCT05078827",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: (fluorouracil[tiab] OR 5-fluorouracil[tiab] OR 5-FU[tiab]) AND (actinic keratosis[tiab] OR actinic keratoses[tiab]) AND (therapeutic equivalence[tiab] OR bioequivalence[tiab] OR generic[tiab])",
+        "pubmed: (fluorouracil[tiab] OR 5-fluorouracil[tiab]) AND actinic[tiab] AND placebo[tiab] AND (Mylan[tiab] OR Encube[tiab] OR three-arm[tiab])",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT00037791",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: promegapoietin[tiab] AND thrombocytopenia[tiab] AND (lymphoma[tiab] OR myeloma[tiab])",
+        "pubmed: pegylated megakaryocyte growth[tiab] AND platelet transfusion[tiab] AND (lymphoma[tiab] OR myeloma[tiab])",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT00195585",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: (isovorin[tiab] OR levoleucovorin[tiab] OR levofolinate[tiab] OR l-leucovorin[tiab] OR 6S-leucovorin[tiab]) AND (colon cancer[tiab] OR colorectal cancer[tiab]) AND (fluorouracil[tiab] OR 5-FU[tiab] OR 5FU[tiab])",
+        "pubmed: (UFT[tiab] OR tegafur[tiab] OR ftorafur[tiab] OR uracil-tegafur[tiab]) AND (levoleucovorin[tiab] OR leucovorin[tiab] OR isovorin[tiab]) AND (colon cancer[tiab] OR colorectal[tiab])",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT05301010",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: trastuzumab[tiab] AND docetaxel[tiab] AND breast cancer[tiab] AND HER2[tiab] AND biosimilar[tiab]",
+        "pubmed: trastuzumab[tiab] AND docetaxel[tiab] AND (metastatic breast cancer[tiab] OR recurrent breast cancer[tiab]) AND HER2[tiab] AND randomized[tiab]",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT00210080",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: (uridine 5'-triphosphate[tiab] OR uridine triphosphate[tiab] OR UTP[tiab] OR INS316[tiab]) AND lung cancer[tiab] AND sputum[tiab] AND placebo[tiab]",
+        "pubmed: (INS316[tiab] OR uridine triphosphate[tiab] OR UTP[tiab]) AND sputum cytology[tiab] AND lung[tiab]",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT05614518",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: (\"18F-NaF\"[tiab] OR \"sodium fluoride F-18\"[tiab] OR \"18F sodium fluoride\"[tiab] OR \"fluoride PET\"[tiab]) AND (\"bone metastases\"[tiab] OR \"bone metastasis\"[tiab] OR \"bone metastatic\"[tiab]) AND (MDP[tiab] OR medronate[tiab] OR methylenediphosphonate[tiab] OR \"99mTc\"[tiab])",
+        "pubmed: (\"NaF-PET\"[tiab] OR \"NaF PET/CT\"[tiab] OR \"sodium fluoride PET\"[tiab]) AND (\"bone metastases\"[tiab] OR \"bone metastasis\"[tiab]) AND (\"bone scintigraphy\"[tiab] OR \"bone scan\"[tiab] OR SPECT[tiab] OR scintigraphy[tiab])",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT01394263",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: histrelin[tiab] AND goserelin[tiab] AND prostate[tiab]",
+        "pubmed: histrelin implant[tiab] AND prostate cancer[tiab] AND randomized[tiab]",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT00036400",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: epoetin alfa[tiab] AND (gastric[tiab] OR rectal[tiab]) AND (placebo[tiab] OR randomized[tiab]) AND (chemoradiation[tiab] OR chemoradiotherapy[tiab] OR preoperative[tiab])",
+        "pubmed: erythropoietin[tiab] AND (gastric cancer[tiab] OR rectal cancer[tiab] OR stomach neoplasms[tiab]) AND surgery[tiab] AND (epoetin[tiab] OR placebo[tiab]) AND (chemotherapy[tiab] AND radiation[tiab])",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT00341055",
+      "verdict": "FOUND",
+      "via": "pubmed (model queries)",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/18632436/",
+      "quote": "Of 69 patients enrolled, 47 (68%) completed the study.",
+      "why": "This pilot study matches the registry on drug, 80,000 U once-weekly dose, anemic cancer patients receiving chemotherapy, and 69 enrolled patients.",
+      "tried": [
+        "pubmed: epoetin alfa[tiab] AND anemia[tiab] AND chemotherapy[tiab] AND 80000[tiab]",
+        "pubmed: epoetin[tiab] AND cancer[tiab] AND anemia[tiab] AND weekly[tiab] AND hematologic response[tiab]"
+      ]
+    },
+    {
+      "nct": "NCT00039910",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: promegapoietin[tiab] AND (lymphoma[tiab] OR Hodgkin[tiab]) AND (thrombocytopenia[tiab] OR platelet[tiab])",
+        "pubmed: promegapoietin[tiab] AND DHAP[tiab] AND (dexamethasone[tiab] AND cytarabine[tiab] AND cisplatin[tiab])",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT00172055",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: zoledronic acid[tiab] AND prostate cancer[tiab] AND hormone therapy[tiab]",
+        "pubmed: zoledronic acid[tiab] AND prostate cancer[tiab] AND bone loss[tiab]",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT00635713",
+      "verdict": "FOUND",
+      "via": "pubmed (model queries)",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/12409076/",
+      "quote": "Fulvestrant versus anastrozole as second-line treatment of advanced breast cancer in postmenopausal women.",
+      "why": "This title directly matches the registry's second-line fulvestrant vs anastrozole comparison in postmenopausal advanced breast cancer.",
+      "tried": [
+        "pubmed: fulvestrant[tiab] AND anastrozole[tiab] AND advanced breast cancer[tiab]",
+        "pubmed: fulvestrant[tiab] AND anastrozole[tiab] AND postmenopausal[tiab] AND breast cancer[tiab]"
+      ]
+    },
+    {
+      "nct": "NCT00210587",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: epoetin alfa[tiab] AND anemia[tiab] AND cancer[tiab] AND (\"every three weeks\"[tiab] OR \"80000\"[tiab] OR \"80,000\"[tiab])",
+        "pubmed: (epoetin alfa[tiab] OR erythropoietin[tiab]) AND (anemia[tiab] OR anemic[tiab]) AND (cancer[tiab] OR neoplasm[tiab]) AND (\"not receiving chemotherapy\"[tiab] OR \"without chemotherapy\"[tiab] OR \"no chemotherapy\"[tiab] OR \"not receiving radiation\"[tiab])",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT00931008",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: docetaxel[tiab] AND bioequivalence[tiab] AND crossover[tiab] AND (non-small cell lung cancer[tiab] OR NSCLC[tiab])",
+        "pubmed: docetaxel[tiab] AND bioequivalence[tiab] AND crossover[tiab] AND (breast cancer[tiab] OR breast neoplasms[tiab])",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT00038064",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: (darbepoetin[tiab] AND epoetin[tiab] AND anemia[tiab] AND malignancy[tiab])",
+        "pubmed: (NESP[tiab] AND erythropoietin[tiab] AND anemia[tiab] AND (cancer[tiab] OR neoplasm[tiab] OR chemotherapy[tiab]))",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT00237120",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: imatinib[tiab] AND chronic myelogenous leukemia[tiab] AND newly diagnosed[tiab] AND chronic phase[tiab]",
+        "pubmed: imatinib[tiab] OR Gleevec[tiab] AND chronic myeloid leukemia[tiab] AND newly diagnosed[tiab] AND chronic phase[tiab]",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT00917306",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: ingenol mebutate[tiab] AND actinic keratos*[tiab] AND (trunk[tiab] OR extremit*[tiab] OR non-head[tiab])",
+        "pubmed: (ingenol mebutate[tiab] OR PEP005[tiab] OR picato[tiab]) AND actinic keratos*[tiab] AND open-label[tiab]",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT02191540",
+      "verdict": "FOUND",
+      "via": "pubmed (model queries)",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/26639937/",
+      "quote": "This study was designed as a single arm, multicenter, and open-label phase III clinical trial to evaluate efficacy and safety of chemical pleurodesis using mistletoe extraction (ABNOVAviscum(&#xae;) Injection).",
+      "why": "It matches the registry's Phase 3 multi-center single-arm open-label design, mistletoe extract drug, and malignant pleural effusion indication.",
+      "tried": [
+        "pubmed: (mistletoe[tiab] OR Viscum album[tiab] OR Abnoba[tiab]) AND malignant pleural effusion[tiab]",
+        "pubmed: (mistletoe extract[tiab] OR viscum[tiab]) AND pleural effusion[tiab]"
+      ]
+    },
+    {
+      "nct": "NCT00269737",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: fentanyl[tiab] AND transdermal[tiab] AND cancer[tiab] AND pain[tiab]",
+        "pubmed: fentanyl[tiab] AND malignancy[tiab] AND pain[tiab] AND efficacy[tiab]",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT00057616",
+      "verdict": "FOUND",
+      "via": "pubmed (model queries)",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/19862820/",
+      "quote": "The study compared treatment with lenalidomide (25 mg/d on Days 1-21 of a 28-day cycle) to placebo in 306 patients with metastatic malignant melanoma.",
+      "why": "This matches the registry's placebo-controlled lenalidomide trial in pretreated metastatic melanoma despite the 306 vs 274 enrollment difference.",
+      "tried": [
+        "pubmed: lenalidomide[tiab] AND melanoma[tiab] AND placebo[tiab]",
+        "pubmed: (lenalidomide[tiab] OR revlimid[tiab] OR CC-5013[tiab]) AND metastatic melanoma[tiab] AND placebo[tiab]"
+      ]
+    },
+    {
+      "nct": "NCT00293514",
+      "verdict": "FOUND",
+      "via": "pubmed (model queries)",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/20541949/",
+      "quote": "TachoSil&#xae; resulted in a reduction in the duration of postoperative air leakage (p=0.030).",
+      "why": "This matches the registry's open, randomised, multi-centre trial of TachoSil versus standard surgical treatment for air leakage after pulmonary lobectomy.",
+      "tried": [
+        "pubmed: (fibrinogen thrombin[tiab] OR fibrin sealant[tiab] OR Tachosil[tiab]) AND lobectomy[tiab] AND air leak*[tiab]",
+        "pubmed: (collagen fleece[tiab] OR fibrin patch[tiab] OR fibrinogen[tiab]) AND pulmonary[tiab] AND air leakage[tiab] AND standard surgical[tiab]"
+      ]
+    },
+    {
+      "nct": "NCT01167322",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: (\"5-aminolevulinic acid\"[tiab] OR \"5-ALA\"[tiab] OR aminolevulinic[tiab] OR NPC-07[tiab]) AND (\"malignant glioma\"[tiab] OR glioblastoma[tiab]) AND fluorescence[tiab]",
+        "pubmed: (\"5-aminolevulinic acid\"[tiab] OR \"5-ALA\"[tiab] OR NPC-07[tiab]) AND glioma[tiab] AND (\"fluorescence-guided resection\"[tiab] OR \"positive predictive value\"[tiab])",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT00190762",
+      "verdict": "FOUND",
+      "via": "pubmed (model queries)",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/18375898/",
+      "quote": "Phase III trial of pemetrexed plus best supportive care compared with best supportive care in previously treated patients with advanced malignant pleural mesothelioma.",
+      "why": "It matches drug, comparator, disease, phase III previously-treated design, and enrollment size (243 vs 240).",
+      "tried": [
+        "pubmed: pemetrexed[tiab] AND mesothelioma[tiab] AND best supportive care[tiab]",
+        "pubmed: pemetrexed[tiab] AND malignant pleural mesothelioma[tiab] AND previously treated[tiab]"
+      ]
+    },
+    {
+      "nct": "NCT03826550",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: diclofenac[tiab] AND actinic keratosis[tiab] AND placebo[tiab]",
+        "pubmed: diclofenac sodium gel[tiab] AND actinic keratos*[tiab] AND therapeutic equivalence[tiab]",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT02611804",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: diclofenac[tiab] AND actinic keratosis[tiab] AND vehicle[tiab]",
+        "pubmed: diclofenac sodium[tiab] AND actinic keratosis[tiab] AND scalp[tiab]",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT03612011",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: (\"hand-foot syndrome\"[tiab] OR \"hand foot syndrome\"[tiab] OR \"palmar-plantar erythrodysesthesia\"[tiab] OR palmoplantar[tiab]) AND (Onco-Repair[tiab] OR cosmetic[tiab] OR emollient[tiab]) AND placebo[tiab]",
+        "pubmed: (\"hand-foot syndrome\"[tiab] OR \"palmar-plantar erythrodysesthesia\"[tiab]) AND (targeted therapies[tiab] OR chemotherapy[tiab]) AND (placebo[tiab] AND randomized[tiab] AND double-blind[tiab])",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT05305456",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: (Tanreqing[tiab] OR Tanreqing capsule[tiab] OR Tanreqing capsules[tiab]) AND (COVID-19[tiab] OR COVID[tiab] OR SARS-CoV-2[tiab] OR novel coronavirus pneumonia[tiab]) AND (placebo[tiab])",
+        "pubmed: (Tanreqing[tiab] OR Tanreqing capsule[tiab]) AND (COVID-19[tiab] OR COVID[tiab] OR SARS-CoV-2[tiab]) AND (randomized[tiab] OR randomised[tiab] OR double-blind[tiab])",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT00085826",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: exisulind[tiab] AND docetaxel[tiab] AND lung[tiab]",
+        "pubmed: exisulind[tiab] AND docetaxel[tiab] AND (NSCLC[tiab] OR \"non-small cell lung cancer\"[tiab])",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT00635973",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: (gefitinib[tiab] OR ZD1839[tiab] OR Iressa[tiab]) AND (open-label extension[tiab] OR extension trial[tiab]) AND cancer[tiab]",
+        "pubmed: (gefitinib[tiab] OR ZD1839[tiab]) AND (continued monotherapy[tiab] OR open-label[tiab]) AND (cancer[tiab] OR carcinoma[tiab] OR neoplasm[tiab])",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT00337532",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: paclitaxel[tiab] AND cisplatin[tiab] AND locally advanced head and neck cancer[tiab] AND neoadjuvant[tiab]",
+        "pubmed: paclitaxel[tiab] AND cisplatin[tiab] AND head and neck cancer[tiab] AND phase II[tiab]",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT00269763",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: fentanyl[tiab] AND cancer[tiab] AND pain[tiab] AND transdermal[tiab]",
+        "pubmed: fentanyl[tiab] AND (cancer[tiab] OR neoplasm[tiab] OR malignant[tiab]) AND pain[tiab] AND (transdermal therapeutic system[tiab] OR TTS[tiab])",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT00270166",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: epoetin alfa[tiab] AND placebo[tiab] AND anemia[tiab] AND chemotherapy[tiab]",
+        "pubmed: erythropoietin[tiab] AND placebo[tiab] AND anemia[tiab] AND cancer[tiab]",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT00846976",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: bicalutamide[tiab] AND prostate cancer[tiab] AND 200 mg[tiab]",
+        "pubmed: casodex[tiab] AND advanced prostate cancer[tiab] AND safety[tiab]",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT03343145",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: filgrastim[tiab] AND breast cancer[tiab] AND biosimilar[tiab]",
+        "pubmed: filgrastim[tiab] AND breast cancer[tiab] AND neutropenia[tiab] AND chemotherapy[tiab]",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT00784940",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: anastrozole[tiab] AND tamoxifen[tiab] AND bone mineral density[tiab] AND breast cancer[tiab]",
+        "pubmed: anastrozole[tiab] AND tamoxifen[tiab] AND bone[tiab] AND adjuvant[tiab] AND postmenopausal[tiab]",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT01433562",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: \"Phaleria macrocarpa\"[tiab] AND \"breast cancer\"[tiab] AND neoadjuvant[tiab]",
+        "pubmed: \"Phaleria macrocarpa\"[tiab] AND \"breast cancer\"[tiab] AND anthracycline[tiab]",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT05254457",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: collagenase clostridium histolyticum[tiab] AND plantar fibromatosis[tiab]",
+        "pubmed: collagenase clostridium histolyticum[tiab] AND Ledderhose[tiab]",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT00776165",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: filgrastim[tiab] AND neutropenia[tiab] AND (Neupogen[tiab] OR indigenous[tiab])",
+        "pubmed: (\"granulocyte colony-stimulating factor\"[tiab] OR G-CSF[tiab] OR filgrastim[tiab]) AND neutropenia[tiab] AND (Shantha[tiab] OR Neupogen[tiab] OR myelosuppressive[tiab])",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT00241449",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: fulvestrant[tiab] AND tamoxifen[tiab] AND advanced breast cancer[tiab]",
+        "pubmed: fulvestrant[tiab] AND tamoxifen[tiab] AND metastatic breast cancer[tiab]",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT03170050",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: hyaluronic acid[tiab] AND nasolabial folds[tiab] AND split-face[tiab] AND non-inferiority[tiab]",
+        "pubmed: hyaluronic acid[tiab] AND lidocaine[tiab] AND nasolabial folds[tiab] AND WSRS[tiab]",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT00038311",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: (promegapoietin[tiab] OR leridistim[tiab] OR myelopoietin[tiab] OR thrombopoietin[tiab] OR megakaryocyte growth factor[tiab]) AND sarcoma[tiab] AND (doxorubicin[tiab] OR adriamycin[tiab]) AND ifosfamide[tiab]",
+        "pubmed: (thrombocytopenia[tiab] OR thrombopoietic[tiab] OR platelet growth factor[tiab]) AND sarcoma[tiab] AND (doxorubicin[tiab] OR adriamycin[tiab]) AND ifosfamide[tiab]",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT02103322",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: imatinib[tiab] AND bioequivalence[tiab] AND (chronic myeloid leukemia[tiab] OR gastrointestinal stromal tumor[tiab]) AND fed[tiab]",
+        "pubmed: imatinib[tiab] AND bioequivalent[tiab] AND (CML[tiab] OR GIST[tiab]) AND steady state[tiab] AND crossover[tiab]",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT00156208",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: asoprisnil[tiab] AND (fibroid*[tiab] OR leiomyoma*[tiab] OR leiomyomata[tiab])",
+        "pubmed: (asoprisnil[tiab] OR J867[tiab]) AND uterine[tiab] AND (fibroid*[tiab] OR leiomyoma*[tiab] OR menorrhagia[tiab]) AND (safety[tiab] OR extension[tiab])",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT05495425",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: (sirolimus[tiab] OR rapamycin[tiab]) AND (tuberous sclerosis[tiab] OR TSC[tiab]) AND placebo[tiab] AND gel[tiab]",
+        "pubmed: (sirolimus[tiab] OR rapamycin[tiab]) AND angiofibroma[tiab] AND placebo[tiab] AND gel[tiab]",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT00096967",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: bevacizumab[tiab] AND (breast cancer[tiab] OR colorectal cancer[tiab]) AND extension study[tiab]",
+        "pubmed: rhuMAb VEGF[tiab] AND (breast cancer[tiab] OR colorectal cancer[tiab] OR metastases[tiab]) AND open-label[tiab]",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT02561039",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: ibandronate[tiab] AND oral[tiab] AND intravenous[tiab] AND bone metastases[tiab] AND performance status[tiab]",
+        "pubmed: ibandronic acid[tiab] AND malignant bone disease[tiab] AND performance[tiab]",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT00105937",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: (fentanyl[tiab] OR fentanyl citrate[tiab]) AND breakthrough pain[tiab] AND cancer[tiab] AND opioid tolerant[tiab]",
+        "pubmed: (buccal fentanyl[tiab] OR OraVescent[tiab] OR Fentora[tiab]) AND breakthrough pain[tiab] AND cancer[tiab]",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT00105287",
+      "verdict": "FOUND",
+      "via": "pubmed (model queries)",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/17708123/",
+      "quote": "The study had a randomized, double-blind, placebo-controlled design and was conducted at 30 outpatient treatment centers in the United States. Following open-label titration, patients were randomly assigned to 1 of 18 double-blind dose sequences (7 FBT tablets, 3 placebo) to treat 10 BTP episodes.",
+      "why": "Design, drug, cancer breakthrough pain population, and multicenter US Cephalon FBT trial match the registry, and publication timing fits 2007 completion unlike the earlier 2006 report.",
+      "tried": [
+        "pubmed: fentanyl[tiab] AND breakthrough pain[tiab] AND cancer[tiab] AND opioid tolerant[tiab]",
+        "pubmed: fentanyl buccal tablet[tiab] AND breakthrough pain[tiab] AND placebo[tiab] AND cancer[tiab]"
+      ]
+    },
+    {
+      "nct": "NCT00309101",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: (tacrolimus[tiab] OR FK506[tiab] OR FK-506[tiab]) AND myasthenia gravis[tiab] AND (steroid resistant[tiab] OR steroid-resistant[tiab])",
+        "pubmed: (tacrolimus[tiab] OR FK506[tiab] OR FK-506[tiab]) AND myasthenia[tiab] AND (non-thymectomized[tiab] OR nonthymectomized[tiab] OR without thymectomy[tiab])",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    },
+    {
+      "nct": "NCT00152256",
+      "verdict": "NOT FOUND",
+      "via": null,
+      "url": null,
+      "quote": "",
+      "why": "",
+      "tried": [
+        "pubmed: asoprisnil[tiab] AND (fibroid*[tiab] OR leiomyom*[tiab]) AND placebo[tiab]",
+        "pubmed: (asoprisnil[tiab] OR J867[tiab]) AND uterine[tiab] AND (fibroid*[tiab] OR leiomyoma*[tiab] OR menorrhagia[tiab])",
+        "euctr search read",
+        "web: synopsis/CSR"
+      ]
+    }
+  ]
+}

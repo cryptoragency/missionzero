@@ -1,0 +1,33 @@
+{
+  "date": "2026-11-02T10:59:15.878Z",
+  "out": [
+    {
+      "nct": "NCT02076815",
+      "eudract": "2013-003410-41",
+      "status": 200,
+      "size": 244,
+      "results": false
+    },
+    {
+      "nct": "NCT02040935",
+      "eudract": "2013-000829-31",
+      "status": 200,
+      "size": 244,
+      "results": false
+    },
+    {
+      "nct": "NCT02526784",
+      "eudract": "2015-000357-20",
+      "status": 200,
+      "size": 244,
+      "results": false
+    },
+    {
+      "nct": "NCT00293514",
+      "eudract": "2004-002380-24",
+      "status": 200,
+      "size": 244,
+      "results": false
+    }
+  ]
+}

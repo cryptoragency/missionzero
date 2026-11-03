@@ -1,0 +1,51 @@
+{
+ "date": "2026-11-02",
+ "what": "Human review after stage E (e-strict.json): from the 21 leads that passed every automatic check to the 9 shown in the presentation. Every reason below can be checked against the quote stored in e-strict.json.",
+ "rule": "keep a lead only if (1) its single-drug evidence quote states an anti-glioblastoma RESULT in animals or humans, and (2) its blood-brain barrier quote says it crosses (\"yes\").",
+ "start": 21,
+ "removed_brain_not_stated": [
+  "azithromycin",
+  "cilostazol",
+  "glimepiride",
+  "griseofulvin",
+  "lumefantrine",
+  "nebivolol",
+  "papaverine",
+  "paroxetine",
+  "prazosin"
+ ],
+ "removed_after_reading_the_quote": [
+  {
+   "drug": "clofarabine",
+   "why": "the evidence quote says it had no effect on glioblastoma growth (\"had no effect on the growth of SF-295 glioblastoma\")"
+  },
+  {
+   "drug": "pentamidine",
+   "why": "the quote reports cell lines only (\"suppressed proliferation and stemness in glioma-initiating cell lines\"), not an animal result"
+  },
+  {
+   "drug": "fluphenazine",
+   "why": "the quote states the aim of the study, not a result (\"we investigated the anti-GBM activity…\")"
+  }
+ ],
+ "kept": [
+  "amlodipine",
+  "cariprazine",
+  "cimetidine",
+  "clemastine",
+  "fluvoxamine",
+  "lomitapide",
+  "moxidectin",
+  "ribavirin",
+  "stiripentol"
+ ],
+ "kept_count": 9,
+ "caveats": [
+  "moxidectin: the brain quote comes from a toxicity study (accumulation in the central nervous system of mice), weak evidence of useful brain exposure",
+  "clemastine: the evidence quote says a mouse glioma model was susceptible, without a survival figure",
+  "cimetidine and lomitapide: effect shown in combination with temozolomide (standard care), not alone",
+  "the final check by Mission Zero (one full mission per drug) has not run: Meta API access restricted on 2 November 2026, 12:30 UTC"
+ ],
+ "status": "HYPOTHESES. Leads for researchers, not treatments: mouse results, not yet in humans.",
+ "final_check_pending": "Not done yet (the model API was unavailable on 2 November). For each of the 9 leads it will look for a contradicting study, a human trial already registered under another name or registry, and read the full paper, not only the abstract. Estimated cost about $3."
+}

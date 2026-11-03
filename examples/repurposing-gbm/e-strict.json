@@ -1,0 +1,2834 @@
+{
+  "date": "2026-11-02T12:23:54.030Z",
+  "usd": 0.6307930000000003,
+  "leads": [
+    {
+      "drug": "albendazole",
+      "indication": "1 INDICATIONS AND USAGE Albendazole is an anthelmintic drug indicated for: Treatment of parenchymal neurocysticercosis due to active lesions caused by larval fo",
+      "names": [
+        "albendazole",
+        "ABZ"
+      ],
+      "single": {
+        "level": "in vitro",
+        "pmid": "29165384",
+        "quote": "In vitro cell line studies have shown that ABZ in the form of ASLNs was more cytotoxic (IC50 = 4.90 &#xb5;g/mL) to U-87 MG cells compared to ABZ in the free form (IC50 = 13.30 &#xb5;g/mL) due to the efficient uptake of the former by these cells."
+      },
+      "brain": {
+        "crosses": "yes",
+        "pmid": "26958418",
+        "quote": "Albendazole is the preferred drug for the treatment of racemose NCC due to its superior cerebrospinal fluid penetration compared to praziquantel and the ability to be used concomitantly with steroids."
+      },
+      "trials": [
+        {
+          "name": "ABZ",
+          "nct": "NCT00349024",
+          "title": "Polyvinylpyrrolidone-Sodium Hyaluronate Gel in Reducing Pain From Oral Mucositis in Young Patients With Cancer"
+        },
+        {
+          "name": "ABZ",
+          "nct": "NCT07443176",
+          "title": "FCI-Glioblastoma Study"
+        },
+        {
+          "name": "ABZ",
+          "nct": "NCT00024336",
+          "title": "Radiation Therapy and Tamoxifen in Treating Children With Newly Diagnosed Brain Stem Glioma"
+        },
+        {
+          "name": "ABZ",
+          "nct": "NCT00513981",
+          "title": "High-Dose Methotrexate in Treating Young Patients With Solid Tumors"
+        },
+        {
+          "name": "ABZ",
+          "nct": "NCT00820222",
+          "title": "Lapatinib Plus Capecitabine Versus Trastuzumab Plus Capecitabine in ErbB2 (HER2) Positive Metastatic Breast Cancer"
+        },
+        {
+          "name": "ABZ",
+          "nct": "NCT00514397",
+          "title": "Temozolomide and Radiation Therapy in Treating Young Patients With Pontine Glioma"
+        },
+        {
+          "name": "ABZ",
+          "nct": "NCT06294418",
+          "title": "FCI in Post-operative Low Grade Gliomas"
+        },
+        {
+          "name": "ABZ",
+          "nct": "NCT05074992",
+          "title": "A Trial of Neoadjuvant Therapy in Patients With Newly Diagnosed Glioblastoma"
+        },
+        {
+          "name": "ABZ",
+          "nct": "NCT05629702",
+          "title": "ARISTOCRAT: Blinded Trial of Temozolomide +/- Cannabinoids"
+        },
+        {
+          "name": "ABZ",
+          "nct": "NCT00281905",
+          "title": "Combination Chemotherapy With or Without Radiation Therapy in Treating Children With Brain Tumors"
+        },
+        {
+          "name": "ABZ",
+          "nct": "NCT00360854",
+          "title": "Erlotinib Alone or in Combination With Radiation Therapy in Treating Young Patients With Refractory or Relapsed Malignant Brain Tumors or Newly Diagnosed Brain Stem Glioma"
+        },
+        {
+          "name": "ABZ",
+          "nct": "NCT00403065",
+          "title": "Dexamethasone and Supportive Care With or Without Whole-Brain Radiation Therapy in Treating Patients With Non-Small Cell Lung Cancer That Has Spread to the Brain and Cannot Be Removed By Surgery"
+        },
+        {
+          "name": "ABZ",
+          "nct": "NCT00360945",
+          "title": "Cisplatin and Temozolomide in Treating Young Patients With Malignant Glioma"
+        },
+        {
+          "name": "ABZ",
+          "nct": "NCT00025077",
+          "title": "Combination Chemotherapy, Surgery or Radiation Therapy, and Peripheral Stem Cell Transplant in Treating Patients With Recurrent Medulloblastoma or Primitive Neuroectodermal and Pineal Tumors"
+        }
+      ],
+      "euctr": null,
+      "survives": false,
+      "why": "in vitro only; 14 trial(s) under ABZ; EU register: null"
+    },
+    {
+      "drug": "alendronate",
+      "indication": "1 INDICATIONS AND USAGE BINOSTO is a bisphosphonate indicated for: Treatment of osteoporosis in postmenopausal women ( 1.1 ) Treatment to increase bone mass in ",
+      "names": [
+        "alendronate",
+        "ALD",
+        "ALN"
+      ],
+      "single": {
+        "level": "in vitro",
+        "pmid": "28646347",
+        "quote": "We observed that ALD treatment, at the higher concentrations, induced a significant increase of IL-1B, NLRP3, CASP1 expression, provoked apoptosis and also mitochondrial damage in U87-MG."
+      },
+      "brain": {
+        "crosses": "yes",
+        "pmid": "30481507",
+        "quote": "It was found that bone drug, alendronate (ALN) that cross blood brain barrier inhibits brain cholesterol synthesis and AChE enzyme activity."
+      },
+      "trials": [
+        {
+          "name": "ALD",
+          "nct": "NCT01639612",
+          "title": "Pilot Study of Bone Marrow/Stem Cells in Grade IV Malignant Glioma"
+        },
+        {
+          "name": "ALN",
+          "nct": "NCT02465060",
+          "title": "Targeted Therapy Directed by Genetic Testing in Treating Patients With Advanced Refractory Solid Tumors, Lymphomas, or Multiple Myeloma (The MATCH Screening Trial)"
+        },
+        {
+          "name": "ALN",
+          "nct": "NCT07452458",
+          "title": "Temporally-Modulated Pulsed Radiation Therapy Versus Standard Radiation Therapy for the Treatment of Newly Diagnosed, IDH Wildtype, MGMT-Unmethylated Glioblastoma"
+        },
+        {
+          "name": "ALN",
+          "nct": "NCT06500481",
+          "title": "Testing Proton Craniospinal Radiation Therapy Versus the Usual Radiation Therapy for Leptomeningeal Metastasis, RADIATE-LM Trial"
+        },
+        {
+          "name": "ALN",
+          "nct": "NCT03475186",
+          "title": "Testing Ramipril to Prevent Memory Loss in People With Glioblastoma"
+        },
+        {
+          "name": "ALN",
+          "nct": "NCT04647916",
+          "title": "Testing Sacituzumab Govitecan Therapy in Patients With HER2-Negative Breast Cancer and Brain Metastases"
+        },
+        {
+          "name": "ALN",
+          "nct": "NCT05095376",
+          "title": "Testing the Addition of the Chemotherapy Drug Lomustine (Gleostine) to the Usual Treatment (Temozolomide and Radiation Therapy) for Newly Diagnosed MGMT Methylated Glioblastoma"
+        },
+        {
+          "name": "ALN",
+          "nct": "NCT04145115",
+          "title": "A Study Testing the Effect of Immunotherapy (Ipilimumab and Nivolumab) in Patients With Recurrent Glioma With Elevated Mutational Burden"
+        },
+        {
+          "name": "ALN",
+          "nct": "NCT01189266",
+          "title": "Vorinostat and Radiation Therapy Followed by Maintenance Therapy With Vorinostat in Treating Younger Patients With Newly Diagnosed Diffuse Intrinsic Pontine Glioma"
+        },
+        {
+          "name": "ALN",
+          "nct": "NCT03994796",
+          "title": "Genetic Testing in Guiding Treatment for Patients With Brain Metastases"
+        },
+        {
+          "name": "ALN",
+          "nct": "NCT04511013",
+          "title": "A Study to Compare the Administration of Encorafenib + Binimetinib + Nivolumab Versus Ipilimumab + Nivolumab in BRAF-V600 Mutant Melanoma With Brain Metastases"
+        },
+        {
+          "name": "ALN",
+          "nct": "NCT00017147",
+          "title": "S0001 RT and Carmustine With or Without O6BG in Patients With New Glioblastoma Multiforme or Gliosarcoma"
+        }
+      ],
+      "euctr": null,
+      "survives": false,
+      "why": "in vitro only; 12 trial(s) under ALD/ALN; EU register: null"
+    },
+    {
+      "drug": "aliskiren",
+      "indication": "1 INDICATIONS AND USAGE Tekturna is a renin inhibitor (RI) indicated for the treatment of hypertension in adults and in pediatric patients weighing 50 kg or gre",
+      "names": [
+        "aliskiren"
+      ],
+      "single": null,
+      "brain": null,
+      "trials": [],
+      "euctr": null,
+      "survives": false,
+      "why": "no verified single-drug evidence; EU register: null"
+    },
+    {
+      "drug": "amlodipine",
+      "indication": "1 INDICATIONS AND USAGE Amlodipine besylate tablets are calcium channel blocker and may be used alone or in combination with other antihypertensive and antiangi",
+      "names": [
+        "amlodipine",
+        "S-amlodipine",
+        "R-amlodipine"
+      ],
+      "single": {
+        "level": "animal",
+        "pmid": "40701313",
+        "quote": "Furthermore, amlodipine significantly reduced tumor volume and prolonged median survival of tumor-bearing mice in vivo."
+      },
+      "brain": {
+        "crosses": "yes",
+        "pmid": "42139800",
+        "quote": "Contrary to historical assumptions, recent evidence confirms that amlodipine penetrates the blood-brain barrier."
+      },
+      "trials": [],
+      "euctr": 0,
+      "survives": true,
+      "why": "",
+      "euctrTitles": []
+    },
+    {
+      "drug": "amoxapine",
+      "indication": "INDICATIONS AND USAGE Amoxapine is indicated for the relief of symptoms of depression in patients with neurotic or reactive depressive disorders as well as endo",
+      "names": [
+        "amoxapine",
+        "AMX"
+      ],
+      "single": {
+        "level": "in vitro",
+        "pmid": "35657693",
+        "quote": "By comparative analysis of 765 FDA-approved compounds, we identified another clinically available drug for central nervous system (CNS) diseases, amoxapine, in addition to ifenprodil."
+      },
+      "brain": {
+        "crosses": "yes",
+        "pmid": "41500576",
+        "quote": "brain penetration of amoxapine (AMX) increases nonlinearly with increasing doses"
+      },
+      "trials": [
+        {
+          "name": "AMX",
+          "nct": "NCT05717153",
+          "title": "Intratumoral Extracellular Metabolic Impact of DFMO and AMXT 1501 in Patients With Diffuse or High Grade Glioma"
+        }
+      ],
+      "euctr": null,
+      "survives": false,
+      "why": "in vitro only; 1 trial(s) under AMX; EU register: null"
+    },
+    {
+      "drug": "apomorphine",
+      "indication": "Take 15 minutes before meals",
+      "names": [
+        "apomorphine",
+        "APO",
+        "AMP",
+        "(±)-apomorphine hydrochloride"
+      ],
+      "single": {
+        "level": "animal",
+        "pmid": "42309254",
+        "quote": "Combining either compound with TMZ enhanced cytotoxicity in vitro and suppressed tumor growth in vivo."
+      },
+      "brain": null,
+      "trials": [
+        {
+          "name": "APO",
+          "nct": "NCT01644591",
+          "title": "Stereotactic Radiosurgery in Treating Patients With Greater Than 3 Melanoma Brain Metastases"
+        },
+        {
+          "name": "APO",
+          "nct": "NCT01430351",
+          "title": "Temozolomide, Memantine Hydrochloride, Mefloquine, and Metformin Hydrochloride in Treating Patients With Glioblastoma Multiforme After Radiation Therapy"
+        },
+        {
+          "name": "AMP",
+          "nct": "NCT04521946",
+          "title": "Chemotherapy and Donor Stem Transplant for the Treatment of Patients With High Grade Brain Cancer"
+        },
+        {
+          "name": "AMP",
+          "nct": "NCT01413438",
+          "title": "Bevacizumab With or Without Surgery for Adult Glioblastomas"
+        },
+        {
+          "name": "AMP",
+          "nct": "NCT06279767",
+          "title": "Efficacy and Safety of TMZ Plus 6-MP in the Patients With Recurrent Glioblastoma"
+        },
+        {
+          "name": "AMP",
+          "nct": "NCT01445483",
+          "title": "Neuropsychological Changes in Patients Receiving Radiation Therapy for Brain Metastases"
+        },
+        {
+          "name": "AMP",
+          "nct": "NCT06253871",
+          "title": "A Phase 1/1b Study of IAM1363 in HER2 Cancers"
+        },
+        {
+          "name": "AMP",
+          "nct": "NCT04684368",
+          "title": "A Study of a New Way to Treat Children and Young Adults With a Brain Tumor Called NGGCT"
+        },
+        {
+          "name": "AMP",
+          "nct": "NCT00011414",
+          "title": "Phase I Trial of Tariquidar (XR9576) in Combination With Doxorubicin, Vinorelbine, or Docetaxel in Pediatric Patients With Solid Tumors"
+        },
+        {
+          "name": "AMP",
+          "nct": "NCT01222754",
+          "title": "Lenalidomide and Radiation Therapy in High Grade Gliomas or Diffuse Intrinsic Pontine Gliomas"
+        },
+        {
+          "name": "AMP",
+          "nct": "NCT02774291",
+          "title": "Anti-NY ESO-1 mTCR Peripheral Blood Lymphocytes"
+        },
+        {
+          "name": "AMP",
+          "nct": "NCT01445314",
+          "title": "Analysis of Data Collected From Individuals Administered Neurobehavioral Assessments"
+        },
+        {
+          "name": "AMP",
+          "nct": "NCT02221986",
+          "title": "Interdisciplinary Rehabilitation of Patients With Glioma During Anti-cancer Treatment"
+        }
+      ],
+      "euctr": null,
+      "survives": false,
+      "why": "13 trial(s) under APO/AMP; EU register: null"
+    },
+    {
+      "drug": "aripiprazole",
+      "indication": "1 INDICATIONS AND USAGE Aripiprazole is indicated for the treatment of: • Schizophrenia • Irritability Associated with Autistic Disorder • Treatment of Tourette",
+      "names": [
+        "aripiprazole",
+        "ARP",
+        "ARI"
+      ],
+      "single": {
+        "level": "in vitro",
+        "pmid": "41824398",
+        "quote": "Both demonstrated more potent anticancer activity than temozolomide, the current standard clinical therapy for malignant glioblastoma."
+      },
+      "brain": {
+        "crosses": "yes",
+        "pmid": "32271696",
+        "quote": "which can overcome the blood-brain barrier (BBB) to reach the central nervous system (CNS) to exert therapeutic effects."
+      },
+      "trials": [
+        {
+          "name": "ARI",
+          "nct": "NCT05833607",
+          "title": "Effects of Targets of Blood Pressure on Cerebral Hemodynamics in Septic Shock"
+        }
+      ],
+      "euctr": null,
+      "survives": false,
+      "why": "in vitro only; 1 trial(s) under ARI; EU register: null"
+    },
+    {
+      "drug": "azithromycin",
+      "indication": "1 INDICATIONS AND USAGE Azithromycin is a macrolide antibacterial drug indicated for the treatment of patients with mild to moderate infections caused by suscep",
+      "names": [
+        "azithromycin",
+        "AZI"
+      ],
+      "single": {
+        "level": "animal",
+        "pmid": "37486388",
+        "quote": "Of note, azithromycin at non-toxic dose inhibits GBM growth in mice and increases overall survival, and furthermore, this is associated with angiogenesis inhibition."
+      },
+      "brain": null,
+      "trials": [],
+      "euctr": 0,
+      "survives": true,
+      "why": "",
+      "euctrTitles": []
+    },
+    {
+      "drug": "bremelanotide",
+      "indication": "1 INDICATIONS AND USAGE VYLEESI is indicated for the treatment of premenopausal women with acquired, generalized hypoactive sexual desire disorder (HSDD), as ch",
+      "names": [
+        "bremelanotide"
+      ],
+      "single": {
+        "level": "in vitro",
+        "pmid": "39197897",
+        "quote": "Bremelanotide reduced survivin expression and induced cell death in glioblastoma cells at concentrations that were not toxic to normal human cells"
+      },
+      "brain": null,
+      "trials": [],
+      "euctr": null,
+      "survives": false,
+      "why": "in vitro only; EU register: null"
+    },
+    {
+      "drug": "brexpiprazole",
+      "indication": "1 INDICATIONS AND USAGE REXULTI is indicated for: Adjunctive treatment to antidepressants for major depressive disorder (MDD) in adults Treatment of schizophren",
+      "names": [
+        "brexpiprazole",
+        "BXP"
+      ],
+      "single": {
+        "level": "in vitro",
+        "pmid": "31191825",
+        "quote": "In this study, we examined whether brexpiprazole has anti-tumor effects in cancer cells and cancer stem cells (CSCs) of glioblastoma, pancreatic cancer, and lung cancer."
+      },
+      "brain": {
+        "crosses": "yes",
+        "pmid": "42242508",
+        "quote": "Brexpiprazole (BXP), a third-generation antipsychotic, exhibits limited brain delivery following oral administration due to first-pass metabolism and blood-brain barrier constraints."
+      },
+      "trials": [],
+      "euctr": null,
+      "survives": false,
+      "why": "in vitro only; EU register: null"
+    },
+    {
+      "drug": "bromocriptine",
+      "indication": "INDICATIONS AND USAGE Hyperprolactinemia-Associated Dysfunctions Bromocriptine mesylate tablets are indicated for the treatment of dysfunctions associated with ",
+      "names": [
+        "bromocriptine"
+      ],
+      "single": {
+        "level": "human observational",
+        "pmid": "42404464",
+        "quote": "The first patient, treated with the ergot derivative bromocriptine for a prolactinoma, presented with multifocal disease and underwent subtotal resection."
+      },
+      "brain": {
+        "crosses": "yes",
+        "pmid": "42404464",
+        "quote": "Given the safety, low cost, and blood-brain barrier penetrance of these Food and Drug Administration-approved drugs, we propose that dopamine agonists warrant further investigation as repurposed adjuvant agents in"
+      },
+      "trials": [
+        {
+          "name": "bromocriptine",
+          "nct": "NCT03714763",
+          "title": "Dopamine D2 Receptors(D2R) Imaging in Nonfunctioning Pituitary Adenoma(NFPA)"
+        },
+        {
+          "name": "bromocriptine",
+          "nct": "NCT06556186",
+          "title": "Surgical and Pharmacological Efficacy of Knosp Grade 0-2 Prolactinoma"
+        }
+      ],
+      "euctr": null,
+      "survives": false,
+      "why": "2 trial(s) under bromocriptine; EU register: null"
+    },
+    {
+      "drug": "carfilzomib",
+      "indication": "1 INDICATIONS AND USAGE Kyprolis is a proteasome inhibitor that is indicated: for the treatment of adult patients with relapsed or refractory multiple myeloma w",
+      "names": [
+        "carfilzomib",
+        "CFZ"
+      ],
+      "single": {
+        "level": "animal",
+        "pmid": "33428749",
+        "quote": "Finally, proteasome inhibition specifically increased cell death markers in 3D GBM-organoids, suppressed tumor growth, and increased survival of mice orthotopically engrafted with GSCs."
+      },
+      "brain": {
+        "crosses": "no",
+        "pmid": "42142763",
+        "quote": "However, low BBB penetration, systemic toxicity, and drug resistance mechanisms have hampered its GBM clinical usefulness."
+      },
+      "trials": [],
+      "euctr": null,
+      "survives": false,
+      "why": "EU register: null; does not cross the blood-brain barrier"
+    },
+    {
+      "drug": "cariprazine",
+      "indication": "1 . INDICATIONS AND USAGE VRAYLAR ® is indicated for: • Treatment of schizophrenia in adult and pediatric patients 13 years of age and older [see Clinical Studi",
+      "names": [
+        "cariprazine",
+        "RGH-188",
+        "MP-214",
+        "Vraylar"
+      ],
+      "single": {
+        "level": "animal",
+        "pmid": "42356545",
+        "quote": "In mice, it suppressed GBM allograft growth without overt systemic toxicity."
+      },
+      "brain": {
+        "crosses": "yes",
+        "pmid": "27092339",
+        "quote": "The compound crosses the blood-brain barrier, as revealed by positron emission tomography and pharmacokinetic studies in various species."
+      },
+      "trials": [],
+      "euctr": 0,
+      "survives": true,
+      "why": "",
+      "euctrTitles": []
+    },
+    {
+      "drug": "ceftazidime",
+      "indication": "INDICATIONS AND USAGE Ceftazidime for injection, USP is indicated for the treatment of patients with infections caused by susceptible strains of the designated ",
+      "names": [
+        "ceftazidime"
+      ],
+      "single": {
+        "level": "in vitro",
+        "pmid": "35563520",
+        "quote": "the related cephalosporin ceftazidime produced similar effects."
+      },
+      "brain": {
+        "crosses": "yes",
+        "pmid": "2671141",
+        "quote": "Penetration into the cerebrospinal fluid is excellent especially for cefotaxime, ceftazidime, ceftriaxone, and ceftizoxime."
+      },
+      "trials": [],
+      "euctr": null,
+      "survives": false,
+      "why": "in vitro only; EU register: null"
+    },
+    {
+      "drug": "cetirizine",
+      "indication": "Uses temporarily relieves these symptoms due to hay fever or other upper respiratory allergies: runny nose sneezing itchy, watery eyes itching of the nose or th",
+      "names": [
+        "cetirizine"
+      ],
+      "single": {
+        "level": "in vitro",
+        "pmid": "37779953",
+        "quote": "To further assess their potential use as the activators of the p53 pathway, we investigated the antiproliferative capability of the abovementioned drugs on human glioblastoma and neuroblastoma cell lines."
+      },
+      "brain": {
+        "crosses": "yes",
+        "pmid": "17180728",
+        "quote": "fexofenadine and cetirizine, penetrated brain poorly regardless of CSA administration."
+      },
+      "trials": [],
+      "euctr": null,
+      "survives": false,
+      "why": "in vitro only; EU register: null"
+    },
+    {
+      "drug": "chloramphenicol",
+      "indication": "",
+      "names": [
+        "chloramphenicol",
+        "CAP"
+      ],
+      "single": {
+        "level": "in vitro",
+        "pmid": "25625193",
+        "quote": "we now show that 4-to-5 different classes of FDA-approved drugs can be used to eradicate cancer stem cells, in 12 different cancer cell lines, across 8 different tumor types (breast, DCIS, ovarian, prostate, lung, pancreatic, melanoma, and glioblastoma (brain))."
+      },
+      "brain": {
+        "crosses": "yes",
+        "pmid": "649538",
+        "quote": "Determination of chloramphenicol in serum and cerebrospinal fluid with high-pressure liquid chromatography."
+      },
+      "trials": [
+        {
+          "name": "CAP",
+          "nct": "NCT04477200",
+          "title": "Mycophenolate Mofetil Combined With Radiation Therapy in Glioblastoma"
+        },
+        {
+          "name": "CAP",
+          "nct": "NCT07126990",
+          "title": "Clinical Study of a Novel Oncolytic Virus Ad-TD-nsIL12 in the Treatment of Primary High-grade Glioma"
+        },
+        {
+          "name": "CAP",
+          "nct": "NCT04547855",
+          "title": "Anlotinib Combined With Dose-dense Temozolomide for the First Recurrent or Progressive Glioblastoma After STUPP Regimen"
+        },
+        {
+          "name": "CAP",
+          "nct": "NCT00895960",
+          "title": "Dasatinib Plus Radiation Therapy/Temozolomide in Newly-Diagnosed Glioblastoma"
+        },
+        {
+          "name": "CAP",
+          "nct": "NCT06299891",
+          "title": "Efficacy and Safety of Phentermine/Topiramate in Youth With Hypothalamic Obesity"
+        },
+        {
+          "name": "CAP",
+          "nct": "NCT05082259",
+          "title": "ASTEROID: A Trial of ASTX660 in Combination With Pembrolizumab"
+        },
+        {
+          "name": "CAP",
+          "nct": "NCT00535379",
+          "title": "SUTENT (SUNITINIB, SU11248)in Patients With Recurrent or Progressive Glioblastoma Multiforme"
+        },
+        {
+          "name": "CAP",
+          "nct": "NCT04447755",
+          "title": "A Study of Lenvatinib (MK-7902) in Pediatric Participants With Relapsed or Refractory Solid Malignancies (MK-7902-013/E7080)"
+        },
+        {
+          "name": "CAP",
+          "nct": "NCT01972750",
+          "title": "Dovitinib (TKI258) in the Treatment of Patients With Relapsed Glioblastoma"
+        },
+        {
+          "name": "CAP",
+          "nct": "NCT04743661",
+          "title": "131I-Omburtamab, in Recurrent Medulloblastoma and Ependymoma"
+        },
+        {
+          "name": "CAP",
+          "nct": "NCT00684567",
+          "title": "Temozolomide Phase II Clinical Study in Patients With Newly Diagnosed Glioblastoma Multiforme (Study P04661)(COMPLETED)"
+        },
+        {
+          "name": "CAP",
+          "nct": "NCT00290771",
+          "title": "Efficacy and Safety of Imatinib Mesylate Plus Hydroxyurea (HU) in Patients With Recurrent Glioblastoma Multiforme (GBM)"
+        },
+        {
+          "name": "CAP",
+          "nct": "NCT07464925",
+          "title": "A Phase 1 Safety and Dose Finding Study of GLIX1 in Adults With Recurrent or Progressive High-grade Glioma"
+        },
+        {
+          "name": "CAP",
+          "nct": "NCT02895360",
+          "title": "Phase 1/2a Study of BAL101553 as 48-hour Infusions in Patients With Advanced Solid Tumors or Recurrent Glioblastoma"
+        },
+        {
+          "name": "CAP",
+          "nct": "NCT01240460",
+          "title": "Exploratory Study of XL765 (SAR245409) or XL147 (SAR245408) in Subjects With Recurrent Glioblastoma Who Are Candidates for Surgical Resection"
+        },
+        {
+          "name": "CAP",
+          "nct": "NCT02644460",
+          "title": "Abemaciclib in Children With DIPG or Recurrent/Refractory Solid Tumors"
+        },
+        {
+          "name": "CAP",
+          "nct": "NCT04209790",
+          "title": "Neoadjuvant Chemoradiation for Resectable Glioblastoma"
+        },
+        {
+          "name": "CAP",
+          "nct": "NCT01295632",
+          "title": "Safety and Tolerability of Different Dose Combinations of Ridaforolimus With MK-2206 or MK-0752 for Participants With Advanced Cancer (MK-8669-049)"
+        },
+        {
+          "name": "CAP",
+          "nct": "NCT04190628",
+          "title": "Safety and Tolerability of ABM-1310 in Patients With Advanced Solid Tumors"
+        },
+        {
+          "name": "CAP",
+          "nct": "NCT05588141",
+          "title": "000860: A Phase I/II Study of Zotiraciclib for Recurrent Malignant Gliomas With Isocitrate Dehydrogenase 1 or 2 (IDH1 or IDH2) Mutations"
+        }
+      ],
+      "euctr": null,
+      "survives": false,
+      "why": "in vitro only; 20 trial(s) under CAP; EU register: null"
+    },
+    {
+      "drug": "ciclopirox",
+      "indication": "INDICATIONS AND USAGE (To understand fully the indication for this product, please read the entire INDICATIONS AND USAGE section of the labeling.) Ciclopirox To",
+      "names": [
+        "ciclopirox",
+        "ciclopirox olamine",
+        "CPX"
+      ],
+      "single": {
+        "level": "in vitro",
+        "pmid": "39315277",
+        "quote": "in-vitro experiments validated Clofarabine and Ciclopirox as highly efficacious in selectively targeting GBM cancer cells."
+      },
+      "brain": null,
+      "trials": [
+        {
+          "name": "CPX",
+          "nct": "NCT05023551",
+          "title": "Study of DSP-0390 in Patients With Recurrent High-Grade Glioma"
+        }
+      ],
+      "euctr": null,
+      "survives": false,
+      "why": "in vitro only; 1 trial(s) under CPX; EU register: null"
+    },
+    {
+      "drug": "cidofovir",
+      "indication": "INDICATION AND USAGE Cidofovir injection is indicated for the treatment of CMV retinitis in patients with acquired immunodeficiency syndrome (AIDS). THE SAFETY ",
+      "names": [
+        "cidofovir",
+        "CDV"
+      ],
+      "single": {
+        "level": "animal",
+        "pmid": "24170543",
+        "quote": "Combination therapy with CDV and radiotherapy significantly extended the survival of mice bearing intracranial glioblastoma tumors."
+      },
+      "brain": null,
+      "trials": [
+        {
+          "name": "CDV",
+          "nct": "NCT00000801",
+          "title": "Phase II Trial of Sequential Chemotherapy and Radiotherapy for AIDS-Related Primary Central Nervous System Lymphoma"
+        }
+      ],
+      "euctr": null,
+      "survives": false,
+      "why": "1 trial(s) under CDV; EU register: null"
+    },
+    {
+      "drug": "cilostazol",
+      "indication": "1 INDICATIONS AND USAGE Cilostazol tablets are indicated for the reduction of symptoms of intermittent claudication, as demonstrated by an increased walking dis",
+      "names": [
+        "cilostazol"
+      ],
+      "single": {
+        "level": "animal",
+        "pmid": "33948351",
+        "quote": "Moreover, we established a radiation-resistant GBM in vivo model by intracranially injecting CIIR GBM cells into the brains of NOD/SCID mice. We found that Cilostazol delayed tumor in vivo growth and prolonged survival."
+      },
+      "brain": null,
+      "trials": [],
+      "euctr": 0,
+      "survives": true,
+      "why": "",
+      "euctrTitles": []
+    },
+    {
+      "drug": "cimetidine",
+      "indication": "INDICATIONS AND USAGE Cimetidine tablets are indicated in: 1. Short-term treatment of active duodenal ulcer. Most patients heal within 4 weeks and there is rare",
+      "names": [
+        "cimetidine"
+      ],
+      "single": {
+        "level": "animal",
+        "pmid": "15871514",
+        "quote": "Cimetidine added to temozolomide compared with temozolomide alone induced survival benefits in nude mice with U373 human glioblastoma multiforme (GBM) cells orthotopically xenografted in the brain."
+      },
+      "brain": {
+        "crosses": "yes",
+        "pmid": "6743472",
+        "quote": "No detectable concentrations of oxmetidine but measurable concentrations of cimetidine in cerebrospinal fluid (CSF) during multiple dose treatment."
+      },
+      "trials": [],
+      "euctr": 0,
+      "survives": true,
+      "why": "",
+      "euctrTitles": []
+    },
+    {
+      "drug": "clemastine",
+      "indication": "INDICATIONS AND USAGE Clemastine Fumarate Syrup is indicated for the relief of symptoms associated with allergic rhinitis such as sneezing, rhinorrhea, pruritus",
+      "names": [
+        "clemastine",
+        "clemastine fumarate"
+      ],
+      "single": {
+        "level": "animal",
+        "pmid": "37760589",
+        "quote": "Finally, we showed that a neural stem cell-derived mouse glioma model displaying predominantly proneural features was similarly susceptible to clemastine treatment."
+      },
+      "brain": {
+        "crosses": "yes",
+        "pmid": "35372341",
+        "quote": "Clemastine penetrates the blood brain barrier efficiently and promotes remyelination in different animal models of neurodegeneration including multiple sclerosis, ischemia and Alzheimer's disease."
+      },
+      "trials": [],
+      "euctr": 0,
+      "survives": true,
+      "why": "",
+      "euctrTitles": []
+    },
+    {
+      "drug": "clioquinol",
+      "indication": "Uses ICHYBUM is a medicated cream used to help relieve the symptoms of pruritis ani and other afflictions involving chronic itching around the anus",
+      "names": [
+        "clioquinol"
+      ],
+      "single": {
+        "level": "in vitro",
+        "pmid": "27006494",
+        "quote": "we found that montelukast, clioquinol, and disulfiram (DSF) were cytotoxic against a large panel of patient-derived BTICs."
+      },
+      "brain": null,
+      "trials": [],
+      "euctr": null,
+      "survives": false,
+      "why": "in vitro only; EU register: null"
+    },
+    {
+      "drug": "clofarabine",
+      "indication": "1 INDICATIONS AND USAGE Clofarabine injection is indicated for the treatment of pediatric patients 1 to 21 years old with relapsed or refractory acute lymphobla",
+      "names": [
+        "clofarabine",
+        "2-chloro-2'fluoro-2'-deoxy-9-beta-d-arabinofuranosyladenine"
+      ],
+      "single": {
+        "level": "animal",
+        "pmid": "23004932",
+        "quote": "Clofarabine had no effect on the growth of SF-295 glioblastoma, which was not enhanced by radiation."
+      },
+      "brain": {
+        "crosses": "yes",
+        "pmid": "16115942",
+        "quote": "Clofarabine penetrates into the CSF only modestly, but the concentrations obtained may approach those that are cytotoxic in vitro."
+      },
+      "trials": [],
+      "euctr": 0,
+      "survives": true,
+      "why": "",
+      "euctrTitles": []
+    },
+    {
+      "drug": "clofazimine",
+      "indication": "1 INDICATIONS AND USAGE LAMPRENE is an antimycobacterial indicated for the treatment of lepromatous leprosy, including dapsone-resistant lepromatous leprosy and",
+      "names": [
+        "clofazimine",
+        "CFZ"
+      ],
+      "single": {
+        "level": "animal",
+        "pmid": "31018124",
+        "quote": "Clofazimine attenuates proliferation, self-renewal, and tumor growth and synergizes with temozolomide to induce apoptosis."
+      },
+      "brain": {
+        "crosses": "no",
+        "pmid": "31018124",
+        "quote": "Although clofazimine does not cross the blood-brain barrier, the combination of clofazimine derivatives optimized for brain penetrance with standard-of-care therapies may target glioblastoma CSCs."
+      },
+      "trials": [],
+      "euctr": null,
+      "survives": false,
+      "why": "EU register: null; does not cross the blood-brain barrier"
+    },
+    {
+      "drug": "clomipramine",
+      "indication": "INDICATIONS AND USAGE Clomipramine hydrochloride capsules, USP is indicated for the treatment of obsessions and compulsions in patients with Obsessive-Compulsiv",
+      "names": [
+        "clomipramine"
+      ],
+      "single": {
+        "level": "in vitro",
+        "pmid": "20332444",
+        "quote": "Overall, it appeared that clomipramine and its metabolite norclomipramine were the most potent inhibitors of cellular respiration in glioma cells over the concentration range 0.5-0.9 mM."
+      },
+      "brain": null,
+      "trials": [],
+      "euctr": null,
+      "survives": false,
+      "why": "in vitro only; EU register: null"
+    },
+    {
+      "drug": "clozapine",
+      "indication": "1 INDICATIONS AND USAGE Clozapine orally disintegrating tablets (Clozapine ODT) is an atypical antipsychotic indicated for: Treatment of severely ill patients w",
+      "names": [
+        "clozapine",
+        "CZP",
+        "CLZ",
+        "Clz"
+      ],
+      "single": {
+        "level": "in vitro",
+        "pmid": "40724598",
+        "quote": "CLZ exhibited the highest cytotoxicity in both cell lines, suggesting strong anticancer potential"
+      },
+      "brain": {
+        "crosses": "yes",
+        "pmid": "35809218",
+        "quote": "because it readily crosses the blood-brain barrier"
+      },
+      "trials": [],
+      "euctr": null,
+      "survives": false,
+      "why": "in vitro only; EU register: null"
+    },
+    {
+      "drug": "dactinomycin",
+      "indication": "1 INDICATIONS AND USAGE Dactinomycin for Injection is an actinomycin indicated for the treatment of: adult and pediatric patients with Wilms tumor, as part of a",
+      "names": [
+        "dactinomycin"
+      ],
+      "single": {
+        "level": "in vitro",
+        "pmid": "69017",
+        "quote": "Dactinomycin by silastic diffusion proved more effective than mithramycin against tissue cultures, but neither drug had a significant effect against local tumours treated with implanted drug capsules."
+      },
+      "brain": {
+        "crosses": "no",
+        "pmid": "7300888",
+        "quote": "It is unavoidable only in those patients who are likely to develop intracranial extension, because chemotherapeutic agents do not penetrate the blood-brain barrier."
+      },
+      "trials": [
+        {
+          "name": "dactinomycin",
+          "nct": "NCT01014767",
+          "title": "Intercontinental Multidisciplinary Registry and Treatment Optimization Study for Choroid Plexus Tumors"
+        },
+        {
+          "name": "dactinomycin",
+          "nct": "NCT03382158",
+          "title": "International PPB/DICER1 Registry"
+        }
+      ],
+      "euctr": null,
+      "survives": false,
+      "why": "in vitro only; 2 trial(s) under dactinomycin; EU register: null; does not cross the blood-brain barrier"
+    },
+    {
+      "drug": "dorzolamide",
+      "indication": "1 INDICATIONS AND USAGE Dorzolamide Hydrochloride Ophthalmic Solution is indicated in the treatment of elevated intraocular pressure in patients with ocular hyp",
+      "names": [
+        "dorzolamide"
+      ],
+      "single": {
+        "level": "in vitro",
+        "pmid": "40910234",
+        "quote": "U87 cells were treated with Dorzolamide, TMZ, or both."
+      },
+      "brain": null,
+      "trials": [],
+      "euctr": null,
+      "survives": false,
+      "why": "in vitro only; EU register: null"
+    },
+    {
+      "drug": "doxycycline",
+      "indication": "INDICATIONS AND USAGE To reduce the development of drug-resistant bacteria and maintain effectiveness of doxycycline and other antibacterial drugs, doxycycline ",
+      "names": [
+        "doxycycline",
+        "DOX",
+        "DXC",
+        "DOXY"
+      ],
+      "single": {
+        "level": "animal",
+        "pmid": "30961616",
+        "quote": "No survival advantage was observed in DXC-treated mice as compared to vehicle-treated mice by this radiosensitizing protocol."
+      },
+      "brain": {
+        "crosses": "yes",
+        "pmid": "30961616",
+        "quote": "Since DXC presents favorable pharmacokinetics properties including the capacity to cross the blood-brain barrier, it has been hypothesized that it could radiosensitize brain tumors as well."
+      },
+      "trials": [
+        {
+          "name": "DOXY",
+          "nct": "NCT02201381",
+          "title": "Study of the Safety, Tolerability and Efficacy of Metabolic Combination Treatments on Cancer"
+        },
+        {
+          "name": "DOX",
+          "nct": "NCT02601950",
+          "title": "A Study of Tazemetostat in Adult Participants With Soft Tissue Sarcoma"
+        },
+        {
+          "name": "DOX",
+          "nct": "NCT01014767",
+          "title": "Intercontinental Multidisciplinary Registry and Treatment Optimization Study for Choroid Plexus Tumors"
+        },
+        {
+          "name": "DOX",
+          "nct": "NCT00703170",
+          "title": "Phase I Study of DOXIL and Temsirolimus in Resistant Solid Malignancies"
+        },
+        {
+          "name": "DOX",
+          "nct": "NCT05630209",
+          "title": "Blood Brain Barrier (BBB) Disruption Using Exablate Focused Ultrasound With Doxorubicin for Treatment of Pediatric Diffuse Intrinsic Pontine Gliomas (DIPG)"
+        },
+        {
+          "name": "DOX",
+          "nct": "NCT01386580",
+          "title": "An Open-label, Phase I/IIa, Dose Escalating Study of 2B3-101 in Patients With Solid Tumors and Brain Metastases or Recurrent Malignant Glioma."
+        },
+        {
+          "name": "DOX",
+          "nct": "NCT00000801",
+          "title": "Phase II Trial of Sequential Chemotherapy and Radiotherapy for AIDS-Related Primary Central Nervous System Lymphoma"
+        },
+        {
+          "name": "DOX",
+          "nct": "NCT02066220",
+          "title": "International Society of Paediatric Oncology (SIOP) PNET 5 Medulloblastoma"
+        },
+        {
+          "name": "DOX",
+          "nct": "NCT00795678",
+          "title": "Chemotherapeutic Agents in Brain/Breast"
+        },
+        {
+          "name": "DOX",
+          "nct": "NCT00011414",
+          "title": "Phase I Trial of Tariquidar (XR9576) in Combination With Doxorubicin, Vinorelbine, or Docetaxel in Pediatric Patients With Solid Tumors"
+        },
+        {
+          "name": "DOX",
+          "nct": "NCT02861222",
+          "title": "Myocet® in Children With Relapsed or Refractory Non-brainstem Malignant Glioma"
+        },
+        {
+          "name": "DOX",
+          "nct": "NCT02766699",
+          "title": "A Study to Evaluate the Safety, Tolerability and Immunogenicity of EGFR(V)-EDV-Dox in Subjects With Recurrent GBM"
+        },
+        {
+          "name": "DOX",
+          "nct": "NCT04762069",
+          "title": "A Study of Berubicin in Adult Subjects With Recurrent Glioblastoma Multiforme"
+        },
+        {
+          "name": "DOX",
+          "nct": "NCT05615623",
+          "title": "Blood Brain Barrier (BBB) Disruption Using Exablate Focused Ultrasound With Doxorubicin for Treatment of Pediatric DIPG"
+        },
+        {
+          "name": "DOX",
+          "nct": "NCT05864534",
+          "title": "Phase 2a Immune Modulation With Ultrasound for Newly Diagnosed Glioblastoma"
+        },
+        {
+          "name": "DOX",
+          "nct": "NCT01851733",
+          "title": "MRI-Guided Laser Surgery and Doxorubicin Hydrochloride in Treating Patients With Recurrent Glioblastoma Multiforme"
+        },
+        {
+          "name": "DOX",
+          "nct": "NCT03382158",
+          "title": "International PPB/DICER1 Registry"
+        },
+        {
+          "name": "DOX",
+          "nct": "NCT00002608",
+          "title": "Combination Chemotherapy and Tamoxifen in Treating Patients With Solid Tumors"
+        },
+        {
+          "name": "DOX",
+          "nct": "NCT02735798",
+          "title": "64-Cu Labeled Brain PET/MRI for MM-302 in Advanced HER2+ Cancers With Brain Mets"
+        },
+        {
+          "name": "DOX",
+          "nct": "NCT06356883",
+          "title": "Intraarterial Carboplatin + Caelyx vs Intraarterial Carboplatin + Etoposide Phosphate for Progressing Glioblastoma"
+        },
+        {
+          "name": "DOX",
+          "nct": "NCT02343991",
+          "title": "Blood-Brain Barrier Disruption Using Transcranial MRI-Guided Focused Ultrasound"
+        }
+      ],
+      "euctr": null,
+      "survives": false,
+      "why": "21 trial(s) under DOXY/DOX; EU register: null"
+    },
+    {
+      "drug": "doxylamine",
+      "indication": "Use helps to reduce difficulty in falling asleep",
+      "names": [
+        "doxylamine",
+        "Doxy"
+      ],
+      "single": {
+        "level": "in vitro",
+        "pmid": "41476462",
+        "quote": "Both agents demonstrated superior efficacy in vitro, with lower IC50 values (&#x223c;750 &#x3bc;M for Doxylamine and &#x223c;300 &#x3bc;M for Gemfibrozil) compared to TMZ (&#x223c;1.25 mM)."
+      },
+      "brain": {
+        "crosses": "yes",
+        "pmid": "15331914",
+        "quote": "Doxylamine, diphenhydramine and chlorpheniramine had brain-to-plasma concentration ratios of 4.34 +/- 1.26, 18.4 +/- 2.35 and 34.0 +/- 9.02, respectively."
+      },
+      "trials": [
+        {
+          "name": "Doxy",
+          "nct": "NCT02201381",
+          "title": "Study of the Safety, Tolerability and Efficacy of Metabolic Combination Treatments on Cancer"
+        }
+      ],
+      "euctr": null,
+      "survives": false,
+      "why": "in vitro only; 1 trial(s) under Doxy; EU register: null"
+    },
+    {
+      "drug": "econazole",
+      "indication": "1 INDICATIONS AND USAGE Ecoza (econazole nitrate) topical foam, 1%, is indicated for the treatment of interdigital tinea pedis caused by Trichophyton rubrum, Tr",
+      "names": [
+        "econazole",
+        "econazole nitrate"
+      ],
+      "single": {
+        "level": "in vitro",
+        "pmid": "33050088",
+        "quote": "GBM cell cytotoxicity screening of several ion channel drugs identified three drugs with potent cell killing efficacy: flunarizine dihydrochloride, econazole nitrate, and quinine hydrochloride dihydrate."
+      },
+      "brain": null,
+      "trials": [],
+      "euctr": null,
+      "survives": false,
+      "why": "in vitro only; EU register: null"
+    },
+    {
+      "drug": "edaravone",
+      "indication": "1 INDICATIONS AND USAGE RADICAVA and RADICAVA ORS are indicated for the treatment of amyotrophic lateral sclerosis (ALS). RADICAVA and RADICAVA ORS are indicate",
+      "names": [
+        "edaravone",
+        "Eda"
+      ],
+      "single": {
+        "level": "animal",
+        "pmid": "39423824",
+        "quote": "Importantly, we show that edaravone treatment in preclinical models delays glioblastoma tumorigenesis, sensitizes their response to IR, and prolongs the lifespan of animals."
+      },
+      "brain": {
+        "crosses": "yes",
+        "pmid": "39423824",
+        "quote": "Targeting glioblastoma with a brain-penetrant drug that impairs brain tumor stem cells via NLE1-Notch1 complex."
+      },
+      "trials": [
+        {
+          "name": "Eda",
+          "nct": "NCT07883720",
+          "title": "EXercise-induced PhysioLogical Adaptations In Neurological Disorders"
+        }
+      ],
+      "euctr": null,
+      "survives": false,
+      "why": "1 trial(s) under Eda; EU register: null"
+    },
+    {
+      "drug": "eribulin",
+      "indication": "1 INDICATIONS AND USAGE Eribulin mesylate injection is a microtubule inhibitor indicated for the treatment of patients with: Metastatic breast cancer who have p",
+      "names": [
+        "eribulin",
+        "eribulin mesylate",
+        "Halaven",
+        "Halaven(R)",
+        "ERB"
+      ],
+      "single": {
+        "level": "animal",
+        "pmid": "31099446",
+        "quote": "In addition, it suppressed the growth of glioblastoma cells transplanted subcutaneously or intracerebrally into mice, and significantly prolonged the survival of mice harboring brain tumors at a clinically equivalent dose."
+      },
+      "brain": {
+        "crosses": "no",
+        "pmid": "28664226",
+        "quote": "In xenograft mice, the penetration into the brain was low, as expected, since eribulin is a P-glycoprotein substrate."
+      },
+      "trials": [
+        {
+          "name": "Halaven",
+          "nct": "NCT02338037",
+          "title": "Neuropharmacokinetics of Eribulin Mesylate in Treating Patients With Primary or Metastatic Brain Tumors"
+        },
+        {
+          "name": "Halaven",
+          "nct": "NCT04711824",
+          "title": "Study of Stereotactic Radiosurgery With Olaparib Followed by Durvalumab and Physician's Choice Systemic Therapy in Subjects With Breast Cancer Brain Metastases"
+        },
+        {
+          "name": "Halaven",
+          "nct": "NCT02915744",
+          "title": "A Study of Etirinotecan Pegol (NKTR-102) Versus Treatment of Physician's Choice (TPC) in Patients With Metastatic Breast Cancer Who Have Stable Brain Metastases and Have Been Previously Treated With an Anthracycline, a Taxane, and Capecitabine"
+        },
+        {
+          "name": "Halaven",
+          "nct": "NCT02581839",
+          "title": "Treatment of Brain Metastases From Breast Cancer With Eribulin Mesylate"
+        },
+        {
+          "name": "Halaven",
+          "nct": "NCT03613181",
+          "title": "ANG1005 in Leptomeningeal Disease From Breast Cancer"
+        },
+        {
+          "name": "Halaven",
+          "nct": "NCT03637868",
+          "title": "Eribulin in Brain Metastases From HER2-negative Breast Cancer"
+        }
+      ],
+      "euctr": null,
+      "survives": false,
+      "why": "6 trial(s) under Halaven; EU register: null; does not cross the blood-brain barrier"
+    },
+    {
+      "drug": "finasteride",
+      "indication": "1 INDICATIONS AND USAGE Finasteride tablets are indicated for the treatment of male pattern hair loss (androgenetic alopecia) in MEN ONLY . Efficacy in bitempor",
+      "names": [
+        "finasteride"
+      ],
+      "single": {
+        "level": "in vitro",
+        "pmid": "34575486",
+        "quote": "We showed that finasteride inhibited the maintenance of glioma stem-like cells and repressed the proliferation of glioblastoma."
+      },
+      "brain": {
+        "crosses": "yes",
+        "pmid": "34575486",
+        "quote": "Finasteride, an FDA-approved medication for the treatment of benign prostate hyperplasia and androgenic alopecia, is already known to pass through the blood-brain barrier and possess antiproliferative activity of prostate epithelial cells."
+      },
+      "trials": [],
+      "euctr": null,
+      "survives": false,
+      "why": "in vitro only; EU register: null"
+    },
+    {
+      "drug": "fluphenazine",
+      "indication": "INDICATIONS AND USAGE: Fluphenazine Decanoate Injection is a long-acting parenteral antipsychotic drug intended for use in the management of patients requiring ",
+      "names": [
+        "fluphenazine",
+        "Fluphenazine hydrochloride",
+        "fluphenazine decanoate"
+      ],
+      "single": {
+        "level": "animal",
+        "pmid": "38871731",
+        "quote": "In this study, we investigated the anti-GBM activity of specific antipsychotics and antidepressants in vitro and in vivo."
+      },
+      "brain": {
+        "crosses": "yes",
+        "pmid": "7531409",
+        "quote": "They are attractive candidates for use against tumors of the central nervous system since they readily pass the blood-brain barrier and accumulate in the brain."
+      },
+      "trials": [],
+      "euctr": 0,
+      "survives": true,
+      "why": "",
+      "euctrTitles": []
+    },
+    {
+      "drug": "fluvoxamine",
+      "indication": "1 INDICATIONS AND USAGE Fluvoxamine maleate extended-release capsules is a selective serotonin reuptake inhibitor (SSRI) indicated for the treatment of obsessiv",
+      "names": [
+        "fluvoxamine",
+        "Flv"
+      ],
+      "single": {
+        "level": "animal",
+        "pmid": "26988603",
+        "quote": "Daily treatment of athymic mice bearing human glioma-initiating cells with fluvoxamine blocked tumor cell invasion and prolonged the survival with almost same dose of anti-depressant effect."
+      },
+      "brain": {
+        "crosses": "yes",
+        "pmid": "26988603",
+        "quote": "confirmed as drug penetration through the blood-brain barrier (BBB) and accumulation of whole brain including brain tumor with no drug toxicity."
+      },
+      "trials": [],
+      "euctr": 0,
+      "survives": true,
+      "why": "",
+      "euctrTitles": []
+    },
+    {
+      "drug": "fulvestrant",
+      "indication": "1 INDICATIONS AND USAGE Fulvestrant Injection is an estrogen receptor antagonist indicated for the treatment of: Hormone receptor (HR)-positive, human epidermal",
+      "names": [
+        "fulvestrant"
+      ],
+      "single": {
+        "level": "animal",
+        "pmid": "41930759",
+        "quote": "The temozolomide/fulvestrant combination significantly enhanced cytotoxicity by 80% in cells (p<0.001), and by 40% (p<0.01) in spheroids."
+      },
+      "brain": {
+        "crosses": "no",
+        "pmid": "17686882",
+        "quote": "specific ERalpha blockade with a pure antiestrogen, fulvestrant, that does not penetrate the blood-brain barrier"
+      },
+      "trials": [
+        {
+          "name": "fulvestrant",
+          "nct": "NCT04923542",
+          "title": "SRS & Abemaciclib w/wo Imlunestrant in the Management of HR+/HER2- Breast CA Brain Metastases"
+        },
+        {
+          "name": "fulvestrant",
+          "nct": "NCT03803761",
+          "title": "A Study of a New Drug Combination, Copanlisib and Fulvestrant, in Advanced Breast Cancer"
+        },
+        {
+          "name": "fulvestrant",
+          "nct": "NCT04334330",
+          "title": "Palbociclib, Trastuzumab,Pyrotinib and Fulvestrant Treatment in Patients With Brain Metastasis From ER/PR Positive, HER-2 Positive Breast Cancer: A Multi-center, Prospective Study in China"
+        }
+      ],
+      "euctr": 1,
+      "survives": false,
+      "why": "3 trial(s) under fulvestrant; EU register: 1; does not cross the blood-brain barrier"
+    },
+    {
+      "drug": "gemfibrozil",
+      "indication": "INDICATIONS AND USAGE Gemfibrozil Tablets are indicated as adjunctive therapy to diet for: 1. Treatment of adult patients with very high elevations of serum tri",
+      "names": [
+        "gemfibrozil",
+        "Gem"
+      ],
+      "single": {
+        "level": "in vitro",
+        "pmid": "40595852",
+        "quote": "These drugs were more cytotoxic than TMZ; however, they synergised with TMZ as well."
+      },
+      "brain": {
+        "crosses": "yes",
+        "pmid": "40595852",
+        "quote": "Repurposing of CNS accumulating drugs Gemfibrozil and Doxylamine for enhanced sensitization of glioblastoma cells through modulation of autophagy."
+      },
+      "trials": [
+        {
+          "name": "Gem",
+          "nct": "NCT05717790",
+          "title": "Concurrent and Adjuvant Nimotuzumab Combined With Induction Chemotherapy Plus Chemoradiation in Nasopharyngeal Carcinoma"
+        },
+        {
+          "name": "Gem",
+          "nct": "NCT03274037",
+          "title": "Evaluation of Cerebral Elastography by Magnetic Resonance: Comparison of Healthy Subjects and Patients With Glial Tumor"
+        },
+        {
+          "name": "Gem",
+          "nct": "NCT05413304",
+          "title": "Abemaciclib Neuropharmacokinetics of Diffuse Midline Glioma Using Intratumoral Microdialysis"
+        },
+        {
+          "name": "Gem",
+          "nct": "NCT02115139",
+          "title": "GEM STUDY: Radiation And Yervoy in Patients With Melanoma and Brain Metastases"
+        }
+      ],
+      "euctr": null,
+      "survives": false,
+      "why": "in vitro only; 4 trial(s) under Gem; EU register: null"
+    },
+    {
+      "drug": "glimepiride",
+      "indication": "1 INDICATIONS AND USAGE Glimepiride tablets are indicated as an adjunct to diet and exercise to improve glycemic control in adults with type 2 diabetes mellitus",
+      "names": [
+        "glimepiride",
+        "GPD"
+      ],
+      "single": {
+        "level": "animal",
+        "pmid": "34488821",
+        "quote": "combining radiotherapy and glimepiride significantly reduced GBM growth and improved survival in a GBM orthotopic xenograft mouse model."
+      },
+      "brain": null,
+      "trials": [],
+      "euctr": 0,
+      "survives": true,
+      "why": "",
+      "euctrTitles": []
+    },
+    {
+      "drug": "griseofulvin",
+      "indication": "INDICASTIONS AND USAGE Griseofulvin tablets, USP are indicated for the treatment of dermatophyte infections of the skin not adequately treated by topical therap",
+      "names": [
+        "griseofulvin"
+      ],
+      "single": {
+        "level": "animal",
+        "pmid": "42710153",
+        "quote": "oral administration of GF significantly inhibited tumor growth in vivo"
+      },
+      "brain": null,
+      "trials": [],
+      "euctr": 0,
+      "survives": true,
+      "why": "",
+      "euctrTitles": []
+    },
+    {
+      "drug": "hydralazine",
+      "indication": "INDICATIONS AND USAGE Essential hypertension, alone or as an adjunct.",
+      "names": [
+        "hydralazine",
+        "HYZ"
+      ],
+      "single": {
+        "level": "in vitro",
+        "pmid": "41091880",
+        "quote": "indeed, a single dose robustly senesces cultured GBM cells."
+      },
+      "brain": null,
+      "trials": [
+        {
+          "name": "hydralazine",
+          "nct": "NCT07093151",
+          "title": "Comparison of Post-Craniotomy Blood Pressure Targets"
+        },
+        {
+          "name": "hydralazine",
+          "nct": "NCT00952081",
+          "title": "A Pilot Study to Evaluate Efficacy and Safety of Clevidipine in Neurosurgical Patients"
+        }
+      ],
+      "euctr": null,
+      "survives": false,
+      "why": "in vitro only; 2 trial(s) under hydralazine; EU register: null"
+    },
+    {
+      "drug": "iloperidone",
+      "indication": "1 INDICATIONS AND USAGE FANAPT ® is indicated for: Treatment of schizophrenia in adults [see Clinical Studies (14.1) ]. Acute treatment of manic or mixed episod",
+      "names": [
+        "iloperidone"
+      ],
+      "single": {
+        "level": "in vitro",
+        "pmid": "38927341",
+        "quote": "ILO (p < 0.05) and TMZ (p < 0.01) significantly inhibited the growth of U-87MG cells at all tested doses."
+      },
+      "brain": null,
+      "trials": [],
+      "euctr": null,
+      "survives": false,
+      "why": "in vitro only; EU register: null"
+    },
+    {
+      "drug": "ivermectin",
+      "indication": "INDICATIONS AND USAGE Ivermectin is indicated for the treatment of the following infections: Strongyloidiasis of the intestinal tract Ivermectin is indicated fo",
+      "names": [
+        "ivermectin",
+        "IVM"
+      ],
+      "single": {
+        "level": "animal",
+        "pmid": "27771251",
+        "quote": "Ivermectin significantly suppresses the growth of two independent glioblastoma xenograft mouse models."
+      },
+      "brain": {
+        "crosses": "yes",
+        "pmid": "11692082",
+        "quote": "P-gp functions as a drug-transport pump at the blood-brain barrier, transporting a variety of drugs from the brain back into the blood. Since ivermectin is a substrate for P-gp"
+      },
+      "trials": [
+        {
+          "name": "IVM",
+          "nct": "NCT03823144",
+          "title": "Intravital Microscopy in Human Solid Tumors"
+        },
+        {
+          "name": "IVM",
+          "nct": "NCT01810744",
+          "title": "Study of Microcirculatory Effects of Bevacizumab in Patients Treated for Metastatic Colon Cancer or Glioblastoma"
+        },
+        {
+          "name": "IVM",
+          "nct": "NCT04597801",
+          "title": "Comparison of Fluorescein-INtra-VItal Microscopy Versus Conventional Frozen Section Diagnosis for intraOperative Histopathological Evaluation"
+        },
+        {
+          "name": "IVM",
+          "nct": "NCT01012154",
+          "title": "In Vivo Confocal Microscopy Tumor Atlas Study"
+        }
+      ],
+      "euctr": null,
+      "survives": false,
+      "why": "4 trial(s) under IVM; EU register: null"
+    },
+    {
+      "drug": "ketorolac",
+      "indication": "INDICATIONS AND USAGE Carefully consider the potential benefits and risks of ketorolac tromethamine and other treatment options before deciding to use ketorolac",
+      "names": [
+        "ketorolac",
+        "ketorolac tromethamine"
+      ],
+      "single": {
+        "level": "in vitro",
+        "pmid": "15546138",
+        "quote": "Furthermore, only celecoxib showed Akt phosphorylation reduction and an anti-invasivness in glioblastoma cells, whereas aspirin, ketoprofen, ketorolac, and naproxen did not."
+      },
+      "brain": {
+        "crosses": "no",
+        "pmid": "33389746",
+        "quote": "we chronically infused mice with ketorolac, a non-specific COX inhibitor that does not cross the blood-brain barrier (BBB), under normoxia or 50% isobaric hypoxia (10% O2 by volume)."
+      },
+      "trials": [
+        {
+          "name": "ketorolac",
+          "nct": "NCT04941040",
+          "title": "Opioid Free VS Opioid Anesthesia for Craniotomies"
+        },
+        {
+          "name": "ketorolac",
+          "nct": "NCT04380298",
+          "title": "Effects of Pre-emptive Scalp Infiltration With Low-dose Ketorolac and Ropivacaine for Postoperative Pain"
+        },
+        {
+          "name": "ketorolac",
+          "nct": "NCT04141319",
+          "title": "Effects of Pre-emptive Scalp Infiltration With Ketorolac and Ropivacaine for Post-craniotomy Pain"
+        }
+      ],
+      "euctr": null,
+      "survives": false,
+      "why": "in vitro only; 3 trial(s) under ketorolac; EU register: null; does not cross the blood-brain barrier"
+    },
+    {
+      "drug": "lazertinib",
+      "indication": "1 INDICATIONS AND USAGE LAZCLUZE, in combination with amivantamab, is indicated for the first-line treatment of adult patients with locally advanced or metastat",
+      "names": [
+        "lazertinib"
+      ],
+      "single": {
+        "level": "animal",
+        "pmid": "42276053",
+        "quote": "Additionally, lazertinib demonstrated superior efficacy to standard therapies in GBO transplantation mouse model."
+      },
+      "brain": {
+        "crosses": "yes",
+        "pmid": "37365915",
+        "quote": "has shown higher selectivity toward EGFR mutations and improved penetration of the blood-brain barrier compared to osimertinib in preclinical studies."
+      },
+      "trials": [
+        {
+          "name": "lazertinib",
+          "nct": "NCT05326425",
+          "title": "Lazertinib in Patients With NSCLC With Asymptomatic or Mild Symptomatic Brain Metastases After Failure of EGFR TKI."
+        }
+      ],
+      "euctr": 1,
+      "survives": false,
+      "why": "1 trial(s) under lazertinib; EU register: 1"
+    },
+    {
+      "drug": "lomitapide",
+      "indication": "1 INDICATIONS AND USAGE JUXTAPID is indicated as an adjunct to a low-fat diet and exercise and other low density lipoprotein cholesterol (LDL-C) therapies to re",
+      "names": [
+        "lomitapide",
+        "LMP"
+      ],
+      "single": {
+        "level": "animal",
+        "pmid": "40923320",
+        "quote": "Concomitant treatment with lomitapide and temozolomide (TMZ) prolonged survival and delayed tumor recurrence in a mouse glioblastoma model, compared with treatment xwith TMZ alone."
+      },
+      "brain": {
+        "crosses": "yes",
+        "pmid": "40923320",
+        "quote": "we performed a high-throughput drug repurposing screen of FDA-approved agents capable of crossing the blood-brain barrier in order to find agents to counteract acquired or inherent glioma cell resistance to temozolomide-associated cytotoxicity."
+      },
+      "trials": [],
+      "euctr": 0,
+      "survives": true,
+      "why": "",
+      "euctrTitles": []
+    },
+    {
+      "drug": "lumefantrine",
+      "indication": "1 INDICATIONS AND USAGE Coartem Tablets are indicated for treatment of acute, uncomplicated malaria infections due to Plasmodium falciparum (P. falciparum) in p",
+      "names": [
+        "lumefantrine"
+      ],
+      "single": {
+        "level": "animal",
+        "pmid": "32409605",
+        "quote": "Lumefantrine promoted growth suppression and apoptosis in vitro in parental and radio/TMZ-resistant GBM and inhibited tumor growth without toxicity in vivo in U87MG GBM and radio/TMZ-resistant GBM orthotopic tumor models."
+      },
+      "brain": null,
+      "trials": [],
+      "euctr": 0,
+      "survives": true,
+      "why": "",
+      "euctrTitles": []
+    },
+    {
+      "drug": "maraviroc",
+      "indication": "1 INDICATIONS AND USAGE Maraviroc tablets are indicated in combination with other antiretroviral agents for the treatment of only CCR5-tropic human immunodefici",
+      "names": [
+        "maraviroc",
+        "MVC",
+        "MRV",
+        "MVR",
+        "miraviroc"
+      ],
+      "single": {
+        "level": "animal",
+        "pmid": "41570802",
+        "quote": "Targeting CCR5 with genetic knockdown or the approved drug maraviroc impairs GSC stemness and prolongs survival in GBM models."
+      },
+      "brain": {
+        "crosses": "yes",
+        "pmid": "19855252",
+        "quote": "the median CSF concentration was 3.63 ng/ml (range 1.83-12.2)."
+      },
+      "trials": [
+        {
+          "name": "MVR",
+          "nct": "NCT05095441",
+          "title": "A Clinical Study of Intratumoral MVR-C5252 (C5252) in Patients With Recurrent or Progressive Glioblastoma"
+        },
+        {
+          "name": "MVR",
+          "nct": "NCT07243340",
+          "title": "A Phase I/IIa Study of C5252 in Patients With Intracranial Tumor"
+        },
+        {
+          "name": "MVR",
+          "nct": "NCT06126744",
+          "title": "Open-Label Study to Evaluate the Safety, Tolerability and Efficacy of the Oncolytic HSV1 MVR-C5252"
+        }
+      ],
+      "euctr": null,
+      "survives": false,
+      "why": "3 trial(s) under MVR; EU register: null"
+    },
+    {
+      "drug": "medroxyprogesterone acetate",
+      "indication": "1 INDICATIONS AND USAGE Medroxyprogesterone acetate injectable suspension is indicated for use by females of reproductive potential to prevent pregnancy. Limita",
+      "names": [
+        "medroxyprogesterone acetate",
+        "MPA"
+      ],
+      "single": null,
+      "brain": {
+        "crosses": "yes",
+        "pmid": "670006",
+        "quote": "MPA-related materials are capable of crossing the blood-brain barrier and could potentially exert their ventilatory stimulant effect by some central mechanism."
+      },
+      "trials": [
+        {
+          "name": "MPA",
+          "nct": "NCT04477200",
+          "title": "Mycophenolate Mofetil Combined With Radiation Therapy in Glioblastoma"
+        },
+        {
+          "name": "MPA",
+          "nct": "NCT04521946",
+          "title": "Chemotherapy and Donor Stem Transplant for the Treatment of Patients With High Grade Brain Cancer"
+        },
+        {
+          "name": "MPA",
+          "nct": "NCT05236036",
+          "title": "Mycophenolate Mofetil in Combination With Standard of Care for the Treatment of Glioblastoma"
+        },
+        {
+          "name": "MPA",
+          "nct": "NCT04021420",
+          "title": "Safety and Efficacy of Sonocloud Device Combined With Nivolumab in Brain Metastases From Patients With Melanoma"
+        },
+        {
+          "name": "MPA",
+          "nct": "NCT07111182",
+          "title": "Intraoperative Fluorescence-Guided Aspirate Tissue Monitoring of 5-ALA During Brain Tumor Surgery"
+        },
+        {
+          "name": "MPA",
+          "nct": "NCT07247279",
+          "title": "Epidemiological Study of Treatment Approaches in AChR-Antibody Positive Generalized Myasthenia Gravis in Russia"
+        },
+        {
+          "name": "MPA",
+          "nct": "NCT07605364",
+          "title": "Testing the Addition of an Anti-Cancer Drug, Mycophenolate Mofetil, to the Usual Treatment (Radiation Therapy and Temozolomide) for Advanced Brain Cancer"
+        }
+      ],
+      "euctr": null,
+      "survives": false,
+      "why": "no verified single-drug evidence; 7 trial(s) under MPA; EU register: null"
+    },
+    {
+      "drug": "mitoxantrone",
+      "indication": "INDICATIONS AND USAGE Mitoxantrone injection, USP (concentrate) is indicated for reducing neurologic disability and/or the frequency of clinical relapses in pat",
+      "names": [
+        "mitoxantrone",
+        "Mtx",
+        "MTO",
+        "MTX"
+      ],
+      "single": {
+        "level": "human trial",
+        "pmid": "8699238",
+        "quote": "9 of the patients showed either response or stable disease at the end of the treatment schedule."
+      },
+      "brain": {
+        "crosses": "no",
+        "pmid": "27576697",
+        "quote": "Mitoxantrone is a highly cytotoxic antineoplastic drug, however, its poor penetration of the blood-brain barrier has limited its role in the treatment of brain cancers."
+      },
+      "trials": [
+        {
+          "name": "MTX",
+          "nct": "NCT03520842",
+          "title": "Regorafenib and Methotrexate in Treating Participants With Recurrent or Metastatic KRAS Mutated Non-Small Cell Lung Cancer"
+        },
+        {
+          "name": "MTX",
+          "nct": "NCT02045368",
+          "title": "Study of Insulin-like Growth Factor (IGF)-Methotrexate Conjugate in the Treatment of Advanced Tumors Expressing IGF-1R"
+        },
+        {
+          "name": "MTX",
+          "nct": "NCT02017964",
+          "title": "Combination Chemotherapy in Treating Younger Patients With Newly Diagnosed, Non-metastatic Desmoplastic Medulloblastoma"
+        },
+        {
+          "name": "MTX",
+          "nct": "NCT00000723",
+          "title": "The Use of Chemotherapy Plus Radiotherapy Plus Azidothymidine in Patients With AIDS-Related Lymph Node Cancer"
+        },
+        {
+          "name": "MTX",
+          "nct": "NCT02066220",
+          "title": "International Society of Paediatric Oncology (SIOP) PNET 5 Medulloblastoma"
+        },
+        {
+          "name": "MTX",
+          "nct": "NCT02313389",
+          "title": "Maintenance Treatment Versus Observation in Elderly Patients With PCNS Lymphoma"
+        },
+        {
+          "name": "MTX",
+          "nct": "NCT05535166",
+          "title": "Molecular and Clinical Risk-Directed Therapy for Infants and Young Children With Newly Diagnosed Medulloblastoma"
+        },
+        {
+          "name": "MTX",
+          "nct": "NCT02905110",
+          "title": "Methotrexate and Etoposide Infusions Into the Fourth Ventricle in Children with Recurrent Posterior Fossa Brain Tumors"
+        },
+        {
+          "name": "MTX",
+          "nct": "NCT00992602",
+          "title": "Liposomal Cytarabine and High-Dose Methotrexate in Treating Patients With Central Nervous System Metastases From Breast Cancer"
+        },
+        {
+          "name": "MTX",
+          "nct": "NCT00596154",
+          "title": "Rituximab, Methotrexate, Procarbazine and Vincristine Followed by High-dose Chemotherapy With Autologous Stem-cell Rescue in Newly-diagnosed Primary CNS Lymphoma"
+        },
+        {
+          "name": "MTX",
+          "nct": "NCT00602667",
+          "title": "Risk-Adapted Therapy for Young Children With Embryonal Brain Tumors, Choroid Plexus Carcinoma, High Grade Glioma or Ependymoma"
+        },
+        {
+          "name": "MTX",
+          "nct": "NCT00397501",
+          "title": "BBBD Followed By Methotrexate and Carboplatin With or Without Trastuzumab in Treating Women With Breast Cancer That Has Spread to the Brain"
+        },
+        {
+          "name": "MTX",
+          "nct": "NCT06830421",
+          "title": "Adjusted High-dose Chemotherapy With Autologous Stem Cell Transplant vs. Conventional Immunochemotherapy in Elderly PCNSL Patients"
+        },
+        {
+          "name": "MTX",
+          "nct": "NCT00455286",
+          "title": "a Phase II Study in Primary Central Nervous System Lymphoma"
+        },
+        {
+          "name": "MTX",
+          "nct": "NCT00336024",
+          "title": "Combination Chemotherapy Followed By Peripheral Stem Cell Transplant in Treating Young Patients With Newly Diagnosed Supratentorial Primitive Neuroectodermal Tumors or High-Risk Medulloblastoma"
+        },
+        {
+          "name": "MTO",
+          "nct": "NCT02465060",
+          "title": "Targeted Therapy Directed by Genetic Testing in Treating Patients With Advanced Refractory Solid Tumors, Lymphomas, or Multiple Myeloma (The MATCH Screening Trial)"
+        },
+        {
+          "name": "MTO",
+          "nct": "NCT06500455",
+          "title": "Testing Longer Duration Radiation Therapy Versus the Usual Radiation Therapy in Patients With Cancer That Has Spread to the Brain"
+        },
+        {
+          "name": "MTO",
+          "nct": "NCT01622868",
+          "title": "Whole-Brain Radiation Therapy or Stereotactic Radiosurgery With or Without Lapatinib Ditosylate in Treating Patients With Brain Metastasis From HER2-Positive Breast Cancer"
+        },
+        {
+          "name": "MTO",
+          "nct": "NCT04588246",
+          "title": "Comparing Whole Brain Radiotherapy Using a Technique That Avoids the Hippocampus to Stereotactic Radiosurgery in Patients With Cancer That Has Spread to the Brain and Come Back in Other Areas of the Brain After Earlier Stereotactic Radiosurgery"
+        },
+        {
+          "name": "MTO",
+          "nct": "NCT04804644",
+          "title": "Testing if High Dose Radiation Only to the Sites of Brain Cancer Compared to Whole Brain Radiation That Avoids the Hippocampus is Better at Preventing Loss of Memory and Thinking Ability"
+        },
+        {
+          "name": "MTO",
+          "nct": "NCT03475186",
+          "title": "Testing Ramipril to Prevent Memory Loss in People With Glioblastoma"
+        },
+        {
+          "name": "MTO",
+          "nct": "NCT04647916",
+          "title": "Testing Sacituzumab Govitecan Therapy in Patients With HER2-Negative Breast Cancer and Brain Metastases"
+        },
+        {
+          "name": "MTO",
+          "nct": "NCT05095376",
+          "title": "Testing the Addition of the Chemotherapy Drug Lomustine (Gleostine) to the Usual Treatment (Temozolomide and Radiation Therapy) for Newly Diagnosed MGMT Methylated Glioblastoma"
+        },
+        {
+          "name": "MTO",
+          "nct": "NCT05438212",
+          "title": "Comparing the Addition of Radiation Either Before or After Surgery for Patients With Brain Metastases"
+        },
+        {
+          "name": "MTO",
+          "nct": "NCT04145115",
+          "title": "A Study Testing the Effect of Immunotherapy (Ipilimumab and Nivolumab) in Patients With Recurrent Glioma With Elevated Mutational Burden"
+        },
+        {
+          "name": "MTO",
+          "nct": "NCT01781468",
+          "title": "Armodafinil in Reducing Cancer-Related Fatigue in Patients With High Grade Glioma"
+        },
+        {
+          "name": "MTO",
+          "nct": "NCT02595905",
+          "title": "Cisplatin With or Without Veliparib in Treating Patients With Recurrent or Metastatic Triple-Negative and/or BRCA Mutation-Associated Breast Cancer With or Without Brain Metastases"
+        },
+        {
+          "name": "MTO",
+          "nct": "NCT04729959",
+          "title": "Testing the Addition of the Immune Therapy Drugs, Tocilizumab and Atezolizumab, to Radiation Therapy for Recurrent Glioblastoma"
+        },
+        {
+          "name": "MTO",
+          "nct": "NCT01609790",
+          "title": "Bevacizumab With or Without Trebananib in Treating Patients With Recurrent Brain Tumors"
+        },
+        {
+          "name": "MTO",
+          "nct": "NCT04396860",
+          "title": "Testing the Use of the Immunotherapy Drugs Ipilimumab and Nivolumab Plus Radiation Therapy Compared to the Usual Treatment (Temozolomide and Radiation Therapy) for Newly Diagnosed MGMT Unmethylated Glioblastoma"
+        },
+        {
+          "name": "MTO",
+          "nct": "NCT03994796",
+          "title": "Genetic Testing in Guiding Treatment for Patients With Brain Metastases"
+        },
+        {
+          "name": "MTO",
+          "nct": "NCT03418961",
+          "title": "S1501 Dual Observational and Randomized Cohort Study of Patients With Metastatic HER-2+ Breast Cancer at Risk of Cardiac Toxicity"
+        },
+        {
+          "name": "MTO",
+          "nct": "NCT02490878",
+          "title": "Corticosteroids + Bevacizumab vs. Corticosteroids + Placebo (BEST) for Radionecrosis After Radiosurgery for Brain Metastases"
+        }
+      ],
+      "euctr": null,
+      "survives": false,
+      "why": "33 trial(s) under MTX/MTO; EU register: null; does not cross the blood-brain barrier"
+    },
+    {
+      "drug": "mometasone",
+      "indication": "1 INDICATIONS AND USAGE ASMANEX HFA is a corticosteroid indicated for: Maintenance treatment of asthma as prophylactic therapy in patients 5 years of age and ol",
+      "names": [
+        "mometasone",
+        "mometasone furoate"
+      ],
+      "single": {
+        "level": "in vitro",
+        "pmid": "26954019",
+        "quote": "Eight of the fourteen drugs showed significant anti-proliferative activity against glioblastoma; i.e., ivermectin, trifluridine, astemizole, amlodipine, maprotiline, apomorphine, mometasone, and nortriptyline."
+      },
+      "brain": {
+        "crosses": "unknown",
+        "pmid": "16442095",
+        "quote": "Efflux transporters, p-glycoprotein and breast cancer resistance protein (BCRP), located at barrier sites such as the blood-brain barrier may affect distribution of steroids used for treating chronic inflammatory conditions and thus the extent to which they may perturb the hypothalamic-pituitary-adrenal axis."
+      },
+      "trials": [],
+      "euctr": null,
+      "survives": false,
+      "why": "in vitro only; EU register: null"
+    },
+    {
+      "drug": "montelukast",
+      "indication": "1 INDICATIONS AND USAGE Montelukast sodium chewable tablets are a leukotriene receptor antagonist indicated for: • Prophylaxis and chronic treatment of asthma i",
+      "names": [
+        "montelukast",
+        "MTK"
+      ],
+      "single": {
+        "level": "in vitro",
+        "pmid": "29726704",
+        "quote": "Both LTRAs induced apoptosis and inhibited cell proliferation of glioblastoma cells in a concentration-dependent manner."
+      },
+      "brain": {
+        "crosses": "yes",
+        "pmid": "33374646",
+        "quote": "there were measurable amounts of MTK present in the cerebrospinal fluid (CSF)."
+      },
+      "trials": [
+        {
+          "name": "montelukast",
+          "nct": "NCT06887673",
+          "title": "Lipid Mediators & Cancer: Montelukast, SPM, and Almonds"
+        }
+      ],
+      "euctr": null,
+      "survives": false,
+      "why": "in vitro only; 1 trial(s) under montelukast; EU register: null"
+    },
+    {
+      "drug": "moxidectin",
+      "indication": "1 INDICATIONS AND USAGE Moxidectin Tablets are indicated for the treatment of onchocerciasis due to Onchocerca volvulus in adult and pediatric patients aged 4 y",
+      "names": [
+        "moxidectin",
+        "MOX"
+      ],
+      "single": {
+        "level": "animal",
+        "pmid": "40231611",
+        "quote": "Oral administration of 3.5 mg/kg moxidectin suppressed the growth of GBM tumors by 90% in an intracranial tumor model."
+      },
+      "brain": {
+        "crosses": "yes",
+        "pmid": "19619412",
+        "quote": "This report shows that topically applied moxidectin at a standard dose accumulates in the CNS causing toxicosis in both SAMP8 and SAMR1 mice."
+      },
+      "trials": [],
+      "euctr": 0,
+      "survives": true,
+      "why": "",
+      "euctrTitles": []
+    },
+    {
+      "drug": "nebivolol",
+      "indication": "1 INDICATIONS AND USAGE Nebivolol is a beta-adrenergic blocking agent indicated for the treatment of hypertension, to lower blood pressure. Lowering blood press",
+      "names": [
+        "nebivolol"
+      ],
+      "single": {
+        "level": "animal",
+        "pmid": "42030279",
+        "quote": "nebivolol administration significantly attenuated orthotopic GBM xenograft progression and extended survival in tumor-bearing murine models."
+      },
+      "brain": null,
+      "trials": [],
+      "euctr": 0,
+      "survives": true,
+      "why": "",
+      "euctrTitles": []
+    },
+    {
+      "drug": "nicardipine",
+      "indication": "INDICATIONS AND USAGE I. Stable Angina Nicardipine hydrochloride capsules are indicated for the management of patients with chronic stable angina (effort-associ",
+      "names": [
+        "nicardipine",
+        "NCDP"
+      ],
+      "single": {
+        "level": "animal",
+        "pmid": "33621205",
+        "quote": "Our results showed that nicardipine can enhance the toxic effect of temozolomide against GSCs, promote apoptosis of GSCs, and inhibit autophagy of GSCs."
+      },
+      "brain": {
+        "crosses": "yes",
+        "pmid": "36340773",
+        "quote": "are readily blood-brain-barrier penetrant."
+      },
+      "trials": [
+        {
+          "name": "nicardipine",
+          "nct": "NCT07093151",
+          "title": "Comparison of Post-Craniotomy Blood Pressure Targets"
+        },
+        {
+          "name": "nicardipine",
+          "nct": "NCT02007798",
+          "title": "Small-dose Dexmedetomidine Effects on Recovery Profiles of Supratentorial Tumors Patients From General Anesthesia"
+        },
+        {
+          "name": "nicardipine",
+          "nct": "NCT01951950",
+          "title": "Nicardipine vs Esmolol Craniotomy Emergence"
+        }
+      ],
+      "euctr": null,
+      "survives": false,
+      "why": "3 trial(s) under nicardipine; EU register: null"
+    },
+    {
+      "drug": "nimodipine",
+      "indication": "INDICATIONS AND USAGE Nimodipine is indicated for the improvement of neurological outcome by reducing the incidence and severity of ischemic deficits in patient",
+      "names": [
+        "nimodipine"
+      ],
+      "single": {
+        "level": "in vitro",
+        "pmid": "38531616",
+        "quote": "Additionally, we found that pamidronate and nimodipine, drugs predicted to be efficacious against the brain tumor glioblastoma (GBM), inhibited the growth of a GBM cell line and cells isolated from a patient-derived xenograft (PDX)."
+      },
+      "brain": {
+        "crosses": "no",
+        "pmid": "28344178",
+        "quote": "In most cases (94.3%), nimodipine remained below the limit of quantification (0.5 ng/mL) within the brain (microdialysis, cerebrospinal fluid), even during targeted, local application (IA nimodipine)."
+      },
+      "trials": [],
+      "euctr": null,
+      "survives": false,
+      "why": "in vitro only; EU register: null; does not cross the blood-brain barrier"
+    },
+    {
+      "drug": "nortriptyline",
+      "indication": "INDICATIONS AND USAGE Nortriptyline hydrochloride capsules are indicated for the relief of symptoms of depression. Endogenous depressions are more likely to be ",
+      "names": [
+        "nortriptyline"
+      ],
+      "single": {
+        "level": "in vitro",
+        "pmid": "26954019",
+        "quote": "Eight of the fourteen drugs showed significant anti-proliferative activity against glioblastoma; i.e., ivermectin, trifluridine, astemizole, amlodipine, maprotiline, apomorphine, mometasone, and nortriptyline."
+      },
+      "brain": {
+        "crosses": "yes",
+        "pmid": "4074608",
+        "quote": "Also in the cerebrospinal fluid (CSF) the mean level of 10-OH-NT (67 +/- 20 nmol l-1) was higher than that of NT (39 +/- 23 nmol l-1)."
+      },
+      "trials": [],
+      "euctr": null,
+      "survives": false,
+      "why": "in vitro only; EU register: null"
+    },
+    {
+      "drug": "pamidronate",
+      "indication": "INDICATIONS AND USAGE Hypercalcemia of Malignancy Pamidronate disodium, in conjunction with adequate hydration, is indicated for the treatment of moderate or se",
+      "names": [
+        "pamidronate"
+      ],
+      "single": {
+        "level": "in vitro",
+        "pmid": "38531616",
+        "quote": "Additionally, we found that pamidronate and nimodipine, drugs predicted to be efficacious against the brain tumor glioblastoma (GBM), inhibited the growth of a GBM cell line and cells isolated from a patient-derived xenograft (PDX)."
+      },
+      "brain": null,
+      "trials": [],
+      "euctr": null,
+      "survives": false,
+      "why": "in vitro only; EU register: null"
+    },
+    {
+      "drug": "papaverine",
+      "indication": "INDICATIONS AND USAGE Papaverine is recommended in various conditions accompanied by spasm of smooth muscle, such as vascular spasm associated with acute myocar",
+      "names": [
+        "papaverine",
+        "papaverine hydrochloride"
+      ],
+      "single": {
+        "level": "animal",
+        "pmid": "31810939",
+        "quote": "Papaverine significantly inhibited the clonogenicity of U87MG and T98G cells."
+      },
+      "brain": null,
+      "trials": [],
+      "euctr": 0,
+      "survives": true,
+      "why": "",
+      "euctrTitles": []
+    },
+    {
+      "drug": "paroxetine",
+      "indication": "1 INDICATIONS AND USAGE Paroxetine tablets are indicated in adults for the treatment of: Major depressive disorder (MDD) Obsessive compulsive disorder (OCD) Pan",
+      "names": [
+        "paroxetine"
+      ],
+      "single": {
+        "level": "animal",
+        "pmid": "41698807",
+        "quote": "The C6 glioma rat model further confirmed the suppression of HSP27 and its crosstalk partner MMP-2/9 in tumor tissue."
+      },
+      "brain": null,
+      "trials": [],
+      "euctr": 0,
+      "survives": true,
+      "why": "",
+      "euctrTitles": []
+    },
+    {
+      "drug": "pentamidine",
+      "indication": "INDICATIONS AND USAGE Pentamidine Isethionate is indicated for the prevention of Pneumocystis jiroveci pneumonia (PJP) in high-risk, HIV-infected patients defin",
+      "names": [
+        "pentamidine",
+        "pentamidine dimesylate",
+        "pentamidine isethionate"
+      ],
+      "single": {
+        "level": "animal",
+        "pmid": "37142416",
+        "quote": "Pentamidine treatment suppressed proliferation and stemness in glioma-initiating cell lines."
+      },
+      "brain": {
+        "crosses": "yes",
+        "pmid": "1780988",
+        "quote": "Small amounts of the drug were found in the CSF after the last dose."
+      },
+      "trials": [],
+      "euctr": 0,
+      "survives": true,
+      "why": "",
+      "euctrTitles": []
+    },
+    {
+      "drug": "perphenazine",
+      "indication": "INDICATIONS AND USAGE Perphenazine tablets, USP are indicated for use in the treatment of schizophrenia and for the control of severe nausea and vomiting in adu",
+      "names": [
+        "perphenazine",
+        "Perphenazine dimaleate",
+        "PPZ",
+        "PER"
+      ],
+      "single": {
+        "level": "animal",
+        "pmid": "39392921",
+        "quote": "In vivo evaluation showed that combining PER and TMZ extended the survival period of the mouse orthotopic xenograft model."
+      },
+      "brain": {
+        "crosses": "yes",
+        "pmid": "33307865",
+        "quote": "Compared to PPZ suspension, the relative bioavailability and the brain distribution of PPZ-SLN were increased up to 2-fold and 16-fold, respectively."
+      },
+      "trials": [
+        {
+          "name": "PER",
+          "nct": "NCT06898684",
+          "title": "Medulloblastoma Online Video-based Exercise Pilot Study"
+        },
+        {
+          "name": "PER",
+          "nct": "NCT02337426",
+          "title": "Dimethyl Fumarate, Temozolomide, and Radiation Therapy in Treating Patients With Newly Diagnosed Glioblastoma Multiforme"
+        },
+        {
+          "name": "PER",
+          "nct": "NCT02162732",
+          "title": "Molecular-Guided Therapy for Childhood Cancer"
+        },
+        {
+          "name": "PER",
+          "nct": "NCT01867593",
+          "title": "MET-PET for Newly Diagnosed Glioblastoma"
+        },
+        {
+          "name": "PER",
+          "nct": "NCT01322100",
+          "title": "Electrochemotherapy as a Palliative Treatment for Brain Metastases"
+        },
+        {
+          "name": "PER",
+          "nct": "NCT06625684",
+          "title": "Key Longitudinal Associations With Risk and Glioblastoma Outcomes"
+        },
+        {
+          "name": "PER",
+          "nct": "NCT07570485",
+          "title": "Feasibility Assessment of Adapted Physical Activity in Patients Treated for a Brain Tumor"
+        },
+        {
+          "name": "PER",
+          "nct": "NCT02544178",
+          "title": "Study of Neurological Complication After Radiotherapy for High Grade Glioblastoma"
+        },
+        {
+          "name": "PER",
+          "nct": "NCT04477200",
+          "title": "Mycophenolate Mofetil Combined With Radiation Therapy in Glioblastoma"
+        },
+        {
+          "name": "PER",
+          "nct": "NCT06515106",
+          "title": "Antibody-mediated LGI1 Encephalitis: Symptoms, Biomarkers, and Mechanisms of the Chronic Phase of the Disease"
+        },
+        {
+          "name": "PER",
+          "nct": "NCT04655404",
+          "title": "A Pilot Study of Larotrectinib for Newly-Diagnosed High-Grade Glioma With NTRK Fusion"
+        },
+        {
+          "name": "PER",
+          "nct": "NCT05685004",
+          "title": "Study of Neoantigen-specific Adoptive T Cell Therapy for Newly Diagnosed MGMT Negative Glioblastoma Multiforme (GBM)"
+        },
+        {
+          "name": "PER",
+          "nct": "NCT05708352",
+          "title": "A Phase 2 Study of the Ketogenic Diet vs Standard Anti-cancer Diet Guidance for Patients With Glioblastoma in Combination With Standard-of-care Treatment"
+        },
+        {
+          "name": "PER",
+          "nct": "NCT03463733",
+          "title": "Hydroxy-urea and Temozolomide in Patients With a Recurrent Malignant Brain Tumor (Glioblastoma)"
+        },
+        {
+          "name": "PER",
+          "nct": "NCT07538128",
+          "title": "Evaluating Safety, Tolerability, and Preliminary Efficacy of YSCH-01 Monotherapy and in Combination With Atezolizumab for Recurrent Glioblastoma"
+        },
+        {
+          "name": "PER",
+          "nct": "NCT03870464",
+          "title": "LIFE - Lung Cancer, Immunotherapy, Frailty, Effect"
+        },
+        {
+          "name": "PER",
+          "nct": "NCT02233049",
+          "title": "Biological Medicine for Diffuse Intrinsic Pontine Glioma (DIPG) Eradication"
+        },
+        {
+          "name": "PER",
+          "nct": "NCT05139043",
+          "title": "Low Dose Versus Standard Dose Dexamethasone for Reduction of Swelling in Patients with Primary or Metastatic Brain Tumors"
+        },
+        {
+          "name": "PER",
+          "nct": "NCT05367076",
+          "title": "Fitness to Aid the Brain and Cognitive Skills"
+        },
+        {
+          "name": "PER",
+          "nct": "NCT00996450",
+          "title": "Educational Follow-up in a Cohort of Children at the Royal Marsden Hospital (RMH)"
+        }
+      ],
+      "euctr": null,
+      "survives": false,
+      "why": "20 trial(s) under PER; EU register: null"
+    },
+    {
+      "drug": "pimavanserin",
+      "indication": "1 INDICATIONS AND USAGE NUPLAZID ® is indicated for the treatment of hallucinations and delusions associated with Parkinson's disease psychosis [ see Clinical S",
+      "names": [
+        "pimavanserin",
+        "pimavanserin tartrate",
+        "PIM"
+      ],
+      "single": {
+        "level": "animal",
+        "pmid": "34363007",
+        "quote": "In vivo, the growth of subcutaneous and orthotopic glioblastoma xenografts was markedly suppressed by PIM."
+      },
+      "brain": null,
+      "trials": [
+        {
+          "name": "PIM",
+          "nct": "NCT06367530",
+          "title": "Trilateral Retinoblastoma: Incidence and Outcomes"
+        }
+      ],
+      "euctr": null,
+      "survives": false,
+      "why": "1 trial(s) under PIM; EU register: null"
+    },
+    {
+      "drug": "pimozide",
+      "indication": "INDICATIONS & USAGE Pimozide tablets are indicated for the suppression of motor and phonic tics in patients with Tourette’s Disorder who have failed to respond ",
+      "names": [
+        "pimozide"
+      ],
+      "single": {
+        "level": "animal",
+        "pmid": "32971907",
+        "quote": "Oral administration of 25 mg/kg pimozide suppressed the intracranially implanted U-87MG tumor growth by 45% in athymic nude mice."
+      },
+      "brain": null,
+      "trials": [],
+      "euctr": 1,
+      "survives": false,
+      "why": "EU register: 1 result(s)",
+      "euctrTitles": []
+    },
+    {
+      "drug": "pramipexole",
+      "indication": "1 INDICATIONS AND USAGE Pramipexole dihydrochloride extended-release tablets are indicated for the treatment of Parkinson's disease. Pramipexole dihydrochloride",
+      "names": [
+        "pramipexole",
+        "R(+) Pramipexole",
+        "R(+)PPX",
+        "R(+)-pramipexole-dihydrochloride",
+        "PPX"
+      ],
+      "single": null,
+      "brain": {
+        "crosses": "yes",
+        "pmid": "17307202",
+        "quote": "These results suggest that pramipexole is, at least in part, transported across the BBB by an organic cation-sensitive transporter."
+      },
+      "trials": [
+        {
+          "name": "pramipexole",
+          "nct": "NCT02670161",
+          "title": "Quality Improvement and Practice Based Research in Neurology Using the EMR"
+        },
+        {
+          "name": "PPX",
+          "nct": "NCT00763750",
+          "title": "PPX, Temozolomide, and Concurrent Radiation for Newly Diagnosed Brain Tumors"
+        },
+        {
+          "name": "PPX",
+          "nct": "NCT01402063",
+          "title": "PPX and Concurrent Radiation for Newly Diagnosed Glioblastoma Without MGMT Methylation"
+        }
+      ],
+      "euctr": null,
+      "survives": false,
+      "why": "no verified single-drug evidence; 3 trial(s) under pramipexole/PPX; EU register: null"
+    },
+    {
+      "drug": "praziquantel",
+      "indication": "1 INDICATIONS AND USAGE Praziquantel tablets are indicated in patients aged 1 year and older for the treatment of the following infections: Schistosomiasis due ",
+      "names": [
+        "praziquantel",
+        "PZQ"
+      ],
+      "single": null,
+      "brain": {
+        "crosses": "yes",
+        "pmid": "26958418",
+        "quote": "Albendazole is the preferred drug for the treatment of racemose NCC due to its superior cerebrospinal fluid penetration compared to praziquantel and the ability to be used concomitantly with steroids."
+      },
+      "trials": [],
+      "euctr": null,
+      "survives": false,
+      "why": "no verified single-drug evidence; EU register: null"
+    },
+    {
+      "drug": "prazosin",
+      "indication": "INDICATIONS AND USAGE Prazosin hydrochloride capsules are indicated for the treatment of hypertension, to lower blood pressure. Lowering blood pressure reduces ",
+      "names": [
+        "prazosin"
+      ],
+      "single": {
+        "level": "animal",
+        "pmid": "27138566",
+        "quote": "Prazosin triggered apoptosis of glioblastoma-initiating cells and of their differentiated progeny, inhibited glioblastoma growth in orthotopic xenografts of patient-derived glioblastoma-initiating cells, and increased survival of glioblastoma-bearing mice."
+      },
+      "brain": null,
+      "trials": [],
+      "euctr": 0,
+      "survives": true,
+      "why": "",
+      "euctrTitles": []
+    },
+    {
+      "drug": "protriptyline",
+      "indication": "INDICATIONS AND USAGE Protriptyline hydrochloride tablets are indicated for the treatment of symptoms of mental depression in patients who are under close medic",
+      "names": [
+        "protriptyline"
+      ],
+      "single": {
+        "level": "in vitro",
+        "pmid": "35120529",
+        "quote": "cell lines showed significantly higher sensitivities to Norcyclobenzaprine and Protriptyline which were predicted to bind targets to disrupt a certain molecular function such as DNA repair, response to hormones, or DNA-templated transcription, and may lead to an effect on survival-related pathways including cell cycle arrest, response to ER stress, glucose transport, and regulation of autophagy."
+      },
+      "brain": null,
+      "trials": [],
+      "euctr": null,
+      "survives": false,
+      "why": "in vitro only; EU register: null"
+    },
+    {
+      "drug": "quetiapine",
+      "indication": "1 INDICATIONS & USAGE Quetiapine is an atypical antipsychotic indicated for the treatment of: Schizophrenia ( 1.1 ) Bipolar I disorder manic episodes ( 1.2 ) Bi",
+      "names": [
+        "quetiapine",
+        "QTP",
+        "QUE"
+      ],
+      "single": {
+        "level": "animal",
+        "pmid": "28415586",
+        "quote": "(i) QUE monotherapy can effectively suppress GSCs-initiated tumor growth;"
+      },
+      "brain": {
+        "crosses": "yes",
+        "pmid": "27803466",
+        "quote": "NQTP administration results in increased systemic exposure and brain distribution compared to QTP administration."
+      },
+      "trials": [
+        {
+          "name": "QUE",
+          "nct": "NCT04655404",
+          "title": "A Pilot Study of Larotrectinib for Newly-Diagnosed High-Grade Glioma With NTRK Fusion"
+        },
+        {
+          "name": "QUE",
+          "nct": "NCT03180268",
+          "title": "Observation or Radiation Therapy in Treating Patients With Newly Diagnosed Grade II Meningioma That Has Been Completely Removed by Surgery"
+        },
+        {
+          "name": "QUE",
+          "nct": "NCT07901140",
+          "title": "Adverse Events During Physical Therapy in Neurocritical ICU Patients"
+        },
+        {
+          "name": "QUE",
+          "nct": "NCT05503797",
+          "title": "A Study to Assess the Efficacy and Safety of FORE8394 in Participants With Cancer Harboring BRAF Alterations"
+        },
+        {
+          "name": "QUE",
+          "nct": "NCT00047320",
+          "title": "Neoadjuvant Chemotherapy With or Without Second-Look Surgery Followed by Radiation Therapy With or Without Peripheral Stem Cell Transplantation in Treating Patients With Intracranial Germ Cell Tumors"
+        },
+        {
+          "name": "QUE",
+          "nct": "NCT04696029",
+          "title": "DFMO as Maintenance Therapy for Molecular High/Very High Risk and Relapsed Medulloblastoma"
+        },
+        {
+          "name": "QUE",
+          "nct": "NCT00002944",
+          "title": "Combination Chemotherapy in Treating Children With Progressive Brain Tumors"
+        },
+        {
+          "name": "QUE",
+          "nct": "NCT00138216",
+          "title": "Temozolomide, Vincristine, and Irinotecan in Treating Young Patients With Refractory Solid Tumors"
+        },
+        {
+          "name": "QUE",
+          "nct": "NCT02360215",
+          "title": "Memantine Hydrochloride and Whole-Brain Radiotherapy With or Without Hippocampal Avoidance in Reducing Neurocognitive Decline in Patients With Brain Metastases"
+        },
+        {
+          "name": "QUE",
+          "nct": "NCT00031967",
+          "title": "Melatonin and Radiation Therapy in Treating Patients With Brain Metastases"
+        },
+        {
+          "name": "QUE",
+          "nct": "NCT00002545",
+          "title": "Radiation Therapy Plus Chemotherapy in Treating Patients With Supratentorial Glioblastoma Multiforme"
+        },
+        {
+          "name": "QUE",
+          "nct": "NCT00831441",
+          "title": "Phase III Acute Coronary Syndrome"
+        },
+        {
+          "name": "QUE",
+          "nct": "NCT01076530",
+          "title": "Vorinostat and Temozolomide in Treating Young Patients With Relapsed or Refractory Primary Brain Tumors or Spinal Cord Tumors"
+        },
+        {
+          "name": "QUE",
+          "nct": "NCT00727506",
+          "title": "BIBW 2992 (Afatinib) With or Without Daily Temozolomide in the Treatment of Patients With Recurrent Malignant Glioma"
+        },
+        {
+          "name": "QUE",
+          "nct": "NCT00895622",
+          "title": "Observation or Radiation Therapy in Treating Patients With Grade I, Grade II, or Grade III Meningioma"
+        },
+        {
+          "name": "QUE",
+          "nct": "NCT00777153",
+          "title": "Cediranib in Combination With Lomustine Chemotherapy in Recurrent Glioblastoma"
+        },
+        {
+          "name": "QUE",
+          "nct": "NCT05230758",
+          "title": "Effect of Metformin on Behaviour and the Brain in Children Treated for a Brain Tumour"
+        },
+        {
+          "name": "QUE",
+          "nct": "NCT00002708",
+          "title": "Radiation Therapy With or Without Radiosurgery in Treating Patients With Brain Metastases"
+        },
+        {
+          "name": "QUE",
+          "nct": "NCT06500455",
+          "title": "Testing Longer Duration Radiation Therapy Versus the Usual Radiation Therapy in Patients With Cancer That Has Spread to the Brain"
+        },
+        {
+          "name": "QUE",
+          "nct": "NCT00003234",
+          "title": "Vinorelbine in Treating Children With Recurrent or Refractory Cancers"
+        }
+      ],
+      "euctr": null,
+      "survives": false,
+      "why": "20 trial(s) under QUE; EU register: null"
+    },
+    {
+      "drug": "quinine",
+      "indication": "Uses: See symptoms on front panel. Relieves dizziness *",
+      "names": [
+        "quinine",
+        "quinine hydrochloride dihydrate"
+      ],
+      "single": {
+        "level": "in vitro",
+        "pmid": "25727221",
+        "quote": "All agents blocked cellular autophagy and exerted cytotoxic effects on drug-sensitive and drug-resistant glioma cells with varying degrees of potency (QNX > MFQ > HCQ > CQ > QN)."
+      },
+      "brain": {
+        "crosses": "yes",
+        "pmid": "15215568",
+        "quote": "by examining its effect on quinine uptake into the central nervous system in rats"
+      },
+      "trials": [],
+      "euctr": null,
+      "survives": false,
+      "why": "in vitro only; EU register: null"
+    },
+    {
+      "drug": "ranolazine",
+      "indication": "1 INDICATIONS AND USAGE Ranolazine extended-release tablet is indicated for the treatment of chronic angina. Ranolazine extended-release tablet may be used with",
+      "names": [
+        "ranolazine",
+        "Rano"
+      ],
+      "single": {
+        "level": "animal",
+        "pmid": "33854970",
+        "quote": "In the orthotopic Gl261 and CT2A syngeneic murine models of GBM, DCA, Rano, and DCA/Rano increased median survival and induced focal tumor necrosis and hemorrhage."
+      },
+      "brain": {
+        "crosses": "yes",
+        "pmid": "35882281",
+        "quote": "Ranolazine exerted neuroprotective effects by suppressing brain pathologies and restoring cognitive function."
+      },
+      "trials": [
+        {
+          "name": "Rano",
+          "nct": "NCT05362409",
+          "title": "Study to Evaluate 5-ALA Combined With CV01 Delivery of Ultrasound in Recurrent High Grade Glioma"
+        },
+        {
+          "name": "Rano",
+          "nct": "NCT02669914",
+          "title": "MEDI4736 (Durvalumab) in Patients With Brain Metastasis From Epithelial-derived Tumors"
+        },
+        {
+          "name": "Rano",
+          "nct": "NCT05708352",
+          "title": "A Phase 2 Study of the Ketogenic Diet vs Standard Anti-cancer Diet Guidance for Patients With Glioblastoma in Combination With Standard-of-care Treatment"
+        },
+        {
+          "name": "Rano",
+          "nct": "NCT04690348",
+          "title": "Intracavitary Carrier-embedded Cs131 Brachytherapy for Recurrent Brain Metastases: a Randomized Phase II Study"
+        },
+        {
+          "name": "Rano",
+          "nct": "NCT07599371",
+          "title": "A Prospective, Single-arm Clinical Study on the Safety and Efficacy of Ivoximab Combined With Temozolomide in the Treatment of Relapsed/Refractory Glioma"
+        },
+        {
+          "name": "Rano",
+          "nct": "NCT03451799",
+          "title": "Ketogenic Diet in Combination With Standard-of-care Radiation and Temozolomide for Patients With Glioblastoma"
+        },
+        {
+          "name": "Rano",
+          "nct": "NCT04145349",
+          "title": "CAMPFIRE: A Study of Ramucirumab (LY3009806) in Children and Young Adults With Desmoplastic Small Round Cell Tumor"
+        },
+        {
+          "name": "Rano",
+          "nct": "NCT02886585",
+          "title": "Pembrolizumab In Central Nervous System Metastases"
+        },
+        {
+          "name": "Rano",
+          "nct": "NCT05432518",
+          "title": "Pilot Trial for Treatment of Recurrent Glioblastoma"
+        },
+        {
+          "name": "Rano",
+          "nct": "NCT04547855",
+          "title": "Anlotinib Combined With Dose-dense Temozolomide for the First Recurrent or Progressive Glioblastoma After STUPP Regimen"
+        },
+        {
+          "name": "Rano",
+          "nct": "NCT07552233",
+          "title": "NK Cell Therapy for Malignant Solid Brain Tumors"
+        },
+        {
+          "name": "Rano",
+          "nct": "NCT02997423",
+          "title": "Cytochrome C Oxidase Activity in Newly Diagnosed Glioblastoma Multiforme (GBM)"
+        },
+        {
+          "name": "Rano",
+          "nct": "NCT02465060",
+          "title": "Targeted Therapy Directed by Genetic Testing in Treating Patients With Advanced Refractory Solid Tumors, Lymphomas, or Multiple Myeloma (The MATCH Screening Trial)"
+        },
+        {
+          "name": "Rano",
+          "nct": "NCT07338526",
+          "title": "Intensity Modulated PrOton Therapy in Pediatric BRain Tumors (IMPORT)"
+        },
+        {
+          "name": "Rano",
+          "nct": "NCT02296580",
+          "title": "A Feasibility Study of the Nativis Voyager® System in Patients With Recurrent Glioblastoma Multiforme (GBM)"
+        },
+        {
+          "name": "Rano",
+          "nct": "NCT03528642",
+          "title": "Telaglenastat With Radiation Therapy and Temozolomide in Treating Patients With IDH-Mutated Diffuse Astrocytoma or Anaplastic Astrocytoma"
+        },
+        {
+          "name": "Rano",
+          "nct": "NCT07778602",
+          "title": "Safety and Feasibility of First-line Avutometinib and Defactinib in Patients With Newly Diagnosed High-grade Gliomas"
+        },
+        {
+          "name": "Rano",
+          "nct": "NCT06818331",
+          "title": "Evaluation of Clinical Efficacy and Safety of Specific Mode Electroacupuncture Stimulation for Paclitaxel Across BBB Delivery in Patients With Postoperative Recurrence of Malignant Glioma: A Single-arm Trial"
+        },
+        {
+          "name": "Rano",
+          "nct": "NCT04696029",
+          "title": "DFMO as Maintenance Therapy for Molecular High/Very High Risk and Relapsed Medulloblastoma"
+        },
+        {
+          "name": "Rano",
+          "nct": "NCT06336291",
+          "title": "A Study With L19TNF in Combination With Lomustine in Patients With Glioblastoma at Progression or Recurrence"
+        }
+      ],
+      "euctr": null,
+      "survives": false,
+      "why": "20 trial(s) under Rano; EU register: null"
+    },
+    {
+      "drug": "ribavirin",
+      "indication": "1 INDICATIONS AND USAGE Ribavirin capsules are a nucleoside analogue indicated in combination with interferon alfa-2b (pegylated and nonpegylated) for the treat",
+      "names": [
+        "ribavirin",
+        "1-β-D-ribofuranosy-1,2,4-triazole-3-carboxamide"
+      ],
+      "single": {
+        "level": "animal",
+        "pmid": "27941882",
+        "quote": "Finally and most importantly, ribavirin treatment in vivo significantly enhances chemo-radiotherapy efficacy and improves survival of rats and mice orthotopically implanted with gliosarcoma tumors or glioma stem-like cells, respectively."
+      },
+      "brain": {
+        "crosses": "yes",
+        "pmid": "2873344",
+        "quote": "Ribavirin enters cerebrospinal fluid."
+      },
+      "trials": [],
+      "euctr": 0,
+      "survives": true,
+      "why": "",
+      "euctrTitles": []
+    },
+    {
+      "drug": "sodium phenylbutyrate",
+      "indication": "INDICATIONS AND USAGE Sodium phenylbutyrate tablets are indicated as adjunctive therapy in the chronic management of patients with urea cycle disorders involvin",
+      "names": [
+        "sodium phenylbutyrate",
+        "phenylbutyrate",
+        "SPB"
+      ],
+      "single": {
+        "level": "human observational",
+        "pmid": "12241121",
+        "quote": "We report a 44-year-old female with a recurrent, multicentric, malignant glioma who experienced a durable remission lasting more than four years."
+      },
+      "brain": null,
+      "trials": [
+        {
+          "name": "phenylbutyrate",
+          "nct": "NCT00006450",
+          "title": "Phenylbutyrate to Treat Children With Progressive or Recurrent Brain Tumors"
+        },
+        {
+          "name": "phenylbutyrate",
+          "nct": "NCT00001565",
+          "title": "Phase I and Pharmacokinetic Trial of Phenylbutyrate Given as a Continuous Infusion in Pediatric Patients With Refractory Malignancy"
+        },
+        {
+          "name": "SPB",
+          "nct": "NCT00831441",
+          "title": "Phase III Acute Coronary Syndrome"
+        },
+        {
+          "name": "SPB",
+          "nct": "NCT04447755",
+          "title": "A Study of Lenvatinib (MK-7902) in Pediatric Participants With Relapsed or Refractory Solid Malignancies (MK-7902-013/E7080)"
+        },
+        {
+          "name": "SPB",
+          "nct": "NCT07448493",
+          "title": "Local Treatment Strategies for Brain Metastases of Gastric and Esophageal Cancer"
+        },
+        {
+          "name": "SPB",
+          "nct": "NCT00958841",
+          "title": "Study of Pasireotide in Patients With Rare Tumors of Neuroendocrine Origin"
+        },
+        {
+          "name": "SPB",
+          "nct": "NCT00820222",
+          "title": "Lapatinib Plus Capecitabine Versus Trastuzumab Plus Capecitabine in ErbB2 (HER2) Positive Metastatic Breast Cancer"
+        },
+        {
+          "name": "SPB",
+          "nct": "NCT00106353",
+          "title": "Study Evaluating Biomarkers In Relapsed/Refractory Pediatric Solid Tumors"
+        },
+        {
+          "name": "SPB",
+          "nct": "NCT02336451",
+          "title": "A Phase II Study to Evaluate the Efficacy and Safety of Oral Ceritinib in Patients With ALK-positive NSCLC Metastatic to the Brain and/or to Leptomeninges"
+        },
+        {
+          "name": "SPB",
+          "nct": "NCT07247279",
+          "title": "Epidemiological Study of Treatment Approaches in AChR-Antibody Positive Generalized Myasthenia Gravis in Russia"
+        },
+        {
+          "name": "SPB",
+          "nct": "NCT03797326",
+          "title": "Efficacy and Safety of Pembrolizumab (MK-3475) Plus Lenvatinib (E7080/MK-7902) in Previously Treated Participants With Select Solid Tumors (MK-7902-005/E7080-G000-224/LEAP-005)"
+        },
+        {
+          "name": "SPB",
+          "nct": "NCT02450539",
+          "title": "A Study of Abemaciclib (LY2835219) in Participants With Stage IV Squamous Non-small Cell Lung Cancer"
+        },
+        {
+          "name": "SPB",
+          "nct": "NCT07448662",
+          "title": "Local Treatment Strategies for Brain Metastases of Colorectal Cancer"
+        },
+        {
+          "name": "SPB",
+          "nct": "NCT04538742",
+          "title": "A Phase 1b/2 Study of T-DXd Combinations in HER2-positive Metastatic Breast Cancer"
+        },
+        {
+          "name": "SPB",
+          "nct": "NCT03468426",
+          "title": "A Study to Test Different Doses of BI 836880 Combined With Ezabenlimab in Patients With Advanced Non-small Cell Lung Cancer Followed by Other Types of Advanced Solid Tumours"
+        },
+        {
+          "name": "SPB",
+          "nct": "NCT00431561",
+          "title": "Phase IIb Clinical Trial With TGF-β2 Antisense Compound AP 12009 for Recurrent or Refractory High-grade Glioma"
+        },
+        {
+          "name": "SPB",
+          "nct": "NCT01794793",
+          "title": "Study to Allow Access to Pasireotide for Patients Benefiting From Pasireotide Treatment in Novartis-sponsored Studies"
+        },
+        {
+          "name": "SPB",
+          "nct": "NCT05539677",
+          "title": "Biobank and Register of Patients With Agresive Tumors for Translational and Analytical Research"
+        },
+        {
+          "name": "SPB",
+          "nct": "NCT00761280",
+          "title": "Efficacy and Safety of AP 12009 in Patients With Recurrent or Refractory Anaplastic Astrocytoma or Secondary Glioblastoma"
+        },
+        {
+          "name": "SPB",
+          "nct": "NCT03175224",
+          "title": "APL-101 Study of Subjects With NSCLC With c-Met EXON 14 Skip Mutations and c-Met Dysregulation Advanced Solid Tumors"
+        },
+        {
+          "name": "SPB",
+          "nct": "NCT02430363",
+          "title": "Evaluation Of The Treatment Effectiveness Of Glioblastoma / Gliosarcoma Through The Suppression Of The PI3K/Akt Pathway In Compared With MK-3475"
+        },
+        {
+          "name": "SPB",
+          "nct": "NCT00390806",
+          "title": "Oral HYCAMTIN Plus Whole Brain Radiation Therapy In Treatment Of Brain Metastases Resulting From Non-Small Lung Cancer"
+        }
+      ],
+      "euctr": null,
+      "survives": false,
+      "why": "22 trial(s) under phenylbutyrate/SPB; EU register: null"
+    },
+    {
+      "drug": "stiripentol",
+      "indication": "1 INDICATIONS AND USAGE DIACOMIT is indicated for the treatment of seizures associated with Dravet syndrome (DS) in patients taking clobazam who are 6 months of",
+      "names": [
+        "stiripentol",
+        "STP",
+        "Diacomit"
+      ],
+      "single": {
+        "level": "animal",
+        "pmid": "42206447",
+        "quote": "Pharmacological inhibition of lactate production with Stiripentol reduced H4K12la level, intracranial tumor growth, and immunosuppressive cell infiltration, while improving survival and response to immune checkpoint based therapy in experimental models."
+      },
+      "brain": {
+        "crosses": "yes",
+        "pmid": "38477507",
+        "quote": "which can cross the blood-brain barrier and inhibit lactate dehydrogenase A/B (LDHA/B) activity"
+      },
+      "trials": [],
+      "euctr": 0,
+      "survives": true,
+      "why": "",
+      "euctrTitles": []
+    },
+    {
+      "drug": "tepotinib",
+      "indication": "1 INDICATIONS AND USAGE TEPMETKO is indicated for the treatment of adult patients with metastatic non-small cell lung cancer (NSCLC) harboring mesenchymal-epith",
+      "names": [
+        "tepotinib"
+      ],
+      "single": {
+        "level": "human observational",
+        "pmid": "42111027",
+        "quote": "Tepotinib demonstrated clinical benefit, with partial response observed in 2 patients, stable disease in 2 patients, and progressive disease in 1 patient."
+      },
+      "brain": {
+        "crosses": "yes",
+        "pmid": "36999986",
+        "quote": "Tepotinib penetrates the blood-brain barrier and demonstrates strong antitumor activity in subcutaneous and orthotopic brain metastasis models, in-line with clinical activity observed in patients."
+      },
+      "trials": [
+        {
+          "name": "tepotinib",
+          "nct": "NCT05120960",
+          "title": "A Phase 1a/1b Study to Determine the Recommended Phase 2 Dose, of Tepotinib in Participants With MET Alterations and Brain Tumors"
+        }
+      ],
+      "euctr": null,
+      "survives": false,
+      "why": "1 trial(s) under tepotinib; EU register: null"
+    }
+  ]
+}

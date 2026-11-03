@@ -1,0 +1,49 @@
+{
+  "date": "2026-11-02T07:47:03.417Z",
+  "model": "muse-spark-1.3",
+  "note": "model alone, no tools, no reading, no verification; its sources then checked by the Mission Zero verifier",
+  "question": "Tuberculosis in 2023: how many people fell ill worldwide, how many died, and what share of treated people are cured? Answer with precise figures and cite your sources (title, year, URL).",
+  "answer": "In 2023 worldwide for tuberculosis:\n\n* **Fell ill:** **10.8 million people** - including 6.0 million men, 3.6 million women and 1.3 million children.\n* **Died:** **1.25 million people**, including 161,000 people with HIV.\n* **Share of treated people cured / treatment success:** **88%** treatment success rate globally for drug-susceptible TB - 2022 treatment cohort reported in 2024.\n\nSources:\n1. Title: Global tuberculosis report 2024, Year: 2024, URL: https://www.who.int/teams/global-tuberculosis-programme/tb-reports/global-tuberculosis-report-2024\n2. Title: Tuberculosis - WHO Fact Sheet, Year: 2024, URL: https://www.who.int/news-room/fact-sheets/detail/tuberculosis\n\n[{\"claim\":\"10.8 million people fell ill with TB worldwide in 2023\",\"url\":\"https://www.who.int/teams/global-tuberculosis-programme/tb-reports/global-tuberculosis-report-2024\"},{\"claim\":\"1.25 million people died from TB in 2023, including 161,000 people with HIV\",\"url\":\"https://www.who.int/news-room/fact-sheets/detail/tuberculosis\"},{\"claim\":\"88% global treatment success rate for drug-susceptible TB\",\"url\":\"https://www.who.int/teams/global-tuberculosis-programme/tb-reports/global-tuberculosis-report-2024\"}]",
+  "items": [
+    {
+      "claim": "10.8 million people fell ill with TB worldwide in 2023",
+      "url": "https://www.who.int/teams/global-tuberculosis-programme/tb-reports/global-tuberculosis-report-2024"
+    },
+    {
+      "claim": "1.25 million people died from TB in 2023, including 161,000 people with HIV",
+      "url": "https://www.who.int/news-room/fact-sheets/detail/tuberculosis"
+    },
+    {
+      "claim": "88% global treatment success rate for drug-susceptible TB",
+      "url": "https://www.who.int/teams/global-tuberculosis-programme/tb-reports/global-tuberculosis-report-2024"
+    }
+  ],
+  "result": {
+    "results": [
+      {
+        "claim": "10.8 million people fell ill with TB worldwide in 2023",
+        "url": "https://www.who.int/teams/global-tuberculosis-programme/tb-reports/global-tuberculosis-report-2024",
+        "verdict": "unsupported",
+        "color": "red",
+        "detail": "nearest passages: \"TB research & innovation Featured topics Asymptomatic TB Engagement of civil society and communities affected by TB MAF-TB: progress and way forward TB & pregnancy The 2023 national TB inventory study in Indonesia Countr\" \"In 2023, TB returned to being the world’s leading infectious disease killer, surpassing COVID-19.\" \"Download Read More More on TB 29 October 2024 News release Tuberculosis resurges as top infectious disease killer 13 November 2025 10 facts on tuberculosis 24 March 2026 Tuberculosis\""
+      },
+      {
+        "claim": "1.25 million people died from TB in 2023, including 161,000 people with HIV",
+        "url": "https://www.who.int/news-room/fact-sheets/detail/tuberculosis",
+        "verdict": "unsupported",
+        "color": "red",
+        "detail": "nearest passages: \"&copy; Credits Tuberculosis 24 March 2026 Reading time: Key facts A total of 1.23&nbsp;million people died from tuberculosis (TB) in 2024 (including 150&nbsp;000 among people with HIV).\" \"In 2024, an estimated 10.7&nbsp;million people fell ill with TB worldwide, including 5.8&nbsp;million men, 3.7&nbsp;million women and 1.2&nbsp;million children.\" \"In 2024, about 150&nbsp;000 people died of HIV-associated TB.\""
+      },
+      {
+        "claim": "88% global treatment success rate for drug-susceptible TB",
+        "url": "https://www.who.int/teams/global-tuberculosis-programme/tb-reports/global-tuberculosis-report-2024",
+        "verdict": "unsupported",
+        "color": "red",
+        "detail": "nearest passages: \"Global tuberculosis report 2024 Overview The WHO Global tuberculosis report 2024 provides a comprehensive and up-to-date assessment of the TB epidemic and of progress in prevention, diagnosis and treatment of the disease\" \"Global Tuberculosis Report 2024 Skip to main content Burden estimates in the 2024 edition of the Global tuberculosis report are out of date.\" \"This is done in the context of global TB commitments, strategies and targets.&nbsp; The 2024 edition of the report is, as usual, based primarily on data gathered by WHO from national ministries of health in annual rounds\""
+      }
+    ],
+    "green": 0,
+    "red": 3
+  },
+  "usd": 0.009288
+}
