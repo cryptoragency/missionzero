@@ -342,7 +342,7 @@ Who pays: online shops and the agencies and hosts that run them, where the same 
 
 ## Team
 
-One founder, CRYPTOR.AGENCY (France), with Claude Code as pair programmer: commits carry the agency's identity (`cryptor.agency`) or the project identity (`mission-zero <noreply@example.com>`), and a `Co-Authored-By: Claude` line when the assistant wrote part of the change. Every run, figure and decision in this README was made and checked by the founder.
+One founder, CRYPTOR.AGENCY (France), with code-assistance tools: commits carry the project identity (`cryptor.business.coorp`). Every run, figure and decision in this README was made and checked by the founder.
 
 ## Run it
 
